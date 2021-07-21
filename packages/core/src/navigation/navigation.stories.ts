@@ -5,7 +5,6 @@
  */
 
 import '@cds/core/navigation/register.js';
-import customElements from '../../dist/core/custom-elements.json';
 import { html } from 'lit';
 import { CdsNavigation } from '@cds/core/navigation';
 import { CdsNavigationGroup } from '@cds/core/navigation';

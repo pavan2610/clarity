@@ -35,6 +35,7 @@ const rules = {
       patterns: ['lit-element', 'lit-element/*', 'lit-html', 'lit-html/*', '@angular/*'],
     },
   ],
+  'lit/plugin/no-boolean-in-attribute-binding': [OFF],
   'lit-a11y/img-redundant-alt': [OFF],
   'lit-a11y/anchor-is-valid': [OFF],
   'lit-a11y/alt-text': [OFF],

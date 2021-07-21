@@ -1,0 +1,48 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Multi Action" />
+
+# Grid Multi-Action
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+Multi-Action support is similar to single Action support but leverages `cds-checkbox` to determine
+which elements the actions should apply. To mark a row as selected, set the `select`
+attribute/property on the `cds-grid-row`.
+
+<Story id="stories-grid--multi-action" />
+
+```html
+<cds-grid>
+  <cds-grid-column width="100">
+    <cds-checkbox>
+      <input type="checkbox" aria-label="choose action for selected stocks" />
+    </cds-checkbox>
+    <cds-action id="multi-action" aria-label="filter column"></cds-action>
+    <cds-dropdown anchor="#multi-action">
+      <cds-button action="flat" block size="sm">Buy Selected</cds-button>
+      <cds-button action="flat" block size="sm">Sell Selected</cds-button>
+    </cds-dropdown>
+  </cds-grid-column>
+  <cds-grid-column>Stock</cds-grid-column>
+  <cds-grid-column>Average</cds-grid-column>
+  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row select>
+    <cds-grid-cell>
+      <cds-checkbox>
+        <input type="checkbox" value="appl" aria-label="select appl" />
+      </cds-checkbox>
+    </cds-grid-cell>
+    <cds-grid-cell>APPL</cds-grid-cell>
+    <cds-grid-cell>$1000</cds-grid-cell>
+    <cds-grid-cell>$0</cds-grid-cell>
+    <cds-grid-cell>...</cds-grid-cell>
+  </cds-grid-row>
+</cds-grid>
+```

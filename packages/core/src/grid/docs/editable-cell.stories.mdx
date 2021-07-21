@@ -1,0 +1,38 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Editable Cell" />
+
+# Grid Editable Cell
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+Editable cells can be created by leveraging the `cds-input` form component. Using `cds-action`
+toggle the visibility of the `cds-input` to enable the user to edit the input. Once the `enter` key is pressed
+re-focus back to the `cds-action`.
+
+<Story id="stories-grid--editable-cell" />
+
+```html
+<cds-grid>
+  <cds-grid-column>Account</cds-grid-column>
+  <cds-grid-column>Outstanding</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>APPL</cds-grid-cell>
+    <cds-grid-cell>
+      <cds-input>
+        <input id="appl-input" type="number" value="1000" aria-label="appl Outstanding Value" />
+        <cds-control-action action="prefix" readonly>$</cds-control-action>
+      </cds-input>
+      <cds-action id="appl-button" shape="pencil" aria-label="edit appl"></cds-action>
+      <span>$1000</span>
+    </cds-grid-cell>
+    <cds-grid-cell>...</cds-grid-cell>
+  </cds-grid-row>
+</cds-grid>
+```

@@ -1,0 +1,53 @@
+// Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
+// This software is released under MIT license.
+// The full license information can be found in LICENSE in the root directory of this project.
+
+@import './../../styles/tokens/generated/index';
+
+:host {
+  --border-top: inset 0 2px 0 -1px #{$cds-alias-object-border-color};
+  --border-bottom: 0 2px 2px -1px #{$cds-alias-object-border-color};
+  --background: #{$cds-alias-object-container-background};
+  --height: var(--row-height);
+  content-visibility: var(--row-content-visibility, visible);
+  contain-intrinsic-size: 1px var(--height);
+}
+
+:host([position='fixed']) {
+  --border-top: 0 !important;
+  --row-content-visibility: visible;
+  position: sticky;
+  z-index: 99;
+  top: calc(var(--column-height) + 1px);
+  margin-top: -1px;
+}
+
+:host([position='fixed']) [part='row'] {
+  box-shadow: var(--border-bottom);
+}
+
+:host([position='fixed']) ::slotted(cds-grid-cell) {
+  --border-top: var(--border-bottom);
+}
+
+[part='row'] {
+  display: grid;
+  grid-template-columns: var(--c-grid);
+  box-shadow: var(--border-top);
+  background: var(--background);
+  min-height: var(--height);
+}
+
+[part='row']:hover,
+:host([selected]) {
+  --background: #{$cds-alias-object-interaction-background-hover};
+}
+
+:host([draggable='true']) {
+  -webkit-user-drag: element;
+  user-select: none;
+}
+
+:host([cds-draggable*='target']) {
+  --border-top: inset 0 3px 0 -1px #{$cds-alias-status-alt-tint};
+}

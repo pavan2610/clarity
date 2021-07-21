@@ -1,9 +1,12 @@
-import '@cds/core/alert/register.js';
 import '@cds/core/button/register.js';
+import '@cds/core/radio/register.js';
+import '@cds/core/input/register.js';
+import '@cds/core/icon/register.js';
+import { ClarityIcons } from '@cds/core/icon/icon.service.js';
+import { barsIcon } from '@cds/core/icon/shapes/bars.js';
+import { filterGridIcon } from '@cds/core/icon/shapes/filter-grid.js';
+import { ellipsisVerticalIcon } from '@cds/core/icon/shapes/ellipsis-vertical.js';
+import { infoStandardIcon } from '@cds/core/icon/shapes/info-standard.js';
+import { bellIcon } from '@cds/core/icon/shapes/bell.js';
 
-document
-  .querySelector('cds-button')
-  .addEventListener('click', () => document.querySelector('cds-alert-group').removeAttribute('hidden'));
-document
-  .querySelector('cds-alert-group cds-alert')
-  .addEventListener('closeChange', () => document.querySelector('cds-alert-group').setAttribute('hidden', ''));
+ClarityIcons.addIcons(barsIcon, filterGridIcon, ellipsisVerticalIcon, infoStandardIcon, bellIcon);

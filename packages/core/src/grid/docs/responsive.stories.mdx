@@ -1,0 +1,37 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Responsive" />
+
+# Grid Responsive
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+The easiest way to provide basic support for small screen devices is to leverage fixed column positioning.
+For each column, provide an initial column width via the `width` attribute/property.
+
+<Story id="stories-grid--responsive" />
+
+```html
+<cds-grid style="width: 400px">
+  <cds-grid-column position="fixed" width="100">Type</cds-grid-column>
+  <cds-grid-column width="200">Description</cds-grid-column>
+  <cds-grid-column width="200">Amount</cds-grid-column>
+  <cds-grid-column width="200">Balance</cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>Deposit</cds-grid-cell>
+    <cds-grid-cell>Item</cds-grid-cell>
+    <cds-grid-cell>$1,000,000.00</cds-grid-cell>
+    <cds-grid-cell>$1,000,000.00</cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-footer></cds-grid-footer>
+</cds-grid>
+```
+
+## API
+
+<Props of={'cds-grid-column'} />

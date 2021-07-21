@@ -1,0 +1,44 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Single Action" />
+
+# Grid Single Action
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+Single Actions can be applied to `cds-grid-row` by leveraging the `cds-action`.
+The `cds-action` can open a context dropdown per row to allow the user to
+trigger an action specific to that row.
+
+<Story id="stories-grid--single-action" />
+
+<cds-alert status="info" cds-layout="m-t:lg">When providing actions to rows, ensure the action menu is not repeated for each row.
+Reuse the same action menu for all rows to prevent unnecessary DOM work.</cds-alert>
+
+```html
+<cds-grid>
+  <cds-grid-column width="42"></cds-grid-column>
+  <cds-grid-column>Stock</cds-grid-column>
+  <cds-grid-column>Average</cds-grid-column>
+  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>
+      <cds-action id="appl-action" aria-label="choose available stock options"></cds-action>
+    </cds-grid-cell>
+    <cds-grid-cell>APPL</cds-grid-cell>
+    <cds-grid-cell>$1000</cds-grid-cell>
+    <cds-grid-cell>$0</cds-grid-cell>
+    <cds-grid-cell>...</cds-grid-cell>
+  </cds-grid-row>
+</cds-grid>
+<cds-dropdown hidden anchor="#appl-action">
+  <cds-button block action="flat" size="sm">Buy APPL</cds-button>
+  <cds-button block action="flat" size="sm">Sell APPL</cds-button>
+</cds-dropdown>
+```

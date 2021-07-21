@@ -3,6 +3,7 @@ import { setCustomElements } from '@web/storybook-prebuilt/web-components.js';
 import pkg from '../dist/core/custom-elements.legacy.json';
 import img from './public/assets/images/clarity-logo.svg';
 
+console.log(pkg);
 setCustomElements(pkg);
 
 // storybook-prebuild does not run the manager.js through rollup so custom
@@ -85,6 +86,39 @@ export const parameters = {
           'Toggle',
           'Date (Internal)',
         ],
+        'Data Grid (Preview)',
+        [
+          'Basic',
+          'Kitchen Sink',
+          'Performance',
+          'Single Select',
+          'Multi Select',
+          'Single Action',
+          'Multi Action',
+          'Sortable Rows',
+          'Multi Sortable Rows',
+          'Row Filtering',
+          'Multi Cell Filtering',
+          'Column Width',
+          'Column Resize',
+          'Column Visibility',
+          'Detail View',
+          'Pagination',
+          'Placeholder',
+          'Layout',
+          'Dark Theme',
+          'RTL',
+          'Responsive',
+          'Editable Cell',
+          'Range Select',
+          'Compact',
+          'Draggable Rows',
+          'Swappable Rows',
+          'Draggable Columns',
+          'Sticky Columns',
+          'Fixed Columns',
+          'Fixed Rows',
+        ],
         'Components (Preview)',
         ['Circular Progress', 'Divider', 'Pagination'],
         'Utilities (Preview)',
@@ -115,9 +149,10 @@ export const globalTypes = {
   theme: {
     name: 'Themes',
     description: 'Available built in Clarity themes',
-    defaultValue: window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : window.localStorage.getItem('cds-color-theme'),
+    defaultValue: '',
+    // defaultValue: window.matchMedia('(prefers-color-scheme: dark)').matches
+    //   ? 'dark'
+    //   : window.localStorage.getItem('cds-color-theme'),
     toolbar: {
       items: [
         { value: '', title: 'Light Theme' },
@@ -157,12 +192,12 @@ const themeDecorator = (story, { globals }) => {
 
   window.localStorage.setItem('cds-theme', themes);
 
-  window.addEventListener('storage', () => {
-    const updatedTheme = window.localStorage.getItem('cds-theme');
-    if (updatedTheme) {
-      window.document.body.setAttribute('cds-theme', `${updatedTheme}`);
-    }
-  });
+  // window.addEventListener('storage', () => {
+  //   const updatedTheme = window.localStorage.getItem('cds-theme');
+  //   if (updatedTheme) {
+  //     window.document.body.setAttribute('cds-theme', `${updatedTheme}`);
+  //   }
+  // });
 
   return story();
 };

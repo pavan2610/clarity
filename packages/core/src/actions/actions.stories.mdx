@@ -1,0 +1,56 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Components/Actions" />
+
+# Actions
+
+## Installation
+
+```typescript
+import '@cds/core/actions/register.js';
+```
+
+## Usage
+
+```html
+<cds-action aria-label="open options"></cds-action> <cds-action aria-label="open menu" shape="bars"></cds-action>
+```
+
+<Story id="stories-actions--action" />
+
+## Action Sort
+
+```html
+<cds-action-sort sort="descending" aria-label="sort item"></cds-action-sort>
+```
+
+<Story id="stories-actions--action-sort" />
+
+## Action Handle
+
+```html
+<cds-action-handle aria-label="move item"></cds-action-handle>
+```
+
+<Story id="stories-actions--action-handle" />
+
+## Action Expand
+
+```html
+<cds-action-expand expanded aria-label="open item"></cds-action-expand>
+<cds-action-expand direction="main" aria-label="close item"></cds-action-expand>
+```
+
+<Story id="stories-actions--action-expand" />
+
+## Action Resize
+
+```html
+<cds-action-resize aria-label="resize item"></cds-action-resize>
+```
+
+<Story id="stories-actions--action-resize" />
+
+## API
+
+<Props of={'cds-action'} />

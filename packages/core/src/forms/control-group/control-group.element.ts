@@ -16,9 +16,10 @@ import {
   EventEmitter,
   syncDefinedProps,
   describeElementByElements,
-  updateComponentLayout,
   setAttributes,
   syncProps,
+  ResponsiveController,
+  calculateOptimalLayout,
 } from '@cds/core/internal';
 import { ClarityIcons } from '@cds/core/icon/icon.service.js';
 import { exclamationCircleIcon } from '@cds/core/icon/shapes/exclamation-circle.js';
@@ -118,7 +119,7 @@ export class CdsInternalControlGroup extends LitElement {
 
   protected isControlGroup = true;
 
-  protected observers: (MutationObserver | ResizeObserver)[] = [];
+  protected responsiveController = new ResponsiveController(this);
 
   static get styles() {
     return [baseStyles, styles];
@@ -206,11 +207,6 @@ export class CdsInternalControlGroup extends LitElement {
     syncDefinedProps(props, this, Array.from(this.controls));
   }
 
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.observers.forEach(o => o.disconnect());
-  }
-
   get layoutStable() {
     return (
       !inlineControlListIsWrapped(Array.from(this.controls), this.layout) &&
@@ -233,10 +229,9 @@ export class CdsInternalControlGroup extends LitElement {
   private setupResponsive() {
     if (this.responsive) {
       const layoutConfig = { layouts: formLayouts, initialLayout: this.layout };
-      const observer = updateComponentLayout(this, layoutConfig, () =>
-        this.layoutChange.emit(this.layout, { bubbles: true })
+      this.addEventListener('elementRectChange', () =>
+        calculateOptimalLayout(this, layoutConfig).then(() => this.layoutChange.emit(this.layout, { bubbles: true }))
       );
-      this.observers.push(observer);
     }
   }
 }

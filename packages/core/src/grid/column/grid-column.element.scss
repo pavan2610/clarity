@@ -1,0 +1,65 @@
+// Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
+// This software is released under MIT license.
+// The full license information can be found in LICENSE in the root directory of this project.
+
+@import './../../styles/tokens/generated/index';
+
+:host {
+  --height: var(--column-height);
+  top: 0;
+  z-index: 998;
+  position: sticky;
+  min-width: fit-content;
+}
+
+[part='column'] {
+  min-height: var(--height);
+  border: 0;
+  font-weight: 500;
+  line-height: 0;
+  color: $cds-global-typography-color-500;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  text-align: left;
+  line-height: 1em;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+  // padding-inline: 0 $cds-global-space-6; // logical properties for rtl
+  padding-inline: $cds-global-space-6 $cds-global-space-6;
+  padding-block: $cds-global-space-4 $cds-global-space-4;
+  align-items: center;
+  height: 100%;
+  position: sticky !important;
+  background: $cds-alias-object-container-background-tint;
+  box-shadow: 0 1px 0 $cds-alias-object-border-color;
+}
+
+:host([position='fixed']),
+:host([position='sticky']) {
+  z-index: 999;
+}
+
+::slotted([cds-layout='align:right']),
+::slotted([cds-action]) {
+  margin-inline-start: auto;
+}
+
+.line {
+  width: 1px;
+  height: 2000px;
+  position: absolute;
+  top: 44px;
+  right: 12px;
+}
+
+[_active] + .line,
+[_key-active] + .line {
+  background: #{$cds-alias-status-alt-tint};
+}
+
+:host([cds-draggable*='target']) [part='column'] {
+  border-bottom: 1px solid #{$cds-alias-status-alt-tint};
+}

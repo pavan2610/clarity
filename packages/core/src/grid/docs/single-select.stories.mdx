@@ -1,0 +1,39 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Single Select" />
+
+# Grid Single Select
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+Single Select Rows are created using the `cds-radio` component. Create an associated
+radio group by using the same `name` attribute on each radio control. To mark a row
+as selected, set the `select` attribute/property on the `cds-grid-row` component.
+
+<Story id="stories-grid--single-select" />
+
+```html
+<cds-grid>
+  <cds-grid-column width="50"></cds-grid-column>
+  <cds-grid-column>Stock</cds-grid-column>
+  <cds-grid-column>Average</cds-grid-column>
+  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row select>
+    <cds-grid-cell>
+      <cds-radio>
+        <input type="radio" name="grid-rows" value="appl" aria-label="select appl" />
+      </cds-radio>
+    </cds-grid-cell>
+    <cds-grid-cell>APPL</cds-grid-cell>
+    <cds-grid-cell>$1000</cds-grid-cell>
+    <cds-grid-cell>$0</cds-grid-cell>
+    <cds-grid-cell>...</cds-grid-cell>
+  </cds-grid-row>
+</cds-grid>
+```

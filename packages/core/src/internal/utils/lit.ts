@@ -49,3 +49,8 @@ export function syncPropsForAllItems(
 ) {
   targets.forEach(target => syncProps(target, source, conditions));
 }
+
+/** given an element and prop map, determine if property was updated during the updated lifecycle */
+export function propUpdated(element: any, props: Map<string, any>, prop: string) {
+  return props.has(prop) && element[prop] !== props.get(prop);
+}

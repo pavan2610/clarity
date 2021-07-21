@@ -1,0 +1,56 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Layout" />
+
+# Grid Layout
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+## Optional Footer
+
+The Grid Footer is optional and can be omitted from markup.
+
+```html
+<cds-grid>
+  <cds-grid-column>Stock</cds-grid-column>
+  <cds-grid-column>Average</cds-grid-column>
+  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>${entry.id}</cds-grid-cell>
+    <cds-grid-cell>$${entry.average}</cds-grid-cell>
+    <cds-grid-cell>$${entry.value}</cds-grid-cell>
+    <cds-grid-cell>${entry.about}</cds-grid-cell>
+  </cds-grid-row>
+  <!-- <cds-grid-footer></cds-grid-footer> -->
+</cds-grid>
+```
+
+<Story id="stories-grid--optional-footer" />
+
+## No Scroll
+
+The `--body-height` property allows control of the height of the grid. By default, the grid will expand to the number of provided rows.
+
+```html
+<cds-grid>
+  <cds-grid-column>Stock</cds-grid-column>
+  <cds-grid-column>Average</cds-grid-column>
+  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>${entry.id}</cds-grid-cell>
+    <cds-grid-cell>$${entry.average}</cds-grid-cell>
+    <cds-grid-cell>$${entry.value}</cds-grid-cell>
+    <cds-grid-cell>${entry.about}</cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-footer></cds-grid-footer>
+</cds-grid>
+```
+
+<Story id="stories-grid--no-scroll" />

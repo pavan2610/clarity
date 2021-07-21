@@ -1,0 +1,47 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Detail View" />
+
+# Grid Detail View
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+The `cds-grid-detail` component provides a modal-like overlay to display additional details to a particular row entry.
+A `cds-grid-detail` can be visually toggled with `hidden`. To show the `cds-grid-detail` toggle its visibility using
+`cds-action` in a given grid row.
+
+<Story id="stories-grid--detail-view" />
+
+```html
+<cds-grid>
+  <cds-grid-column width="44"></cds-grid-column>
+  <cds-grid-column>Stock</cds-grid-column>
+  <cds-grid-column>Average</cds-grid-column>
+  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>
+      <cds-action-expand id="current-detail-demo" aria-label="view appl details"></cds-action-expand>
+    </cds-grid-cell>
+    <cds-grid-cell>APPL</cds-grid-cell>
+    <cds-grid-cell>$1000</cds-grid-cell>
+    <cds-grid-cell>$0.00</cds-grid-cell>
+    <cds-grid-cell>...</cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-detail hidden anchor="current-detail-demo">
+    <h2>APPL</h2>
+    <p>Average: $1000</p>
+    <p>Current: $0.00</p>
+    <p>About: ...</p>
+  </cds-grid-detail>
+</cds-grid>
+```
+
+## API
+
+<Props of={'cds-grid-detail'} />

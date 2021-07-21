@@ -1,0 +1,44 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Multi Select" />
+
+# Grid Multi-Select
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+Multi-Select support is similar to single select support but leverages `cds-checkbox` to enable
+multiple rows to be marked for selection. To mark a row as selected, set the `select`
+attribute/property on the `cds-grid-row`.
+
+<Story id="stories-grid--multi-select" />
+
+```html
+<cds-grid>
+  <cds-grid-column width="50">
+    <cds-checkbox>
+      <input type="checkbox" aria-label="select all" />
+    </cds-checkbox>
+  </cds-grid-column>
+  <cds-grid-column>Stock</cds-grid-column>
+  <cds-grid-column>Average</cds-grid-column>
+  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row select>
+    <cds-grid-cell>
+      <cds-checkbox>
+        <input type="checkbox" value="appl" aria-label="select appl" />
+      </cds-checkbox>
+    </cds-grid-cell>
+    <cds-grid-cell>APPL</cds-grid-cell>
+    <cds-grid-cell>$1000</cds-grid-cell>
+    <cds-grid-cell>$0</cds-grid-cell>
+    <cds-grid-cell>...</cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-footer>2 selected</cds-grid-footer>
+</cds-grid>
+```

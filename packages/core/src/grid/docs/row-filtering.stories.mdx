@@ -1,0 +1,41 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Row Filtering" />
+
+# Grid Row Filtering
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+To use row filtering leverage the `cds-search` or `cds-datalist` components. With `cds-action`
+toggle a filter dopdown to filter a particular column. Using the search input events
+filter against your list based on the applied column.
+
+<Story id="stories-grid--row-filtering" />
+
+```html
+<cds-grid>
+  <cds-grid-column>
+    Stock
+    <cds-action id="id-filter-demo" shape="filter" aria-label="search available stocks"></cds-action>
+    <cds-search hidden anchor="#id-filter-demo">
+      <cds-search>
+        <input type="search" aria-label="search" placeholder="Search" />
+      </cds-search>
+    </cds-dropdown>
+  </cds-grid-column>
+  <cds-grid-column>Average</cds-grid-column>
+  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>APPL</cds-grid-cell>
+    <cds-grid-cell>$1000</cds-grid-cell>
+    <cds-grid-cell>$0</cds-grid-cell>
+    <cds-grid-cell>...</cds-grid-cell>
+  </cds-grid-row>
+</cds-grid>
+```

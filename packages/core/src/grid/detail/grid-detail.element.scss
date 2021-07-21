@@ -1,0 +1,64 @@
+// Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
+// This software is released under MIT license.
+// The full license information can be found in LICENSE in the root directory of this project.
+
+@import './../../styles/tokens/generated/index';
+
+:host {
+  --width: 70%;
+  display: contents;
+}
+
+dialog {
+  background: $cds-alias-object-container-background;
+  z-index: 999;
+  border: 0;
+  box-shadow: $cds-alias-object-shadow-100;
+  color: $cds-global-typography-color-500;
+  padding: 0;
+  margin: 0;
+  display: block;
+  width: var(--width);
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  position: absolute;
+  padding: $cds-global-space-9;
+}
+
+dialog::backdrop {
+  background: transparent;
+}
+
+cds-action {
+  position: absolute;
+  top: $cds-global-space-6;
+  inset-inline-end: $cds-global-space-6;
+}
+
+.private-host {
+  position: relative;
+}
+
+dialog[tabindex='0'] {
+  outline: 0;
+}
+
+.caret {
+  background: #fff;
+  width: 20px;
+  height: 20px;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  transform: rotate(45deg);
+  position: absolute;
+  inset-inline-start: -11px;
+  top: var(--caret-top);
+}
+
+:host([dir='rtl']) .caret {
+  // todo: RTL service
+  transform: rotate(-135deg);
+}

@@ -1,0 +1,55 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Draggable Columns" />
+
+# Grid Draggable Columns
+
+<cds-alert-group status="danger" cds-layout="m-b:lg">
+  <cds-alert>
+    This feature or component is <strong>experimental</strong> and has no defined support policy. Experimental features
+    are subject to change at any time and are not stable.
+  </cds-alert>
+</cds-alert-group>
+
+The Data Grid columns use the native [HTML5 Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
+To enable a column apply the `draggable="true"` attribute to the `cds-grid-column`.
+Listen for drag events via the `draggableChange` event on the `cds-grid` element.
+Row drag events are stateless, meaning once an event occurs, the application should
+take the event details to resort columns appropriately.
+
+Keyboard navigation support is available by applying the `cds-draggable="handle"` attribute to a `cds-action`.
+Once applied, using cmd/ctrl + arrow up/down will trigger `draggableChange` change events to resort the list.
+
+The `draggableChange` only emits when a column was attempted to be moved but does not change the DOM.
+This ensures the host application has full control of how columns are rendered. This behavior also
+provides the flexibility for host applications to use framework-specific drag and drop libraries
+to provide easier framework integrations.
+
+<Story id="stories-grid--draggable-columns" />
+
+```html
+<cds-grid>
+  <cds-grid-column draggable="true">
+    Stock <cds-action-handle aria-label="sort tick column"></cds-action-handle>
+  </cds-grid-column>
+  <cds-grid-column draggable="true">
+    Average <cds-action-handle aria-label="sort average column"></cds-action-handle>
+  </cds-grid-column>
+  <cds-grid-column draggable="true">
+    Current <cds-action-handle aria-label="sort current column"></cds-action-handle>
+  </cds-grid-column>
+  <cds-grid-column draggable="true">
+    About <cds-action-handle aria-label="sort about column"></cds-action-handle>
+  </cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>APPL</cds-grid-cell>
+    <cds-grid-cell>$1000</cds-grid-cell>
+    <cds-grid-cell>$0</cds-grid-cell>
+    <cds-grid-cell>...</cds-grid-cell>
+  </cds-grid-row>
+</cds-grid>
+```
+
+## API
+
+<Props of={'cds-grid-column'} />

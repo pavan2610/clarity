@@ -1,0 +1,32 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Sticky Columns" />
+
+# Grid Sticky Columns
+
+<cds-alert-group status="danger" cds-layout="m-b:lg">
+  <cds-alert>
+    This feature or component is <strong>experimental</strong> and has no defined support policy. Experimental features
+    are subject to change at any time and are not stable.
+  </cds-alert>
+</cds-alert-group>
+
+Sticky columns behave similarly to fixed/pinned columns. Sticky columns will "stick" a column
+and prevent it from scrolling outside of view within a horizontal scroll.
+
+<Story id="stories-grid--sticky-columns" />
+
+```html
+<cds-grid>
+  <cds-grid-column>Stock</cds-grid-column>
+  <cds-grid-column position="sticky">Average</cds-grid-column>
+  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>APPL</cds-grid-cell>
+    <cds-grid-cell>$1000</cds-grid-cell>
+    <cds-grid-cell>$0</cds-grid-cell>
+    <cds-grid-cell>...</cds-grid-cell>
+  </cds-grid-row>
+</cds-grid>
+```

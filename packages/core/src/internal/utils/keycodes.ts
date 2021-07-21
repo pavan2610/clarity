@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2020 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -135,4 +135,22 @@ function wereNonModifierComboKeysPressed(keyCombo: string, evt: KeyboardEvent): 
   }
 
   return keyArray.reduce((acc: boolean, currentKey: string) => acc && keyWasEvented(evt, currentKey), true);
+}
+
+export function getTabableItems(el: HTMLElement) {
+  const tabableSelector = [
+    'a[href]',
+    'area[href]',
+    'input:not([disabled])',
+    'button:not([disabled])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    'iframe',
+    'object',
+    'embed',
+    '*[tabindex]',
+    '*[contenteditable=true]',
+    '[role=button]:not([disabled])',
+  ].join(',');
+  return Array.from(el.querySelectorAll(tabableSelector)) as HTMLElement[];
 }

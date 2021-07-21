@@ -1,0 +1,91 @@
+// Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
+// This software is released under MIT license.
+// The full license information can be found in LICENSE in the root directory of this project.
+
+@import './../styles/tokens/generated/index';
+
+:host {
+  --width: 18px;
+  --height: 18px;
+  --target-width: 44px;
+  --target-height: 44px;
+  --cursor: pointer;
+  --outline-offset: -3px;
+  --color: #{$cds-global-typography-color-300};
+  --font-size: #{$cds-global-typography-font-size-3};
+  --background: transparent;
+  --padding: 0;
+  pointer-events: none;
+  display: inline-block;
+  outline: 0 !important;
+}
+
+:host([role='button']) {
+  pointer-events: initial;
+  cursor: var(--cursor) !important;
+}
+
+:host(:hover) {
+  --color: #{$cds-alias-object-interaction-color-hover};
+}
+
+:host(:active) {
+  --color: #{$cds-alias-object-interaction-color-active};
+}
+
+:host([disabled]) {
+  --color: #{$cds-alias-object-interaction-color-disabled};
+}
+
+.private-host {
+  --icon-color: var(--color);
+  background: var(--background);
+  padding: var(--padding);
+  color: var(--color);
+  font-size: var(--font-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: var(--width);
+  min-height: var(--height);
+}
+
+cds-icon,
+::slotted(cds-icon) {
+  width: var(--width);
+  height: var(--height);
+  pointer-events: none;
+}
+
+cds-icon,
+::slotted(cds-icon:not([status])) {
+  --color: var(--icon-color);
+}
+
+:host([disabled]:active) {
+  pointer-events: none !important;
+}
+
+.private-host::after {
+  content: '';
+  position: absolute;
+  left: calc(calc(-1 * var(--width)) - 1);
+  top: calc(calc(-1 * var(--height)) - 1);
+  width: var(--target-width);
+  height: var(--target-height);
+}
+
+:host([disabled]) .private-host::after {
+  outline: 0 !important;
+}
+
+:host(:focus) .private-host::after {
+  outline: Highlight solid var(--cds-global-space-2);
+  outline-offset: var(--outline-offset);
+}
+
+@media (-webkit-min-device-pixel-ratio: 0) {
+  :host(:focus) .private-host::after {
+    outline-color: -webkit-focus-ring-color;
+  }
+}

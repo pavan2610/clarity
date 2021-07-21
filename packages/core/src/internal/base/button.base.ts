@@ -68,9 +68,13 @@ export class CdsBaseButton extends LitElement {
    *
    * @private
    */
-  private emulateActiveMouseDown() {
+  private emulateActiveMouseDown(e: any) {
     if (!this.disabled && !this.readonly) {
       this.active = true;
+    }
+
+    if (e.code === 'Space' && e.target === this) {
+      e.preventDefault(); // prevent space bar scroll with button behavior
     }
   }
 
@@ -88,6 +92,7 @@ export class CdsBaseButton extends LitElement {
       this.removeEventListener('keyup', this.emulateKeyBoardEventBehavior);
     } else {
       this.addEventListener('keyup', this.emulateActiveMouseUp);
+      this.addEventListener('blur', this.emulateActiveMouseUp);
       this.addEventListener('keydown', this.emulateActiveMouseDown);
       this.addEventListener('mouseup', this.emulateActiveMouseUp);
       this.addEventListener('mousedown', this.emulateActiveMouseDown);

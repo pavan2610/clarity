@@ -1,0 +1,51 @@
+import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
+
+<Meta title="Data Grid (Preview)/Multi Cell Filtering" />
+
+# Grid Multi-Cell Filtering
+
+<cds-alert-group status="warning" cds-layout="m-b:lg">
+  <cds-alert>
+    This component or utility is offered as a preview. This means we are currently working on it and seeking feedback.
+    Please be aware that this component or utility may have breaking changes before we finish working on it.
+  </cds-alert>
+</cds-alert-group>
+
+To search any cell in a Data Grid, use `cds-search` and the HTML `input` event.
+Using the event.
+
+<Story id="stories-grid--multi-cell-filtering" />
+
+```html
+<section cds-layout="vertical gap:lg">
+  <cds-search>
+    <label>Search Grid</label>
+    <input type="search" placeholder="Search" />
+  </cds-search>
+  <cds-grid>
+    <cds-grid-column>Stock</cds-grid-column>
+    <cds-grid-column>Average</cds-grid-column>
+    <cds-grid-column>Current</cds-grid-column>
+    <cds-grid-column>About</cds-grid-column>
+    <cds-grid-row>
+      <cds-grid-cell>APPL</cds-grid-cell>
+      <cds-grid-cell>$1000</cds-grid-cell>
+      <cds-grid-cell>$0</cds-grid-cell>
+      <cds-grid-cell>...</cds-grid-cell>
+    </cds-grid-row>
+  </cds-grid>
+</section>
+```
+
+Any strategy can be used to determine what cells to search or what weights
+should apply. Here is an example of a basic string matching filter.
+
+```javascript
+const results = itemsList.filter(i =>
+  Object.keys(i)
+    .map(k => i[k])
+    .reduce((p, n) => `${p} ${n}`)
+    .toLocaleLowerCase()
+    .includes(searchInputElement.value.trim().toLocaleLowerCase())
+);
+```

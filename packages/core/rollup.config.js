@@ -31,6 +31,7 @@ const config = {
   entryPoints: {
     modules: ['./src', './src/internal', './src/test'],
     components: [
+      './src/actions',
       './src/accordion',
       './src/alert',
       './src/badge',
@@ -43,6 +44,7 @@ const config = {
       './src/divider',
       './src/file',
       './src/forms',
+      './src/grid',
       './src/icon',
       './src/input',
       './src/internal-components/close-button',

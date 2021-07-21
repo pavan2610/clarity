@@ -1,0 +1,105 @@
+// Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
+// This software is released under MIT license.
+// The full license information can be found in LICENSE in the root directory of this project.
+
+@import './../../styles/tokens/generated/index';
+
+[hidden] {
+  display: none !important;
+}
+
+:host {
+  --body-height: auto;
+  --grid-scroll-width: inital;
+  --scrollbar-background: #{$cds-alias-object-container-background};
+  --scrollbar-thumb-background: #{$cds-alias-object-border-color};
+  --grid-template-columns: 1fr 1fr 1fr 1fr;
+  --column-height: calc(#{$cds-global-space-12} - #{$cds-global-space-3});
+  --row-height: calc(#{$cds-global-space-12} - #{$cds-global-space-3});
+  --row-content-visibility: auto;
+  --scroll-padding-top: var(--row-height);
+  --body-overflow: auto;
+  width: 100%;
+}
+
+.private-host {
+  border: $cds-alias-object-border-width-100 solid $cds-alias-object-border-color;
+  border-radius: $cds-alias-object-border-radius-100;
+  background: $cds-alias-object-container-background;
+  position: relative;
+}
+
+.grid {
+  overflow: var(--body-overflow);
+  height: var(--body-height, 100%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  scroll-padding-top: var(--scroll-padding-top);
+  background: $cds-alias-object-container-background-tint; // for scroll overflow on columns
+}
+
+.grid-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  min-width: fit-content;
+  margin-top: 2px;
+  background: $cds-alias-object-container-background;
+}
+
+.column-row-group {
+  display: contents; // safari...
+}
+
+[role='row'] {
+  display: grid;
+  top: 0;
+  position: sticky;
+  z-index: 99;
+  min-width: fit-content;
+  grid-template-columns: var(--ch-grid);
+  // padding-inline: $cds-global-space-6 $cds-global-space-1;
+  // padding-inline: $cds-global-space-6 $cds-global-space-6;
+  background: $cds-alias-object-container-background-tint;
+  box-shadow: 0 1px 0 $cds-alias-object-border-color;
+}
+
+.footer {
+  background: $cds-alias-object-container-background;
+}
+
+::slotted(cds-grid-row:not([cds-draggable='target']):first-of-type) {
+  --border-top: $cds-alias-object-border-width-100 solid transparent;
+}
+
+::-webkit-scrollbar {
+  width: $cds-global-space-5;
+  height: $cds-global-space-5;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  margin-top: 44px;
+  box-shadow: inset 0 0 11px var(--scrollbar-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-background);
+  border-radius: $cds-global-space-5;
+  border: $cds-global-space-2 solid var(--scrollbar-background);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0);
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
