@@ -22,22 +22,22 @@ Reuse the same action menu for all rows to prevent unnecessary DOM work.</cds-al
 
 ```html
 <cds-grid>
-  <cds-grid-column width="42"></cds-grid-column>
-  <cds-grid-column>Stock</cds-grid-column>
-  <cds-grid-column>Average</cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
-  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-column width="44"></cds-grid-column>
+  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row>
     <cds-grid-cell>
-      <cds-action id="appl-action" aria-label="choose available stock options"></cds-action>
+      <cds-action aria-label="choose available host actions"></cds-action>
     </cds-grid-cell>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$1000</cds-grid-cell>
-    <cds-grid-cell>$0</cds-grid-cell>
-    <cds-grid-cell>...</cds-grid-cell>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
 </cds-grid>
-<cds-dropdown hidden anchor="#appl-action">
+<cds-dropdown hidden>
   <cds-button block action="flat" size="sm">Buy APPL</cds-button>
   <cds-button block action="flat" size="sm">Sell APPL</cds-button>
 </cds-dropdown>

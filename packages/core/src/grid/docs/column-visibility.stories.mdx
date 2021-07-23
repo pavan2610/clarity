@@ -18,36 +18,36 @@ the DOM is required to ensure the best a11y experience and that the column sizin
 
 ```html
 <cds-grid>
-  <cds-grid-column>Stock</cds-grid-column>
-  <cds-grid-column>Average</cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
-  <!-- (removed) <cds-grid-column>About</cds-grid-column> -->
+  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <!-- (removed) <cds-grid-column>Memory</cds-grid-column> -->
   <cds-grid-row>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$100</cds-grid-cell>
-    <cds-grid-cell>$0.00</cds-grid-cell>
-    <!-- (removed) <cds-grid-cell>...</cds-grid-cell> -->
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <!-- (removed) <cds-grid-cell>10%</cds-grid-cell> -->
   </cds-grid-row>
   <cds-grid-row>
-    <cds-grid-cell>MSFT</cds-grid-cell>
-    <cds-grid-cell>$500</cds-grid-cell>
-    <cds-grid-cell>$0.00</cds-grid-cell>
-    <!-- (removed) <cds-grid-cell>Lorem ipsum dolor sit amet</cds-grid-cell> -->
+    <cds-grid-cell>vm-host-003</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
+    <!-- (removed) <cds-grid-cell>30%</cds-grid-cell> -->
   </cds-grid-row>
   <cds-grid-footer>
     <cds-action id="toggle-columns" shape="view-columns" aria-label="filter column"></cds-action>
     <cds-dropdown anchor="#toggle-columns" position="top">
       <cds-checkbox-group layout="vertical">
         <cds-checkbox>
-          <label>Average</label>
+          <label>Status</label>
           <input type="checkbox" checked />
         </cds-checkbox>
         <cds-checkbox>
-          <label>Current</label>
+          <label>CPU</label>
           <input type="checkbox" checked />
         </cds-checkbox>
         <cds-checkbox>
-          <label>About</label>
+          <label>Memory</label>
           <input type="checkbox" />
         </cds-checkbox>
       </cds-checkbox-group>

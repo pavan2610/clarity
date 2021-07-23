@@ -14,14 +14,14 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
 The Data Grid rows use the native [HTML5 Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
 To enable a row apply the `draggable="true"` attribute to the `cds-grid-row`.
 To create a dropzone that is not draggable, apply the `draggable="false"` attribute.
-Listen for drag events via the `draggableChange` event on the `cds-grid` element.
+Listen for drag events via the `cdsDraggableChange` event on the `cds-grid` element.
 Row drag events are stateless, meaning once an event occurs, the application should
 take the event details to resort the row list appropriately.
 
 Keyboard navigation support is available by applying the `cds-draggable="handle"` attribute to a `cds-action`.
-Once applied, using cmd/ctrl + arrow up/down will trigger `draggableChange` change events to resort the list.
+Once applied, using cmd/ctrl + arrow up/down will trigger `cdsDraggableChange` change events to resort the list.
 
-The `draggableChange` only emits when a row was attempted to be moved but does not change the DOM.
+The `cdsDraggableChange` only emits when a row was attempted to be moved but does not change the DOM.
 This ensures the host application has full control of how rows are rendered. This behavior also
 provides the flexibility for host applications to use framework specific drag and drop libraries
 to provide easier framework integrations.
@@ -30,20 +30,20 @@ to provide easier framework integrations.
 
 ```html
 <cds-grid>
-  <cds-grid-column width="45"></cds-grid-column>
-  <cds-grid-column>Stock</cds-grid-column>
-  <cds-grid-column>Average</cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
-  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-column width="44"></cds-grid-column>
+  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
 
   <cds-grid-row draggable="true">
     <cds-grid-cell>
-      <cds-action-handle aria-label="sort appl row"></cds-action-handle>
+      <cds-action-handle aria-label="sort host row"></cds-action-handle>
     </cds-grid-cell>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$1000</cds-grid-cell>
-    <cds-grid-cell>$0</cds-grid-cell>
-    <cds-grid-cell>...</cds-grid-cell>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
   <cds-grid-placeholder draggable="false"></cds-grid-placeholder>
 </cds-grid>

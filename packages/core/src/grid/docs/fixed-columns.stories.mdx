@@ -19,15 +19,15 @@ of the position by using a `cds-action` to set the position state of a given col
 
 ```html
 <cds-grid>
-  <cds-grid-column position="fixed">Stock</cds-grid-column>
-  <cds-grid-column>Average</cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
-  <cds-grid-column position="fixed">About</cds-grid-column>
+  <cds-grid-column position="fixed">Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column position="fixed">Memory</cds-grid-column>
   <cds-grid-row>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$1000</cds-grid-cell>
-    <cds-grid-cell>$0</cds-grid-cell>
-    <cds-grid-cell>...</cds-grid-cell>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
 </cds-grid>
 ```
@@ -41,24 +41,24 @@ Columns can dynamically be placed into a fixed position.
 ```html
 <cds-grid>
   <cds-grid-column position="fixed">
-    Stock
-    <cds-action aria-label="pin stock column">
+    Host
+    <cds-action aria-label="pin host column">
       <cds-icon shape="pin" solid></cds-icon>
     </cds-action>
   </cds-grid-column>
-  <cds-grid-column>Average</cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
   <cds-grid-column position="initial">
-    About
-    <cds-action aria-label="pin about column">
-      <cds-icon shape="pin"></cds-icon>
+    Memory
+    <cds-action aria-label="pin memory column">
+      <cds-icon shape="pin" solid></cds-icon>
     </cds-action>
   </cds-grid-column>
   <cds-grid-row>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$1000</cds-grid-cell>
-    <cds-grid-cell>$0</cds-grid-cell>
-    <cds-grid-cell>...</cds-grid-cell>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
 </cds-grid>
 ```
@@ -72,15 +72,15 @@ span past the half way point of the grid to ensure enough scroll space for the r
 
 ```html
 <cds-grid>
-  <cds-grid-column position="fixed">Stock</cds-grid-column>
-  <cds-grid-column position="fixed">Average</cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
-  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-column position="fixed">Host</cds-grid-column>
+  <cds-grid-column position="fixed">Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$1000</cds-grid-cell>
-    <cds-grid-cell>$0</cds-grid-cell>
-    <cds-grid-cell>...</cds-grid-cell>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
 </cds-grid>
 ```

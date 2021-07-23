@@ -22,6 +22,10 @@
   width: 100%;
 }
 
+:host([range-selection]) {
+  user-select: none;
+}
+
 .private-host {
   border: $cds-alias-object-border-width-100 solid $cds-alias-object-border-color;
   border-radius: $cds-alias-object-border-radius-100;

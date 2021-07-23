@@ -26,27 +26,25 @@ order or weight of a sort is up to the host application. Conventionally, Column 
 in order of the columns.
 
 ```javascript
-document.querySelector('#name').addEventListener('sortChange', e => sortByString(e.detail));
-document.querySelector('#average').addEventListener('sortChange', e => sortByNumber(e.detail));
+document.querySelector('#host').addEventListener('sortChange', e => sortByString(e.detail));
+document.querySelector('#status').addEventListener('sortChange', e => sortByNumber(e.detail));
 ```
 
 ```html
 <cds-grid>
   <cds-grid-column>
-    Stock
-    <cds-action-sort sort="decending" aria-label="sort stock"></cds-action-sort>
+    Host <cds-action-sort sort="decending" aria-label="sort host"></cds-action-sort>
   </cds-grid-column>
   <cds-grid-column>
-    Average
-    <cds-action-sort sort="accending" aria-label="sort average"></cds-action-sort>
+    Status <cds-action-sort sort="accending" aria-label="sort status"></cds-action-sort>
   </cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
-  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$1000</cds-grid-cell>
-    <cds-grid-cell>$0</cds-grid-cell>
-    <cds-grid-cell>...</cds-grid-cell>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
 </cds-grid>
 ```

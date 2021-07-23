@@ -22,8 +22,7 @@ import { exclamationTriangleIcon } from '@cds/core/icon/shapes/exclamation-trian
 import { exclamationCircleIcon } from '@cds/core/icon/shapes/exclamation-circle.js';
 import { disconnectIcon } from '@cds/core/icon/shapes/disconnect.js';
 import { viewColumnsIcon } from '@cds/core/icon/shapes/view-columns.js';
-
-import { getData, paginate, filter, sortStrings, sortList, sortNumbers, getVMData, TestVM, StatusDisplayType, StatusIconType, getVMOrderPreference, groupArray } from './storybook.js';
+import { paginate, filter, sortStrings, sortList, getVMData, TestVM, StatusDisplayType, StatusIconType, getVMOrderPreference, groupArray } from './storybook.js';
 
 ClarityIcons.addIcons(checkCircleIcon, exclamationTriangleIcon, exclamationCircleIcon, disconnectIcon, filterIcon, viewColumnsIcon);
 
@@ -49,12 +48,16 @@ export function all() {
         ${keyboard()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Static Column Width</h2>
-        ${staticColumnWidth()}
+        <h2 cds-text="section">Column Resize</h2>
+        ${columnResize()}
       </div>
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">Flex Column Width</h2>
         ${flexColumnWidth()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Column Overflow</h2>
+        ${columnOverflow()}
       </div>
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">Fixed Column Width</h2>
@@ -67,10 +70,6 @@ export function all() {
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">Pagination</h2>
         ${pagination()}
-      </div>
-      <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Column Resize</h2>
-        ${columnResize()}
       </div>
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">Column Visibility</h2>
@@ -185,6 +184,17 @@ export function all() {
         ${darkTheme()}
       </div>
       <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Range Select</h2>
+        ${noScroll()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Range Select</h2>
+        ${rangeSelect()}
+      </div>
+      <div cds-layout="vertical gap:lg">Range Select Context Menu</h2>
+        ${rangeSelectContextMenu()}
+      </div>
+      <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">No Scroll</h2>
         ${noScroll()}
       </div>
@@ -199,7 +209,6 @@ export function basic() {
       <cds-grid-column>Status</cds-grid-column>
       <cds-grid-column>CPU</cds-grid-column>
       <cds-grid-column>Memory</cds-grid-column>
-
       <cds-grid-row>
         <cds-grid-cell>vm-host-001</cds-grid-cell>
         <cds-grid-cell>online</cds-grid-cell>
@@ -392,76 +401,181 @@ export function keyboard() {
 }
 
 export function darkTheme() {
-  return html`<div cds-theme="dark">${basic()}</div>`;
+  return html`
+    <cds-grid cds-theme="dark" aria-label="dark theme datagrid demo" style="--body-height: 360px">
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
+
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-footer></cds-grid-footer>
+    </cds-grid>  
+  `;
 }
 
-export function staticColumnWidth() {
+export function columnResize() {
   return html`
-    <cds-grid aria-label="static column width datagrid demo" style="--body-height: 360px">
-      <cds-grid-column resizable>Type</cds-grid-column>
-      <cds-grid-column resizable>Description</cds-grid-column>
-      <cds-grid-column resizable>Amount</cds-grid-column>
-      <cds-grid-column resizable>Balance</cds-grid-column>
+    <cds-grid aria-label="column resize datagrid demo" style="--body-height: 360px">
+      <cds-grid-column resizable>Host</cds-grid-column>
+      <cds-grid-column resizable>Status</cds-grid-column>
+      <cds-grid-column resizable>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
 
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Item kh kasd alksdfjh kashjdf kalsjdf lkajsdfl</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Billing</cds-grid-cell>
-        <cds-grid-cell>$250.00</cds-grid-cell>
-        <cds-grid-cell>$523,750.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Renewal</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$163,262.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$53.00</cds-grid-cell>
-        <cds-grid-cell>$347,423.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$1239.00</cds-grid-cell>
-        <cds-grid-cell>$564,772.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Service Fee</cds-grid-cell>
-        <cds-grid-cell>$49.00</cds-grid-cell>
-        <cds-grid-cell>$977,527.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Account Transfer</cds-grid-cell>
-        <cds-grid-cell>$2300.00</cds-grid-cell>
-        <cds-grid-cell>$423,236.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Payment</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$199,282.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Unknown</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$929,741.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Provider</cds-grid-cell>
-        <cds-grid-cell>$9203.00</cds-grid-cell>
-        <cds-grid-cell>$239,120.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>
@@ -471,69 +585,87 @@ export function staticColumnWidth() {
 export function flexColumnWidth() {
   return html`
     <cds-grid aria-label="flex column width datagrid demo" column-layout="flex" style="--body-height: 360px">
-      <cds-grid-column resizable>Type</cds-grid-column>
-      <cds-grid-column resizable>Description</cds-grid-column>
-      <cds-grid-column resizable>Amount</cds-grid-column>
-      <cds-grid-column resizable>Balance</cds-grid-column>
+      <cds-grid-column resizable>Host</cds-grid-column>
+      <cds-grid-column resizable>Status</cds-grid-column>
+      <cds-grid-column resizable>CPU</cds-grid-column>
+      <cds-grid-column resizable>Memory</cds-grid-column>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Item kh kasd alksdfjh kashjdf kalsjdf lkajsdfl</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$1,000,000.00</p></cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$1,000,000.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell><p cds-text="truncate">25.00000001%</p></cds-grid-cell>
+        <cds-grid-cell><p cds-text="truncate">50.00000005%</p></cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Billing</cds-grid-cell>
-        <cds-grid-cell>$250.00</cds-grid-cell>
-        <cds-grid-cell>$523,750.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Renewal</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$163,262.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$53.00</cds-grid-cell>
-        <cds-grid-cell>$347,423.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$1239.00</cds-grid-cell>
-        <cds-grid-cell>$564,772.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Service Fee</cds-grid-cell>
-        <cds-grid-cell>$49.00</cds-grid-cell>
-        <cds-grid-cell>$977,527.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Account Transfer</cds-grid-cell>
-        <cds-grid-cell>$2300.00</cds-grid-cell>
-        <cds-grid-cell>$423,236.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Payment</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$199,282.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Unknown</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$929,741.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Provider</cds-grid-cell>
-        <cds-grid-cell>$9203.00</cds-grid-cell>
-        <cds-grid-cell>$239,120.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>
@@ -543,70 +675,87 @@ export function flexColumnWidth() {
 export function fixedColumnWidth() {
   return html`
     <cds-grid aria-label="fixed column width datagrid demo" style="--body-height: 360px">
-      <cds-grid-column width="100">Type</cds-grid-column>
-      <cds-grid-column>Description</cds-grid-column>
-      <cds-grid-column>Amount</cds-grid-column>
-      <cds-grid-column>Balance</cds-grid-column>
-
+      <cds-grid-column width="150">Host</cds-grid-column>
+      <cds-grid-column width="150">Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Item</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>25%</p></cds-grid-cell>
+        <cds-grid-cell>50%</p></cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Billing</cds-grid-cell>
-        <cds-grid-cell>$250.00</cds-grid-cell>
-        <cds-grid-cell>$523,750.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Renewal</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$163,262.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$53.00</cds-grid-cell>
-        <cds-grid-cell>$347,423.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$1239.00</cds-grid-cell>
-        <cds-grid-cell>$564,772.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Service Fee</cds-grid-cell>
-        <cds-grid-cell>$49.00</cds-grid-cell>
-        <cds-grid-cell>$977,527.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Account Transfer</cds-grid-cell>
-        <cds-grid-cell>$2300.00</cds-grid-cell>
-        <cds-grid-cell>$423,236.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Payment</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$199,282.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Unknown</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$929,741.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Provider</cds-grid-cell>
-        <cds-grid-cell>$9203.00</cds-grid-cell>
-        <cds-grid-cell>$239,120.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>
@@ -616,70 +765,87 @@ export function fixedColumnWidth() {
 export function columnOverflow() {
   return html`
     <cds-grid aria-label="fixed column width datagrid demo" style="--body-height: 360px">
-      <cds-grid-column>Type</cds-grid-column>
-      <cds-grid-column>Description</cds-grid-column>
-      <cds-grid-column>Amount</cds-grid-column>
-      <cds-grid-column width="100">Balance</cds-grid-column>
-
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column width="100">CPU</cds-grid-column>
+      <cds-grid-column width="100">Memory</cds-grid-column>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Item</cds-grid-cell>
-        <cds-grid-cell></cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$1,000,000.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell><p cds-text="truncate">25.00000001%</p></cds-grid-cell>
+        <cds-grid-cell><p cds-text="truncate">50.00000005%</p></cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Billing</cds-grid-cell>
-        <cds-grid-cell>$250.00</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$523,750.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Renewal</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$163,262.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$53.00</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$347,423.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$1239.00</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$564,772.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Service Fee</cds-grid-cell>
-        <cds-grid-cell>$49.00</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$977,527.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Account Transfer</cds-grid-cell>
-        <cds-grid-cell>$2300.00</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$423,236.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Payment</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$199,282.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Unknown</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$929,741.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Provider</cds-grid-cell>
-        <cds-grid-cell>$9203.00</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">$239,120.00</p></cds-grid-cell>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>
@@ -688,36 +854,33 @@ export function columnOverflow() {
 
 export function rtl() {
   class DemoRtl extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
     @state() private currentDetail: any = null;
 
     render() {
       return html`
         <cds-grid aria-label="rtl datagrid demo" dir="rtl" style="--body-height: 360px">
           <cds-grid-column width="60"></cds-grid-column>
-          <cds-grid-column>Stock</cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>
-                  <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail-demo" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
-                </cds-grid-cell>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>
+              <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail-demo" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
+            </cds-grid-cell>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
           <cds-grid-detail ?hidden=${!this.currentDetail} anchor="${this.currentDetail?.id}-detail-demo" @closeChange=${this.closeDetail} dir="rtl">
-            <h2>${this.currentDetail?.id}</h2>
-            <p>Average: $${this.currentDetail?.average}</p>
-            <p>Current: $${this.currentDetail?.value}</p>
-            <p>About: ${this.currentDetail?.about}</p>
+            <h2>Host: ${this.currentDetail?.id}</h2>
+            <p>Status: ${this.currentDetail?.status}</p>
+            <p>CPU: ${this.currentDetail?.cpu}%</p>
+            <p>Memory: ${this.currentDetail?.memory}%</p>
           </cds-grid-detail>
         </cds-grid>
       `;
@@ -738,71 +901,89 @@ export function rtl() {
 
 export function responsive() {
   return html`
-    <cds-grid aria-label="responsive datagrid demo" style="width: 400px; --body-height: 360px">
-      <cds-grid-column position="fixed" width="80">Type</cds-grid-column>
-      <cds-grid-column width="200">Description</cds-grid-column>
-      <cds-grid-column width="200">Amount</cds-grid-column>
-      <cds-grid-column width="200">Balance</cds-grid-column>
+    <cds-grid aria-label="responsive datagrid demo" style="width: 340px; --body-height: 420px">
+      <cds-grid-column position="fixed" width="120">Host</cds-grid-column>
+      <cds-grid-column width="200">Status</cds-grid-column>
+      <cds-grid-column width="200">CPU</cds-grid-column>
+      <cds-grid-column width="200">Memory</cds-grid-column>
 
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Item</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Billing</cds-grid-cell>
-        <cds-grid-cell>$250.00</cds-grid-cell>
-        <cds-grid-cell>$523,750.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Renewal</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$163,262.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$53.00</cds-grid-cell>
-        <cds-grid-cell>$347,423.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$1239.00</cds-grid-cell>
-        <cds-grid-cell>$564,772.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Service Fee</cds-grid-cell>
-        <cds-grid-cell>$49.00</cds-grid-cell>
-        <cds-grid-cell>$977,527.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Account Transfer</cds-grid-cell>
-        <cds-grid-cell>$2300.00</cds-grid-cell>
-        <cds-grid-cell>$423,236.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Payment</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$199,282.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Unknown</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$929,741.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Provider</cds-grid-cell>
-        <cds-grid-cell>$9203.00</cds-grid-cell>
-        <cds-grid-cell>$239,120.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>
@@ -812,10 +993,10 @@ export function responsive() {
 export function placeholder() {
   return html`
     <cds-grid aria-label="placeholder datagrid demo" style="--body-height: 360px">
-      <cds-grid-column>Type</cds-grid-column>
-      <cds-grid-column>Description</cds-grid-column>
-      <cds-grid-column>Amount</cds-grid-column>
-      <cds-grid-column>Balance</cds-grid-column>
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
       <cds-grid-placeholder></cds-grid-placeholder>
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>
@@ -880,13 +1061,12 @@ export function kitchenSink() {
           </cds-grid-column>
           ${this.columnVisible(ColumnTypes.Status) ? html`
           <cds-grid-column resizable>
-            Status
-            <cds-action-sort .sort=${this.state.sortType} @sortChange=${(e: any) => this.setSortType(e.detail)}></cds-action-sort>
+            Status <cds-action-sort .sort=${this.state.sortType} @sortChange=${(e: any) => this.setSortType(e.detail)}></cds-action-sort>
           </cds-grid-column>`: ''}
           ${this.columnVisible(ColumnTypes.CPU) ? html`<cds-grid-column resizable>CPU</cds-grid-column>`: ''}
           ${this.columnVisible(ColumnTypes.Memory) ? html`<cds-grid-column resizable>Memory</cds-grid-column>` : ''}
           ${this.currentPage.map(entry => html`
-          <cds-grid-row .select=${entry.selected} id=${entry.id} .draggable=${this.state.sortType === 'none'}>
+          <cds-grid-row .selected=${entry.selected} id=${entry.id} .draggable=${this.state.sortType === 'none'}>
             <cds-grid-cell>
               <cds-checkbox cds-draggable="handle">
                 <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="Select ${entry.id}" />
@@ -1096,8 +1276,8 @@ export function kitchenSink() {
 
 export function pagination() {
   class DemoPagination extends LitElement {
-    @state() private data = getData();
-    @state() private filteredList: any[] = [];
+    @state() private data = getVMData();
+    @state() private filteredList: TestVM[] = [];
     @state() private search = '';
     @state() private currentPage = 0;
     @state() private pageSize = 10;
@@ -1106,28 +1286,21 @@ export function pagination() {
     render() {
       return html`
         <cds-grid aria-label="pagination datagrid demo" style="--body-height: 360px">
-          <cds-grid-column>Stock</cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.filteredList.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.filteredList.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer>
             <cds-pagination aria-label="pagination">
               <cds-select control-width="shrink">
-                <select
-                  @input=${(e: any) => (this.pageSize = e.target.value)}
-                  style="width: 46px"
-                  aria-label="per page"
-                >
+                <select @input=${(e: any) => (this.pageSize = e.target.value)} style="width: 46px" aria-label="per page">
                   <option value="5">5</option>
                   <option value="10" selected>10</option>
                   <option value="15">15</option>
@@ -1236,106 +1409,33 @@ export function pagination() {
   return html`<demo-grid-pagination></demo-grid-pagination>`;
 }
 
-export function columnResize() {
-  return html`
-    <cds-grid aria-label="column resize datagrid demo" style="--body-height: 360px">
-      <cds-grid-column resizable>Type</cds-grid-column>
-      <cds-grid-column resizable>Description</cds-grid-column>
-      <cds-grid-column resizable>Amount</cds-grid-column>
-      <cds-grid-column>Balance</cds-grid-column>
-
-      <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Item</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Billing</cds-grid-cell>
-        <cds-grid-cell>$250.00</cds-grid-cell>
-        <cds-grid-cell>$523,750.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Renewal</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$163,262.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$53.00</cds-grid-cell>
-        <cds-grid-cell>$347,423.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$1239.00</cds-grid-cell>
-        <cds-grid-cell>$564,772.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Service Fee</cds-grid-cell>
-        <cds-grid-cell>$49.00</cds-grid-cell>
-        <cds-grid-cell>$977,527.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Account Transfer</cds-grid-cell>
-        <cds-grid-cell>$2300.00</cds-grid-cell>
-        <cds-grid-cell>$423,236.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Payment</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$199,282.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Unknown</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$929,741.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Provider</cds-grid-cell>
-        <cds-grid-cell>$9203.00</cds-grid-cell>
-        <cds-grid-cell>$239,120.00</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
-}
-
 export function columnVisibility() {
   enum ColumnTypes {
-    Stock = 1,
-    Average = 2,
-    Current = 4,
-    About = 8,
-    All = ColumnTypes.Stock | ColumnTypes.Average | ColumnTypes.Current | ColumnTypes.About,
+    Host = 1,
+    Status = 2,
+    CPU = 4,
+    Memory = 8,
+    All = ColumnTypes.Host | ColumnTypes.Status | ColumnTypes.CPU | ColumnTypes.Memory,
   }
 
   class DemoColumnVisibility extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
     @state() private toggleColumns = false;
     @state() private selectedColumns = ColumnTypes.All;
 
     render() {
       return html`
         <cds-grid aria-label="column visibility datagrid demo" style="--body-height: 360px">
-          <cds-grid-column>Stock</cds-grid-column>
-          ${this.checked(ColumnTypes.Average) ? html`<cds-grid-column>Average</cds-grid-column>` : ''}
-          ${this.checked(ColumnTypes.Current) ? html`<cds-grid-column>Current</cds-grid-column>` : ''}
-          ${this.checked(ColumnTypes.About) ? html`<cds-grid-column>About</cds-grid-column>` : ''}
+          <cds-grid-column>Host</cds-grid-column>
+          ${this.checked(ColumnTypes.Status) ? html`<cds-grid-column>Status</cds-grid-column>` : ''}
+          ${this.checked(ColumnTypes.CPU) ? html`<cds-grid-column>CPU</cds-grid-column>` : ''}
+          ${this.checked(ColumnTypes.Memory) ? html`<cds-grid-column>Memory</cds-grid-column>` : ''}
           ${this.data.map(entry => html`
             <cds-grid-row>
               <cds-grid-cell>${entry.id}</cds-grid-cell>
-              ${this.checked(ColumnTypes.Average) ? html`<cds-grid-cell>$${entry.average}</cds-grid-cell>` : ''}
-              ${this.checked(ColumnTypes.Current) ? html`<cds-grid-cell>$${entry.value}</cds-grid-cell>` : ''}
-              ${this.checked(ColumnTypes.About) ? html`<cds-grid-cell>${entry.about}</cds-grid-cell>` : ''}
+              ${this.checked(ColumnTypes.Status) ? html`<cds-grid-cell>${entry.status}</cds-grid-cell>` : ''}
+              ${this.checked(ColumnTypes.CPU) ? html`<cds-grid-cell>${entry.cpu}%</cds-grid-cell>` : ''}
+              ${this.checked(ColumnTypes.Memory) ? html`<cds-grid-cell>${entry.memory}%</cds-grid-cell>` : ''}
             </cds-grid-row>
           `)}
           <cds-grid-footer>
@@ -1343,16 +1443,16 @@ export function columnVisibility() {
             <cds-dropdown ?hidden=${!this.toggleColumns} @hiddenChange=${() => (this.toggleColumns = false)} anchor="#toggle-columns" position="top">
               <cds-checkbox-group layout="vertical">
                 <cds-checkbox>
-                  <label>Average</label>
-                  <input type="checkbox" value=${ColumnTypes.Average} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.Average)} />
+                  <label>Status</label>
+                  <input type="checkbox" value=${ColumnTypes.Status} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.Status)} />
                 </cds-checkbox>
                 <cds-checkbox>
-                  <label>Current</label>
-                  <input type="checkbox" value=${ColumnTypes.Current} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.Current)} />
+                  <label>CPU</label>
+                  <input type="checkbox" value=${ColumnTypes.CPU} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.CPU)} />
                 </cds-checkbox>
                 <cds-checkbox>
-                  <label>About</label>
-                  <input type="checkbox" value=${ColumnTypes.About} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.About)} />
+                  <label>Memory</label>
+                  <input type="checkbox" value=${ColumnTypes.Memory} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.Memory)} />
                 </cds-checkbox>
               </cds-checkbox-group>
               <cds-button action="flat" @click=${this.selectAll} ?disabled=${this.checked(ColumnTypes.All)}>
@@ -1386,41 +1486,33 @@ export function columnVisibility() {
 
 export function detailView() {
   class DemoDetailView extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
     @state() private currentDetail: any = null;
 
     render() {
       return html`
         <cds-grid aria-label="detail view datagrid demo" style="--body-height: 360px">
           <cds-grid-column width="50"></cds-grid-column>
-          <cds-grid-column>Stock</cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>
-                  <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail-demo" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
-                </cds-grid-cell>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>
+              <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail-demo" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
+            </cds-grid-cell>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-          <cds-grid-detail
-            ?hidden=${!this.currentDetail}
-            anchor="${this.currentDetail?.id}-detail-demo"
-            @closeChange=${this.closeDetail}
-            style="--width: 75%"
-          >
-            <h2>${this.currentDetail?.id}</h2>
-            <p>Average: $${this.currentDetail?.average}</p>
-            <p>Current: $${this.currentDetail?.value}</p>
-            <p>About: ${this.currentDetail?.about}</p>
+          <cds-grid-detail ?hidden=${!this.currentDetail} anchor="${this.currentDetail?.id}-detail-demo" @closeChange=${this.closeDetail}>
+            <h2 cds-text="section">${this.currentDetail?.id}</h2>
+            <p cds-text="body">Status: ${this.currentDetail?.status}</p>
+            <p cds-text="body">CPU: ${this.currentDetail?.cpu}%</p>
+            <p cds-text="body">Memory: ${this.currentDetail?.memory}%</p>
           </cds-grid-detail>
         </cds-grid>
       `;
@@ -1437,14 +1529,10 @@ export function detailView() {
 
   registerElementSafely('demo-grid-detail-view', DemoDetailView);
   return html`<demo-grid-detail-view></demo-grid-detail-view>`;
-  }
+}
 
 export function singleSelect() {
-  const selectableData = getData().map(i => {
-    i.selected = false;
-    return i;
-  });
-
+  const selectableData = getVMData();
   selectableData[1].selected = true;
 
   class DemoSingleSelect extends LitElement {
@@ -1456,34 +1544,24 @@ export function singleSelect() {
       return html`
         <cds-grid aria-label="single select datagrid demo" style="--body-height: 360px">
           <cds-grid-column width="50"></cds-grid-column>
-          <cds-grid-column>Stock</cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row .select=${entry.selected}>
-                <cds-grid-cell>
-                  <cds-radio>
-                    <input
-                      type="radio"
-                      name="grid-rows"
-                      .checked=${entry.selected}
-                      value=${entry.id}
-                      aria-label="select ${entry.id}"
-                      @click=${(e: any) => this.select(entry, e.target.checked)}
-                    />
-                  </cds-radio>
-                </cds-grid-cell>
-                <cds-grid-cell>
-                  ${entry.id}
-                </cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row .selected=${entry.selected}>
+            <cds-grid-cell>
+              <cds-radio>
+                <input type="radio" name="hosts" .checked=${entry.selected} value=${entry.id} aria-label="select host ${entry.id}" @click=${(e: any) => this.select(entry, e.target.checked)} />
+              </cds-radio>
+            </cds-grid-cell>
+            <cds-grid-cell>
+              ${entry.id}
+            </cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer>
             Selected: ${this.selectedItem.id}
           </cds-grid-footer>
@@ -1497,10 +1575,6 @@ export function singleSelect() {
       this.selectedItem.selected = checked;
       this.data = [...this.data];
     }
-
-    protected createRenderRoot() {
-      return this;
-    }
   }
 
   registerElementSafely('demo-grid-single-select', DemoSingleSelect);
@@ -1508,11 +1582,7 @@ export function singleSelect() {
 }
 
 export function multiSelect() {
-  const selectableData = getData().map(i => {
-    i.selected = false;
-    return i;
-  });
-
+  const selectableData = getVMData()
   selectableData[1].selected = true;
   selectableData[3].selected = true;
 
@@ -1522,49 +1592,33 @@ export function multiSelect() {
 
     render() {
       return html`
-        <cds-grid aria-label="multi select datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="multi select datagrid demo" aria-multiselectable="true" style="--body-height: 360px">
           <cds-grid-column width="50">
             <cds-checkbox>
-              <input
-                type="checkbox"
-                .checked=${this.allSelected}
-                @change=${e => this.selectAll(e)}
-                aria-label="select all"
-              />
+              <input type="checkbox" .checked=${this.allSelected} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
             </cds-checkbox>
           </cds-grid-column>
-          <cds-grid-column>Stock</cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row .select=${entry.selected}>
-                <cds-grid-cell>
-                  <cds-checkbox>
-                    <input
-                      type="checkbox"
-                      .checked=${entry.selected}
-                      value=${entry.id}
-                      @click=${e => this.select(entry, e.target.checked)}
-                      aria-label="select ${entry.id}"
-                    />
-                  </cds-checkbox>
-                </cds-grid-cell>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
-
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row .selected=${entry.selected}>
+            <cds-grid-cell>
+              <cds-checkbox>
+                <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="select host ${entry.id}" />
+              </cds-checkbox>
+            </cds-grid-cell>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer>${this.data.filter(i => i.selected).length} selected</cds-grid-footer>
-        </cds-grid>
-      `;
+        </cds-grid>`;
     }
 
-    private select(entry: any, checked: boolean) {
+    private select(entry: TestVM, checked: boolean) {
       this.data.find(i => i.id === entry.id).selected = checked;
       this.allSelected = !this.data.find(i => !i.selected);
       this.data = [...this.data];
@@ -1575,10 +1629,6 @@ export function multiSelect() {
       this.data.forEach(i => (i.selected = e.target.checked));
       this.data = [...this.data];
     }
-
-    protected createRenderRoot() {
-      return this;
-    }
   }
 
   registerElementSafely('demo-grid-multi-select', DemoMultiSelect);
@@ -1586,75 +1636,50 @@ export function multiSelect() {
 }
 
 export function singleAction() {
-  const selectableData = getData().map(i => {
-    i.selected = false;
-    return i;
-  });
-
   class DemoSingleAction extends LitElement {
-    @state() private data = selectableData;
+    @state() private data = getVMData();
     @state() private selectedEntry: any = null;
-    @state() private selectedEntryId: number = null;
+    @state() private anchor: HTMLElement = null;
 
     render() {
       return html`
         <cds-grid aria-label="single action datagrid demo" style="--body-height: 360px">
           <cds-grid-column width="50"></cds-grid-column>
-          <cds-grid-column>Stock</cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row .select=${entry.selected}>
-                <cds-grid-cell action>
-                  <cds-action
-                    id="${entry.id}-action"
-                    @click=${() => this.select(entry)}
-                    aria-label="choose available stock options"
-                  ></cds-action>
-                </cds-grid-cell>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row .select=${entry.selected}>
+            <cds-grid-cell action>
+              <cds-action id="${entry.id}-action" @click=${(e: any) => this.select(e, entry)} aria-label="choose available host actions"></cds-action>
+            </cds-grid-cell>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
-        <cds-dropdown
-          ?hidden=${!this.selectedEntry}
-          anchor="#${this.selectedEntryId}-action"
-          @hiddenChange=${() => (this.selectedEntry = null) as any}
-        >
-          <cds-button @click=${() => this.buy(this.selectedEntry)} block action="flat" size="sm"
-            >Buy ${this.selectedEntry?.id}</cds-button
-          >
-          <cds-button @click=${() => this.sell(this.selectedEntry)} block action="flat" size="sm"
-            >Sell ${this.selectedEntry?.id}</cds-button
-          >
-        </cds-dropdown>
-      `;
+        <cds-dropdown ?hidden=${!this.selectedEntry} .anchor=${this.anchor} @hiddenChange=${() => (this.selectedEntry = null) as any}>
+          <cds-button @click=${() => this.shutdown(this.selectedEntry)} block action="flat" size="sm">Shutdown ${this.selectedEntry?.id}</cds-button>
+          <cds-button @click=${() => this.restart(this.selectedEntry)} block action="flat" size="sm">Restart ${this.selectedEntry?.id}</cds-button>
+        </cds-dropdown>`;
     }
 
-    private select(entry: any) {
+    private select(e: any, entry: TestVM) {
       this.selectedEntry = entry;
-      this.selectedEntryId = entry.id;
+      this.anchor = e.target;
     }
 
-    private buy(entry: any) {
-      alert(`Bought: ${entry.id}`);
+    private shutdown(entry: any) {
+      alert(`Shutdown: ${entry.id}`);
       this.selectedEntry = null;
     }
 
-    private sell(entry: any) {
-      alert(`Sold: ${entry.id}`);
+    private restart(entry: any) {
+      alert(`Restarted: ${entry.id}`);
       this.selectedEntry = null;
-    }
-
-    protected createRenderRoot() {
-      return this;
     }
   }
 
@@ -1663,13 +1688,8 @@ export function singleAction() {
 }
 
 export function multiAction() {
-  const selectableData = getData().map(i => {
-    i.selected = false;
-    return i;
-  });
-
   class DemoMultiAction extends LitElement {
-    @state() private data = selectableData;
+    @state() private data = getVMData();
     @state() private openAction = false;
     @state() private get allSelected() {
       return !this.data.find(i => !i.selected);
@@ -1680,55 +1700,30 @@ export function multiAction() {
         <cds-grid aria-label="multi action datagrid demo" style="--body-height: 360px">
           <cds-grid-column width="100">
             <cds-checkbox>
-              <input
-                type="checkbox"
-                .checked=${this.allSelected}
-                @change=${e => this.selectAll(e)}
-                name="grid-rows"
-                aria-label="choose action for selected stocks"
-              />
+              <input type="checkbox" .checked=${this.allSelected} @change=${(e: any) => this.selectAll(e)} aria-label="choose action for selected hosts" />
             </cds-checkbox>
-            <cds-action
-              id="multi-action"
-              @click=${() => (this.openAction = true)}
-              aria-label="filter column"
-            ></cds-action>
-            <cds-dropdown
-              ?hidden=${!this.openAction}
-              anchor="#multi-action"
-              @hiddenChange=${() => (this.openAction = false)}
-            >
-              <cds-button action="flat" block size="sm" @click=${() => this.action('Purchased')}
-                >Buy Selected</cds-button
-              ><br />
-              <cds-button action="flat" block size="sm" @click=${() => this.action('Sold')}>Sell Selected</cds-button>
+            <cds-action id="multi-action" @click=${() => (this.openAction = true)} aria-label="filter column"></cds-action>
+            <cds-dropdown ?hidden=${!this.openAction} anchor="#multi-action" @hiddenChange=${() => (this.openAction = false)}>
+              <cds-button action="flat" block size="sm" @click=${() => this.action('Restart')}>Restart Selected</cds-button><br />
+              <cds-button action="flat" block size="sm" @click=${() => this.action('Shutdown')}>Shutdown Selected</cds-button>
             </cds-dropdown>
           </cds-grid-column>
-          <cds-grid-column>Stock</cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row .select=${entry.selected}>
-                <cds-grid-cell>
-                  <cds-checkbox>
-                    <input
-                      type="checkbox"
-                      .checked=${entry.selected}
-                      value=${entry.id}
-                      @click=${e => this.select(entry, e.target.checked)}
-                      aria-label="select ${entry.id}"
-                    />
-                  </cds-checkbox>
-                </cds-grid-cell>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row .selected=${entry.selected}>
+            <cds-grid-cell>
+              <cds-checkbox>
+                <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="select ${entry.id}" />
+              </cds-checkbox>
+            </cds-grid-cell>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
       `;
@@ -1745,12 +1740,7 @@ export function multiAction() {
     }
 
     private action(name: string) {
-      alert(
-        `${name}: ${this.data
-          .filter(i => i.selected)
-          .map(i => i.id)
-          .reduce((p, n) => `${p} ${n}`, '')}`
-      );
+      alert(`${name}: ${this.data.filter(i => i.selected).map(i => i.id).reduce((p, n) => `${p} ${n}`, '')}`);
       this.openAction = false;
       this.data.forEach(i => (i.selected = false));
     }
@@ -1766,44 +1756,35 @@ export function multiAction() {
 
 export function sortableRows() {
   class DemoSortableRows extends LitElement {
-    @state() private data = getData();
-    @state() private filteredList: any[] = [];
+    @state() private data = getVMData();
+    @state() private filteredList: TestVM[] = [];
     @state() private sortType: 'none' | 'ascending' | 'descending' = 'none';
 
     render() {
       return html`
-        <cds-grid aria-label="sortable datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="sortable rows datagrid demo" style="--body-height: 360px">
           <cds-grid-column>
-            Stock
-            <cds-action-sort .sort=${this.sortType} @sortChange=${(e: any) => (this.sortType = e.detail)}></cds-action-sort>
+            Host <cds-action-sort aria-label="sort hosts" .sort=${this.sortType} @sortChange=${(e: any) => (this.sortType = e.detail)}></cds-action-sort>
           </cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.filteredList.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.filteredList.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-      `;
+        </cds-grid>`;
     }
 
     updated(props: Map<string, any>) {
       super.updated(props);
       if (props.has('sortType') && props.get('sortType') !== this.sortType) {
-        this.updateList();
+        this.filteredList = sortStrings([...this.data], 'id', this.sortType);
       }
-    }
-
-    private updateList() {
-      this.filteredList = sortStrings([...this.data], 'id', this.sortType);
     }
   }
 
@@ -1813,36 +1794,28 @@ export function sortableRows() {
 
 export function multiSortableRows() {
   class DemoMultiSortRows extends LitElement {
-    @state() private data = getData();
-    @state() private filteredList: any[] = [];
-    @state() private sortState: { [key: string]: 'none' | 'ascending' | 'descending' } = {
-      id: 'none',
-      average: 'none',
-    };
+    @state() private data = getVMData();
+    @state() private filteredList: TestVM[] = [];
+    @state() private sortState: { [key: string]: 'none' | 'ascending' | 'descending' } = { id: 'none', status: 'none' };
 
     render() {
       return html`
         <cds-grid aria-label="multi sortable datagrid demo" style="--body-height: 360px">
           <cds-grid-column>
-            Stock
-            <cds-action-sort .sort=${this.sortState.id} @sortChange=${(e: any) => (this.sortState = { ...this.sortState, id: e.detail })}></cds-action-sort>
+            Host <cds-action-sort aria-label="sort host" .sort=${this.sortState.id} @sortChange=${(e: any) => (this.sortState = { ...this.sortState, id: e.detail })}></cds-action-sort>
           </cds-grid-column>
           <cds-grid-column>
-            Average
-            <cds-action-sort .sort=${this.sortState.average} @sortChange=${(e: any) => (this.sortState = { ...this.sortState, average: e.detail })}></cds-action-sort>
+            Status <cds-action-sort aria-label="sort status" .sort=${this.sortState.status} @sortChange=${(e: any) => (this.sortState = { ...this.sortState, status: e.detail })}></cds-action-sort>
           </cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.filteredList.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.filteredList.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
       `;
@@ -1858,7 +1831,7 @@ export function multiSortableRows() {
     private updateList() {
       let list = [...this.data];
       list = sortStrings(list, 'id', this.sortState.id);
-      list = sortNumbers(list, 'average', this.sortState.average);
+      list = sortStrings(list, 'status', this.sortState.status);
       this.filteredList = list;
     }
   }
@@ -1869,54 +1842,45 @@ export function multiSortableRows() {
 
 export function rowFiltering() {
   class DemoFiltering extends LitElement {
-    @state() private data = getData();
-    @state() private filteredList: any[] = [];
+    @state() private data = getVMData();
+    @state() private filteredList: TestVM[] = [];
     @state() private search = '';
-    @state() private idFilterOpen = false;
+    @state() private anchor: HTMLElement = null
 
     render() {
       return html`
         <cds-grid aria-label="row filtering datagrid demo" style="--body-height: 360px">
           <cds-grid-column>
-            Stock
-            <cds-action id="id-filter-demo" @click=${() => (this.idFilterOpen = true)} shape="filter" aria-label="search available stocks"></cds-action>
-            <cds-dropdown
-              ?hidden=${!this.idFilterOpen}
-              @hiddenChange=${() => (this.idFilterOpen = false)}
-              anchor="#id-filter-demo"
-            >
+            Host
+            <cds-action id="id-filter-demo" @click=${(e: any) => (this.anchor = e.target)} shape="filter" aria-label="search available stocks"></cds-action>
+            <cds-dropdown ?hidden=${!this.anchor} @hiddenChange=${() => (this.anchor = null) as any} .anchor=${this.anchor}>
               <cds-input>
-                <input
-                  type="text"
-                  aria-label="search"
-                  placeholder="Search"
-                  @input=${(e: any) => (this.search = e.target.value)}
-                />
+                <input type="text" aria-label="search hosts" placeholder="Search" @input=${(e: any) => (this.search = e.target.value)} />
               </cds-input>
             </cds-dropdown>
           </cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.filteredList.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.filteredList.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-      `;
+        </cds-grid>`;
     }
 
     updated(props: Map<string, any>) {
       super.updated(props);
       if (props.has('search') && props.get('search') !== this.search) {
         this.filteredList = filter([...this.data], 'id', this.search);
+      }
+
+      if (props.has('anchor') && props.get('anchor') !== this.anchor) {
+        setTimeout(() => props.get('anchor')?.focus());
       }
     }
   }
@@ -1927,36 +1891,32 @@ export function rowFiltering() {
 
 export function multiCellFiltering() {
   class DemoFiltering extends LitElement {
-    @state() private data = getData();
-    @state() private filteredList: any[] = [];
+    @state() private data = getVMData();
+    @state() private filteredList: TestVM[] = [];
     @state() private search = '';
 
     render() {
       return html`
         <section cds-layout="vertical gap:md">
           <cds-search control-width="shrink">
-            <label>Search Grid</label>
-            <input type="search" placeholder="Search" @input=${(e: any) => (this.search = e.target.value)} />
+            <label>Search VMs</label>
+            <input type="search" placeholder="search" @input=${(e: any) => (this.search = e.target.value)} />
           </cds-search>
           <cds-grid aria-label="multi cell filtering datagrid demo" style="--body-height: 360px">
-            <cds-grid-column>Stock</cds-grid-column>
-            <cds-grid-column>Average</cds-grid-column>
-            <cds-grid-column>Current</cds-grid-column>
-            <cds-grid-column>About</cds-grid-column>
-            ${this.filteredList.map(
-              entry => html`
-                <cds-grid-row>
-                  <cds-grid-cell>${entry.id}</cds-grid-cell>
-                  <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                  <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                  <cds-grid-cell>${entry.about}</cds-grid-cell>
-                </cds-grid-row>
-              `
-            )}
+            <cds-grid-column>Host</cds-grid-column>
+            <cds-grid-column>Status</cds-grid-column>
+            <cds-grid-column>CPU</cds-grid-column>
+            <cds-grid-column>Memory</cds-grid-column>
+            ${this.filteredList.map(entry => html`
+            <cds-grid-row>
+              <cds-grid-cell>${entry.id}</cds-grid-cell>
+              <cds-grid-cell>${entry.status}</cds-grid-cell>
+              <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+              <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+            </cds-grid-row>`)}
             <cds-grid-footer></cds-grid-footer>
           </cds-grid>
-        </section>
-      `;
+        </section>`;
     }
 
     updated(props: Map<string, any>) {
@@ -1964,7 +1924,7 @@ export function multiCellFiltering() {
       if (props.has('search') && props.get('search') !== this.search) {
         this.filteredList = [...this.data].filter(i =>
           Object.keys(i)
-            .map(k => i[k])
+            .map(k => (i as any)[k])
             .reduce((p, n) => `${p} ${n}`)
             .toLocaleLowerCase()
             .includes(this.search.trim().toLocaleLowerCase())
@@ -1983,33 +1943,27 @@ export function multiCellFiltering() {
 
 export function fixedColumns() {
   class DemoFixedColumns extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
 
     render() {
       return html`
         <cds-grid aria-label="fixed columns datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="150" position="fixed">Stock</cds-grid-column>
-          <cds-grid-column width="350">Average</cds-grid-column>
-          <cds-grid-column width="500">Current</cds-grid-column>
-          <cds-grid-column width="150" position="fixed">
-            About
-          </cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column width="150" position="fixed">Host</cds-grid-column>
+          <cds-grid-column width="350">Status</cds-grid-column>
+          <cds-grid-column width="500">CPU</cds-grid-column>
+          <cds-grid-column width="150" position="fixed">Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-      `;
+        </cds-grid>`;
     }
 
-    protected createRenderRoot() {
+    protected createRenderRoot() { // todo: shadow dom breaks fixed position here
       return this;
     }
   }
@@ -2020,7 +1974,7 @@ export function fixedColumns() {
 
 export function dynamicFixedColumns() {
   class DemoDyanmicFixedColumns extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
     @state() private pinFirst = true;
     @state() private pinLast = true;
 
@@ -2028,32 +1982,28 @@ export function dynamicFixedColumns() {
       return html`
         <cds-grid aria-label="fixed columns datagrid demo" style="--body-height: 360px">
           <cds-grid-column width="200" resizable .position=${this.pinFirst ? 'fixed' : 'initial'}>
-            Stock
-            <cds-action @click=${() => (this.pinFirst = !this.pinFirst)} aria-label="pin column">
+            Host
+            <cds-action @click=${() => (this.pinFirst = !this.pinFirst)} aria-label="pin host column">
               <cds-icon shape="pin" ?solid=${this.pinFirst}></cds-icon>
             </cds-action>
           </cds-grid-column>
-          <cds-grid-column width="400" resizable>Average</cds-grid-column>
-          <cds-grid-column width="1000" resizable>Current</cds-grid-column>
+          <cds-grid-column width="400" resizable>Status</cds-grid-column>
+          <cds-grid-column width="1000" resizable>CPU</cds-grid-column>
           <cds-grid-column width="200" resizable .position=${this.pinLast ? 'fixed' : 'initial'}>
-            About
-            <cds-action @click=${() => (this.pinLast = !this.pinLast)} aria-label="pin column">
+            Memory
+            <cds-action @click=${() => (this.pinLast = !this.pinLast)} aria-label="pin memory column">
               <cds-icon shape="pin" ?solid=${this.pinLast}></cds-icon>
             </cds-action>
           </cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-      `;
+        </cds-grid>`;
     }
 
     protected createRenderRoot() {
@@ -2067,36 +2017,28 @@ export function dynamicFixedColumns() {
 
 export function multiFixedColumns() {
   class DemoMultiFixedColumns extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
 
     render() {
       return html`
-        <cds-grid aria-label="fixed columns datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="150" position="fixed">Stock</cds-grid-column>
-          <cds-grid-column width="150" position="fixed">Average</cds-grid-column>
-          <cds-grid-column width="500">Current</cds-grid-column>
-          <cds-grid-column width="500">Current</cds-grid-column>
-          <cds-grid-column width="150" position="fixed">
-            About
-          </cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
-          <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-      `;
+      <cds-grid aria-label="fixed columns datagrid demo" style="--body-height: 360px">
+        <cds-grid-column width="150" position="fixed">Host</cds-grid-column>
+        <cds-grid-column width="150" position="fixed">Status</cds-grid-column>
+        <cds-grid-column width="500">CPU</cds-grid-column>
+        <cds-grid-column width="500">Memory</cds-grid-column>
+        ${this.data.map(entry => html`
+        <cds-grid-row>
+          <cds-grid-cell>${entry.id}</cds-grid-cell>
+          <cds-grid-cell>${entry.status}</cds-grid-cell>
+          <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+          <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+        </cds-grid-row>`)}
+        <cds-grid-footer></cds-grid-footer>
+      </cds-grid>`;
     }
 
     protected createRenderRoot() {
-      return this;
+      return this; // todo: shadow dom breaks fixed position here
     }
   }
 
@@ -2106,32 +2048,29 @@ export function multiFixedColumns() {
 
 export function stickyColumns() {
   class DemoColSticky extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
 
     render() {
       return html`
         <cds-grid aria-label="sticky columns datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="200">Stock</cds-grid-column>
-          <cds-grid-column width="200" position="sticky">Average</cds-grid-column>
-          <cds-grid-column width="1000">Current</cds-grid-column>
-          <cds-grid-column width="1000">About</cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column width="200">Host</cds-grid-column>
+          <cds-grid-column width="200" position="sticky">Status</cds-grid-column>
+          <cds-grid-column width="1000">CPU</cds-grid-column>
+          <cds-grid-column width="1000">Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
       `;
     }
 
     protected createRenderRoot() {
-      return this;
+      return this; // todo: shadow dom breaks sticky position here
     }
   }
 
@@ -2140,50 +2079,32 @@ export function stickyColumns() {
 }
 
 export function editableCell() {
-  const selectableData = getData().map(i => {
-    i.selected = false;
-    return i;
-  });
-
   class DemoEditable extends LitElement {
-    @state() private data = selectableData;
+    @state() private data = getVMData();
 
     render() {
       return html`
         <cds-grid aria-label="editable cell datagrid demo" style="--body-height: 360px">
-          <cds-grid-column>Account</cds-grid-column>
-          <cds-grid-column>Outstanding</cds-grid-column>
+          <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>About</cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>
-                  ${entry.selected
-                    ? html` <cds-input>
-                        <input
-                          class="${entry.id}-input"
-                          type="number"
-                          .value=${entry.average}
-                          @keyup=${(e: any) => this.updateEntry(e, entry)}
-                          aria-label="${entry.id} Outstanding Value"
-                        />
-                        <cds-control-action action="prefix" readonly>$</cds-control-action>
-                      </cds-input>`
-                    : html`
-                        <cds-action
-                          class="${entry.id}-button"
-                          @click=${() => this.editEntry(entry)}
-                          aria-label="edit ${entry.id} outstanding value $${entry.average}"
-                          shape="pencil"
-                        ></cds-action>
-                        <span>$${entry.average}</span>
-                      `}
-                </cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>
+              ${entry.selected
+                ? html`
+                <cds-input>
+                  <input class="${entry.id}-input" type="text" .value=${entry.about} @keyup=${(e: any) => this.updateEntry(e, entry)} aria-label="${entry.id} about cell" />
+                </cds-input>`
+                : html`
+                <cds-action class="${entry.id}-button" @click=${() => this.editEntry(entry)} aria-label="edit ${entry.id} about cell" shape="pencil"></cds-action>
+                <span>${entry.about}</span>`}
+            </cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
       `;
@@ -2191,7 +2112,7 @@ export function editableCell() {
 
     private updateEntry(e: any, entry: any) {
       if (e.code === 'Enter' || e.code === 'Escape') {
-        entry.average = e.target.value;
+        entry.about = e.target.value;
         entry.selected = false;
         this.data = [...this.data];
         setTimeout(() => this.shadowRoot.querySelector<HTMLElement>(`.${entry.id}-button`).focus());
@@ -2212,70 +2133,87 @@ export function editableCell() {
 export function optionalFooter() {
   return html`
     <cds-grid aria-label="optional footer datagrid demo" style="--body-height: 360px">
-      <cds-grid-column>Type</cds-grid-column>
-      <cds-grid-column>Description</cds-grid-column>
-      <cds-grid-column>Amount</cds-grid-column>
-      <cds-grid-column>Balance</cds-grid-column>
-
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Item</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Billing</cds-grid-cell>
-        <cds-grid-cell>$250.00</cds-grid-cell>
-        <cds-grid-cell>$523,750.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Renewal</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$163,262.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$53.00</cds-grid-cell>
-        <cds-grid-cell>$347,423.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$1239.00</cds-grid-cell>
-        <cds-grid-cell>$564,772.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Service Fee</cds-grid-cell>
-        <cds-grid-cell>$49.00</cds-grid-cell>
-        <cds-grid-cell>$977,527.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Account Transfer</cds-grid-cell>
-        <cds-grid-cell>$2300.00</cds-grid-cell>
-        <cds-grid-cell>$423,236.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Payment</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$199,282.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Unknown</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$929,741.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Provider</cds-grid-cell>
-        <cds-grid-cell>$9203.00</cds-grid-cell>
-        <cds-grid-cell>$239,120.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
     </cds-grid>
   `;
@@ -2301,70 +2239,87 @@ export function compact() {
       }
     </style>
     <cds-grid aria-label="compact datagrid demo" cds-theme="compact" style="--body-height: 360px">
-      <cds-grid-column>Type</cds-grid-column>
-      <cds-grid-column>Description</cds-grid-column>
-      <cds-grid-column>Amount</cds-grid-column>
-      <cds-grid-column>Balance</cds-grid-column>
-
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Item</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Billing</cds-grid-cell>
-        <cds-grid-cell>$250.00</cds-grid-cell>
-        <cds-grid-cell>$523,750.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Renewal</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$163,262.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$53.00</cds-grid-cell>
-        <cds-grid-cell>$347,423.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$1239.00</cds-grid-cell>
-        <cds-grid-cell>$564,772.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Service Fee</cds-grid-cell>
-        <cds-grid-cell>$49.00</cds-grid-cell>
-        <cds-grid-cell>$977,527.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Account Transfer</cds-grid-cell>
-        <cds-grid-cell>$2300.00</cds-grid-cell>
-        <cds-grid-cell>$423,236.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Payment</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$199,282.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Unknown</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$929,741.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Provider</cds-grid-cell>
-        <cds-grid-cell>$9203.00</cds-grid-cell>
-        <cds-grid-cell>$239,120.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>`;
@@ -2374,21 +2329,8 @@ export function performance() {
   class DemoPerformance extends LitElement {
     @state() private showParseAndRender = false;
     @state() private hide = false;
-    @state() private data: any[] = [];
+    @state() private data: TestVM[] = [];
     @state() private numberOfRows = 1000;
-
-    static get styles() {
-      return [
-        css`
-          .small-cell {
-            width: 150px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-        `,
-      ];
-    }
 
     render() {
       return html`
@@ -2403,18 +2345,17 @@ export function performance() {
           <br /><br />
           ${this.showParseAndRender ? html`
           <cds-grid aria-label="performance datagrid demo" ?hidden=${this.hide} style="--body-height: 360px; max-width: 800px">
-            <cds-grid-column>Stock</cds-grid-column>
-            <cds-grid-column>Average</cds-grid-column>
-            <cds-grid-column>Current</cds-grid-column>
-            <cds-grid-column>About</cds-grid-column>
+            <cds-grid-column>Host</cds-grid-column>
+            <cds-grid-column>Status</cds-grid-column>
+            <cds-grid-column>CPU</cds-grid-column>
+            <cds-grid-column>Memory</cds-grid-column>
             ${this.data.map(entry => html`  
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell><div class="small-cell">${entry.about}</div></cds-grid-cell>
-              </cds-grid-row>
-            `)}
+            <cds-grid-row>
+              <cds-grid-cell>${entry.id}</cds-grid-cell>
+              <cds-grid-cell>${entry.status}</cds-grid-cell>
+              <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+              <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+            </cds-grid-row>`)}
             <cds-grid-footer>
               <p style="margin: 0; line-height: 0">${this.data.length} Rows ${this.data.length * 4} Cells</p>
             </cds-grid-footer>
@@ -2445,7 +2386,7 @@ export function performance() {
 
       for (let i = 0; i < (this.numberOfRows / 20); i++) {
         data.push(
-          ...getData().map(e => {
+          ...getVMData().map(e => {
             e.id = `${e.id}${i === 0 ? '' : `-${i}`}`;
             return e;
           })
@@ -2462,38 +2403,35 @@ export function performance() {
 
 export function draggableRows() {
   class DemoDraggableRows extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
 
     render() {
       return html`
         <cds-grid aria-label="draggable rows datagrid demo" @cdsDraggableChange=${this.sortList} style="--body-height: 360px">
           <cds-grid-column width="60"></cds-grid-column>
-          <cds-grid-column>Stock</cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row draggable="true" id=${entry.id}>
             <cds-grid-cell>
               <cds-action-handle aria-label="sort ${entry.id} row"></cds-action-handle>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
-            <cds-grid-cell>$${entry.average}</cds-grid-cell>
-            <cds-grid-cell>$${entry.value}</cds-grid-cell>
-            <cds-grid-cell>${entry.about}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-placeholder draggable="false"></cds-grid-placeholder>
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
-
-        <ol>
-          ${this.data.map(entry => html`<li>${entry.id}</li>`)}
-        </ol>
-      `;
+        <br />
+        ${this.data.map(entry => entry.id).join(', ')}`;
     }
 
     private sortList(e: any) {
-      this.data = [...sortList(e.detail.target, e.detail.from, this.data)];
+      this.data = [...sortList(e.detail.target, e.detail.from, this.data)] as TestVM[];
     }
   }
 
@@ -2515,18 +2453,14 @@ export function swappableRows() {
           <cds-grid-column width="60"></cds-grid-column>
           <cds-grid-column>Production Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
-
-          ${this.listOne.map(
-            entry => html`
-              <cds-grid-row id=${entry.id} draggable="true">
-                <cds-grid-cell>
-                  <cds-action-handle aria-label="sort ${entry.id} row" id="selected-${entry.id}-action" @click=${() => this.selectedEntryId = entry.id}></cds-action-handle>
-                </cds-grid-cell>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>${entry.status}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          ${this.listOne.map(entry => html`
+          <cds-grid-row id=${entry.id} draggable="true">
+            <cds-grid-cell>
+              <cds-action-handle aria-label="sort ${entry.id} row" id="selected-${entry.id}-action" @click=${() => this.selectedEntryId = entry.id}></cds-action-handle>
+            </cds-grid-cell>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-placeholder draggable="false">Production Environment</cds-grid-placeholder>
           <cds-grid-footer>List One: ${this.listOne.map(i => html`${i.id} `)}</cds-grid-footer>
         </cds-grid>
@@ -2537,25 +2471,20 @@ export function swappableRows() {
           <cds-grid-column width="60"></cds-grid-column>
           <cds-grid-column>Staging Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
-          ${this.listTwo.map(
-            entry => html`
-              <cds-grid-row id=${entry.id} draggable="true">
-                <cds-grid-cell>
-                  <cds-action-handle aria-label="sort ${entry.id} row" id="selected-${entry.id}-action" @click=${() => this.selectedEntryId = entry.id}></cds-action-handle>
-                </cds-grid-cell>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>${entry.status}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          ${this.listTwo.map(entry => html`
+          <cds-grid-row id=${entry.id} draggable="true">
+            <cds-grid-cell>
+              <cds-action-handle aria-label="sort ${entry.id} row" id="selected-${entry.id}-action" @click=${() => this.selectedEntryId = entry.id}></cds-action-handle>
+            </cds-grid-cell>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-placeholder draggable="false">Staging Environment</cds-grid-placeholder>
-          <cds-grid-footer>List Two: ${this.listTwo.map((j, i) => html`${j.id} `)}</cds-grid-footer>
+          <cds-grid-footer>List Two: ${this.listTwo.map(j => html`${j.id} `)}</cds-grid-footer>
         </cds-grid>
         <cds-dropdown ?hidden=${!this.selectedEntryId} anchor="#selected-${this.selectedEntryId}-action" @hiddenChange=${() => (this.selectedEntryId = null) as any}>
           <cds-button @click=${this.appendToOtherGrid} block action="flat" size="sm">Move to <span>${this.listOne.find(i => i.id === this.selectedEntryId) ? 'Staging' : 'Production'}</span></cds-button>
-        </cds-dropdown>
-        
-      `;
+        </cds-dropdown>`;
     }
 
     private appendToOtherGrid() {
@@ -2610,28 +2539,24 @@ export function swappableRows() {
 
 export function noScroll() {
   class DemoNoScroll extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
 
     render() {
       return html`
         <cds-grid aria-label="no scroll datagrid demo">
-          <cds-grid-column>Stock</cds-grid-column>
-          <cds-grid-column>Average</cds-grid-column>
-          <cds-grid-column>Current</cds-grid-column>
-          <cds-grid-column>About</cds-grid-column>
-          ${this.data.map(
-            entry => html`
-              <cds-grid-row>
-                <cds-grid-cell>${entry.id}</cds-grid-cell>
-                <cds-grid-cell>$${entry.average}</cds-grid-cell>
-                <cds-grid-cell>$${entry.value}</cds-grid-cell>
-                <cds-grid-cell>${entry.about}</cds-grid-cell>
-              </cds-grid-row>
-            `
-          )}
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-      `;
+        </cds-grid>`;
     }
   }
 
@@ -2642,69 +2567,87 @@ export function noScroll() {
 export function fixedRows() {
   return html`    
     <cds-grid aria-label="fixed row datagrid demo" style="--body-height: 360px">
-      <cds-grid-column>Type</cds-grid-column>
-      <cds-grid-column>Description</cds-grid-column>
-      <cds-grid-column>Amount</cds-grid-column>
-      <cds-grid-column>Balance</cds-grid-column>
+    <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
       <cds-grid-row position="fixed">
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Item</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
-        <cds-grid-cell>$1,000,000.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Billing</cds-grid-cell>
-        <cds-grid-cell>$250.00</cds-grid-cell>
-        <cds-grid-cell>$523,750.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Renewal</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$163,262.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$53.00</cds-grid-cell>
-        <cds-grid-cell>$347,423.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Subscription</cds-grid-cell>
-        <cds-grid-cell>$1239.00</cds-grid-cell>
-        <cds-grid-cell>$564,772.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Deposit</cds-grid-cell>
-        <cds-grid-cell>Service Fee</cds-grid-cell>
-        <cds-grid-cell>$49.00</cds-grid-cell>
-        <cds-grid-cell>$977,527.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Account Transfer</cds-grid-cell>
-        <cds-grid-cell>$2300.00</cds-grid-cell>
-        <cds-grid-cell>$423,236.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Credit</cds-grid-cell>
-        <cds-grid-cell>Payment</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$199,282.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Unknown</cds-grid-cell>
-        <cds-grid-cell>$9.00</cds-grid-cell>
-        <cds-grid-cell>$929,741.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>Debit</cds-grid-cell>
-        <cds-grid-cell>Provider</cds-grid-cell>
-        <cds-grid-cell>$9203.00</cds-grid-cell>
-        <cds-grid-cell>$239,120.00</cds-grid-cell>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>
@@ -2713,20 +2656,24 @@ export function fixedRows() {
 
 export function draggableColumns() {
   class DemoDraggableColumns extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData().map(i => {
+      i.selected = undefined;
+      i.about = undefined;
+      return i;
+    });
 
-    @state() private columns = ['id', 'average', 'value', 'about'];
+    @state() private columns = [{ label: 'Host', key: 'id' }, { label: 'Status', key: 'status' }, { label: 'CPU', key: 'cpu'}, { label: 'Memory', key: 'memory' }];
 
     render() {
       return html`
         <cds-grid aria-label="draggable columns datagrid demo" @cdsDraggableChange=${this.sortColumns} style="--body-height: 360px">
           ${this.columns.map(c => html`
             <cds-grid-column draggable="true">
-              ${c} <cds-action-handle aria-label="sort ${c} column"></cds-action-handle>
+              ${c.label} <cds-action-handle aria-label="sort ${c.label} column"></cds-action-handle>
             </cds-grid-column>`)}
-          ${this.data.map(entry => html`
+          ${this.data.map((entry: any) => html`
             <cds-grid-row id=${entry.id}>
-              ${this.columns.map(c => html`<cds-grid-cell>${entry[c]}</cds-grid-cell>`)}
+              ${this.columns.map(c => html`<cds-grid-cell>${entry[c.key]}</cds-grid-cell>`)}
             </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
@@ -2749,26 +2696,30 @@ export function draggableColumns() {
 
 export function rangeSelect() {
   class DemoSelectableCells extends LitElement {
-    @state() private data = getData();
+    @state() private data = getVMData();
     @state() private activeCells: CdsGridCell[] = [];
 
     render() {
       return html`
         <cds-grid aria-label="range selection datagrid demo" @rangeSelectionChange=${(e: any) => this.activeCells = e.detail} style="--body-height: 490px">
-          <cds-grid-column>Type</cds-grid-column>
-          <cds-grid-column>Balance</cds-grid-column>
-          <cds-grid-column>Amount</cds-grid-column>
-          <cds-grid-column>Description</cds-grid-column>
-          ${this.data.map((entry) => html`  
-            <cds-grid-row id=${entry.id}>
-              <cds-grid-cell>${entry.id}</cds-grid-cell>
-              <cds-grid-cell>$${entry.average}</cds-grid-cell>
-              <cds-grid-cell>$${entry.value}</cds-grid-cell>
-              <cds-grid-cell><div class="small-cell">${entry.about}</div></cds-grid-cell>
-            </cds-grid-row>
-          `)}
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`  
+          <cds-grid-row id=${entry.id}>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
           <cds-grid-footer>
-            <p cds-text="body">Selected Balance Sum: $${this.activeCells.filter(c => c.colIndex === 2).reduce((prev, cell) => prev + this.data.find(i => i.id === cell.parentElement.id).average, 0)}</p>
+            <p cds-text="body">
+              <strong>CPU:</strong>
+              ${(this.activeCells.filter(c => c.colIndex === 3).reduce((prev, cell) => prev + this.data.find(i => i.id === cell.parentElement.id).cpu, 0) / (this.activeCells.length ? this.activeCells.length : 1)).toFixed(2)}%
+              <strong>Memory:</strong>
+              ${(this.activeCells.filter(c => c.colIndex === 4).reduce((prev, cell) => prev + this.data.find(i => i.id === cell.parentElement.id).memory, 0) / (this.activeCells.length ? this.activeCells.length : 1)).toFixed(2)}%
+            </p>
           </cds-grid-footer>
         </cds-grid>
         <p cds-text="body">Active Cells: ${this.activeCells.map(c => html`(${c.colIndex},${c.rowIndex}) `)}</p>
@@ -2782,8 +2733,8 @@ export function rangeSelect() {
 
 export function rangeSelectContextMenu() {
   class DemoRangeSelectContextMenu extends LitElement {
-    @state() private rows = getData();
-    @state() private columns = [{ label: 'Type', key: 'id' }, { label: 'Balance', key: 'average' }, { label: 'Amount', key: 'value'}, { label: 'Description', key: 'about' }];
+    @state() private rows = getVMData();
+    @state() private columns = [{ label: 'Host', key: 'id' }, { label: 'Status', key: 'status' }, { label: 'CPU', key: 'cpu' }, { label: 'Memory', key: 'memory' }];
     @state() private activeCells: CdsGridCell[] = [];
     @state() private anchor?: HTMLElement = null;
     @state() private csv: string;
@@ -2795,9 +2746,9 @@ export function rangeSelectContextMenu() {
           ${this.rows.map(entry => html`  
           <cds-grid-row id=${entry.id}>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
-            <cds-grid-cell>$${entry.average}</cds-grid-cell>
-            <cds-grid-cell>$${entry.value}</cds-grid-cell>
-            <cds-grid-cell><div class="small-cell">${entry.about}</div></cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
           <cds-dropdown ?hidden=${!this.anchor} .anchor=${this.anchor} @hiddenChange=${() => (this.anchor = null) as void}>

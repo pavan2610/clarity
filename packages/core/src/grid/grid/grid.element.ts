@@ -27,6 +27,8 @@ export class CdsGrid extends LitElement {
 
   @state({ type: Number }) rowCount = 0;
 
+  @state({ type: Number }) colCount = 0;
+
   /** @private */
   @queryAssignedNodes('columns', true, 'cds-grid-column') columns: NodeListOf<CdsGridColumn>;
 
@@ -93,6 +95,7 @@ export class CdsGrid extends LitElement {
 
   private async updateRows() {
     this.rowCount = this.rows.length;
+    this.colCount = this.columns.length;
     this.rows.forEach((r, i) => (r.rowIndex = i + 1));
     this.columns.forEach((c, i) => (c.colIndex = i + 1));
     await this.updateComplete;

@@ -13,27 +13,27 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
 
 Single Select Rows are created using the `cds-radio` component. Create an associated
 radio group by using the same `name` attribute on each radio control. To mark a row
-as selected, set the `select` attribute/property on the `cds-grid-row` component.
+as selected, set the `selected` attribute/property on the `cds-grid-row` component.
 
 <Story id="stories-grid--single-select" />
 
 ```html
 <cds-grid>
   <cds-grid-column width="50"></cds-grid-column>
-  <cds-grid-column>Stock</cds-grid-column>
-  <cds-grid-column>Average</cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
-  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row select>
     <cds-grid-cell>
       <cds-radio>
-        <input type="radio" name="grid-rows" value="appl" aria-label="select appl" />
+        <input type="radio" name="hosts" aria-label="select host vm-host-001" />
       </cds-radio>
     </cds-grid-cell>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$1000</cds-grid-cell>
-    <cds-grid-cell>$0</cds-grid-cell>
-    <cds-grid-cell>...</cds-grid-cell>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
 </cds-grid>
 ```

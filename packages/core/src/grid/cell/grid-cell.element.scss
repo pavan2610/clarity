@@ -10,7 +10,6 @@
   display: block;
   outline: 0 !important;
   position: sticky;
-  user-select: none;
 }
 
 :host([tabindex='0']:focus) [part='cell'] {

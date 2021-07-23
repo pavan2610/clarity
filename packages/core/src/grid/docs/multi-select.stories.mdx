@@ -12,32 +12,32 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
 </cds-alert-group>
 
 Multi-Select support is similar to single select support but leverages `cds-checkbox` to enable
-multiple rows to be marked for selection. To mark a row as selected, set the `select`
+multiple rows to be marked for selection. To mark a row as selected, set the `selected`
 attribute/property on the `cds-grid-row`.
 
 <Story id="stories-grid--multi-select" />
 
 ```html
-<cds-grid>
+<cds-grid aria-multiselectable="true">
   <cds-grid-column width="50">
     <cds-checkbox>
-      <input type="checkbox" aria-label="select all" />
+      <input type="checkbox" aria-label="select all hosts" />
     </cds-checkbox>
   </cds-grid-column>
-  <cds-grid-column>Stock</cds-grid-column>
-  <cds-grid-column>Average</cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
-  <cds-grid-column>About</cds-grid-column>
-  <cds-grid-row select>
+  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
+  <cds-grid-row selected>
     <cds-grid-cell>
       <cds-checkbox>
-        <input type="checkbox" value="appl" aria-label="select appl" />
+        <input type="checkbox" aria-label="select host vm-host-001" />
       </cds-checkbox>
     </cds-grid-cell>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$1000</cds-grid-cell>
-    <cds-grid-cell>$0</cds-grid-cell>
-    <cds-grid-cell>...</cds-grid-cell>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
   <cds-grid-footer>2 selected</cds-grid-footer>
 </cds-grid>

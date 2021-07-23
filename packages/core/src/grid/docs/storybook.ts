@@ -32,6 +32,7 @@ export interface TestVM {
   cpu: number;
   memory: number;
   selected: boolean;
+  about: string;
 }
 
 export type VMStatus = 'online' | 'disruption' | 'offline' | 'deactivated';
@@ -52,19 +53,26 @@ export enum StatusIconType {
 
 export function getVMData(): TestVM[] {
   return [
-    { id: 'vm-host-001', status: 'online', cpu: 5, memory: 10, selected: false },
-    { id: 'vm-host-003', status: 'online', cpu: 10, memory: 30, selected: false },
-    { id: 'vm-host-002', status: 'online', cpu: 20, memory: 30, selected: false },
-    { id: 'vm-host-011', status: 'online', cpu: 5, memory: 15, selected: false },
-    { id: 'vm-host-004', status: 'offline', cpu: 90, memory: 80, selected: false },
-    { id: 'vm-host-008', status: 'disruption', cpu: 50, memory: 60, selected: false },
-    { id: 'vm-host-006', status: 'deactivated', cpu: 0, memory: 0, selected: false },
-    { id: 'vm-host-005', status: 'offline', cpu: 85, memory: 70, selected: false },
-    { id: 'vm-host-007', status: 'deactivated', cpu: 0, memory: 0, selected: false },
-    { id: 'vm-host-010', status: 'disruption', cpu: 50, memory: 60, selected: false },
-    { id: 'vm-host-009', status: 'disruption', cpu: 65, memory: 90, selected: false },
-    { id: 'vm-host-012', status: 'offline', cpu: 85, memory: 70, selected: false },
-    { id: 'vm-host-013', status: 'deactivated', cpu: 0, memory: 0, selected: false },
+    { id: 'vm-host-001', status: 'online', cpu: 5, memory: 10, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-003', status: 'online', cpu: 10, memory: 30, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-002', status: 'online', cpu: 20, memory: 30, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-011', status: 'online', cpu: 5, memory: 15, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-004', status: 'offline', cpu: 90, memory: 80, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-016', status: 'online', cpu: 5, memory: 15, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-008', status: 'disruption', cpu: 50, memory: 60, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-018', status: 'offline', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-006', status: 'deactivated', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-005', status: 'offline', cpu: 85, memory: 70, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-014', status: 'disruption', cpu: 73, memory: 62, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-017', status: 'offline', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-007', status: 'deactivated', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-010', status: 'disruption', cpu: 50, memory: 60, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-009', status: 'disruption', cpu: 65, memory: 90, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-012', status: 'offline', cpu: 85, memory: 70, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-020', status: 'deactivated', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-013', status: 'deactivated', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-015', status: 'online', cpu: 15, memory: 20, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    { id: 'vm-host-019', status: 'online', cpu: 34, memory: 28, selected: false, about: 'Lorem ipsum dolor sit amet' },
   ];
 }
 

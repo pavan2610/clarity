@@ -3,7 +3,6 @@ import { setCustomElements } from '@web/storybook-prebuilt/web-components.js';
 import pkg from '../dist/core/custom-elements.legacy.json';
 import img from './public/assets/images/clarity-logo.svg';
 
-console.log(pkg);
 setCustomElements(pkg);
 
 // storybook-prebuild does not run the manager.js through rollup so custom

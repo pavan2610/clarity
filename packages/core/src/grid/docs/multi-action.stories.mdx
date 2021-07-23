@@ -21,28 +21,28 @@ attribute/property on the `cds-grid-row`.
 <cds-grid>
   <cds-grid-column width="100">
     <cds-checkbox>
-      <input type="checkbox" aria-label="choose action for selected stocks" />
+      <input type="checkbox" aria-label="choose action for selected hosts" />
     </cds-checkbox>
     <cds-action id="multi-action" aria-label="filter column"></cds-action>
-    <cds-dropdown anchor="#multi-action">
-      <cds-button action="flat" block size="sm">Buy Selected</cds-button>
-      <cds-button action="flat" block size="sm">Sell Selected</cds-button>
+    <cds-dropdown anchor="#multi-action (element ref)">
+      <cds-button action="flat" block size="sm">Restart Selected</cds-button>
+      <cds-button action="flat" block size="sm">Shutdown Selected</cds-button>
     </cds-dropdown>
   </cds-grid-column>
-  <cds-grid-column>Stock</cds-grid-column>
-  <cds-grid-column>Average</cds-grid-column>
-  <cds-grid-column>Current</cds-grid-column>
-  <cds-grid-column>About</cds-grid-column>
+  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row select>
     <cds-grid-cell>
       <cds-checkbox>
-        <input type="checkbox" value="appl" aria-label="select appl" />
+        <input type="checkbox" aria-label="select host" />
       </cds-checkbox>
     </cds-grid-cell>
-    <cds-grid-cell>APPL</cds-grid-cell>
-    <cds-grid-cell>$1000</cds-grid-cell>
-    <cds-grid-cell>$0</cds-grid-cell>
-    <cds-grid-cell>...</cds-grid-cell>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
 </cds-grid>
 ```

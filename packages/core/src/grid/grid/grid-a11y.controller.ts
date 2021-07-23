@@ -1,6 +1,6 @@
 import { ReactiveControllerHost } from 'lit';
 
-export type GridA11y = ReactiveControllerHost & HTMLElement & { rowCount: number };
+export type GridA11y = ReactiveControllerHost & HTMLElement & { rowCount: number, colCount: number };
 
 export class GridA11yController {
   private firstUpdated = false;
@@ -18,5 +18,6 @@ export class GridA11yController {
     }
 
     this.host.setAttribute('aria-rowcount', `${this.host.rowCount}`);
+    this.host.setAttribute('aria-colcount', `${this.host.colCount}`);
   }
 }
