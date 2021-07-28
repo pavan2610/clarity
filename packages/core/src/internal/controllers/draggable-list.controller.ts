@@ -45,7 +45,7 @@ export class DraggableListController {
     this.initializeKeyListController();
 
     this.observer = new MutationObserver(mutations => {
-      for (let mutation of mutations) {
+      for (const mutation of mutations) {
         if (mutation.type === 'childList') {
           this.addDragEventListeners();
         }
@@ -122,10 +122,6 @@ function handleDragOver(e: any) {
 
 function handleDrop(e: any) {
   const items: DraggableItem[] = Array.from(e.currentTarget.parentElement.querySelectorAll('[draggable]'));
-  const fromIndex = items.findIndex(i => i === dragSrcEl);
-  let targetIndex = items.findIndex(i => i === e.currentTarget);
-  targetIndex = targetIndex > fromIndex ? targetIndex - 1 : targetIndex;
-
   const from = dragSrcEl;
   const target = items.find(i => i === e.currentTarget);
   from.removeAttribute('cds-draggable');

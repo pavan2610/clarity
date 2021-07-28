@@ -312,7 +312,7 @@ export function draggableListController() {
 export function sortList<T>(target: T & { id: any }, src: T & { id: any }, list: { id: any }[]) {
   const data = [...list];
   const srcIndex = data.findIndex(i => i.id === src.id);
-  let targetIndex = data.findIndex(i => i.id === target.id);
+  const targetIndex = data.findIndex(i => i.id === target.id);
   const srcItem = data.splice(srcIndex, 1)[0];
   targetIndex === -1 ? data.push(srcItem) : data.splice(targetIndex, 0, srcItem);
   return data;

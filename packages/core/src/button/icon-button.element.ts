@@ -44,5 +44,5 @@ export class CdsIconButton extends CdsButton {
 
   static get styles() {
     return [super.styles, styles];
-  } 
+  }
 }

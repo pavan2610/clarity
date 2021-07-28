@@ -1,6 +1,6 @@
 import { ReactiveControllerHost } from 'lit';
 
-export type GridA11y = ReactiveControllerHost & HTMLElement & { rowCount: number, colCount: number };
+export type GridA11y = ReactiveControllerHost & HTMLElement & { rowCount: number; colCount: number };
 
 export class GridA11yController {
   private firstUpdated = false;

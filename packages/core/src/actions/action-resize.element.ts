@@ -60,12 +60,12 @@ export class CdsActionResize extends CdsAction {
   }
 
   private listenForMouseResize() {
-    const host = this;
-    let m_pos: any;
+    const host = this; // eslint-disable-line @typescript-eslint/no-this-alias
+    let pos: any;
     this.addEventListener(
       'mousedown',
       (e: any) => {
-        m_pos = e.x;
+        pos = e.x;
         document.addEventListener('mousemove', resize, false);
       },
       false
@@ -75,8 +75,8 @@ export class CdsActionResize extends CdsAction {
 
     function resize(e: any) {
       requestAnimationFrame(() => {
-        const dx = m_pos - e.x;
-        m_pos = e.x;
+        const dx = pos - e.x;
+        pos = e.x;
         host.resizeChange.emit(-dx, { bubbles: true });
       });
     }

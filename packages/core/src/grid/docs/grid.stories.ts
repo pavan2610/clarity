@@ -1136,7 +1136,7 @@ export function kitchenSink() {
               <cds-pagination-button ?disabled=${this.state.page === 0} action="first" @click=${this.firstPage} aria-label="go to first"></cds-pagination-button>
               <cds-pagination-button ?disabled=${this.state.page === 0} action="prev" @click=${this.prevPage} aria-label="go to previous"></cds-pagination-button>
               <cds-input cds-pagination-number>
-                <input type="number" value="1" aria-label="current page" @input=${this.setPage} value=${this.state.page + 1} min="1" max=${this.pageCount} />
+                <input type="number" aria-label="current page" @input=${this.setPage} value=${this.state.page + 1} min="1" max=${this.pageCount} />
                 <cds-control-message>/ ${this.pageCount}</cds-control-message>
               </cds-input>
               <cds-pagination-button ?disabled=${this.state.page === this.pageCount - 1} action="next" @click=${this.nextPage} aria-label="go to next"></cds-pagination-button>
@@ -1382,7 +1382,7 @@ export function pagination() {
     }
 
     private updateList() {
-      let list = filter([...this.data], 'id', this.search);
+      const list = filter([...this.data], 'id', this.search);
       this.pageCount = Math.ceil(list.length / this.pageSize);
       this.filteredList = paginate(list, this.pageSize)[this.currentPage] ?? [];
     }
@@ -2467,7 +2467,7 @@ export function performance() {
     private setRows(numberOfRows: number) {
       this.showParseAndRender = false;
       this.numberOfRows = numberOfRows;
-      let data: any[] = [];
+      const data: any[] = [];
 
       for (let i = 0; i < (this.numberOfRows / 20); i++) {
         data.push(

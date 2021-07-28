@@ -73,7 +73,7 @@ export class KeyNavigationListController {
   }
 
   private setActiveCell(e: any, activeItem: HTMLElement, prev?: HTMLElement) {
-    let previousItem = prev ?? Array.from(this.listItems).find(c => c.getAttribute('tabindex') === '0');
+    const previousItem = prev ?? Array.from(this.listItems).find(c => c.getAttribute('tabindex') === '0');
     if (this.config.manageFocus) {
       if (previousItem) {
         previousItem.setAttribute('tabindex', '-1');
@@ -103,7 +103,7 @@ export class KeyNavigationListController {
 
   private getNextItemCoordinate(code: string, currentItem: HTMLElement) {
     let i = Array.from(this.listItems).indexOf(currentItem);
-    let previous = i;
+    const previous = i;
     const dir = this.host.dir;
     const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
     const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';

@@ -149,8 +149,8 @@ export function swapBetweenLists<T>(
 
 export function paginate<T>(arr: T[], size: number) {
   return [...arr].reduce((acc, val, i) => {
-    let idx = Math.floor(i / size);
-    let page = acc[idx] || (acc[idx] = []);
+    const idx = Math.floor(i / size);
+    const page = acc[idx] || (acc[idx] = []);
     page.push(val);
     return acc;
   }, [] as T[][]);
@@ -172,7 +172,7 @@ export function setRandomValues(valueList: { value: any }[]) {
 export function sortList<T>(target: T & { id: any }, src: T & { id: any }, list: { id: any }[]) {
   const data = [...list];
   const srcIndex = data.findIndex(i => i.id === src.id);
-  let targetIndex = data.findIndex(i => i.id === target.id);
+  const targetIndex = data.findIndex(i => i.id === target.id);
   const srcItem = data.splice(srcIndex, 1)[0];
   targetIndex === -1 ? data.push(srcItem) : data.splice(targetIndex, 0, srcItem);
   return data;
