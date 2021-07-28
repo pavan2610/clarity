@@ -6,12 +6,12 @@
 
 import { html, LitElement } from 'lit';
 import { registerElementSafely, state } from '@cds/core/internal';
-import { createTestElement, removeTestElement, componentIsStable, onceEvent } from '@cds/core/test';
+import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
 import { GridColumnGroupSize, GridColumnGroupSizeController } from './grid-column-group-size.controller.js';
 
 const columns = ([document.createElement('div'), document.createElement('div'), document.createElement('div')].map(
   (c: any, i) => {
-    c.width = `${(i + 1) * 100}`;
+    c.width = `${(i + 1) * 100}px`;
     c.colIndex = i + 1;
     return c;
   }

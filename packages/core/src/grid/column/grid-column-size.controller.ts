@@ -7,6 +7,7 @@ export type GridColumnSize = ReactiveControllerHost &
     colIndex: number;
     width?: string;
     resizeHandle: CdsActionResize;
+    type?: string;
   };
 
 export class GridColumnSizeController {
@@ -38,19 +39,22 @@ export class GridColumnSizeController {
   }
 
   protected async hostConnected() {
+    if (this.host.type === 'action' && !this.host.width) {
+      this.host.width = '36px';
+    }
     await this.host.updateComplete;
     this.host.resizeHandle?.addEventListener('resizeChange', (e: any) => this.updateResizedColumnWidth(e.detail));
   }
 
   protected hostUpdated() {
     if (this.host.width && this.host.colIndex !== undefined) {
-      this.hostGrid.style.setProperty(`--ch${this.host.colIndex}`, `${this.host.width}px`);
+      this.hostGrid.style.setProperty(`--ch${this.host.colIndex}`, this.host.width);
     }
   }
 
   private updateResizedColumnWidth(width: number) {
     const updatedWidth = Math.max(
-      isNumericString(this.host.width) ? parseInt(this.host.width) : 44,
+      isNumericString(this.host.width) || this.host.width?.includes('px') ? parseInt(this.host.width) : 44,
       parseInt(getComputedStyle(this.host).width) + width
     );
     this.hostGrid.style.setProperty(`--ch${this.host.colIndex}`, `${updatedWidth}px`);

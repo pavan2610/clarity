@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Detail View" />
+<Meta title="Data Grid (Preview)/Row Single Select" />
 
-# Grid Detail View
+# Grid Row Single Select
 
 <cds-alert-group status="warning" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,37 +11,29 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-The `cds-grid-detail` component provides a modal-like overlay to display additional details to a particular row entry.
-A `cds-grid-detail` can be visually toggled with `hidden`. To show the `cds-grid-detail` toggle its visibility using
-`cds-action` in a given grid row.
+Single select rows are created using the `cds-radio` component. Create an associated
+radio group by using the same `name` attribute on each radio control. To mark a row
+as selected, set the `selected` attribute/property on the `cds-grid-row` component.
 
-<Story id="stories-grid--detail-view" />
+<Story id="stories-grid--row-single-select" />
 
 ```html
 <cds-grid>
-  <cds-grid-column width="44"></cds-grid-column>
+  <cds-grid-column type="action" aria-label="select column"></cds-grid-column>
   <cds-grid-column>Host</cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>
   <cds-grid-column>CPU</cds-grid-column>
   <cds-grid-column>Memory</cds-grid-column>
-  <cds-grid-row>
-    <cds-grid-cell>
-      <cds-action-expand id="current-detail-demo" aria-label="view host details"></cds-action-expand>
+  <cds-grid-row select>
+    <cds-grid-cell type="action">
+      <cds-radio>
+        <input type="radio" name="hosts" aria-label="select host vm-host-001" />
+      </cds-radio>
     </cds-grid-cell>
     <cds-grid-cell>vm-host-001</cds-grid-cell>
     <cds-grid-cell>online</cds-grid-cell>
     <cds-grid-cell>5%</cds-grid-cell>
     <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
-  <cds-grid-detail hidden anchor="current-detail-demo">
-    <h2>Host: vm-host-001</h2>
-    <p>Status: online</p>
-    <p>CPU: 5%</p>
-    <p>Memory: 10%</p>
-  </cds-grid-detail>
 </cds-grid>
 ```
-
-## API
-
-<Props of={'cds-grid-detail'} />

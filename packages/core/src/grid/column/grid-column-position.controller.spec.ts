@@ -60,7 +60,6 @@ describe('grid-column-position.controller', () => {
     await componentIsStable(grid);
     expect(getComputedStyle(lastColumn).right).toBe('0px');
     expect(getComputedStyle(lastColumn).left).toBe('auto');
-    expect(getComputedStyle(lastCell).getPropertyValue('--border-right').trim()).toBe('0');
     expect(getComputedStyle(lastCell).getPropertyValue('--border-left').trim()).toBe(
       'calc((1 / 20) * 1rem) solid hsl(198, 14%, 82%)'
     );

@@ -41,34 +41,10 @@ export class CdsDropdown extends LitElement {
           position: fixed;
         }
 
-        button {
-          position: absolute;
-          top: 0;
-          right: 0;
-          border: 0;
-          background: transparent;
-          cursor: pointer;
-          font-size: 16px;
-        }
-
-        ::slotted(button) {
-          display: block;
-          border: 0;
-          background: transparent;
-          cursor: pointer;
+        ::slotted(cds-button) {
           width: 100%;
-          text-align: left;
-          padding: 12px;
-          box-shadow: 0;
-        }
-
-        ::slotted(button:hover) {
-          background: hsl(0deg 0% 95%);
-        }
-
-        ::slotted(button[disabled]) {
-          cursor: not-allowed;
-          background: transparent;
+          display: block;
+          margin-bottom: 4px;
         }
       `,
     ];

@@ -12,7 +12,7 @@ export class GridCellA11yController {
   async hostUpdated() {
     await this.host.updateComplete;
 
-    if (!this.firstUpdated) {
+    if (!this.firstUpdated && !this.host.hasAttribute('role')) {
       this.firstUpdated = true;
       this.host.setAttribute('role', 'gridcell');
     }

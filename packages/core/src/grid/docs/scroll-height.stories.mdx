@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Row Filtering" />
+<Meta title="Data Grid (Preview)/Scroll Height" />
 
-# Grid Row Filtering
+# Grid Scroll Height
 
 <cds-alert-group status="warning" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,23 +11,11 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-To use row filtering leverage the `cds-search` or `cds-datalist` components. With `cds-action`
-toggle a filter dopdown to filter a particular column. Using the search input events
-filter against your list based on the applied column.
-
-<Story id="stories-grid--row-filtering" />
+The `--body-height` property allows control of the height of the grid. By default, the grid will expand to the number of provided rows.
 
 ```html
-<cds-grid>
-  <cds-grid-column>
-    Host
-    <cds-action id="id-filter-demo" shape="filter" aria-label="search available hosts"></cds-action>
-    <cds-search hidden anchor="#id-filter-demo (element ref)">
-      <cds-search>
-        <input type="search" aria-label="search hosts" placeholder="Search" />
-      </cds-search>
-    </cds-dropdown>
-  </cds-grid-column>
+<cds-grid style="--body-height: 400px">
+  <cds-grid-column>Host</cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>
   <cds-grid-column>CPU</cds-grid-column>
   <cds-grid-column>Memory</cds-grid-column>
@@ -37,5 +25,8 @@ filter against your list based on the applied column.
     <cds-grid-cell>5%</cds-grid-cell>
     <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
+  <cds-grid-footer></cds-grid-footer>
 </cds-grid>
 ```
+
+<Story id="stories-grid--no-scroll" />

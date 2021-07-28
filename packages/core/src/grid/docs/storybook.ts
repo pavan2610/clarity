@@ -1,31 +1,3 @@
-export const getData = () => {
-  (window as any)._sideEffectTest = '';
-  const data: any[] = [
-    { id: 'TSLA', value: 0, average: 400, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'MSFT', value: 0, average: 500, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'AAPL', value: 0, average: 1000, selected: false, about: '...' },
-    { id: 'VMW', value: 0, average: 200, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'AMAN', value: 0, average: 2000, selected: false, about: '...' },
-    { id: 'AMD', value: 0, average: 50, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'GOOG', value: 0, average: 2000, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'INTC', value: 0, average: 50, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'DELL', value: 0, average: 100, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'IBM', value: 0, average: 100, selected: false, about: '...' },
-    { id: 'TWTR', value: 0, average: 100, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'NDAQ', value: 0, average: 150, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'SDY', value: 0, average: 400, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'DIS', value: 0, average: 200, selected: false, about: '...' },
-    { id: 'NVDA', value: 0, average: 600, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'NFLX', value: 0, average: 500, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'SPYG', value: 0, average: 50, selected: false, about: '...' },
-    { id: 'VNQ', value: 0, average: 100, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'SPYV', value: 0, average: 50, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'VYM', value: 0, average: 100, selected: false, about: 'Lorem ipsum dolor sit amet' },
-  ];
-
-  return [...data];
-};
-
 export interface TestVM {
   id: string;
   status: VMStatus;
@@ -59,18 +31,74 @@ export function getVMData(): TestVM[] {
     { id: 'vm-host-011', status: 'online', cpu: 5, memory: 15, selected: false, about: 'Lorem ipsum dolor sit amet' },
     { id: 'vm-host-004', status: 'offline', cpu: 90, memory: 80, selected: false, about: 'Lorem ipsum dolor sit amet' },
     { id: 'vm-host-016', status: 'online', cpu: 5, memory: 15, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'vm-host-008', status: 'disruption', cpu: 50, memory: 60, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    {
+      id: 'vm-host-008',
+      status: 'disruption',
+      cpu: 50,
+      memory: 60,
+      selected: false,
+      about: 'Lorem ipsum dolor sit amet',
+    },
     { id: 'vm-host-018', status: 'offline', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'vm-host-006', status: 'deactivated', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    {
+      id: 'vm-host-006',
+      status: 'deactivated',
+      cpu: 0,
+      memory: 0,
+      selected: false,
+      about: 'Lorem ipsum dolor sit amet',
+    },
     { id: 'vm-host-005', status: 'offline', cpu: 85, memory: 70, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'vm-host-014', status: 'disruption', cpu: 73, memory: 62, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    {
+      id: 'vm-host-014',
+      status: 'disruption',
+      cpu: 73,
+      memory: 62,
+      selected: false,
+      about: 'Lorem ipsum dolor sit amet',
+    },
     { id: 'vm-host-017', status: 'offline', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'vm-host-007', status: 'deactivated', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'vm-host-010', status: 'disruption', cpu: 50, memory: 60, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'vm-host-009', status: 'disruption', cpu: 65, memory: 90, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    {
+      id: 'vm-host-007',
+      status: 'deactivated',
+      cpu: 0,
+      memory: 0,
+      selected: false,
+      about: 'Lorem ipsum dolor sit amet',
+    },
+    {
+      id: 'vm-host-010',
+      status: 'disruption',
+      cpu: 50,
+      memory: 60,
+      selected: false,
+      about: 'Lorem ipsum dolor sit amet',
+    },
+    {
+      id: 'vm-host-009',
+      status: 'disruption',
+      cpu: 65,
+      memory: 90,
+      selected: false,
+      about: 'Lorem ipsum dolor sit amet',
+    },
     { id: 'vm-host-012', status: 'offline', cpu: 85, memory: 70, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'vm-host-020', status: 'deactivated', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
-    { id: 'vm-host-013', status: 'deactivated', cpu: 0, memory: 0, selected: false, about: 'Lorem ipsum dolor sit amet' },
+    {
+      id: 'vm-host-020',
+      status: 'deactivated',
+      cpu: 0,
+      memory: 0,
+      selected: false,
+      about: 'Lorem ipsum dolor sit amet',
+    },
+    {
+      id: 'vm-host-013',
+      status: 'deactivated',
+      cpu: 0,
+      memory: 0,
+      selected: false,
+      about: 'Lorem ipsum dolor sit amet',
+    },
     { id: 'vm-host-015', status: 'online', cpu: 15, memory: 20, selected: false, about: 'Lorem ipsum dolor sit amet' },
     { id: 'vm-host-019', status: 'online', cpu: 34, memory: 28, selected: false, about: 'Lorem ipsum dolor sit amet' },
   ];
@@ -106,6 +134,17 @@ export function sortNumbers(list: any[], key: string, sortType: 'none' | 'ascend
   }
 
   return list;
+}
+
+export function swapBetweenLists<T>(
+  targetList: (T & { id: string })[],
+  fromList: (T & { id: string })[],
+  detail: { from: { id: string }; target: { id: string } }
+) {
+  const item = fromList.splice(fromList.indexOf(fromList.find(i => i.id === detail.from.id)), 1)[0];
+  const targetIndex = targetList.indexOf(targetList.find(i => i.id === detail.target.id));
+  targetIndex === -1 ? targetList.push(item) : targetList.splice(targetIndex, 0, item);
+  return { targetList: [...targetList], fromList: [...fromList] };
 }
 
 export function paginate<T>(arr: T[], size: number) {

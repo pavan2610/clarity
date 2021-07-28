@@ -21,6 +21,8 @@ import { GridRangeSelectionController } from './grid-range-selection.controller.
 export class CdsGrid extends LitElement {
   @property({ type: String }) columnLayout: 'fixed' | 'flex' = 'fixed';
 
+  @property({ type: String }) border: 'row' | 'cell' | 'none' = 'row';
+
   @property({ type: Boolean }) rangeSelection = true;
 
   @state({ type: String, reflect: true }) protected _id = createId();
@@ -115,5 +117,6 @@ export class CdsGrid extends LitElement {
 
   private createColumnGrids() {
     this.gridColumnGroupSizeController.createColumnGrids();
+    this.columns[this.columns.length - 1].resizable = 'hidden';
   }
 }

@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Single Action" />
+<Meta title="Data Grid (Preview)/Row Action" />
 
-# Grid Single Action
+# Grid Row Action
 
 <cds-alert-group status="warning" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,24 +11,24 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-Single Actions can be applied to `cds-grid-row` by leveraging the `cds-action`.
+Row Actions can be applied to `cds-grid-row` by leveraging the `cds-action`.
 The `cds-action` can open a context dropdown per row to allow the user to
 trigger an action specific to that row.
 
-<Story id="stories-grid--single-action" />
+<Story id="stories-grid--row-action" />
 
 <cds-alert status="info" cds-layout="m-t:lg">When providing actions to rows, ensure the action menu is not repeated for each row.
 Reuse the same action menu for all rows to prevent unnecessary DOM work.</cds-alert>
 
 ```html
 <cds-grid>
-  <cds-grid-column width="44"></cds-grid-column>
+  <cds-grid-column type="action" aria-label="action column"></cds-grid-column>
   <cds-grid-column>Host</cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>
   <cds-grid-column>CPU</cds-grid-column>
   <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row>
-    <cds-grid-cell>
+    <cds-grid-cell type="action">
       <cds-action aria-label="choose available host actions"></cds-action>
     </cds-grid-cell>
     <cds-grid-cell>vm-host-001</cds-grid-cell>

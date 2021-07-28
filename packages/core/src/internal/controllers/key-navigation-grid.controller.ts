@@ -27,41 +27,47 @@ export class KeyNavigationGridController {
 
   async hostConnected() {
     await this.host.updateComplete;
-
-    this.grid.addEventListener('mousedown', (e: any) => {
-      // preserve right click for context menus & keyboard mouse control https://apple.stackexchange.com/questions/32715/how-do-i-open-the-context-menu-from-a-mac-keyboard
-      if (e.buttons === 1 && !e.ctrlKey) {
-        const tagName = this.cells[0].tagName.toLocaleLowerCase();
-        const activeCell = Array.from(this.cells).find(c => c === e.target.closest(tagName) ?? c === e.target);
-        if (activeCell) {
-          this.setActiveCell(e, activeCell);
-        }
-      }
-    });
-
-    this.grid.addEventListener('keydown', (e: any) => {
-      if (
-        e.code === 'ArrowUp' ||
-        e.code === 'ArrowDown' ||
-        e.code === 'ArrowLeft' ||
-        e.code === 'ArrowRight' ||
-        e.code === 'End' ||
-        e.code === 'Home' ||
-        e.code === 'PageUp' ||
-        e.code === 'PageDown'
-      ) {
-        const { x, y } = this.getNextItemCoordinate(e);
-        const activeItem = this.rows[y].children[x] as HTMLElement;
-        this.setActiveCell(e, activeItem);
-        e.preventDefault();
-      }
-    });
+    this.grid.addEventListener('mousedown', (e: MouseEvent) => this.activateCell(e));
+    this.grid.addEventListener('keydown', (e: KeyboardEvent) => this.focusCell(e));
   }
 
   initializeKeyGrid() {
     this.cells.forEach((i: HTMLElement) => i.setAttribute('tabindex', '-1'));
     const firstCell = this.cells[0];
     firstCell?.setAttribute('tabindex', '0');
+  }
+
+  private activateCell(e: any) {
+    // preserve right click for context menus & keyboard mouse control https://apple.stackexchange.com/questions/32715/how-do-i-open-the-context-menu-from-a-mac-keyboard
+    if (e.buttons === 1 && !e.ctrlKey) {
+      const tagName = this.cells[0].tagName.toLocaleLowerCase();
+      const activeCell = Array.from(this.cells).find(c => c === e.target.closest(tagName) ?? c === e.target);
+      if (activeCell) {
+        this.setActiveCell(e, activeCell);
+      }
+    }
+  }
+
+  private focusCell(e: KeyboardEvent) {
+    if (this.validKeyCode(e)) {
+      const { x, y } = this.getNextItemCoordinate(e);
+      const activeItem = this.rows[y].children[x] as HTMLElement;
+      this.setActiveCell(e, activeItem);
+      e.preventDefault();
+    }
+  }
+
+  private validKeyCode(e: KeyboardEvent) {
+    return (
+      e.code === 'ArrowUp' ||
+      e.code === 'ArrowDown' ||
+      e.code === 'ArrowLeft' ||
+      e.code === 'ArrowRight' ||
+      e.code === 'End' ||
+      e.code === 'Home' ||
+      e.code === 'PageUp' ||
+      e.code === 'PageDown'
+    );
   }
 
   private setActiveCell(e: any, activeCell: HTMLElement) {

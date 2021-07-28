@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Swappable Rows" />
+<Meta title="Data Grid (Preview)/Row Swappable" />
 
-# Grid Swappable Rows
+# Grid Row Swappable
 
 <cds-alert-group status="danger" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,7 +11,7 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-The Data Grid rows use the native [HTML5 Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
+The grid rows use the native [HTML5 Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
 To enable a row apply the `draggable="true"` attribute to the `cds-grid-row`. To
 create a dropzone that is not draggable, apply the `draggable="false"` attribute.
 Listen for drag events via the `cdsDraggableChange` event on the `cds-grid` element.
@@ -31,15 +31,15 @@ to provide easier framework integrations.
   long as the row or item uses the same HTML5 draggable attribute.
 </cds-alert>
 
-<Story id="stories-grid--swappable-rows" />
+<Story id="stories-grid--row-swappable" />
 
 ```html
 <cds-grid>
-  <cds-grid-column width="44"></cds-grid-column>
+  <cds-grid-column type="action" aria-label="draggable action column"></cds-grid-column>
   <cds-grid-column>host</cds-grid-column>
   <cds-grid-column>status</cds-grid-column>
   <cds-grid-row id="1" draggable="true">
-    <cds-grid-cell>
+    <cds-grid-cell type="action">
       <cds-action-handle aria-label="sort host"></cds-action-handle>
     </cds-grid-cell>
     <cds-grid-cell>vm-host-001</cds-grid-cell>
@@ -54,7 +54,7 @@ to provide easier framework integrations.
 </cds-grid>
 
 <cds-grid>
-  <cds-grid-column width="44"></cds-grid-column>
+  <cds-grid-column></cds-grid-column>
   <cds-grid-column>host</cds-grid-column>
   <cds-grid-column>status</cds-grid-column>
   <cds-grid-row id="4" draggable="true">

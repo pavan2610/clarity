@@ -5,12 +5,11 @@
 @import './../styles/tokens/generated/index';
 
 :host {
-  --width: 18px;
-  --height: 18px;
-  --target-width: 44px;
-  --target-height: 44px;
+  --icon-width: #{$cds-global-space-8};
+  --icon-height: #{$cds-global-space-8};
+  --width: var(--icon-width);
+  --height: var(--icon-width);
   --cursor: pointer;
-  --outline-offset: -3px;
   --color: #{$cds-global-typography-color-300};
   --font-size: #{$cds-global-typography-font-size-3};
   --background: transparent;
@@ -52,8 +51,8 @@
 
 cds-icon,
 ::slotted(cds-icon) {
-  width: var(--width);
-  height: var(--height);
+  width: var(--icon-width);
+  height: var(--icon-height);
   pointer-events: none;
 }
 
@@ -71,8 +70,8 @@ cds-icon,
   position: absolute;
   left: calc(calc(-1 * var(--width)) - 1);
   top: calc(calc(-1 * var(--height)) - 1);
-  width: var(--target-width);
-  height: var(--target-height);
+  width: #{$cds-alias-object-interaction-touch-target};
+  height: #{$cds-alias-object-interaction-touch-target};
 }
 
 :host([disabled]) .private-host::after {

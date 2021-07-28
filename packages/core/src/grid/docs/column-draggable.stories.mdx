@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Draggable Columns" />
+<Meta title="Data Grid (Preview)/Column Draggable" />
 
-# Grid Draggable Columns
+# Grid Column Draggable
 
 <cds-alert-group status="danger" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,7 +11,7 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-The Data Grid columns use the native [HTML5 Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
+The datagrid columns use the native [HTML5 Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
 To enable a column apply the `draggable="true"` attribute to the `cds-grid-column`.
 Listen for drag events via the `cdsDraggableChange` event on the `cds-grid` element.
 Row drag events are stateless, meaning once an event occurs, the application should
@@ -25,7 +25,7 @@ This ensures the host application has full control of how columns are rendered. 
 provides the flexibility for host applications to use framework-specific drag and drop libraries
 to provide easier framework integrations.
 
-<Story id="stories-grid--draggable-columns" />
+<Story id="stories-grid--column-draggable" />
 
 ```html
 <cds-grid>

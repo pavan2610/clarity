@@ -74,7 +74,7 @@ export class DraggableListController {
         const from = e.detail.previousItem?.closest('[draggable]');
         const target = e.detail.activeItem.closest('[draggable]');
         e.detail.activeItem.dispatchEvent(
-          new CustomEvent('cdsDraggableChange', { detail: { from, target, type: 'keydown' }, bubbles: true })
+          new CustomEvent('cdsDraggableChange', { detail: { from, target, type: 'drop' }, bubbles: true })
         );
       }
     });
@@ -98,6 +98,12 @@ function handleDragStart(e: any) {
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setDragImage(e.currentTarget, 0, 0);
   e.currentTarget.setAttribute('cds-draggable', 'active');
+  e.currentTarget.dispatchEvent(
+    new CustomEvent('cdsDraggableChange', {
+      detail: { from: e.currentTarget, target: null, type: 'dragstart' },
+      bubbles: true,
+    })
+  );
 }
 
 function handleDragOver(e: any) {

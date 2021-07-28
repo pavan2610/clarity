@@ -8,6 +8,8 @@ export class CdsGridCell extends LitElement {
 
   @property({ type: Boolean }) selected: boolean;
 
+  @property({ type: String }) type: 'default' | 'action';
+
   @state({ type: Boolean, reflect: true }) active: boolean;
 
   /** private */
@@ -21,7 +23,7 @@ export class CdsGridCell extends LitElement {
 
   render() {
     return html`
-      <div part="cell">
+      <div part="cell" focusable>
         <slot></slot>
       </div>
     `;

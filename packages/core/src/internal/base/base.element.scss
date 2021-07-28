@@ -57,14 +57,22 @@ slot {
 }
 
 // normalize focus styles
+:host {
+  --outline-offset: #{$cds-global-space-1};
+}
+
 :host([tabindex='0']:focus),
+:host([tabindex='0']:focus) [focusable],
+:host([_focused]) [focusable],
 :host([_focused]) .input {
   outline: Highlight solid $cds-global-space-2;
-  outline-offset: $cds-global-space-1;
+  outline-offset: var(--outline-offset);
 }
 
 @media (-webkit-min-device-pixel-ratio: 0) {
   :host([tabindex='0']:focus),
+  :host([tabindex='0']:focus) [focusable],
+  :host([_focused]) [focusable],
   :host([_focused]) .input {
     outline-color: -webkit-focus-ring-color;
   }

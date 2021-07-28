@@ -5,15 +5,16 @@
 @import './../../styles/tokens/generated/index';
 
 :host {
-  --height: var(--column-height);
+  --min-height: var(--column-height, #{$cds-alias-object-interaction-touch-target});
+  --min-width: fit-content;
   top: 0;
   z-index: 998;
   position: sticky;
-  min-width: fit-content;
+  min-height: var(--min-height);
+  min-width: var(--min-width);
 }
 
 [part='column'] {
-  min-height: var(--height);
   border: 0;
   font-weight: 500;
   line-height: 0;
@@ -26,8 +27,7 @@
   line-height: 1em;
   margin: 0;
   display: flex;
-  gap: 20px;
-  // padding-inline: 0 $cds-global-space-6; // logical properties for rtl
+  gap: 6px;
   padding-inline: $cds-global-space-6 $cds-global-space-6;
   padding-block: $cds-global-space-4 $cds-global-space-4;
   align-items: center;
@@ -35,6 +35,12 @@
   position: sticky !important;
   background: $cds-alias-object-container-background-tint;
   box-shadow: 0 1px 0 $cds-alias-object-border-color;
+}
+
+:host([type='action']) [part='column'] {
+  --min-width: #{$cds-global-space-12};
+  padding: 0;
+  justify-content: center;
 }
 
 :host([position='fixed']),
@@ -48,11 +54,18 @@
 }
 
 .line {
-  width: 1px;
-  height: 2000px;
+  width: $cds-global-space-1;
+  bottom: 0;
+  height: 100vh;
   position: absolute;
-  top: 44px;
-  right: 12px;
+  top: var(--min-height);
+  right: 0;
+}
+
+cds-action-resize {
+  position: absolute;
+  right: 0;
+  --height: 24px;
 }
 
 [_active] + .line,

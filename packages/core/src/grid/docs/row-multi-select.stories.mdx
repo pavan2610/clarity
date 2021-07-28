@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Multi Select" />
+<Meta title="Data Grid (Preview)/Row Multi Select" />
 
-# Grid Multi-Select
+# Grid Row Multi Select
 
 <cds-alert-group status="warning" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,15 +11,15 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-Multi-Select support is similar to single select support but leverages `cds-checkbox` to enable
+Row multi select support is similar to single select support but leverages `cds-checkbox` to enable
 multiple rows to be marked for selection. To mark a row as selected, set the `selected`
 attribute/property on the `cds-grid-row`.
 
-<Story id="stories-grid--multi-select" />
+<Story id="stories-grid--row-multi-select" />
 
 ```html
 <cds-grid aria-multiselectable="true">
-  <cds-grid-column width="50">
+  <cds-grid-column type="action">
     <cds-checkbox>
       <input type="checkbox" aria-label="select all hosts" />
     </cds-checkbox>
@@ -29,7 +29,7 @@ attribute/property on the `cds-grid-row`.
   <cds-grid-column>CPU</cds-grid-column>
   <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row selected>
-    <cds-grid-cell>
+    <cds-grid-cell type="action">
       <cds-checkbox>
         <input type="checkbox" aria-label="select host vm-host-001" />
       </cds-checkbox>

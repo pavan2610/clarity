@@ -139,7 +139,7 @@ iframe[resizable] {
   padding: 36px 24px;
 }
 
-[id*='--dark-theme'] {
+[id*='--dark-theme']:not(a) {
   padding: 0;
 }
 

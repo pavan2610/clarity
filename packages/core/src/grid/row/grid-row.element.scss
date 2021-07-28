@@ -8,9 +8,14 @@
   --border-top: inset 0 2px 0 -1px #{$cds-alias-object-border-color};
   --border-bottom: 0 2px 2px -1px #{$cds-alias-object-border-color};
   --background: #{$cds-alias-object-container-background};
-  --height: var(--row-height);
+  --min-height: var(--row-height, #{$cds-alias-object-interaction-touch-target});
   content-visibility: var(--row-content-visibility, visible);
-  contain-intrinsic-size: 1px var(--height);
+  contain-intrinsic-size: #{$cds-global-space-1} var(--min-height);
+}
+
+::slotted([role='rowheader']:first-child) {
+  --background: #{$cds-alias-object-container-background-tint};
+  --cell-border-width: #{$cds-global-space-1};
 }
 
 :host([position='fixed']) {
@@ -18,8 +23,8 @@
   --row-content-visibility: visible;
   position: sticky;
   z-index: 99;
-  top: calc(var(--column-height) + 1px);
-  margin-top: -1px;
+  top: calc(var(--min-height) + #{$cds-global-space-1});
+  margin-top: calc(#{$cds-global-space-1} * -1);
 }
 
 :host([position='fixed']) [part='row'] {
@@ -35,11 +40,12 @@
   grid-template-columns: var(--c-grid);
   box-shadow: var(--border-top);
   background: var(--background);
-  min-height: var(--height);
+  min-height: var(--min-height);
 }
 
+:host([selected]),
 [part='row']:hover,
-:host([selected]) {
+[part='row']:hover ::slotted(cds-grid-cell) {
   --background: #{$cds-alias-object-interaction-background-hover};
 }
 

@@ -42,7 +42,7 @@ describe('grid-column-size.controller', () => {
   });
 
   it('should set CSS Custom Property for column custom width values', async () => {
-    component.width = '200';
+    component.width = '200px';
     await componentIsStable(component);
     expect(element.style.getPropertyValue('--ch1')).toBe('200px');
   });

@@ -50,7 +50,7 @@ describe('grid-a11y.controller', () => {
     await componentIsStable(component);
     expect(component.getAttribute('aria-colcount')).toBe('1');
 
-    component.rowCount = 2;
+    component.colCount = 2;
     await componentIsStable(component);
     expect(component.getAttribute('aria-colcount')).toBe('2');
   });

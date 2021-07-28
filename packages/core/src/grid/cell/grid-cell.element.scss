@@ -5,24 +5,21 @@
 @import './../../styles/tokens/generated/index';
 
 :host {
-  --border-right: 0;
+  --border-right: var(--cell-border-width) solid #{$cds-alias-object-border-color};
   --border-left: 0;
+  --min-height: var(--row-height, #{$cds-alias-object-interaction-touch-target});
+  --min-width: #{$cds-alias-object-interaction-touch-target};
   display: block;
   outline: 0 !important;
   position: sticky;
 }
 
-:host([tabindex='0']:focus) [part='cell'] {
-  outline-offset: -4px;
-  outline: 5px auto Highlight;
-  outline: 5px auto -webkit-focus-ring-color;
-}
-
 [part='cell'] {
-  border-right: var(--border-right);
+  min-height: var(--min-height);
   border-left: var(--border-left);
   background: var(--background);
   box-shadow: var(--border-top);
+  border-right: var(--border-right);
   font-size: 14px;
   text-align: left;
   margin: 0;
@@ -32,9 +29,16 @@
   line-height: 1em;
   align-items: center;
   width: 100%;
-  height: 100%;
+  min-width: var(--min-width);
   color: $cds-global-typography-color-500;
   position: relative;
+  --cell-height: var(--min-height); // alias for slotted elements
+}
+
+:host([type='action']) [part='cell'] {
+  padding: 0;
+  justify-content: center;
+  min-width: #{$cds-global-space-11};
 }
 
 :host([_active]) [part='cell']::after,
@@ -44,4 +48,15 @@
   inset: 0;
   background: hsl(200deg 100% 50% / 20%);
   content: '';
+}
+
+::slotted([cds-action]) {
+  --outline-offset: -4px;
+}
+
+:host([tabindex='0']:focus) [focusable],
+:host([type='action']) ::slotted([cds-control]),
+:host([type='action']) ::slotted([cds-action]) {
+  --cds-alias-object-interaction-touch-target: var(--cell-height);
+  --outline-offset: -4px;
 }

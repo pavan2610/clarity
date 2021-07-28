@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { html, LitElement, css } from 'lit';
+import { html, LitElement } from 'lit';
 import pipe from 'ramda/es/pipe.js';
 import { registerElementSafely, state } from '@cds/core/internal';
 import '@cds/core/pagination/register.js';
@@ -22,7 +22,7 @@ import { exclamationTriangleIcon } from '@cds/core/icon/shapes/exclamation-trian
 import { exclamationCircleIcon } from '@cds/core/icon/shapes/exclamation-circle.js';
 import { disconnectIcon } from '@cds/core/icon/shapes/disconnect.js';
 import { viewColumnsIcon } from '@cds/core/icon/shapes/view-columns.js';
-import { paginate, filter, sortStrings, sortList, getVMData, TestVM, StatusDisplayType, StatusIconType, getVMOrderPreference, groupArray } from './storybook.js';
+import { paginate, filter, sortStrings, sortList, getVMData, TestVM, StatusDisplayType, StatusIconType, getVMOrderPreference, groupArray, swapBetweenLists } from './storybook.js';
 
 ClarityIcons.addIcons(checkCircleIcon, exclamationTriangleIcon, exclamationCircleIcon, disconnectIcon, filterIcon, viewColumnsIcon);
 
@@ -52,16 +52,16 @@ export function all() {
         ${columnResize()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Flex Column Width</h2>
-        ${flexColumnWidth()}
+        <h2 cds-text="section">Column Flex Width</h2>
+        ${columnFlexWidth()}
       </div>
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">Column Overflow</h2>
         ${columnOverflow()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Fixed Column Width</h2>
-        ${fixedColumnWidth()}
+        <h2 cds-text="section">Column Fixed Width</h2>
+        ${columnFixedWidth()}
       </div>
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">Placeholder</h2>
@@ -76,16 +76,16 @@ export function all() {
         ${columnVisibility()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Detail View</h2>
-        ${detailView()}
+        <h2 cds-text="section">Row Detail</h2>
+        ${rowDetail()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Single Select</h2>
-        ${singleSelect()}
+        <h2 cds-text="section">Row Single Select</h2>
+        ${rowSingleSelect()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Multi Select</h2>
-        ${multiSelect()}
+        <h2 cds-text="section">Row Multi Select</h2>
+        ${rowMultiSelect()}
       </div>
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">Range Select</h2>
@@ -96,76 +96,88 @@ export function all() {
         ${rangeSelectContextMenu()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Single Action</h2>
-        ${singleAction()}
+        <h2 cds-text="section">Row Action</h2>
+        ${rowAction()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Multi Action</h2>
-        ${multiAction()}
+        <h2 cds-text="section">Row Batch Action</h2>
+        ${rowBatchAction()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Sortable Rows</h2>
-        ${sortableRows()}
+        <h2 cds-text="section">Row Sort</h2>
+        ${rowSort()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Multi Sortable Rows</h2>
-        ${multiSortableRows()}
+        <h2 cds-text="section">Row Multi Sort</h2>
+        ${rowMultiSort()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Row Filtering</h2>
-        ${rowFiltering()}
+        <h2 cds-text="section">Column Filter</h2>
+        ${columnFilter()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Multi Cell Filtering</h2>
-        ${multiCellFiltering()}
+        <h2 cds-text="section">Column Multi Filter</h2>
+        ${columnMultiFilter()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Fixed Columns</h2>
-        ${fixedColumns()}
+        <h2 cds-text="section">Async Data</h2>
+        ${asyncData()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Dynamic Fixed Columns</h2>
-        ${dynamicFixedColumns()}
+        <h2 cds-text="section">Column Fixed</h2>
+        ${columnFixed()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Multi Fixed Columns</h2>
-        ${multiFixedColumns()}
+        <h2 cds-text="section">Column Fixed Dynamic</h2>
+        ${columnFixedDynamic()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Sticky Columns</h2>
-        ${stickyColumns()}
+        <h2 cds-text="section">Column Multi Fixed</h2>
+        ${columnMultiFixed()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Editable Cell</h2>
-        ${editableCell()}
+        <h2 cds-text="section">Column Sticky</h2>
+        ${columnSticky()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Cell Editable</h2>
+        ${cellEditable()}
       </div>
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">RTL Support</h2>
         ${rtl()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Optional Footer</h2>
-        ${optionalFooter()}
+        <h2 cds-text="section">Footer</h2>
+        ${footer()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Footer Optional</h2>
+        ${footerOptional()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Row Height</h2>
+        ${rowHeight()}
       </div>
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">Compact</h2>
         ${compact()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Draggable Rows</h2>
-        ${draggableRows()}
+        <h2 cds-text="section">Row Draggable</h2>
+        ${rowDraggable()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Swappable Rows</h2>
-        ${swappableRows()}
+        <h2 cds-text="section">Row Swappable</h2>
+        ${rowSwappable()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Draggable Columns</h2>
-        ${draggableColumns()}
+        <h2 cds-text="section">Column Draggable</h2>
+        ${columnDraggable()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Fixed Rows</h2>
-        ${fixedRows()}
+        <h2 cds-text="section">Row Fixed</h2>
+        ${rowFixed()}
       </div>
       <div cds-layout="vertical gap:lg" style="min-height: 650px">
         <h2 cds-text="section">Performance</h2>
@@ -184,18 +196,23 @@ export function all() {
         ${darkTheme()}
       </div>
       <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Range Select</h2>
-        ${noScroll()}
+        <h2 cds-text="section">Border Cell</h2>
+        ${borderCell()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Border Column</h2>
+        ${borderColumn()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Border None</h2>
+        ${borderNone()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Row Header</h2>
+        ${rowHeader()}
       </div>
       <div cds-layout="vertical gap:lg">
         <h2 cds-text="section">Range Select</h2>
-        ${rangeSelect()}
-      </div>
-      <div cds-layout="vertical gap:lg">Range Select Context Menu</h2>
-        ${rangeSelectContextMenu()}
-      </div>
-      <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">No Scroll</h2>
         ${noScroll()}
       </div>
     </section>
@@ -295,7 +312,7 @@ export function basic() {
 export function keyboard() {
   return html`
     <cds-grid aria-label="keyboard navigation datagrid demo">
-      <cds-grid-column width="200">Key</cds-grid-column>
+      <cds-grid-column width="200px">Key</cds-grid-column>
       <cds-grid-column>Function</cds-grid-column>
       <cds-grid-row>
         <cds-grid-cell>Right Arrow</cds-grid-cell>
@@ -582,9 +599,9 @@ export function columnResize() {
   `;
 }
 
-export function flexColumnWidth() {
+export function columnFlexWidth() {
   return html`
-    <cds-grid aria-label="flex column width datagrid demo" column-layout="flex" style="--body-height: 360px">
+    <cds-grid aria-label="column flex width datagrid demo" column-layout="flex" style="--body-height: 360px">
       <cds-grid-column resizable>Host</cds-grid-column>
       <cds-grid-column resizable>Status</cds-grid-column>
       <cds-grid-column resizable>CPU</cds-grid-column>
@@ -672,11 +689,11 @@ export function flexColumnWidth() {
   `;
 }
 
-export function fixedColumnWidth() {
+export function columnFixedWidth() {
   return html`
-    <cds-grid aria-label="fixed column width datagrid demo" style="--body-height: 360px">
-      <cds-grid-column width="150">Host</cds-grid-column>
-      <cds-grid-column width="150">Status</cds-grid-column>
+    <cds-grid aria-label="column fixed width datagrid demo" style="--body-height: 360px">
+      <cds-grid-column width="150px">Host</cds-grid-column>
+      <cds-grid-column width="150px">Status</cds-grid-column>
       <cds-grid-column>CPU</cds-grid-column>
       <cds-grid-column>Memory</cds-grid-column>
       <cds-grid-row>
@@ -764,11 +781,11 @@ export function fixedColumnWidth() {
 
 export function columnOverflow() {
   return html`
-    <cds-grid aria-label="fixed column width datagrid demo" style="--body-height: 360px">
+    <cds-grid aria-label="column overflow datagrid demo" style="--body-height: 360px">
       <cds-grid-column>Host</cds-grid-column>
       <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column width="100">CPU</cds-grid-column>
-      <cds-grid-column width="100">Memory</cds-grid-column>
+      <cds-grid-column width="100px">CPU</cds-grid-column>
+      <cds-grid-column width="100px">Memory</cds-grid-column>
       <cds-grid-row>
         <cds-grid-cell>vm-host-001</cds-grid-cell>
         <cds-grid-cell>online</cds-grid-cell>
@@ -860,14 +877,14 @@ export function rtl() {
     render() {
       return html`
         <cds-grid aria-label="rtl datagrid demo" dir="rtl" style="--body-height: 360px">
-          <cds-grid-column width="60"></cds-grid-column>
+          <cds-grid-column type="action" aria-label="detail view column"></cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
           <cds-grid-column>Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row>
-            <cds-grid-cell>
+            <cds-grid-cell type="action">
               <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail-demo" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -902,85 +919,84 @@ export function rtl() {
 export function responsive() {
   return html`
     <cds-grid aria-label="responsive datagrid demo" style="width: 340px; --body-height: 420px">
-      <cds-grid-column position="fixed" width="120">Host</cds-grid-column>
-      <cds-grid-column width="200">Status</cds-grid-column>
-      <cds-grid-column width="200">CPU</cds-grid-column>
-      <cds-grid-column width="200">Memory</cds-grid-column>
-
+      <cds-grid-column position="fixed" width="120px">Host</cds-grid-column>
+      <cds-grid-column width="200px">Status</cds-grid-column>
+      <cds-grid-column width="200px">CPU</cds-grid-column>
+      <cds-grid-column width="200px">Memory</cds-grid-column>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-001</cds-grid-cell>
         <cds-grid-cell>online</cds-grid-cell>
         <cds-grid-cell>5%</cds-grid-cell>
         <cds-grid-cell>10%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-003</cds-grid-cell>
         <cds-grid-cell>online</cds-grid-cell>
         <cds-grid-cell>10%</cds-grid-cell>
         <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-002</cds-grid-cell>
         <cds-grid-cell>online</cds-grid-cell>
         <cds-grid-cell>20%</cds-grid-cell>
         <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-011</cds-grid-cell>
         <cds-grid-cell>offline</cds-grid-cell>
         <cds-grid-cell>90%</cds-grid-cell>
         <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-004</cds-grid-cell>
         <cds-grid-cell>offline</cds-grid-cell>
         <cds-grid-cell>90%</cds-grid-cell>
         <cds-grid-cell>80%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-008</cds-grid-cell>
         <cds-grid-cell>disruption</cds-grid-cell>
         <cds-grid-cell>50%</cds-grid-cell>
         <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-006</cds-grid-cell>
         <cds-grid-cell>deactivated</cds-grid-cell>
         <cds-grid-cell>0%</cds-grid-cell>
         <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-005</cds-grid-cell>
         <cds-grid-cell>offline</cds-grid-cell>
         <cds-grid-cell>85%</cds-grid-cell>
         <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-007</cds-grid-cell>
         <cds-grid-cell>deactivated</cds-grid-cell>
         <cds-grid-cell>0%</cds-grid-cell>
         <cds-grid-cell>0%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-010</cds-grid-cell>
         <cds-grid-cell>disruption</cds-grid-cell>
         <cds-grid-cell>50%</cds-grid-cell>
         <cds-grid-cell>60%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-009</cds-grid-cell>
         <cds-grid-cell>disruption</cds-grid-cell>
         <cds-grid-cell>65%</cds-grid-cell>
         <cds-grid-cell>90%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-012</cds-grid-cell>
         <cds-grid-cell>offline</cds-grid-cell>
         <cds-grid-cell>85%</cds-grid-cell>
         <cds-grid-cell>70%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell role="rowheader">vm-host-013</cds-grid-cell>
         <cds-grid-cell>deactivated</cds-grid-cell>
         <cds-grid-cell>0%</cds-grid-cell>
         <cds-grid-cell>0%</cds-grid-cell>
@@ -1043,14 +1059,14 @@ export function kitchenSink() {
 
     render() {
       return html`
-        <cds-grid aria-label="Active VM Management" @cdsDraggableChange=${this.reorderList} style="--body-height: 360px">
-          <cds-grid-column width="44" resizable="hidden">
+        <cds-grid aria-label="Active VM Management" style="--body-height: 360px">
+          <cds-grid-column type="action" resizable="hidden">
             <cds-checkbox>
               <input type="checkbox" .checked=${!this.state.data.find(i => !i.selected)} @change=${(e: any) => this.selectAll(e)} aria-label="select all" />
             </cds-checkbox>
           </cds-grid-column>
-          <cds-grid-column width="50"></cds-grid-column>
-          <cds-grid-column resizable width="260">
+          <cds-grid-column type="action" aria-label="expand row detail column"></cds-grid-column>
+          <cds-grid-column resizable width="180px">
             Host
             <cds-action id="id-filter" @click=${() => (this.state = { ...this.state, idFilterDropdownVisible: true })} aria-label="column filter options" shape="filter"></cds-action>
             <cds-dropdown ?hidden=${!this.state.idFilterDropdownVisible} @hiddenChange=${() => (this.state = { ...this.state, idFilterDropdownVisible: false })} anchor="#id-filter">
@@ -1060,22 +1076,22 @@ export function kitchenSink() {
             </cds-dropdown>
           </cds-grid-column>
           ${this.columnVisible(ColumnTypes.Status) ? html`
-          <cds-grid-column resizable>
+          <cds-grid-column resizable width="180px">
             Status <cds-action-sort .sort=${this.state.sortType} @sortChange=${(e: any) => this.setSortType(e.detail)}></cds-action-sort>
           </cds-grid-column>`: ''}
           ${this.columnVisible(ColumnTypes.CPU) ? html`<cds-grid-column resizable>CPU</cds-grid-column>`: ''}
           ${this.columnVisible(ColumnTypes.Memory) ? html`<cds-grid-column resizable>Memory</cds-grid-column>` : ''}
           ${this.currentPage.map(entry => html`
-          <cds-grid-row .selected=${entry.selected} id=${entry.id} .draggable=${this.state.sortType === 'none'}>
-            <cds-grid-cell>
-              <cds-checkbox cds-draggable="handle">
+          <cds-grid-row .selected=${entry.selected} id=${entry.id}>
+            <cds-grid-cell type="action">
+              <cds-checkbox>
                 <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="Select ${entry.id}" />
               </cds-checkbox>
             </cds-grid-cell>
-            <cds-grid-cell>
+            <cds-grid-cell type="action">
               <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
             </cds-grid-cell>
-            <cds-grid-cell>
+            <cds-grid-cell role="rowheader">
               ${entry.id}
             </cds-grid-cell>
             ${this.columnVisible(ColumnTypes.Status) ? html`
@@ -1088,7 +1104,6 @@ export function kitchenSink() {
               </cds-grid-cell>` : ''}
             ${this.columnVisible(ColumnTypes.Memory) ? html`<cds-grid-cell>${entry.memory}%</cds-grid-cell>` : ''}
           </cds-grid-row>`)}
-          <cds-grid-placeholder draggable="false">&nbsp;</cds-grid-placeholder>
           <cds-grid-footer>
             <cds-action id="toggle-columns" @click=${() => (this.state = { ...this.state, columnsDropdownVisible: true })} aria-label="filter column" shape="view-columns"></cds-action>
             <cds-dropdown ?hidden=${!this.state.columnsDropdownVisible} @hiddenChange=${() => (this.state = { ...this.state, columnsDropdownVisible: false })} anchor="#toggle-columns" position="top">
@@ -1231,10 +1246,6 @@ export function kitchenSink() {
 
     private columnVisible(value: any) {
       return parseInt(value) === (this.state.selectedColumns & parseInt(value));
-    }
-
-    private reorderList(e: any) {
-      this.state = { ...this.state, orderPreference: sortList<TestVM>(e.detail.target, e.detail.from, this.state.orderPreference.map(id => ({ id }))).map(i => i.id) };
     }
 
     private setPageSize(event: any) {
@@ -1484,22 +1495,22 @@ export function columnVisibility() {
   return html`<demo-grid-column-visibility></demo-grid-column-visibility>`;
 }
 
-export function detailView() {
-  class DemoDetailView extends LitElement {
+export function rowDetail() {
+  class DemoRowDetail extends LitElement {
     @state() private data = getVMData();
     @state() private currentDetail: any = null;
 
     render() {
       return html`
-        <cds-grid aria-label="detail view datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="50"></cds-grid-column>
+        <cds-grid aria-label="row detail datagrid demo" style="--body-height: 360px">
+          <cds-grid-column type="action" aria-label="row detail column"></cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
           <cds-grid-column>Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row>
-            <cds-grid-cell>
+            <cds-grid-cell type="action">
               <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail-demo" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -1527,30 +1538,30 @@ export function detailView() {
     }
   }
 
-  registerElementSafely('demo-grid-detail-view', DemoDetailView);
-  return html`<demo-grid-detail-view></demo-grid-detail-view>`;
+  registerElementSafely('demo-grid-row-detail', DemoRowDetail);
+  return html`<demo-grid-row-detail></demo-grid-row-detail>`;
 }
 
-export function singleSelect() {
+export function rowSingleSelect() {
   const selectableData = getVMData();
   selectableData[1].selected = true;
 
-  class DemoSingleSelect extends LitElement {
+  class DemoRowSingleSelect extends LitElement {
     @state() private data = selectableData;
 
     @state() private selectedItem = selectableData[1];
 
     render() {
       return html`
-        <cds-grid aria-label="single select datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="50"></cds-grid-column>
+        <cds-grid aria-label="row single select datagrid demo" style="--body-height: 360px">
+          <cds-grid-column type="action" aria-label="host selection column"></cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
           <cds-grid-column>Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row .selected=${entry.selected}>
-            <cds-grid-cell>
+            <cds-grid-cell type="action">
               <cds-radio>
                 <input type="radio" name="hosts" .checked=${entry.selected} value=${entry.id} aria-label="select host ${entry.id}" @click=${(e: any) => this.select(entry, e.target.checked)} />
               </cds-radio>
@@ -1577,23 +1588,23 @@ export function singleSelect() {
     }
   }
 
-  registerElementSafely('demo-grid-single-select', DemoSingleSelect);
-  return html`<demo-grid-single-select></demo-grid-single-select>`;
+  registerElementSafely('demo-grid-row-single-select', DemoRowSingleSelect);
+  return html`<demo-grid-row-single-select></demo-grid-row-single-select>`;
 }
 
-export function multiSelect() {
+export function rowMultiSelect() {
   const selectableData = getVMData()
   selectableData[1].selected = true;
   selectableData[3].selected = true;
 
-  class DemoMultiSelect extends LitElement {
+  class DemoRowMultiSelect extends LitElement {
     @state() private data = selectableData;
     @state() private allSelected = false;
 
     render() {
       return html`
-        <cds-grid aria-label="multi select datagrid demo" aria-multiselectable="true" style="--body-height: 360px">
-          <cds-grid-column width="50">
+        <cds-grid aria-label="row multi select datagrid demo" aria-multiselectable="true" style="--body-height: 360px">
+          <cds-grid-column type="action"  aria-label="selection column">
             <cds-checkbox>
               <input type="checkbox" .checked=${this.allSelected} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
             </cds-checkbox>
@@ -1604,7 +1615,7 @@ export function multiSelect() {
           <cds-grid-column>Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row .selected=${entry.selected}>
-            <cds-grid-cell>
+            <cds-grid-cell type="action">
               <cds-checkbox>
                 <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="select host ${entry.id}" />
               </cds-checkbox>
@@ -1631,27 +1642,27 @@ export function multiSelect() {
     }
   }
 
-  registerElementSafely('demo-grid-multi-select', DemoMultiSelect);
-  return html`<demo-grid-multi-select></demo-grid-multi-select>`;
+  registerElementSafely('demo-grid-row-multi-select', DemoRowMultiSelect);
+  return html`<demo-grid-row-multi-select></demo-grid-row-multi-select>`;
 }
 
-export function singleAction() {
-  class DemoSingleAction extends LitElement {
+export function rowAction() {
+  class DemoRowAction extends LitElement {
     @state() private data = getVMData();
     @state() private selectedEntry: any = null;
     @state() private anchor: HTMLElement = null;
 
     render() {
       return html`
-        <cds-grid aria-label="single action datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="50"></cds-grid-column>
+        <cds-grid aria-label="row action datagrid demo" style="--body-height: 360px">
+          <cds-grid-column type="action" aria-label="selection column"></cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
           <cds-grid-column>Memory</cds-grid-column>
           ${this.data.map(entry => html`
-          <cds-grid-row .select=${entry.selected}>
-            <cds-grid-cell action>
+          <cds-grid-row>
+            <cds-grid-cell type="action">
               <cds-action id="${entry.id}-action" @click=${(e: any) => this.select(e, entry)} aria-label="choose available host actions"></cds-action>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -1662,8 +1673,8 @@ export function singleAction() {
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
         <cds-dropdown ?hidden=${!this.selectedEntry} .anchor=${this.anchor} @hiddenChange=${() => (this.selectedEntry = null) as any}>
-          <cds-button @click=${() => this.shutdown(this.selectedEntry)} block action="flat" size="sm">Shutdown ${this.selectedEntry?.id}</cds-button>
-          <cds-button @click=${() => this.restart(this.selectedEntry)} block action="flat" size="sm">Restart ${this.selectedEntry?.id}</cds-button>
+          <cds-button @click=${() => this.shutdown(this.selectedEntry)} action="flat" size="sm">Shutdown ${this.selectedEntry?.id}</cds-button>
+          <cds-button @click=${() => this.restart(this.selectedEntry)} action="flat" size="sm">Restart ${this.selectedEntry?.id}</cds-button>
         </cds-dropdown>`;
     }
 
@@ -1683,12 +1694,12 @@ export function singleAction() {
     }
   }
 
-  registerElementSafely('demo-grid-single-action', DemoSingleAction);
-  return html`<demo-grid-single-action></demo-grid-single-action>`;
+  registerElementSafely('demo-grid-row-action', DemoRowAction);
+  return html`<demo-grid-row-action></demo-grid-row-action>`;
 }
 
-export function multiAction() {
-  class DemoMultiAction extends LitElement {
+export function rowBatchAction() {
+  class DemoRowBatchAction extends LitElement {
     @state() private data = getVMData();
     @state() private openAction = false;
     @state() private get allSelected() {
@@ -1697,24 +1708,26 @@ export function multiAction() {
 
     render() {
       return html`
-        <cds-grid aria-label="multi action datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="100">
+        <cds-grid aria-label="row batch action datagrid demo" style="--body-height: 360px">
+          <cds-grid-column type="action">
             <cds-checkbox>
-              <input type="checkbox" .checked=${this.allSelected} @change=${(e: any) => this.selectAll(e)} aria-label="choose action for selected hosts" />
+              <input type="checkbox" .checked=${this.allSelected} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
             </cds-checkbox>
-            <cds-action id="multi-action" @click=${() => (this.openAction = true)} aria-label="filter column"></cds-action>
-            <cds-dropdown ?hidden=${!this.openAction} anchor="#multi-action" @hiddenChange=${() => (this.openAction = false)}>
-              <cds-button action="flat" block size="sm" @click=${() => this.action('Restart')}>Restart Selected</cds-button><br />
-              <cds-button action="flat" block size="sm" @click=${() => this.action('Shutdown')}>Shutdown Selected</cds-button>
+          </cds-grid-column>
+          <cds-grid-column>
+            Host
+            <cds-action id="batch-action" @click=${() => (this.openAction = true)} aria-label="host options"></cds-action>
+            <cds-dropdown ?hidden=${!this.openAction} anchor="#batch-action" @hiddenChange=${() => (this.openAction = false)}>
+              <cds-button action="flat" size="sm" @click=${() => this.action('Restart')}>Restart Selected</cds-button>
+              <cds-button action="flat" size="sm" @click=${() => this.action('Shutdown')}>Shutdown Selected</cds-button>
             </cds-dropdown>
           </cds-grid-column>
-          <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
           <cds-grid-column>Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row .selected=${entry.selected}>
-            <cds-grid-cell>
+            <cds-grid-cell type="action">
               <cds-checkbox>
                 <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="select ${entry.id}" />
               </cds-checkbox>
@@ -1750,19 +1763,19 @@ export function multiAction() {
     }
   }
 
-  registerElementSafely('demo-grid-multi-action', DemoMultiAction);
-  return html`<demo-grid-multi-action></demo-grid-multi-action>`;
+  registerElementSafely('demo-grid-row-batch-action', DemoRowBatchAction);
+  return html`<demo-grid-row-batch-action></demo-grid-row-batch-action>`;
 }
 
-export function sortableRows() {
-  class DemoSortableRows extends LitElement {
+export function rowSort() {
+  class DemoRowSort extends LitElement {
     @state() private data = getVMData();
     @state() private filteredList: TestVM[] = [];
     @state() private sortType: 'none' | 'ascending' | 'descending' = 'none';
 
     render() {
       return html`
-        <cds-grid aria-label="sortable rows datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="row sort datagrid demo" style="--body-height: 360px">
           <cds-grid-column>
             Host <cds-action-sort aria-label="sort hosts" .sort=${this.sortType} @sortChange=${(e: any) => (this.sortType = e.detail)}></cds-action-sort>
           </cds-grid-column>
@@ -1788,19 +1801,19 @@ export function sortableRows() {
     }
   }
 
-  registerElementSafely('demo-grid-sortable-rows', DemoSortableRows);
-  return html`<demo-grid-sortable-rows></demo-grid-sortable-rows>`;
+  registerElementSafely('demo-grid-row-sort', DemoRowSort);
+  return html`<demo-grid-row-sort></demo-grid-row-sort>`;
 }
 
-export function multiSortableRows() {
-  class DemoMultiSortRows extends LitElement {
+export function rowMultiSort() {
+  class DemoRowMultiSort extends LitElement {
     @state() private data = getVMData();
     @state() private filteredList: TestVM[] = [];
     @state() private sortState: { [key: string]: 'none' | 'ascending' | 'descending' } = { id: 'none', status: 'none' };
 
     render() {
       return html`
-        <cds-grid aria-label="multi sortable datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="row multi sort datagrid demo" style="--body-height: 360px">
           <cds-grid-column>
             Host <cds-action-sort aria-label="sort host" .sort=${this.sortState.id} @sortChange=${(e: any) => (this.sortState = { ...this.sortState, id: e.detail })}></cds-action-sort>
           </cds-grid-column>
@@ -1836,12 +1849,12 @@ export function multiSortableRows() {
     }
   }
 
-  registerElementSafely('demo-grid-multi-sort-rows', DemoMultiSortRows);
-  return html`<demo-grid-multi-sort-rows></demo-grid-multi-sort-rows>`;
+  registerElementSafely('demo-grid-row-multi-sort', DemoRowMultiSort);
+  return html`<demo-grid-row-multi-sort></demo-grid-row-multi-sort>`;
 }
 
-export function rowFiltering() {
-  class DemoFiltering extends LitElement {
+export function columnFilter() {
+  class DemoColumnFilter extends LitElement {
     @state() private data = getVMData();
     @state() private filteredList: TestVM[] = [];
     @state() private search = '';
@@ -1849,7 +1862,7 @@ export function rowFiltering() {
 
     render() {
       return html`
-        <cds-grid aria-label="row filtering datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="column filter datagrid demo" style="--body-height: 360px">
           <cds-grid-column>
             Host
             <cds-action id="id-filter-demo" @click=${(e: any) => (this.anchor = e.target)} shape="filter" aria-label="search available stocks"></cds-action>
@@ -1885,12 +1898,12 @@ export function rowFiltering() {
     }
   }
 
-  registerElementSafely('demo-grid-row-filtering', DemoFiltering);
-  return html`<demo-grid-row-filtering></demo-grid-row-filtering>`;
+  registerElementSafely('demo-grid-column-filter', DemoColumnFilter);
+  return html`<demo-grid-column-filter></demo-grid-column-filter>`;
 }
 
-export function multiCellFiltering() {
-  class DemoFiltering extends LitElement {
+export function columnMultiFilter() {
+  class DemoColumnMultiFilter extends LitElement {
     @state() private data = getVMData();
     @state() private filteredList: TestVM[] = [];
     @state() private search = '';
@@ -1902,7 +1915,7 @@ export function multiCellFiltering() {
             <label>Search VMs</label>
             <input type="search" placeholder="search" @input=${(e: any) => (this.search = e.target.value)} />
           </cds-search>
-          <cds-grid aria-label="multi cell filtering datagrid demo" style="--body-height: 360px">
+          <cds-grid aria-label="column multi filter datagrid demo" style="--body-height: 360px">
             <cds-grid-column>Host</cds-grid-column>
             <cds-grid-column>Status</cds-grid-column>
             <cds-grid-column>CPU</cds-grid-column>
@@ -1937,21 +1950,21 @@ export function multiCellFiltering() {
     }
   }
 
-  registerElementSafely('demo-grid-filter', DemoFiltering);
-  return html`<demo-grid-filter></demo-grid-filter>`;
+  registerElementSafely('demo-grid-column-multi-filter', DemoColumnMultiFilter);
+  return html`<demo-grid-column-multi-filter></demo-grid-column-multi-filter>`;
 }
 
-export function fixedColumns() {
-  class DemoFixedColumns extends LitElement {
+export function columnFixed() {
+  class DemoColumnFixed extends LitElement {
     @state() private data = getVMData();
 
     render() {
       return html`
-        <cds-grid aria-label="fixed columns datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="150" position="fixed">Host</cds-grid-column>
-          <cds-grid-column width="350">Status</cds-grid-column>
-          <cds-grid-column width="500">CPU</cds-grid-column>
-          <cds-grid-column width="150" position="fixed">Memory</cds-grid-column>
+        <cds-grid aria-label="column fixed datagrid demo" style="--body-height: 360px">
+          <cds-grid-column width="150px" position="fixed">Host</cds-grid-column>
+          <cds-grid-column width="350px">Status</cds-grid-column>
+          <cds-grid-column width="500px">CPU</cds-grid-column>
+          <cds-grid-column width="150px" position="fixed">Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -1968,28 +1981,28 @@ export function fixedColumns() {
     }
   }
 
-  registerElementSafely('demo-grid-fixed-cols', DemoFixedColumns);
-  return html`<demo-grid-fixed-cols></demo-grid-fixed-cols>`;
+  registerElementSafely('demo-grid-column-fixed', DemoColumnFixed);
+  return html`<demo-grid-column-fixed></demo-grid-column-fixed>`;
 }
 
-export function dynamicFixedColumns() {
-  class DemoDyanmicFixedColumns extends LitElement {
+export function columnFixedDynamic() {
+  class DemoColumnFixedDyanmic extends LitElement {
     @state() private data = getVMData();
     @state() private pinFirst = true;
     @state() private pinLast = true;
 
     render() {
       return html`
-        <cds-grid aria-label="fixed columns datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="200" resizable .position=${this.pinFirst ? 'fixed' : 'initial'}>
+        <cds-grid aria-label="columns fixed dynamic datagrid demo" style="--body-height: 360px">
+          <cds-grid-column width="200px" resizable .position=${this.pinFirst ? 'fixed' : 'initial'}>
             Host
             <cds-action @click=${() => (this.pinFirst = !this.pinFirst)} aria-label="pin host column">
               <cds-icon shape="pin" ?solid=${this.pinFirst}></cds-icon>
             </cds-action>
           </cds-grid-column>
-          <cds-grid-column width="400" resizable>Status</cds-grid-column>
-          <cds-grid-column width="1000" resizable>CPU</cds-grid-column>
-          <cds-grid-column width="200" resizable .position=${this.pinLast ? 'fixed' : 'initial'}>
+          <cds-grid-column width="400px" resizable>Status</cds-grid-column>
+          <cds-grid-column width="1000px" resizable>CPU</cds-grid-column>
+          <cds-grid-column width="200px" resizable .position=${this.pinLast ? 'fixed' : 'initial'}>
             Memory
             <cds-action @click=${() => (this.pinLast = !this.pinLast)} aria-label="pin memory column">
               <cds-icon shape="pin" ?solid=${this.pinLast}></cds-icon>
@@ -2011,21 +2024,21 @@ export function dynamicFixedColumns() {
     }
   }
 
-  registerElementSafely('demo-dynamic-fixed-columns', DemoDyanmicFixedColumns);
-  return html`<demo-dynamic-fixed-columns></demo-dynamic-fixed-columns>`;
+  registerElementSafely('demo-column-fixed-dynamic', DemoColumnFixedDyanmic);
+  return html`<demo-column-fixed-dynamic></demo-column-fixed-dynamic>`;
 }
 
-export function multiFixedColumns() {
-  class DemoMultiFixedColumns extends LitElement {
+export function columnMultiFixed() {
+  class DemoColumnMultiFixed extends LitElement {
     @state() private data = getVMData();
 
     render() {
       return html`
-      <cds-grid aria-label="fixed columns datagrid demo" style="--body-height: 360px">
-        <cds-grid-column width="150" position="fixed">Host</cds-grid-column>
-        <cds-grid-column width="150" position="fixed">Status</cds-grid-column>
-        <cds-grid-column width="500">CPU</cds-grid-column>
-        <cds-grid-column width="500">Memory</cds-grid-column>
+      <cds-grid aria-label="column multi fixed datagrid demo" style="--body-height: 360px">
+        <cds-grid-column width="150px" position="fixed">Host</cds-grid-column>
+        <cds-grid-column width="150px" position="fixed">Status</cds-grid-column>
+        <cds-grid-column width="500px">CPU</cds-grid-column>
+        <cds-grid-column width="500px">Memory</cds-grid-column>
         ${this.data.map(entry => html`
         <cds-grid-row>
           <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -2042,21 +2055,21 @@ export function multiFixedColumns() {
     }
   }
 
-  registerElementSafely('demo-grid-multi-fixed-cols', DemoMultiFixedColumns);
-  return html`<demo-grid-multi-fixed-cols></demo-grid-multi-fixed-cols>`;
+  registerElementSafely('demo-grid-column-multi-fixed', DemoColumnMultiFixed);
+  return html`<demo-grid-column-multi-fixed></demo-grid-column-multi-fixed>`;
 }
 
-export function stickyColumns() {
-  class DemoColSticky extends LitElement {
+export function columnSticky() {
+  class DemoColumnSticky extends LitElement {
     @state() private data = getVMData();
 
     render() {
       return html`
-        <cds-grid aria-label="sticky columns datagrid demo" style="--body-height: 360px">
-          <cds-grid-column width="200">Host</cds-grid-column>
-          <cds-grid-column width="200" position="sticky">Status</cds-grid-column>
-          <cds-grid-column width="1000">CPU</cds-grid-column>
-          <cds-grid-column width="1000">Memory</cds-grid-column>
+        <cds-grid aria-label="column sticky datagrid demo" style="--body-height: 360px">
+          <cds-grid-column width="200px">Host</cds-grid-column>
+          <cds-grid-column width="200px" position="sticky">Status</cds-grid-column>
+          <cds-grid-column width="1000px">CPU</cds-grid-column>
+          <cds-grid-column width="1000px">Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -2074,24 +2087,24 @@ export function stickyColumns() {
     }
   }
 
-  registerElementSafely('demo-grid-col-sticky', DemoColSticky);
-  return html`<demo-grid-col-sticky></demo-grid-col-sticky>`;
+  registerElementSafely('demo-grid-column-sticky', DemoColumnSticky);
+  return html`<demo-grid-column-sticky></demo-grid-column-sticky>`;
 }
 
-export function editableCell() {
-  class DemoEditable extends LitElement {
+export function cellEditable() {
+  class DemoCellEditable extends LitElement {
     @state() private data = getVMData();
 
     render() {
       return html`
-        <cds-grid aria-label="editable cell datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="cell editable datagrid demo" style="--body-height: 360px">
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>About</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
           <cds-grid-column>Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row>
-            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell aria-readonly="true">${entry.id}</cds-grid-cell>
             <cds-grid-cell>
               ${entry.selected
                 ? html`
@@ -2102,12 +2115,11 @@ export function editableCell() {
                 <cds-action class="${entry.id}-button" @click=${() => this.editEntry(entry)} aria-label="edit ${entry.id} about cell" shape="pencil"></cds-action>
                 <span>${entry.about}</span>`}
             </cds-grid-cell>
-            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+            <cds-grid-cell aria-readonly="true">${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell aria-readonly="true">${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-      `;
+        </cds-grid>`;
     }
 
     private updateEntry(e: any, entry: any) {
@@ -2126,13 +2138,13 @@ export function editableCell() {
     }
   }
 
-  registerElementSafely('demo-grid-editable', DemoEditable);
-  return html`<demo-grid-editable></demo-grid-editable>`;
+  registerElementSafely('demo-grid-cell-editable', DemoCellEditable);
+  return html`<demo-grid-cell-editable></demo-grid-cell-editable>`;
 }
 
-export function optionalFooter() {
+export function footerOptional() {
   return html`
-    <cds-grid aria-label="optional footer datagrid demo" style="--body-height: 360px">
+    <cds-grid aria-label="footer optional datagrid demo" style="--body-height: 360px">
       <cds-grid-column>Host</cds-grid-column>
       <cds-grid-column>Status</cds-grid-column>
       <cds-grid-column>CPU</cds-grid-column>
@@ -2219,25 +2231,98 @@ export function optionalFooter() {
   `;
 }
 
+export function footer() {
+  return html`
+    <cds-grid aria-label="footer datagrid demo" style="--body-height: 360px">
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-footer>grid footer content</cds-grid-footer>
+    </cds-grid>
+  `;
+}
+
 export function compact() {
-  return html`<style>
-      [cds-theme*='compact'] {
-        --cds-global-space-0: 0;
-        --cds-global-space-1: 1px;
-        --cds-global-space-2: 2px;
-        --cds-global-space-3: 3px;
-        --cds-global-space-4: 4.5px;
-        --cds-global-space-5: 6px;
-        --cds-global-space-6: 9px;
-        --cds-global-space-7: 12px;
-        --cds-global-space-8: 13.5px;
-        --cds-global-space-9: 18px;
-        --cds-global-space-10: 24px;
-        --cds-global-space-11: 27px;
-        --cds-global-space-12: 36px;
-        --cds-global-space-13: 54px;
-      }
-    </style>
+  return html`
     <cds-grid aria-label="compact datagrid demo" cds-theme="compact" style="--body-height: 360px">
       <cds-grid-column>Host</cds-grid-column>
       <cds-grid-column>Status</cds-grid-column>
@@ -2401,21 +2486,22 @@ export function performance() {
   return html`<demo-grid-performance></demo-grid-performance>`;
 }
 
-export function draggableRows() {
-  class DemoDraggableRows extends LitElement {
+export function rowDraggable() {
+  class DemoRowDraggable extends LitElement {
     @state() private data = getVMData();
+    @state() private ariaLiveMessage = '';
 
     render() {
       return html`
-        <cds-grid aria-label="draggable rows datagrid demo" @cdsDraggableChange=${this.sortList} style="--body-height: 360px">
-          <cds-grid-column width="60"></cds-grid-column>
+        <cds-grid aria-label="row draggable datagrid demo" @cdsDraggableChange=${this.sortList} style="--body-height: 360px">
+          <cds-grid-column type="action" aria-label="draggable action column"></cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
           <cds-grid-column>Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row draggable="true" id=${entry.id}>
-            <cds-grid-cell>
+            <cds-grid-cell type="action">
               <cds-action-handle aria-label="sort ${entry.id} row"></cds-action-handle>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -2426,36 +2512,82 @@ export function draggableRows() {
           <cds-grid-placeholder draggable="false"></cds-grid-placeholder>
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
-        <br />
-        ${this.data.map(entry => entry.id).join(', ')}`;
+        <p>aria-live:</p>
+        <div aria-live="assertive" role="log" aria-atomic="true">${this.ariaLiveMessage}</div>`;
     }
 
     private sortList(e: any) {
-      this.data = [...sortList(e.detail.target, e.detail.from, this.data)] as TestVM[];
+      if (e.detail.type === 'drop') {
+        this.data = [...sortList(e.detail.target, e.detail.from, this.data)] as TestVM[];
+        this.ariaLiveMessage = `host ${e.detail.from.id} dropped at row ${this.data.findIndex(i => i.id === e.detail.target.id) + 1}`;
+      } else if (e.detail.type === 'dragstart') {
+        this.ariaLiveMessage = `host ${e.detail.from.id} grabbed`;
+      }
     }
   }
 
-  registerElementSafely('demo-grid-draggable-rows', DemoDraggableRows);
-  return html`<demo-grid-draggable-rows></demo-grid-draggable-rows>`;
+  registerElementSafely('demo-grid-row-draggable', DemoRowDraggable);
+  return html`<demo-grid-row-draggable></demo-grid-row-draggable>`;
 }
 
-export function swappableRows() {
-  class DemoSwappableRows extends LitElement {
+export function columnDraggable() {
+  class DemoColumnDraggable extends LitElement {
+    @state() private data = getVMData();
+    @state() private columns = [{ label: 'Host', key: 'id' }, { label: 'Status', key: 'status' }, { label: 'CPU', key: 'cpu'}, { label: 'Memory', key: 'memory' }];
+    @state() private ariaLiveMessage = '';
+
+    render() {
+      return html`
+        <cds-grid aria-label="column draggable datagrid demo" @cdsDraggableChange=${this.sortColumns} style="--body-height: 360px">
+          ${this.columns.map(c => html`
+            <cds-grid-column draggable="true" column-key="${c.key}">
+              ${c.label} <cds-action-handle aria-label="sort ${c.label} column"></cds-action-handle>
+            </cds-grid-column>`)}
+          ${this.data.map((entry: any) => html`
+            <cds-grid-row id=${entry.id}>
+              ${this.columns.map(c => html`<cds-grid-cell>${entry[c.key]}</cds-grid-cell>`)}
+            </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>
+        <p>aria-live:</p>
+        <div aria-live="assertive" role="log" aria-atomic="true">${this.ariaLiveMessage}</div>`;
+    }
+
+    private sortColumns(e: any) {
+      if (e.detail.type === 'drop') {
+        const targetIndex = parseInt(e.detail.target.getAttribute('aria-colindex')) - 1;
+        const fromIndex = parseInt(e.detail.from.getAttribute('aria-colindex')) - 1;
+        const items = [...this.columns];
+        const item = items.splice(fromIndex, 1)[0];
+        items.splice(targetIndex, 0, item);
+        this.columns = [...items];
+        this.ariaLiveMessage = `${e.detail.from.textContent} dropped at column ${e.detail.target.getAttribute('aria-colindex')}`;
+      } else if (e.detail.type === 'dragstart') {
+        this.ariaLiveMessage = `${e.detail.from.textContent} column grabbed`;
+      }
+    }
+  }
+
+  registerElementSafely('demo-grid-column-draggable', DemoColumnDraggable);
+  return html`<demo-grid-column-draggable></demo-grid-column-draggable>`;
+}
+
+export function rowSwappable() {
+  class DemoRowSwappable extends LitElement {
     @state() private listOne = getVMData().slice(0, 3);
-
     @state() private listTwo = getVMData().slice(4, 7);
-
     @state() private selectedEntryId: string;
+    @state() private ariaLiveMessage = '';
 
     render() {
       return html`
         <cds-grid aria-label="production VMs" @cdsDraggableChange=${this.sortOne} style="--body-height: 360px">
-          <cds-grid-column width="60"></cds-grid-column>
+          <cds-grid-column type="action" aria-label="draggable action column"></cds-grid-column>
           <cds-grid-column>Production Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           ${this.listOne.map(entry => html`
           <cds-grid-row id=${entry.id} draggable="true">
-            <cds-grid-cell>
+            <cds-grid-cell type="action">
               <cds-action-handle aria-label="sort ${entry.id} row" id="selected-${entry.id}-action" @click=${() => this.selectedEntryId = entry.id}></cds-action-handle>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -2466,14 +2598,16 @@ export function swappableRows() {
         </cds-grid>
 
         <br />
+        <p>aria-live:</p>
+        <div aria-live="assertive" role="log" aria-atomic="true">${this.ariaLiveMessage}</div>
 
         <cds-grid aria-label="staging VMs" @cdsDraggableChange=${this.sortTwo} style="--body-height: 360px">
-          <cds-grid-column width="60"></cds-grid-column>
+          <cds-grid-column type="action" aria-label="draggable action column"></cds-grid-column>
           <cds-grid-column>Staging Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           ${this.listTwo.map(entry => html`
           <cds-grid-row id=${entry.id} draggable="true">
-            <cds-grid-cell>
+            <cds-grid-cell type="action">
               <cds-action-handle aria-label="sort ${entry.id} row" id="selected-${entry.id}-action" @click=${() => this.selectedEntryId = entry.id}></cds-action-handle>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -2483,7 +2617,7 @@ export function swappableRows() {
           <cds-grid-footer>List Two: ${this.listTwo.map(j => html`${j.id} `)}</cds-grid-footer>
         </cds-grid>
         <cds-dropdown ?hidden=${!this.selectedEntryId} anchor="#selected-${this.selectedEntryId}-action" @hiddenChange=${() => (this.selectedEntryId = null) as any}>
-          <cds-button @click=${this.appendToOtherGrid} block action="flat" size="sm">Move to <span>${this.listOne.find(i => i.id === this.selectedEntryId) ? 'Staging' : 'Production'}</span></cds-button>
+          <cds-button @click=${this.appendToOtherGrid} action="flat" size="sm">Move to <span>${this.listOne.find(i => i.id === this.selectedEntryId) ? 'Staging' : 'Production'}</span></cds-button>
         </cds-dropdown>`;
     }
 
@@ -2506,35 +2640,71 @@ export function swappableRows() {
     }
 
     private sortOne(e: any) {
-      if (this.listOne.find(i => i.id === e.detail.from.id)) {
-        this.listOne = sortList(e.detail.target, e.detail.from, this.listOne) as TestVM[];
-      } else {
-        const { fromList, targetList } = this.swap(this.listOne, this.listTwo, e.detail);
-        this.listOne = targetList;
-        this.listTwo = fromList;
+      this.setAriaLiveMessage(e);
+      if (e.detail.type === 'drop') {
+        if (this.listOne.find(i => i.id === e.detail.from.id)) {
+          this.listOne = sortList(e.detail.target, e.detail.from, this.listOne) as TestVM[];
+        } else {
+          const { fromList, targetList } = swapBetweenLists<TestVM>(this.listOne, this.listTwo, e.detail);
+          this.listOne = targetList;
+          this.listTwo = fromList;
+        }
       }
     }
 
     private sortTwo(e: any) {
-      if (this.listTwo.find(i => i.id === e.detail.from.id)) {
-        this.listTwo = sortList(e.detail.target, e.detail.from, this.listTwo) as TestVM[];
-      } else {
-        const { fromList, targetList } = this.swap(this.listTwo, this.listOne, e.detail);
-        this.listTwo = targetList;
-        this.listOne = fromList;
+      this.setAriaLiveMessage(e);
+      if (e.detail.type === 'drop') {
+        if (this.listTwo.find(i => i.id === e.detail.from.id)) {
+          this.listTwo = sortList(e.detail.target, e.detail.from, this.listTwo) as TestVM[];
+        } else {
+          const { fromList, targetList } = swapBetweenLists<TestVM>(this.listTwo, this.listOne, e.detail);
+          this.listTwo = targetList;
+          this.listOne = fromList;
+        }
       }
     }
 
-    private swap(targetList: any, fromList: any, detail: any) {
-      const item = fromList.splice(fromList.indexOf(fromList.find(i => i.id === detail.from.id)), 1)[0];
-      const targetIndex = targetList.indexOf(targetList.find(i => i.id === detail.target.id));
-      targetIndex === -1 ? targetList.push(item) : targetList.splice(targetIndex, 0, item);
-      return { targetList: [...targetList], fromList: [...fromList] };
+    private setAriaLiveMessage(e: any) {
+      if (e.detail.type === 'drop') {
+        const listOneIndex = this.listOne.findIndex(i => i.id === e.detail.target.id);
+        const listTwoIndex = this.listTwo.findIndex(i => i.id === e.detail.target.id);
+        this.ariaLiveMessage = `host ${e.detail.from.id} dropped at row ${(listOneIndex !== -1 ? listOneIndex : listTwoIndex) + 1} ${listOneIndex !== -1 ? 'production' : 'staging'}`;
+      } else if (e.detail.type === 'dragstart') {
+        this.ariaLiveMessage = `host ${e.detail.from.id} grabbed`;
+      }
     }
   }
 
-  registerElementSafely('demo-grid-swappable-rows', DemoSwappableRows);
-  return html`<demo-grid-swappable-rows></demo-grid-swappable-rows>`;
+  registerElementSafely('demo-grid-row-swappable', DemoRowSwappable);
+  return html`<demo-grid-row-swappable></demo-grid-row-swappable>`;
+}
+
+export function rowHeight() {
+  class DemoRowHeight extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="row height datagrid demo" style="--row-height: 48px; --column-height: 48px; --body-height: 360px;">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-row-height', DemoRowHeight);
+  return html`<demo-grid-row-height></demo-grid-row-height>`;
 }
 
 export function noScroll() {
@@ -2564,9 +2734,9 @@ export function noScroll() {
   return html`<demo-grid-no-scroll></demo-grid-no-scroll>`;
 }
 
-export function fixedRows() {
+export function rowFixed() {
   return html`    
-    <cds-grid aria-label="fixed row datagrid demo" style="--body-height: 360px">
+    <cds-grid aria-label="row fixed datagrid demo" style="--body-height: 360px">
     <cds-grid-column>Host</cds-grid-column>
       <cds-grid-column>Status</cds-grid-column>
       <cds-grid-column>CPU</cds-grid-column>
@@ -2652,46 +2822,6 @@ export function fixedRows() {
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>
   `;
-}
-
-export function draggableColumns() {
-  class DemoDraggableColumns extends LitElement {
-    @state() private data = getVMData().map(i => {
-      i.selected = undefined;
-      i.about = undefined;
-      return i;
-    });
-
-    @state() private columns = [{ label: 'Host', key: 'id' }, { label: 'Status', key: 'status' }, { label: 'CPU', key: 'cpu'}, { label: 'Memory', key: 'memory' }];
-
-    render() {
-      return html`
-        <cds-grid aria-label="draggable columns datagrid demo" @cdsDraggableChange=${this.sortColumns} style="--body-height: 360px">
-          ${this.columns.map(c => html`
-            <cds-grid-column draggable="true">
-              ${c.label} <cds-action-handle aria-label="sort ${c.label} column"></cds-action-handle>
-            </cds-grid-column>`)}
-          ${this.data.map((entry: any) => html`
-            <cds-grid-row id=${entry.id}>
-              ${this.columns.map(c => html`<cds-grid-cell>${entry[c.key]}</cds-grid-cell>`)}
-            </cds-grid-row>`)}
-          <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-      `;
-    }
-
-    private sortColumns(e: any) {
-      const targetIndex = parseInt(e.detail.target.getAttribute('aria-colindex')) - 1;
-      const fromIndex = parseInt(e.detail.from.getAttribute('aria-colindex')) - 1;
-      const items = [...this.columns];
-      const item = items.splice(fromIndex, 1)[0];
-      items.splice(targetIndex, 0, item);
-      this.columns = [...items];
-    }
-  }
-
-  registerElementSafely('demo-grid-draggable-columns', DemoDraggableColumns);
-  return html`<demo-grid-draggable-columns></demo-grid-draggable-columns>`;
 }
 
 export function rangeSelect() {
@@ -2790,4 +2920,615 @@ export function rangeSelectContextMenu() {
 
   registerElementSafely('demo-range-select-context-menu', DemoRangeSelectContextMenu);
   return html`<demo-range-select-context-menu></demo-range-select-context-menu>`;
+}
+
+export function borderCell() {
+  return html`
+    <cds-grid aria-label="border cell datagrid demo" border="cell" style="--body-height: 360px">
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-footer></cds-grid-footer>
+    </cds-grid>
+  `;
+}
+
+export function borderColumn() {
+  return html`
+    <cds-grid aria-label="border column datagrid demo" border="column" style="--body-height: 360px">
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-footer></cds-grid-footer>
+    </cds-grid>
+  `;
+}
+
+export function borderNone() {
+  return html`
+    <cds-grid aria-label="border none datagrid demo" border="none" style="--body-height: 360px">
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell>vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+    </cds-grid>`;
+}
+
+export function rowHeader() {
+  return html`
+    <cds-grid aria-label="row header datagrid demo" style="--body-height: 360px">
+      <cds-grid-column width="120px">Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-001</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>5%</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-003</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>10%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-002</cds-grid-cell>
+        <cds-grid-cell>online</cds-grid-cell>
+        <cds-grid-cell>20%</cds-grid-cell>
+        <cds-grid-cell>30%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-011</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-004</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+        <cds-grid-cell>80%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-008</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-006</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-005</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-007</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-010</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>50%</cds-grid-cell>
+        <cds-grid-cell>60%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-009</cds-grid-cell>
+        <cds-grid-cell>disruption</cds-grid-cell>
+        <cds-grid-cell>65%</cds-grid-cell>
+        <cds-grid-cell>90%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-012</cds-grid-cell>
+        <cds-grid-cell>offline</cds-grid-cell>
+        <cds-grid-cell>85%</cds-grid-cell>
+        <cds-grid-cell>70%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-row>
+        <cds-grid-cell role="rowheader">vm-host-013</cds-grid-cell>
+        <cds-grid-cell>deactivated</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+        <cds-grid-cell>0%</cds-grid-cell>
+      </cds-grid-row>
+      <cds-grid-footer></cds-grid-footer>
+    </cds-grid>`;
+}
+
+export function asyncData() {
+  class DemoGridAsyncData extends LitElement {
+    @state() private data: TestVM[] = [];
+
+    render() {
+      return html`
+        <cds-grid aria-label="async loading datagrid demo" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          ${this.data.length === 0 ? html`
+            <cds-grid-placeholder>
+              <cds-progress-circle size="xl" status="info"></cds-progress-circle>
+              <p cds-text="subsection">Loading VMs</p>
+            </cds-grid-placeholder>
+          ` : ''}
+          <cds-grid-footer>
+            <cds-inline-button @click=${() => this.load()}>Reload Data</cds-inline-button>
+          </cds-grid-footer>
+        </cds-grid>`;
+    }
+
+    firstUpdated(props: Map<string, any>) {
+      super.firstUpdated(props);
+      this.load();
+    }
+
+    private async load() {
+      this.data = [];
+      this.data = await new Promise(resolve => setTimeout(() => resolve(getVMData()), 2000));
+    }
+
+    protected createRenderRoot() {
+      return this;
+    }
+  }
+
+  registerElementSafely('demo-grid-async-data', DemoGridAsyncData);
+  return html`<demo-grid-async-data></demo-grid-async-data>`;
+}
+
+export function ariaGrid() {
+  return html`
+  <style>
+    .aria-grid-examples [role='grid'] {
+      width: 500px;
+      border: 1px solid #ccc;
+    }
+
+    .aria-grid-examples [role='row'] {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      /* border-bottom: 1px solid #ccc; */
+    }
+
+    .aria-grid-examples [role='grid'] [aria-rowindex]:nth-child(odd) {
+      filter: brightness(97%);
+    }
+
+    .aria-grid-examples [role='grid'] [aria-rowindex]:hover {
+      filter: brightness(94%);
+    }
+
+    .aria-grid-examples [aria-colcount='5'] [role='row'] {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    .aria-grid-examples [role='gridcell'],
+    .aria-grid-examples [role='rowheader'],
+    .aria-grid-examples [role='columnheader'] {
+      padding: 12px 18px;
+    }
+
+    .aria-grid-examples [role='columnheader']:last-child,
+    .aria-grid-examples [role='gridcell']:last-child,
+    .aria-grid-examples [role='row']:last-child {
+      border-right: none;
+    }
+
+    .aria-grid-examples [role='columnheader'] {
+      border-bottom: 1px solid #ccc;
+    }
+    
+    .aria-grid-examples [role='grid'] {
+      background: #eee;
+      overflow: hidden;
+    }
+
+    .aria-grid-examples [role='gridcell'] {
+      background: #fff;
+    }
+
+    .aria-grid-examples [aria-rowspan],
+    .aria-grid-examples [role='rowheader'],
+    .aria-grid-examples [role='columnheader'] {
+      background: none;
+      font-weight: 500;
+    }
+  </style>
+  <section class="aria-grid-examples" cds-layout="vertical gap:lg">
+    <h2 cds-text="subsection" id="basic-grid">Basic Grid</h2>
+    <div aria-labelledby="basic-grid" role="grid" aria-colcount="4" aria-rowcount="4">
+      <div role="row">
+        <div role="columnheader" aria-colindex="1">Host</div>
+        <div role="columnheader" aria-colindex="2">Status</div>
+        <div role="columnheader" aria-colindex="3">CPU</div>
+        <div role="columnheader" aria-colindex="4">Memory</div>
+      </div>
+      <div role="row" aria-rowindex="1">
+        <div role="gridcell" aria-colindex="1">vm-host-001</div>
+        <div role="gridcell" aria-colindex="2">online</div>
+        <div role="gridcell" aria-colindex="3">5%</div>
+        <div role="gridcell" aria-colindex="4">10%</div>
+      </div>
+      <div role="row" aria-rowindex="2">
+        <div role="gridcell" aria-colindex="1">vm-host-003</div>
+        <div role="gridcell" aria-colindex="2">online</div>
+        <div role="gridcell" aria-colindex="3">10%</div>
+        <div role="gridcell" aria-colindex="4">30%</div>
+      </div>
+      <div role="row" aria-rowindex="3">
+        <div role="gridcell" aria-colindex="1">vm-host-002</div>
+        <div role="gridcell" aria-colindex="2">online</div>
+        <div role="gridcell" aria-colindex="3">20%</div>
+        <div role="gridcell" aria-colindex="4">35%</div>
+      </div>
+      <div role="row" aria-rowindex="4">
+        <div role="gridcell" aria-colindex="1">vm-host-011</div>
+        <div role="gridcell" aria-colindex="2">offline</div>
+        <div role="gridcell" aria-colindex="3">90%</div>
+        <div role="gridcell" aria-colindex="4">80%</div>
+      </div>
+    </div>
+
+    <h2 cds-text="subsection" id="row-headers">Row Headers</h2>
+    <div aria-labelledby="row-headers" role="grid" aria-colcount="4" aria-rowcount="4">
+      <div role="row">
+        <div role="columnheader" aria-colindex="1">Host</div>
+        <div role="columnheader" aria-colindex="2">Status</div>
+        <div role="columnheader" aria-colindex="3">CPU</div>
+        <div role="columnheader" aria-colindex="4">Memory</div>
+      </div>
+      <div role="row" aria-rowindex="1">
+        <div role="rowheader" aria-colindex="1">vm-host-001</div>
+        <div role="gridcell" aria-colindex="2">online</div>
+        <div role="gridcell" aria-colindex="3">5%</div>
+        <div role="gridcell" aria-colindex="4">10%</div>
+      </div>
+      <div role="row" aria-rowindex="2">
+        <div role="rowheader" aria-colindex="1">vm-host-003</div>
+        <div role="gridcell" aria-colindex="2">online</div>
+        <div role="gridcell" aria-colindex="3">10%</div>
+        <div role="gridcell" aria-colindex="4">30%</div>
+      </div>
+      <div role="row" aria-rowindex="3">
+        <div role="rowheader" aria-colindex="1">vm-host-002</div>
+        <div role="gridcell" aria-colindex="2">online</div>
+        <div role="gridcell" aria-colindex="3">20%</div>
+        <div role="gridcell" aria-colindex="4">35%</div>
+      </div>
+      <div role="row" aria-rowindex="4">
+        <div role="rowheader" aria-colindex="1">vm-host-011</div>
+        <div role="gridcell" aria-colindex="2">offline</div>
+        <div role="gridcell" aria-colindex="3">90%</div>
+        <div role="gridcell" aria-colindex="4">80%</div>
+      </div>
+    </div>
+
+    <h2 cds-text="subsection" id="column-span">Column Span</h2>
+    <div aria-labelledby="column-span" role="grid" aria-colcount="4" aria-rowcount="4">
+      <div role="row">
+        <div role="columnheader" aria-colspan="2" aria-colindex="1" style="grid-column: 1 / 3">Details</div>
+        <div role="columnheader" aria-colspan="2" aria-colindex="3" style="grid-column: 3 / 5">Resources</div>
+      </div>
+      <div role="row">
+        <div role="columnheader" aria-colindex="1">Host</div>
+        <div role="columnheader" aria-colindex="2">Status</div>
+        <div role="columnheader" aria-colindex="3">CPU</div>
+        <div role="columnheader" aria-colindex="4">Memory</div>
+      </div>
+      <div role="row" aria-rowindex="1">
+        <div role="gridcell" aria-colindex="1">vm-host-001</div>
+        <div role="gridcell" aria-colindex="2">online</div>
+        <div role="gridcell" aria-colindex="3">5%</div>
+        <div role="gridcell" aria-colindex="4">10%</div>
+      </div>
+      <div role="row" aria-rowindex="2">
+        <div role="gridcell" aria-colindex="1">vm-host-003</div>
+        <div role="gridcell" aria-colindex="2">online</div>
+        <div role="gridcell" aria-colindex="3">10%</div>
+        <div role="gridcell" aria-colindex="4">30%</div>
+      </div>
+      <div role="row" aria-rowindex="3">
+        <div role="gridcell" aria-colindex="1">vm-host-002</div>
+        <div role="gridcell" aria-colindex="2">online</div>
+        <div role="gridcell" aria-colindex="3">20%</div>
+        <div role="gridcell" aria-colindex="4">35%</div>
+      </div>
+      <div role="row" aria-rowindex="4">
+        <div role="gridcell" aria-colindex="1">vm-host-011</div>
+        <div role="gridcell" aria-colindex="2">offline</div>
+        <div role="gridcell" aria-colindex="3">90%</div>
+        <div role="gridcell" aria-colindex="4">80%</div>
+      </div>
+    </div>
+
+    <h2 cds-text="subsection" id="row-span">Row Span</h2>
+    <div aria-labelledby="row-span" role="grid" aria-colcount="5" aria-rowcount="4" style="width: 650px !important">
+      <div role="row">
+        <div role="columnheader" aria-colindex="1">Environment</div>
+        <div role="columnheader" aria-colindex="2">Host</div>
+        <div role="columnheader" aria-colindex="3">Status</div>
+        <div role="columnheader" aria-colindex="4">CPU</div>
+        <div role="columnheader" aria-colindex="5">Memory</div>
+      </div>
+      <div role="row" aria-rowindex="1">
+        <div role="gridcell" aria-colindex="1" aria-rowspan="2">Production</div>  
+        <div role="gridcell" aria-colindex="2">vm-host-001</div>
+        <div role="gridcell" aria-colindex="3">online</div>
+        <div role="gridcell" aria-colindex="4">5%</div>
+        <div role="gridcell" aria-colindex="5">10%</div>
+      </div>
+      <div role="row" aria-rowindex="2" style="grid-template-columns: 1fr 1fr 1fr 1fr; width: 520px; margin-left:130px">
+        <div role="gridcell" aria-colindex="2">vm-host-003</div>
+        <div role="gridcell" aria-colindex="3">online</div>
+        <div role="gridcell" aria-colindex="4">10%</div>
+        <div role="gridcell" aria-colindex="5">30%</div>
+      </div>
+      <div role="row" aria-rowindex="3">
+        <div role="gridcell" aria-colindex="1" aria-rowspan="2">Staging</div>
+        <div role="gridcell" aria-colindex="2">vm-host-002</div>
+        <div role="gridcell" aria-colindex="3">online</div>
+        <div role="gridcell" aria-colindex="4">20%</div>
+        <div role="gridcell" aria-colindex="5">35%</div>
+      </div>
+      <div role="row" aria-rowindex="4" style="grid-template-columns: 1fr 1fr 1fr 1fr; width: 520px; margin-left:130px">
+        <div role="gridcell" aria-colindex="1">vm-host-011</div>
+        <div role="gridcell" aria-colindex="2">offline</div>
+        <div role="gridcell" aria-colindex="3">90%</div>
+        <div role="gridcell" aria-colindex="4">80%</div>
+      </div>
+    </div>
+  </section>
+  `;
 }

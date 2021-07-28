@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Single Select" />
+<Meta title="Data Grid (Preview)/Column Filter" />
 
-# Grid Single Select
+# Grid Column Filter
 
 <cds-alert-group status="warning" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,25 +11,27 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-Single Select Rows are created using the `cds-radio` component. Create an associated
-radio group by using the same `name` attribute on each radio control. To mark a row
-as selected, set the `selected` attribute/property on the `cds-grid-row` component.
+To use column filtering leverage the `cds-search` or `cds-datalist` components. With `cds-action`
+toggle a filter dopdown to filter a particular column. Using the search input events
+filter against your list based on the applied column.
 
-<Story id="stories-grid--single-select" />
+<Story id="stories-grid--column-filter" />
 
 ```html
 <cds-grid>
-  <cds-grid-column width="50"></cds-grid-column>
-  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>
+    Host
+    <cds-action id="id-filter-demo" shape="filter" aria-label="search available hosts"></cds-action>
+    <cds-search hidden anchor="#id-filter-demo (element ref)">
+      <cds-search>
+        <input type="search" aria-label="search hosts" placeholder="Search" />
+      </cds-search>
+    </cds-dropdown>
+  </cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>
   <cds-grid-column>CPU</cds-grid-column>
   <cds-grid-column>Memory</cds-grid-column>
-  <cds-grid-row select>
-    <cds-grid-cell>
-      <cds-radio>
-        <input type="radio" name="hosts" aria-label="select host vm-host-001" />
-      </cds-radio>
-    </cds-grid-cell>
+  <cds-grid-row>
     <cds-grid-cell>vm-host-001</cds-grid-cell>
     <cds-grid-cell>online</cds-grid-cell>
     <cds-grid-cell>5%</cds-grid-cell>

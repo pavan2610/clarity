@@ -9,15 +9,16 @@
 }
 
 :host {
+  --background: #{$cds-alias-object-container-background};
   --body-height: auto;
   --grid-scroll-width: inital;
-  --scrollbar-background: #{$cds-alias-object-container-background};
+  --scrollbar-background: var(--background);
   --scrollbar-thumb-background: #{$cds-alias-object-border-color};
   --grid-template-columns: 1fr 1fr 1fr 1fr;
-  --column-height: calc(#{$cds-global-space-12} - #{$cds-global-space-3});
-  --row-height: calc(#{$cds-global-space-12} - #{$cds-global-space-3});
+  --column-height: #{$cds-alias-object-interaction-touch-target};
+  --row-height: #{$cds-alias-object-interaction-touch-target};
+  --scroll-padding-top: #{$cds-alias-object-interaction-touch-target};
   --row-content-visibility: auto;
-  --scroll-padding-top: var(--row-height);
   --body-overflow: auto;
   width: 100%;
 }
@@ -26,10 +27,29 @@
   user-select: none;
 }
 
+:host([border*='cell']) ::slotted(cds-grid-row) {
+  --cell-border-width: 1px;
+}
+
+:host([border*='column']) ::slotted(cds-grid-row) {
+  --cell-border-width: 1px;
+  --border-top: 0;
+  --border-bottom: 0;
+}
+
+:host([border*='none']) ::slotted(cds-grid-row) {
+  --border-top: 0;
+  --border-bottom: 0;
+}
+
+:host([cds-theme='compact']) {
+  --cds-alias-object-interaction-touch-target: 28px;
+}
+
 .private-host {
   border: $cds-alias-object-border-width-100 solid $cds-alias-object-border-color;
   border-radius: $cds-alias-object-border-radius-100;
-  background: $cds-alias-object-container-background;
+  background: var(--background);
   position: relative;
 }
 
@@ -49,7 +69,7 @@
   flex: 1 1 0%;
   min-width: fit-content;
   margin-top: 2px;
-  background: $cds-alias-object-container-background;
+  background: var(--background);
 }
 
 .column-row-group {
@@ -70,7 +90,7 @@
 }
 
 .footer {
-  background: $cds-alias-object-container-background;
+  background: var(--background);
 }
 
 ::slotted(cds-grid-row:not([cds-draggable='target']):first-of-type) {
@@ -84,7 +104,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  margin-top: 44px;
+  margin-top: 36px;
   box-shadow: inset 0 0 11px var(--scrollbar-background);
 }
 

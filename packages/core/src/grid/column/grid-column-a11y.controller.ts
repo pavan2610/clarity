@@ -19,6 +19,7 @@ export class GridColumnA11yController {
     if (!this.firstUpdated) {
       this.firstUpdated = true;
       this.host.setAttribute('role', 'columnheader');
+      // try aria-label to get around inner elements being read https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Grid_Role#examples
     }
 
     this.host.setAttribute('aria-colindex', `${this.host.colIndex}`);

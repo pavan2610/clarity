@@ -186,8 +186,12 @@ export function keyNavigationGridController() {
             color: var(--cds-global-color-white);
           }
 
-          section > div {
+          .row {
             display: contents;
+          }
+
+          .cell {
+            padding: 2px;
           }
 
           section button {
@@ -205,8 +209,8 @@ export function keyNavigationGridController() {
     }
 
     @query('section') keyGrid: HTMLElement;
-    @queryAll('section div') keyGridRows: NodeListOf<HTMLElement>;
-    @queryAll('section button') keyGridCells: NodeListOf<HTMLElement>;
+    @queryAll('section .row') keyGridRows: NodeListOf<HTMLElement>;
+    @queryAll('section .cell') keyGridCells: NodeListOf<HTMLElement>;
 
     @state() private items = Array.from(Array(10).keys()).map(() => Array.from(Array(10).keys()));
     @state() private selected = '0,0';
@@ -219,15 +223,16 @@ export function keyNavigationGridController() {
           <p cds-text="body">Active: ${this.active}</p>
           <section @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
             ${this.items.map(
-              (r, ri) => html` <div>
+              (r, ri) => html`<div class="row">
                 ${r.map(
-                  c =>
-                    html`<button
+                  c => html` <div class="cell">
+                    <button
                       ?selected=${this.selected === `${ri}-${c}`}
                       @click=${(e: any) => (this.selected = e.target.innerText)}
                     >
                       ${ri}-${c}
-                    </button>`
+                    </button>
+                  </div>`
                 )}
               </div>`
             )}

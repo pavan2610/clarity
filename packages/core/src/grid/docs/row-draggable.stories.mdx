@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Draggable Rows" />
+<Meta title="Data Grid (Preview)/Row Draggable" />
 
-# Grid Draggable Rows
+# Grid Row Draggable
 
 <cds-alert-group status="danger" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,7 +11,7 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-The Data Grid rows use the native [HTML5 Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
+The grid rows use the native [HTML5 Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
 To enable a row apply the `draggable="true"` attribute to the `cds-grid-row`.
 To create a dropzone that is not draggable, apply the `draggable="false"` attribute.
 Listen for drag events via the `cdsDraggableChange` event on the `cds-grid` element.
@@ -26,11 +26,11 @@ This ensures the host application has full control of how rows are rendered. Thi
 provides the flexibility for host applications to use framework specific drag and drop libraries
 to provide easier framework integrations.
 
-<Story id="stories-grid--draggable-rows" />
+<Story id="stories-grid--row-draggable" />
 
 ```html
 <cds-grid>
-  <cds-grid-column width="44"></cds-grid-column>
+  <cds-grid-column></cds-grid-column>
   <cds-grid-column>Host</cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>
   <cds-grid-column>CPU</cds-grid-column>

@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Layout" />
+<Meta title="Data Grid (Preview)/Row Detail" />
 
-# Grid Layout
+# Grid Row Detail
 
 <cds-alert-group status="warning" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,45 +11,37 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-## Optional Footer
+The `cds-grid-detail` component provides a modal-like overlay to display additional details to a particular row entry.
+A `cds-grid-detail` can be visually toggled with `hidden`. To show the `cds-grid-detail` toggle its visibility using
+`cds-action` in a given grid row.
 
-The Grid Footer is optional and can be omitted from markup.
+<Story id="stories-grid--row-detail" />
 
 ```html
 <cds-grid>
+  <cds-grid-column></cds-grid-column>
   <cds-grid-column>Host</cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>
   <cds-grid-column>CPU</cds-grid-column>
   <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row>
+    <cds-grid-cell>
+      <cds-action-expand id="current-detail-demo" aria-label="view host details"></cds-action-expand>
+    </cds-grid-cell>
     <cds-grid-cell>vm-host-001</cds-grid-cell>
     <cds-grid-cell>online</cds-grid-cell>
     <cds-grid-cell>5%</cds-grid-cell>
     <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
+  <cds-grid-detail hidden anchor="current-detail-demo">
+    <h2>Host: vm-host-001</h2>
+    <p>Status: online</p>
+    <p>CPU: 5%</p>
+    <p>Memory: 10%</p>
+  </cds-grid-detail>
 </cds-grid>
 ```
 
-<Story id="stories-grid--optional-footer" />
+## API
 
-## No Scroll
-
-The `--body-height` property allows control of the height of the grid. By default, the grid will expand to the number of provided rows.
-
-```html
-<cds-grid>
-  <cds-grid-column>Host</cds-grid-column>
-  <cds-grid-column>Status</cds-grid-column>
-  <cds-grid-column>CPU</cds-grid-column>
-  <cds-grid-column>Memory</cds-grid-column>
-  <cds-grid-row>
-    <cds-grid-cell>vm-host-001</cds-grid-cell>
-    <cds-grid-cell>online</cds-grid-cell>
-    <cds-grid-cell>5%</cds-grid-cell>
-    <cds-grid-cell>10%</cds-grid-cell>
-  </cds-grid-row>
-  <cds-grid-footer></cds-grid-footer>
-</cds-grid>
-```
-
-<Story id="stories-grid--no-scroll" />
+<Props of={'cds-grid-detail'} />

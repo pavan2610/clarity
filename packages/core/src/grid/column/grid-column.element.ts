@@ -16,6 +16,8 @@ export class CdsGridColumn extends LitElement {
 
   @property({ type: String }) position: 'initial' | 'sticky' | 'fixed' = 'initial';
 
+  @property({ type: String }) type: 'default' | 'action';
+
   @state({ type: Number }) colIndex: number;
 
   @state({ type: String, attribute: 'slot', reflect: true }) slot = 'columns';
@@ -34,9 +36,7 @@ export class CdsGridColumn extends LitElement {
   render() {
     return html`
       <div part="column">
-        <div cds-layout="horizontal fill gap:md align:vertical-center wrap:none">
-          <slot></slot>
-        </div>
+        <slot></slot>
         ${this.resizable !== 'hidden'
           ? html`<cds-action-resize
                 .readonly=${this.resizable === false}
@@ -48,7 +48,7 @@ export class CdsGridColumn extends LitElement {
     `;
   }
 
-  updated(props: Map<string, any>) {
+  async updated(props: Map<string, any>) {
     super.updated(props);
 
     if (

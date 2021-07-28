@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Multi Action" />
+<Meta title="Data Grid (Preview)/Row Batch Action" />
 
-# Grid Multi-Action
+# Grid Row Batch Action
 
 <cds-alert-group status="warning" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,20 +11,20 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-Multi-Action support is similar to single Action support but leverages `cds-checkbox` to determine
+Row batch action support is similar to single sction support but leverages `cds-checkbox` to determine
 which elements the actions should apply. To mark a row as selected, set the `select`
 attribute/property on the `cds-grid-row`.
 
-<Story id="stories-grid--multi-action" />
+<Story id="stories-grid--row-batch-action" />
 
 ```html
 <cds-grid>
   <cds-grid-column width="100">
     <cds-checkbox>
-      <input type="checkbox" aria-label="choose action for selected hosts" />
+      <input type="checkbox" aria-label="select all hosts" />
     </cds-checkbox>
-    <cds-action id="multi-action" aria-label="filter column"></cds-action>
-    <cds-dropdown anchor="#multi-action (element ref)">
+    <cds-action id="batch-action" aria-label="host options"></cds-action>
+    <cds-dropdown anchor="#batch-action (element ref)">
       <cds-button action="flat" block size="sm">Restart Selected</cds-button>
       <cds-button action="flat" block size="sm">Shutdown Selected</cds-button>
     </cds-dropdown>
