@@ -7,9 +7,9 @@
 :host {
   width: initial;
   position: relative;
-  --width: 16px;
-  --height: 16px;
-  --cds-alias-object-interaction-touch-target: 18px;
+  --width: #{$cds-global-space-7};
+  --height: #{$cds-global-space-7};
+  --cds-alias-object-interaction-touch-target: #{$cds-global-space-8};
 }
 
 ::slotted(label) {

@@ -45,4 +45,10 @@ describe('grid-cell-a11y.controller', () => {
     await componentIsStable(component);
     expect(component.getAttribute('aria-colindex')).toBe('2');
   });
+
+  it('should allow alternate role types such as rowheader', async () => {
+    component.setAttribute('role', 'rowheader');
+    await componentIsStable(component);
+    expect(component.getAttribute('role')).toBe('rowheader');
+  });
 });

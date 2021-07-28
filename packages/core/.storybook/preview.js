@@ -105,6 +105,7 @@ export const parameters = {
           'Column Visibility',
           'Column Sticky',
           'Column Fixed',
+          'Column Align',
           'Footer',
           'Pagination',
           'Placeholder',

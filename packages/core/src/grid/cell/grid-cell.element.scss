@@ -9,28 +9,32 @@
   --border-left: 0;
   --min-height: var(--row-height, #{$cds-alias-object-interaction-touch-target});
   --min-width: #{$cds-alias-object-interaction-touch-target};
+  --font-size: #{$cds-global-typography-font-size-4};
+  --justify-content: var(--cell-justify-content, start);
+  --padding: #{$cds-global-space-4 $cds-global-space-6};
+  --color: #{$cds-global-typography-color-500};
   display: block;
   outline: 0 !important;
   position: sticky;
 }
 
 [part='cell'] {
+  justify-content: var(--justify-content);
   min-height: var(--min-height);
   border-left: var(--border-left);
   background: var(--background);
   box-shadow: var(--border-top);
   border-right: var(--border-right);
-  font-size: 14px;
+  min-width: var(--min-width);
+  font-size: var(--font-size);
+  padding: var(--padding);
+  color: var(--color);
   text-align: left;
-  margin: 0;
   display: flex;
   gap: $cds-global-space-5;
-  padding: $cds-global-space-4 $cds-global-space-6;
   line-height: 1em;
   align-items: center;
   width: 100%;
-  min-width: var(--min-width);
-  color: $cds-global-typography-color-500;
   position: relative;
   --cell-height: var(--min-height); // alias for slotted elements
 }
@@ -51,12 +55,12 @@
 }
 
 ::slotted([cds-action]) {
-  --outline-offset: -4px;
+  --outline-offset: calc(#{$cds-global-space-3} * -1);
 }
 
 :host([tabindex='0']:focus) [focusable],
 :host([type='action']) ::slotted([cds-control]),
 :host([type='action']) ::slotted([cds-action]) {
   --cds-alias-object-interaction-touch-target: var(--cell-height);
-  --outline-offset: -4px;
+  --outline-offset: calc(#{$cds-global-space-3} * -1);
 }

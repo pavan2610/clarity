@@ -211,10 +211,6 @@ export function all() {
         <h2 cds-text="section">Row Header</h2>
         ${rowHeader()}
       </div>
-      <div cds-layout="vertical gap:lg">
-        <h2 cds-text="section">Range Select</h2>
-        ${noScroll()}
-      </div>
     </section>
   `;
 }
@@ -311,7 +307,7 @@ export function basic() {
 
 export function keyboard() {
   return html`
-    <cds-grid aria-label="keyboard navigation datagrid demo">
+    <cds-grid aria-label="keyboard navigation datagrid demo" style="--body-height: 360px">
       <cds-grid-column width="200px">Key</cds-grid-column>
       <cds-grid-column>Function</cds-grid-column>
       <cds-grid-row>
@@ -418,455 +414,144 @@ export function keyboard() {
 }
 
 export function darkTheme() {
-  return html`
-    <cds-grid cds-theme="dark" aria-label="dark theme datagrid demo" style="--body-height: 360px">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
+  class DemoDarkTheme extends LitElement {
+    @state() private data = getVMData();
 
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>  
-  `;
+    render() {
+      return html`
+        <cds-grid cds-theme="dark" aria-label="dark theme datagrid demo" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+        </cds-grid>`;
+    }
+
+    protected createRenderRoot() {
+      return this;
+    }
+  }
+
+  registerElementSafely('demo-grid-dark-theme', DemoDarkTheme);
+  return html`<demo-grid-dark-theme></demo-grid-dark-theme>`;
 }
 
 export function columnResize() {
-  return html`
-    <cds-grid aria-label="column resize datagrid demo" style="--body-height: 360px">
-      <cds-grid-column resizable>Host</cds-grid-column>
-      <cds-grid-column resizable>Status</cds-grid-column>
-      <cds-grid-column resizable>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
+  class DemoColumnResize extends LitElement {
+    @state() private data = getVMData();
 
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
+    render() {
+      return html`
+        <cds-grid aria-label="column resize datagrid demo" style="--body-height: 360px">
+          <cds-grid-column resizable>Host</cds-grid-column>
+          <cds-grid-column resizable>Status</cds-grid-column>
+          <cds-grid-column resizable>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-column-resize', DemoColumnResize);
+  return html`<demo-grid-column-resize></demo-grid-column-resize>`;
 }
 
 export function columnFlexWidth() {
-  return html`
-    <cds-grid aria-label="column flex width datagrid demo" column-layout="flex" style="--body-height: 360px">
-      <cds-grid-column resizable>Host</cds-grid-column>
-      <cds-grid-column resizable>Status</cds-grid-column>
-      <cds-grid-column resizable>CPU</cds-grid-column>
-      <cds-grid-column resizable>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">25.00000001%</p></cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">50.00000005%</p></cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
+  class DemoColumnFlexWidth extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="column flex width datagrid demo" column-layout="flex" style="--body-height: 360px">
+          <cds-grid-column resizable>Host</cds-grid-column>
+          <cds-grid-column resizable>Status</cds-grid-column>
+          <cds-grid-column resizable>CPU</cds-grid-column>
+          <cds-grid-column resizable>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-column-flex-width', DemoColumnFlexWidth);
+  return html`<demo-grid-column-flex-width></demo-grid-column-flex-width>`;
 }
 
 export function columnFixedWidth() {
-  return html`
-    <cds-grid aria-label="column fixed width datagrid demo" style="--body-height: 360px">
-      <cds-grid-column width="150px">Host</cds-grid-column>
-      <cds-grid-column width="150px">Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>25%</p></cds-grid-cell>
-        <cds-grid-cell>50%</p></cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
+  class DemoColumnFixedWidth extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="column fixed width datagrid demo" style="--body-height: 360px">
+          <cds-grid-column width="150px">Host</cds-grid-column>
+          <cds-grid-column width="150px">Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-column-fixed-width', DemoColumnFixedWidth);
+  return html`<demo-grid-column-fixed-width></demo-grid-column-fixed-width>`;
 }
 
 export function columnOverflow() {
-  return html`
-    <cds-grid aria-label="column overflow datagrid demo" style="--body-height: 360px">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column width="100px">CPU</cds-grid-column>
-      <cds-grid-column width="100px">Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">25.00000001%</p></cds-grid-cell>
-        <cds-grid-cell><p cds-text="truncate">50.00000005%</p></cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
+  const data = getVMData();
+  data[0].cpu = 25.00000001;
+  data[0].memory = 50.00000001;
+  class DemoColumnOverflow extends LitElement {
+    @state() private data = data;
+
+    render() {
+      return html`
+        <cds-grid aria-label="column overflow datagrid demo" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column width="100px">CPU</cds-grid-column>
+          <cds-grid-column width="100px">Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell><p cds-text="truncate">${entry.cpu}%</p></cds-grid-cell>
+            <cds-grid-cell><p cds-text="truncate">${entry.memory}%</p></cds-grid-cell>
+          </cds-grid-row>`)}
+        </cds-grid>`;
+    }
+
+    protected createRenderRoot() {
+      return this;
+    }
+  }
+
+  registerElementSafely('demo-grid-column-overflow', DemoColumnOverflow);
+  return html`<demo-grid-column-overflow></demo-grid-column-overflow>`;
 }
 
 export function rtl() {
@@ -917,93 +602,29 @@ export function rtl() {
 }
 
 export function responsive() {
-  return html`
-    <cds-grid aria-label="responsive datagrid demo" style="width: 340px; --body-height: 420px">
-      <cds-grid-column position="fixed" width="120px">Host</cds-grid-column>
-      <cds-grid-column width="200px">Status</cds-grid-column>
-      <cds-grid-column width="200px">CPU</cds-grid-column>
-      <cds-grid-column width="200px">Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
+  class DemoResponsive extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="responsive datagrid demo" style="width: 340px; --body-height: 420px">
+          <cds-grid-column position="fixed" width="120px">Host</cds-grid-column>
+          <cds-grid-column width="200px">Status</cds-grid-column>
+          <cds-grid-column width="200px">CPU</cds-grid-column>
+          <cds-grid-column width="200px">Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell role="rowheader">${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-responsive', DemoResponsive);
+  return html`<demo-grid-responsive></demo-grid-responsive>`;
 }
 
 export function placeholder() {
@@ -1169,8 +790,7 @@ export function kitchenSink() {
         <section cds-layout="vertical gap:lg">
           <cds-button action="outline" @click=${this.resetState}>clear local storage</cds-button>
           <pre style="width: 100%; overflow: auto;">${JSON.stringify({ ...this.state, data: this.state.data.map(i => i.id).join(','), orderPreference: this.state.orderPreference.join(',') }, null, 2)}</pre>
-        </section>
-      `;
+        </section>`;
     }
 
     connectedCallback() {
@@ -1318,47 +938,17 @@ export function pagination() {
                   <option value="25">25</option>
                 </select>
               </cds-select>
-              <cds-pagination-button
-                aria-label="go to first"
-                ?disabled=${this.currentPage === 0}
-                action="first"
-                @click=${this.firstPage}
-              ></cds-pagination-button>
-              <cds-pagination-button
-                aria-label="go to previous"
-                ?disabled=${this.currentPage === 0}
-                action="prev"
-                @click=${this.prevPage}
-              ></cds-pagination-button>
+              <cds-pagination-button aria-label="go to first" ?disabled=${this.currentPage === 0} action="first" @click=${this.firstPage}></cds-pagination-button>
+              <cds-pagination-button aria-label="go to previous" ?disabled=${this.currentPage === 0} action="prev" @click=${this.prevPage}></cds-pagination-button>
               <cds-input cds-pagination-number>
-                <input
-                  type="number"
-                  value="1"
-                  size="1"
-                  aria-label="current page"
-                  @input=${this.setPage}
-                  .value=${this.currentPage + 1}
-                  min="1"
-                  max=${this.pageCount}
-                />
+                <input type="number" size="1" aria-label="current page" @input=${this.setPage} .value=${this.currentPage + 1} min="1" max=${this.pageCount} />
                 <cds-control-message>/ ${this.pageCount}</cds-control-message>
               </cds-input>
-              <cds-pagination-button
-                aria-label="go to next"
-                ?disabled=${this.currentPage === this.pageCount - 1}
-                action="next"
-                @click=${this.nextPage}
-              ></cds-pagination-button>
-              <cds-pagination-button
-                aria-label="go to last"
-                ?disabled=${this.currentPage === this.pageCount - 1}
-                action="last"
-                @click=${this.lastPage}
-              ></cds-pagination-button>
+              <cds-pagination-button aria-label="go to next" ?disabled=${this.currentPage === this.pageCount - 1} action="next" @click=${this.nextPage}></cds-pagination-button>
+              <cds-pagination-button aria-label="go to last" ?disabled=${this.currentPage === this.pageCount - 1} action="last" @click=${this.lastPage}></cds-pagination-button>
             </cds-pagination>
           </cds-grid-footer>
-        </cds-grid>
-      `;
+        </cds-grid>`;
     }
 
     connectedCallback() {
@@ -2078,8 +1668,7 @@ export function columnSticky() {
             <cds-grid-cell>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-      `;
+        </cds-grid>`;
     }
 
     protected createRenderRoot() {
@@ -2143,271 +1732,83 @@ export function cellEditable() {
 }
 
 export function footerOptional() {
-  return html`
-    <cds-grid aria-label="footer optional datagrid demo" style="--body-height: 360px">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-    </cds-grid>
-  `;
+  class DemoFooterOptional extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="footer optional datagrid demo" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-footer-optional', DemoFooterOptional);
+  return html`<demo-grid-footer-optional></demo-grid-footer-optional>`;
 }
 
 export function footer() {
-  return html`
-    <cds-grid aria-label="footer datagrid demo" style="--body-height: 360px">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer>grid footer content</cds-grid-footer>
-    </cds-grid>
-  `;
+  class DemoFooter extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="footer datagrid demo" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer>grid footer content</cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-footer', DemoFooter);
+  return html`<demo-grid-footer></demo-grid-footer>`;
 }
 
 export function compact() {
-  return html`
-    <cds-grid aria-label="compact datagrid demo" cds-theme="compact" style="--body-height: 360px">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>`;
+  class DemoCompact extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="compact datagrid demo" cds-theme="compact" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-compact', DemoCompact);
+  return html`<demo-grid-compact></demo-grid-compact>`;
 }
 
 export function performance() {
@@ -2735,93 +2136,30 @@ export function noScroll() {
 }
 
 export function rowFixed() {
-  return html`    
-    <cds-grid aria-label="row fixed datagrid demo" style="--body-height: 360px">
-    <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row position="fixed">
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
+  class DemoRowFixed extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="row fixed datagrid demo" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map((entry, i) => html`
+          <cds-grid-row .position=${i === 0 ? 'fixed' : null}>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-row-fixed', DemoRowFixed);
+  return html`<demo-grid-row-fixed></demo-grid-row-fixed>`;
 }
 
 export function rangeSelect() {
@@ -2923,360 +2261,111 @@ export function rangeSelectContextMenu() {
 }
 
 export function borderCell() {
-  return html`
-    <cds-grid aria-label="border cell datagrid demo" border="cell" style="--body-height: 360px">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
+  class DemoBorderCell extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="border cell datagrid demo" border="cell" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-border-cell', DemoBorderCell);
+  return html`<demo-grid-border-cell></demo-grid-border-cell>`;
 }
 
 export function borderColumn() {
-  return html`
-    <cds-grid aria-label="border column datagrid demo" border="column" style="--body-height: 360px">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
+  class DemoBorderColumn extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="border column datagrid demo" border="column" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-border-column', DemoBorderColumn);
+  return html`<demo-grid-border-column></demo-grid-border-column>`;
 }
 
 export function borderNone() {
-  return html`
-    <cds-grid aria-label="border none datagrid demo" border="none" style="--body-height: 360px">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-    </cds-grid>`;
+  class DemoBorderNone extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="border none datagrid demo" border="none" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-border-none', DemoBorderNone);
+  return html`<demo-grid-border-none></demo-grid-border-none>`;
 }
 
 export function rowHeader() {
-  return html`
-    <cds-grid aria-label="row header datagrid demo" style="--body-height: 360px">
-      <cds-grid-column width="120px">Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell role="rowheader">vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>`;
+  class DemoRowHeader extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid  aria-label="row header datagrid demo" style="--body-height: 360px;">
+          <cds-grid-column width="120px">Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell role="rowheader">${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-row-header', DemoRowHeader);
+  return html`<demo-grid-row-header></demo-grid-row-header>`;
 }
 
 export function asyncData() {
@@ -3326,6 +2415,64 @@ export function asyncData() {
 
   registerElementSafely('demo-grid-async-data', DemoGridAsyncData);
   return html`<demo-grid-async-data></demo-grid-async-data>`;
+}
+
+export function columnAlignCenter() {
+  class DemoColumnAlignCenter extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid column-align="center" aria-label="column align center datagrid demo" style="--body-height: 360px;">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-column-align-center', DemoColumnAlignCenter);
+  return html`<demo-grid-column-align-center></demo-grid-column-align-center>`;
+}
+
+export function columnAlignRight() {
+  class DemoColumnAlignRight extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid column-align="right" aria-label="column align right datagrid demo" style="--body-height: 360px;">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell><p cds-text="monospace">${entry.cpu}%</p></cds-grid-cell>
+            <cds-grid-cell><p cds-text="monospace">${entry.memory}%</p></cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+
+    protected createRenderRoot() {
+      return this;
+    }
+  }
+
+  registerElementSafely('demo-grid-column-align-right', DemoColumnAlignRight);
+  return html`<demo-grid-column-align-right></demo-grid-column-align-right>`;
 }
 
 export function ariaGrid() {

@@ -11,15 +11,15 @@
 :host {
   --background: #{$cds-alias-object-container-background};
   --body-height: auto;
-  --grid-scroll-width: inital;
   --scrollbar-background: var(--background);
   --scrollbar-thumb-background: #{$cds-alias-object-border-color};
-  --grid-template-columns: 1fr 1fr 1fr 1fr;
   --column-height: #{$cds-alias-object-interaction-touch-target};
   --row-height: #{$cds-alias-object-interaction-touch-target};
-  --scroll-padding-top: #{$cds-alias-object-interaction-touch-target};
+  --scroll-padding-top: var(--column-height);
   --row-content-visibility: auto;
   --body-overflow: auto;
+  --column-text-align: left;
+  --cell-text-algin: left;
   width: 100%;
 }
 
@@ -27,12 +27,13 @@
   user-select: none;
 }
 
+/* border options */
 :host([border*='cell']) ::slotted(cds-grid-row) {
-  --cell-border-width: 1px;
+  --cell-border-width: #{$cds-alias-object-border-width-100};
 }
 
 :host([border*='column']) ::slotted(cds-grid-row) {
-  --cell-border-width: 1px;
+  --cell-border-width: #{$cds-alias-object-border-width-100};
   --border-top: 0;
   --border-bottom: 0;
 }
@@ -42,8 +43,19 @@
   --border-bottom: 0;
 }
 
+/* column alignments */
+:host([column-align*='center']) {
+  --column-justify-content: center;
+  --cell-justify-content: center;
+}
+
+:host([column-align*='right']) {
+  --column-justify-content: flex-end;
+  --cell-justify-content: flex-end;
+}
+
 :host([cds-theme='compact']) {
-  --cds-alias-object-interaction-touch-target: 28px;
+  --cds-alias-object-interaction-touch-target: calc(#{$cds-global-space-9} + #{$cds-global-space-3});
 }
 
 .private-host {
@@ -68,7 +80,7 @@
   flex-direction: column;
   flex: 1 1 0%;
   min-width: fit-content;
-  margin-top: 2px;
+  margin-top: #{$cds-global-space-2};
   background: var(--background);
 }
 
@@ -83,10 +95,8 @@
   z-index: 99;
   min-width: fit-content;
   grid-template-columns: var(--ch-grid);
-  // padding-inline: $cds-global-space-6 $cds-global-space-1;
-  // padding-inline: $cds-global-space-6 $cds-global-space-6;
   background: $cds-alias-object-container-background-tint;
-  box-shadow: 0 1px 0 $cds-alias-object-border-color;
+  box-shadow: 0 $cds-alias-object-border-width-100 0 $cds-alias-object-border-color;
 }
 
 .footer {
@@ -104,8 +114,8 @@
 }
 
 ::-webkit-scrollbar-track {
-  margin-top: 36px;
-  box-shadow: inset 0 0 11px var(--scrollbar-background);
+  margin-top: #{$cds-alias-object-interaction-touch-target};
+  box-shadow: inset 0 0 #{$cds-global-space-6} var(--scrollbar-background);
 }
 
 ::-webkit-scrollbar-thumb {

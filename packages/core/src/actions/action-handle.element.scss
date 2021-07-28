@@ -11,6 +11,6 @@
 }
 
 cds-icon[shape='drag-handle'] {
-  --icon-width: 28px;
-  --icon-height: 28px;
+  --icon-width: #{$cds-global-space-9};
+  --icon-height: #{$cds-global-space-9};
 }

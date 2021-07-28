@@ -8,12 +8,10 @@
   --color: #{$cds-alias-object-interaction-color-disabled};
   --cursor: ew-resize;
   --padding: 0;
-  --width: 2px;
-  --height: 24px;
-  --target-height: 36px;
-  --target-width: 18px;
-
-  // margin: 0 0 0 14px;
+  --width: #{$cds-global-space-2};
+  --height: #{$cds-global-space-9};
+  --target-height: #{$cds-global-space-11};
+  --target-width: #{$cds-global-space-8};
   position: relative;
   line-height: 0;
 

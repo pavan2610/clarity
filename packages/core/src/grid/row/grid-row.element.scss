@@ -5,12 +5,15 @@
 @import './../../styles/tokens/generated/index';
 
 :host {
-  --border-top: inset 0 2px 0 -1px #{$cds-alias-object-border-color};
-  --border-bottom: 0 2px 2px -1px #{$cds-alias-object-border-color};
+  --border-top: inset 0 #{$cds-alias-object-border-width-200} 0 calc(#{$cds-global-space-1} * -1) #{$cds-alias-object-border-color};
+  --border-bottom: 0 #{$cds-alias-object-border-width-200} #{$cds-alias-object-border-width-200} calc(#{$cds-global-space-1} * -1) #{$cds-alias-object-border-color};
   --background: #{$cds-alias-object-container-background};
   --min-height: var(--row-height, #{$cds-alias-object-interaction-touch-target});
+
+  /* stylelint-disable */
   content-visibility: var(--row-content-visibility, visible);
   contain-intrinsic-size: #{$cds-global-space-1} var(--min-height);
+  /* stylelint-enable */
 }
 
 ::slotted([role='rowheader']:first-child) {
@@ -55,5 +58,5 @@
 }
 
 :host([cds-draggable*='target']) {
-  --border-top: inset 0 3px 0 -1px #{$cds-alias-status-alt-tint};
+  --border-top: inset 0 #{$cds-alias-object-border-width-300} 0 calc(#{$cds-global-space-1} * -1) #{$cds-alias-status-alt-tint};
 }

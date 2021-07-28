@@ -16,7 +16,7 @@
   border-top: $cds-alias-object-border-width-100 solid $cds-alias-object-border-color;
   color: $cds-global-typography-color-500;
   background: $cds-alias-object-container-background-tint;
-  font-size: 14px;
+  font-size: #{$cds-global-typography-font-size-4};
 }
 
 ::slotted(cds-pagination) {

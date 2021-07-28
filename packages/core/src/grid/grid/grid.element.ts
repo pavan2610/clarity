@@ -21,7 +21,7 @@ import { GridRangeSelectionController } from './grid-range-selection.controller.
 export class CdsGrid extends LitElement {
   @property({ type: String }) columnLayout: 'fixed' | 'flex' = 'fixed';
 
-  @property({ type: String }) border: 'row' | 'cell' | 'none' = 'row';
+  @property({ type: String }) border: 'row' | 'cell' | 'column' | 'none' = 'row';
 
   @property({ type: Boolean }) rangeSelection = true;
 
