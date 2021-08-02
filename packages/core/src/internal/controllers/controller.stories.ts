@@ -243,7 +243,7 @@ export function keyNavigationGridController() {
 
     firstUpdated(props: Map<string, any>) {
       super.firstUpdated(props);
-      this.gridKeyNavigationController.initializeKeyGrid();
+      this.gridKeyNavigationController.initialize();
     }
   }
 

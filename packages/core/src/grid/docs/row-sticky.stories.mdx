@@ -1,8 +1,8 @@
 import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
-<Meta title="Data Grid (Preview)/Row Fixed" />
+<Meta title="Data Grid (Preview)/Row Sticky" />
 
-# Grid Row Fixed
+# Grid Row Sticky
 
 <cds-alert-group status="danger" cds-layout="m-b:lg">
   <cds-alert>
@@ -11,13 +11,16 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-Rows can be fixed in place. This will prevent the row from scrolling out of view.
-To place a row in a fixed position, set the column with a `position="fixed"` attribute. You can enable user toggling
+Rows can be set to sticky positioning. This will prevent the row from scrolling out of view when scrolled.
+If more than one sticky row exists the subsuquent sticky row will replace the prior as the grid is scrolled.
+To learn more checkout the [MDN position sticky](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning#position_sticky) documentation.
+
+To place a row in a sticky position, set the column with a `position="sticky"` attribute. You can enable user toggling
 of the position by using a `cds-action` to set the position state of a given column.
 
-<cds-alert status="warning">Only the first row can be placed in the fixed position and cannot be sorted.</cds-alert>
+<cds-alert status="warning">Similar to fixed rows, sticky rows are not compatible with draggable rows.</cds-alert>
 
-<Story id="stories-grid--row-fixed" />
+<Story id="stories-grid--row-sticky" />
 
 ```html
 <cds-grid>
@@ -25,13 +28,13 @@ of the position by using a `cds-action` to set the position state of a given col
   <cds-grid-column>Average</cds-grid-column>
   <cds-grid-column>Current</cds-grid-column>
   <cds-grid-column>About</cds-grid-column>
-  <cds-grid-row position="fixed">
+  <cds-grid-row>
     <cds-grid-cell>APPL</cds-grid-cell>
     <cds-grid-cell>$1000</cds-grid-cell>
     <cds-grid-cell>$0</cds-grid-cell>
     <cds-grid-cell>...</cds-grid-cell>
   </cds-grid-row>
-  <cds-grid-row>
+  <cds-grid-row position="sticky">
     <cds-grid-cell>MSFT</cds-grid-cell>
     <cds-grid-cell>$500</cds-grid-cell>
     <cds-grid-cell>$0.00</cds-grid-cell>

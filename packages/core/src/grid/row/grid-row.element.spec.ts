@@ -8,7 +8,6 @@ import { html } from 'lit';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
 import { CdsGridRow } from './grid-row.element.js';
 import '@cds/core/grid/register.js';
-import { CdsGridCell } from '../cell/grid-cell.element.js';
 
 describe('cds-grid-row', () => {
   let component: CdsGridRow;
@@ -52,15 +51,15 @@ describe('cds-grid-row', () => {
     expect(component.getAttribute('position')).toBe('fixed');
   });
 
-  it('should update colIndex of all child rows when updated', async () => {
-    await componentIsStable(component);
-    // aria-colindex starts at 1 not 0
-    expect(component.querySelector<CdsGridCell>('#cell-1').colIndex).toBe(1);
-    expect(component.querySelector<CdsGridCell>('#cell-2').colIndex).toBe(2);
+  // it('should update colIndex of all child rows when updated', async () => {
+  //   await componentIsStable(component);
+  //   // aria-colindex starts at 1 not 0
+  //   expect(component.querySelector<CdsGridCell>('#cell-1').colIndex).toBe(1);
+  //   expect(component.querySelector<CdsGridCell>('#cell-2').colIndex).toBe(2);
 
-    component.removeChild(component.querySelector<CdsGridCell>('#cell-1'));
-    await componentIsStable(component);
-    expect(component.querySelector<CdsGridCell>('#cell-1')).toBe(null);
-    expect(component.querySelector<CdsGridCell>('#cell-2').colIndex).toBe(1);
-  });
+  //   component.removeChild(component.querySelector<CdsGridCell>('#cell-1'));
+  //   await componentIsStable(component);
+  //   expect(component.querySelector<CdsGridCell>('#cell-1')).toBe(null);
+  //   expect(component.querySelector<CdsGridCell>('#cell-2').colIndex).toBe(1);
+  // });
 });

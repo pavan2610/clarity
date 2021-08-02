@@ -8,6 +8,10 @@
   line-height: 0;
 }
 
+.private-host {
+  height: #{$cds-global-space-9};
+}
+
 [direction='up'],
 [direction='down'] {
   --color: #{$cds-alias-object-interaction-color-disabled};

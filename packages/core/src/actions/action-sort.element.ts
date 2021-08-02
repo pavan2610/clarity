@@ -48,7 +48,6 @@ export class CdsActionSort extends CdsAction {
     super.connectedCallback();
     this.addEventListener('click', () => this.sortClick());
     this.ariaLabel = this.i18n.sort;
-    this.sortChange.emit(this.sort, { bubbles: true });
   }
 
   private sortClick() {

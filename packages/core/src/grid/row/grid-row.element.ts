@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit';
-import { baseStyles, property, state } from '@cds/core/internal';
-import { GridRowA11yController } from './grid-row-a11y.controller.js';
+import { baseStyles, property } from '@cds/core/internal';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
 import { GridRowPositionController } from './grid-row-position.controller.js';
 import styles from './grid-row.element.scss';
@@ -8,33 +7,22 @@ import styles from './grid-row.element.scss';
 export class CdsGridRow extends LitElement {
   @property({ type: Boolean }) selected: boolean;
 
-  @property({ type: String }) position: 'fixed' | '';
-
-  @state({ type: Number }) rowIndex: number;
-
-  protected gridRowA11yController = new GridRowA11yController(this);
+  @property({ type: String }) position: 'fixed' | 'sticky' | '';
 
   protected gridRowPositionController = new GridRowPositionController(this);
 
   static styles = [baseStyles, styles];
 
-  private _cells: NodeListOf<CdsGridCell>;
-  get cells(): NodeListOf<CdsGridCell> {
-    this._cells = this._cells ?? this.querySelectorAll('cds-grid-cell');
-    return this._cells;
+  /** @private */
+  get cells() {
+    return this.querySelectorAll<CdsGridCell>('cds-grid-cell');
   }
 
   render() {
     return html`
-      <div part="row" @slotchange=${this.updateCells}>
+      <div part="row">
         <slot></slot>
       </div>
     `;
-  }
-
-  private async updateCells() {
-    await this.updateComplete;
-    this._cells = null;
-    this.cells.forEach((c, i) => (c.colIndex = i + 1));
   }
 }

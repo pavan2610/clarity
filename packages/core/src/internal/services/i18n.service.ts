@@ -46,6 +46,7 @@ export interface I18nStrings {
   };
   grid: {
     resizeColumn: string;
+    closeDetails: string;
   };
 }
 
@@ -93,6 +94,7 @@ export const componentStringsDefault = {
   },
   grid: {
     resizeColumn: 'Resize Column',
+    closeDetails: 'Close Details',
   },
 };
 

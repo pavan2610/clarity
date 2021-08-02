@@ -1,9 +1,10 @@
-// import { isNumericString } from '@cds/core/internal';
 import { ReactiveControllerHost } from 'lit';
 
 export type GridColumnGroupSize = ReactiveControllerHost &
   HTMLElement & {
-    columns: NodeListOf<HTMLElement & { width?: string; colIndex?: number; type?: string }>;
+    columns: NodeListOf<
+      HTMLElement & { width?: string; colIndex?: number; type?: string; resizable?: true | false | 'hidden' }
+    >;
     columnLayout: 'fixed' | 'flex';
   };
 
@@ -26,12 +27,17 @@ export class GridColumnGroupSizeController {
   }
 
   createColumnGrids() {
-    const columns = Array.from(this.host.columns).filter(c => !c.hidden);
+    const columns = Array.from(this.host.columns);
+    columns[this.host.getAttribute('dir') === 'rtl' ? 0 : columns.length - 1].resizable = 'hidden';
 
-    const colWidths = columns.reduce((p, c) => `${p} ${`var(--ch${c.colIndex}, ${c.width ? c.width : '1fr'})`}`, '');
+    const colWidths = columns
+      .filter(c => !c.hidden)
+      .reduce((p, c) => `${p} ${`var(--ch${c.colIndex}, ${c.width ? c.width : '1fr'})`}`, '');
     this.host.style.setProperty('--ch-grid', colWidths);
 
-    const rowColWidths = columns.reduce((p, c) => `${p} ${`var(--c${c.colIndex}, ${c.width ? c.width : '1fr'})`}`, '');
+    const rowColWidths = columns
+      .filter(c => !c.hidden)
+      .reduce((p, c) => `${p} ${`var(--c${c.colIndex}, ${c.width ? c.width : '1fr'})`}`, '');
     this.host.style.setProperty('--c-grid', rowColWidths);
   }
 }

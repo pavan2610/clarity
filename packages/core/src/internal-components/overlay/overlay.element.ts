@@ -166,7 +166,7 @@ export class CdsInternalOverlay extends CdsBaseFocusTrap implements Animatable {
   protected render() {
     return html`
       ${this.backdropTemplate}
-      <div class="private-host" tabindex="-1" aria-modal="true" role="dialog">
+      <div class="private-host" part="private-host" tabindex="-1" aria-modal="true" role="dialog">
         <slot></slot>
       </div>
     `;

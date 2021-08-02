@@ -1,5 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
-import { elementResize, isNumericString, supportsAdoptingStyleSheets } from '@cds/core/internal';
+import { elementResize, isNumericString, pxToRem, supportsAdoptingStyleSheets } from '@cds/core/internal';
 import { CdsActionResize } from '@cds/core/actions';
 
 export type GridColumnSize = ReactiveControllerHost &
@@ -13,43 +13,50 @@ export type GridColumnSize = ReactiveControllerHost &
 export class GridColumnSizeController {
   private globalStyle = supportsAdoptingStyleSheets() ? new CSSStyleSheet() : null;
 
+  private resizeObserver: ResizeObserver;
+
   private get hostGrid() {
     return this.host.parentElement as HTMLElement;
   }
 
   constructor(private host: GridColumnSize) {
-    this.host.addController(this as any);
+    this.host.addController(this);
 
     if (this.globalStyle) {
       (document as any).adoptedStyleSheets = [...(document as any).adoptedStyleSheets, this.globalStyle];
     }
-  }
 
-  initializeResizer() {
-    elementResize(
-      this.host,
-      () => {
-        this.hostGrid?.style.setProperty(
-          `--c${this.host.colIndex}`,
-          `${parseInt(getComputedStyle(this.host).width)}px`
-        );
-      },
-      false
-    );
-  }
-
-  protected async hostConnected() {
-    if (this.host.type === 'action' && !this.host.width) {
-      this.host.width = '36px';
+    if ((this.host.type === 'action' || this.host.getAttribute('type') === 'action') && !this.host.width) {
+      this.host.width = pxToRem(36);
     }
-    await this.host.updateComplete;
-    this.host.resizeHandle?.addEventListener('resizeChange', (e: any) => this.updateResizedColumnWidth(e.detail));
   }
 
-  protected hostUpdated() {
+  async initialize() {
+    await this.host.updateComplete;
+    if (!this.resizeObserver) {
+      this.resizeObserver = elementResize(
+        this.host,
+        () => {
+          this.hostGrid?.style.setProperty(
+            `--c${this.host.colIndex}`,
+            `${parseInt(getComputedStyle(this.host).width)}px`
+          );
+        },
+        false
+      );
+
+      this.host.resizeHandle?.addEventListener('resizeChange', (e: any) => this.updateResizedColumnWidth(e.detail));
+    }
+  }
+
+  hostUpdated() {
     if (this.host.width && this.host.colIndex !== undefined) {
       this.hostGrid.style.setProperty(`--ch${this.host.colIndex}`, this.host.width);
     }
+  }
+
+  hostDisconected() {
+    this.resizeObserver.disconnect();
   }
 
   private updateResizedColumnWidth(width: number) {

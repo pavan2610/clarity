@@ -6,12 +6,13 @@
 
 :host {
   --border-top: inset 0 #{$cds-alias-object-border-width-200} 0 calc(#{$cds-global-space-1} * -1) #{$cds-alias-object-border-color};
-  --border-bottom: 0 #{$cds-alias-object-border-width-200} #{$cds-alias-object-border-width-200} calc(#{$cds-global-space-1} * -1) #{$cds-alias-object-border-color};
+  --border-bottom: 0 #{$cds-alias-object-border-width-200} #{$cds-alias-object-border-width-100}
+    calc(#{$cds-global-space-1} * -1) #{$cds-alias-object-border-color};
   --background: #{$cds-alias-object-container-background};
   --min-height: var(--row-height, #{$cds-alias-object-interaction-touch-target});
 
   /* stylelint-disable */
-  content-visibility: var(--row-content-visibility, visible);
+  content-visibility: var(--row-content-visibility, auto);
   contain-intrinsic-size: #{$cds-global-space-1} var(--min-height);
   /* stylelint-enable */
 }
@@ -21,8 +22,8 @@
   --cell-border-width: #{$cds-global-space-1};
 }
 
-:host([position='fixed']) {
-  --border-top: 0 !important;
+:host([position='fixed']),
+:host([position='sticky']) {
   --row-content-visibility: visible;
   position: sticky;
   z-index: 99;
@@ -30,7 +31,9 @@
   margin-top: calc(#{$cds-global-space-1} * -1);
 }
 
-:host([position='fixed']) [part='row'] {
+:host([position='fixed']) [part='row'],
+:host([position='sticky']) [part='row'] {
+  --background: #{$cds-alias-object-container-background-tint};
   box-shadow: var(--border-bottom);
 }
 

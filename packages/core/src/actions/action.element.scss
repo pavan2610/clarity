@@ -5,8 +5,8 @@
 @import './../styles/tokens/generated/index';
 
 :host {
-  --icon-width: #{$cds-global-space-8};
-  --icon-height: #{$cds-global-space-8};
+  --icon-width: #{$cds-global-space-7};
+  --icon-height: #{$cds-global-space-7};
   --width: var(--icon-width);
   --height: var(--icon-width);
   --cursor: pointer;

@@ -8,10 +8,12 @@
   --animation-duration: #{$cds-global-animation-duration-secondary};
 }
 
-cds-icon {
+:host([action='vertical']) cds-icon {
   transition: transform var(--animation-duration);
 }
 
-:host([direction='cross']) cds-icon {
-  transition: none;
+cds-icon[shape='detail-expand'],
+cds-icon[shape='detail-collapse'] {
+  width: $cds-global-space-8;
+  height: $cds-global-space-8;
 }

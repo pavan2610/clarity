@@ -31,7 +31,7 @@ export class KeyNavigationGridController {
     this.grid.addEventListener('keydown', (e: KeyboardEvent) => this.focusCell(e));
   }
 
-  initializeKeyGrid() {
+  initialize() {
     this.cells.forEach((i: HTMLElement) => i.setAttribute('tabindex', '-1'));
     const firstCell = this.cells[0];
     firstCell?.setAttribute('tabindex', '0');

@@ -77,7 +77,7 @@ describe('grid-column-size.controller', () => {
 
   it('should set tabindex -1 on grid cells and 0 for the first cell', async () => {
     await componentIsStable(component);
-    component.keyNavigationGridController.initializeKeyGrid();
+    component.keyNavigationGridController.initialize();
 
     await componentIsStable(component);
     expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('0');
@@ -86,7 +86,7 @@ describe('grid-column-size.controller', () => {
 
   it('should set activate a cell on left click', async () => {
     await componentIsStable(component);
-    component.keyNavigationGridController.initializeKeyGrid();
+    component.keyNavigationGridController.initialize();
 
     await componentIsStable(component);
     component.keyGridCells[2].dispatchEvent(new MouseEvent('mousedown', { bubbles: true, buttons: 1 }));
@@ -97,7 +97,7 @@ describe('grid-column-size.controller', () => {
 
   it('should support arrow key navigation', async () => {
     await componentIsStable(component);
-    component.keyNavigationGridController.initializeKeyGrid();
+    component.keyNavigationGridController.initialize();
 
     component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
     component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
@@ -135,7 +135,7 @@ describe('grid-column-size.controller', () => {
   it('should support key navigation shortcuts from wcag spec', async () => {
     // https://www.w3.org/TR/wai-aria-practices/examples/grid/dataGrids.html#kbd_label
     await componentIsStable(component);
-    component.keyNavigationGridController.initializeKeyGrid();
+    component.keyNavigationGridController.initialize();
 
     // last in row
     component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End' }));
@@ -178,7 +178,7 @@ describe('grid-column-size.controller', () => {
 
   it('should not page beyond index when using page up or page down', async () => {
     await componentIsStable(component);
-    component.keyNavigationGridController.initializeKeyGrid();
+    component.keyNavigationGridController.initialize();
 
     // limit reached should focus first available cell
     component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
@@ -202,7 +202,7 @@ describe('grid-column-size.controller', () => {
   it('should invert directions when in RTL mode', async () => {
     await componentIsStable(component);
     component.dir = 'rtl';
-    component.keyNavigationGridController.initializeKeyGrid();
+    component.keyNavigationGridController.initialize();
 
     component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
     component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
@@ -221,7 +221,7 @@ describe('grid-column-size.controller', () => {
 
   it('should focus first focusable item if more than one focusable item exists within cell', async () => {
     await componentIsStable(component);
-    component.keyNavigationGridController.initializeKeyGrid();
+    component.keyNavigationGridController.initialize();
 
     await componentIsStable(component);
     component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End', ctrlKey: true, metaKey: true }));

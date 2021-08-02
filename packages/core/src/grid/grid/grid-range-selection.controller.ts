@@ -9,11 +9,9 @@ export class GridRangeSelectionController {
   constructor(
     private host: ReactiveControllerHost &
       HTMLElement & { cells: NodeListOf<any> | any[]; rows: NodeListOf<any>; rangeSelection: boolean }
-  ) {
-    host.addController(this);
-  }
+  ) {}
 
-  async hostConnected() {
+  async initialize() {
     await this.host.updateComplete;
 
     if (this.host.rangeSelection) {
@@ -33,7 +31,7 @@ export class GridRangeSelectionController {
       }
     });
     this.host.shadowRoot.addEventListener('mouseover', (e: any) =>
-      this.setActiveCell(e.path.find((i: any) => i.tagName === 'CDS-GRID-CELL'))
+      this.setActiveCell(e.composedPath().find((i: any) => i.tagName === 'CDS-GRID-CELL'))
     );
     this.host.shadowRoot.addEventListener('mouseup', () => this.stopSelection());
   }
@@ -57,7 +55,7 @@ export class GridRangeSelectionController {
   }
 
   private setFirstCell(e: any) {
-    const firstCell = e.path.find((i: any) => i.tagName === 'CDS-GRID-CELL');
+    const firstCell = e.composedPath().find((i: any) => i.tagName === 'CDS-GRID-CELL');
     if (firstCell) {
       this.firstCell = firstCell;
       this.selectionActive = true;

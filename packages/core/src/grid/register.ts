@@ -5,6 +5,7 @@
  */
 
 import { registerElementSafely } from '@cds/core/internal';
+import '@cds/core/internal-components/overlay/register.js';
 import '@cds/core/actions/register.js';
 import '@cds/core/button/register.js';
 import '@cds/core/icon/register.js';

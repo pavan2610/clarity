@@ -45,8 +45,7 @@
   min-width: #{$cds-global-space-11};
 }
 
-:host([_active]) [part='cell']::after,
-:host([selected]:not([tabindex='0'])) [part='cell']::after {
+:host([_active]) [part='cell']::after {
   display: block;
   position: absolute;
   inset: 0;

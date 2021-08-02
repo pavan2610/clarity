@@ -5,15 +5,54 @@
  */
 
 import { html, LitElement } from 'lit';
+import { queryAll } from 'lit/decorators/query-all.js';
+import { query } from 'lit/decorators/query.js';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
 import { GridA11yController } from './grid-a11y.controller.js';
-import { registerElementSafely, state } from '@cds/core/internal';
+import { registerElementSafely } from '@cds/core/internal';
 
 class GridA11yTestElement extends LitElement {
-  @state() rowCount = 1;
-  @state() colCount = 1;
+  @queryAll('.column') columns: NodeListOf<HTMLElement>;
+  @queryAll('.row') rows: NodeListOf<HTMLElement & { cells: NodeListOf<HTMLElement> }>;
+  @queryAll('.cell') cells: NodeListOf<HTMLElement>;
+  @query('.grid') grid: HTMLElement;
 
-  protected gridA11yController = new GridA11yController(this);
+  gridA11yController = new GridA11yController(this);
+
+  render() {
+    return html`
+      <section class="grid">
+        <div class="column-row">
+          <div class="column">
+            1
+            <div class="sort-btn">sort</div>
+          </div>
+          <div class="column">2</div>
+          <div class="column">3</div>
+        </div>
+        <div class="row">
+          <div class="cell">1</div>
+          <div class="cell">2</div>
+          <div class="cell">3</div>
+        </div>
+        <div class="row">
+          <div class="cell">4</div>
+          <div class="cell">5</div>
+          <div class="cell">6</div>
+        </div>
+      </section>
+    `;
+  }
+
+  async connectedCallback() {
+    super.connectedCallback();
+    await this.updateComplete;
+    this.rows.forEach(r => (r.cells = r.querySelectorAll('.cell')));
+  }
+
+  protected createRenderRoot() {
+    return this;
+  }
 }
 
 registerElementSafely('grid-a11y-test-element', GridA11yTestElement);
@@ -31,27 +70,106 @@ describe('grid-a11y.controller', () => {
     removeTestElement(element);
   });
 
-  it('should set proper aria role attribute', async () => {
+  // grid
+  it('should set proper aria role attribute for the host grid', async () => {
+    component.gridA11yController.initialize();
     await componentIsStable(component);
     expect(component).toBeTruthy();
-    expect(component.getAttribute('role')).toBe('grid');
+    expect(component.grid.getAttribute('role')).toBe('grid');
   });
 
   it('should set the proper aria-rowcount', async () => {
+    component.gridA11yController.initialize();
     await componentIsStable(component);
-    expect(component.getAttribute('aria-rowcount')).toBe('1');
-
-    component.rowCount = 2;
-    await componentIsStable(component);
-    expect(component.getAttribute('aria-rowcount')).toBe('2');
+    expect(component.getAttribute('aria-rowcount')).toBe('3');
   });
 
   it('should set the proper aria-colcount', async () => {
+    component.gridA11yController.initialize();
     await componentIsStable(component);
-    expect(component.getAttribute('aria-colcount')).toBe('1');
+    expect(component.getAttribute('aria-colcount')).toBe('3');
+  });
 
-    component.colCount = 2;
+  // columns
+  it('should set proper aria role attribute for columns', async () => {
+    component.gridA11yController.initialize();
     await componentIsStable(component);
-    expect(component.getAttribute('aria-colcount')).toBe('2');
+    expect(Array.from(component.columns).map(r => r.getAttribute('role'))).toEqual([
+      'columnheader',
+      'columnheader',
+      'columnheader',
+    ]);
+  });
+
+  it('should set the proper aria-colindex for each column', async () => {
+    component.gridA11yController.initialize();
+    await componentIsStable(component);
+    expect(Array.from(component.columns).map(r => r.getAttribute('aria-colindex'))).toEqual(['1', '2', '3']);
+  });
+
+  it('should update the aria-sort when receiving a sortChange event', async () => {
+    component.gridA11yController.initialize();
+    await componentIsStable(component);
+    component.columns[0]
+      .querySelector('.sort-btn')
+      .dispatchEvent(new CustomEvent('sortChange', { detail: 'accending', bubbles: true }));
+    await componentIsStable(component);
+
+    expect(component.columns[0].getAttribute('aria-sort')).toBe('accending');
+  });
+
+  // rows
+  it('should set the proper role for each row', async () => {
+    component.gridA11yController.initialize();
+    await componentIsStable(component);
+    expect(Array.from(component.rows).map(r => r.getAttribute('role'))).toEqual(['row', 'row']);
+  });
+
+  it('should set the proper aria-rowindex for each row', async () => {
+    component.gridA11yController.initialize();
+    await componentIsStable(component);
+    expect(Array.from(component.rows).map(r => r.getAttribute('aria-rowindex'))).toEqual(['2', '3']);
+  });
+
+  // cell
+  it('should set proper aria role attribute for cells', async () => {
+    component.gridA11yController.initialize();
+    await componentIsStable(component);
+    expect(Array.from(component.cells).map(r => r.getAttribute('role'))).toEqual([
+      'gridcell',
+      'gridcell',
+      'gridcell',
+      'gridcell',
+      'gridcell',
+      'gridcell',
+    ]);
+  });
+
+  it('should set the proper aria-colindex for each cell', async () => {
+    component.gridA11yController.initialize();
+    await componentIsStable(component);
+    expect(Array.from(component.cells).map(r => r.getAttribute('aria-colindex'))).toEqual([
+      '1',
+      '2',
+      '3',
+      '1',
+      '2',
+      '3',
+    ]);
+  });
+
+  it('should allow alternate role types such as rowheader on cells', async () => {
+    component.cells[0].setAttribute('role', 'rowheader');
+    component.cells[3].setAttribute('role', 'rowheader');
+    component.gridA11yController.initialize();
+    await componentIsStable(component);
+    expect(Array.from(component.cells).map(r => r.getAttribute('role'))).toEqual([
+      'rowheader',
+      'gridcell',
+      'gridcell',
+      'rowheader',
+      'gridcell',
+      'gridcell',
+    ]);
   });
 });

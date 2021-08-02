@@ -5,9 +5,16 @@
  */
 
 import { html } from 'lit';
-import { i18n, I18nService, property } from '@cds/core/internal';
+import { i18n, I18nService, property, state } from '@cds/core/internal';
 import { CdsAction } from './action.element.js';
 import styles from './action-expand.element.scss';
+
+// const expandShapes = {
+//   'vertical': 'angle',
+//   'horizontal': 'angle',
+//   'detail': 'detail-expand',
+//   'detailCollapse': 'detail-collapse'
+// };
 
 /**
  * Action Expand Button
@@ -24,41 +31,55 @@ import styles from './action-expand.element.scss';
  * @slot - For projecting text content or cds-icon
  */
 export class CdsActionExpand extends CdsAction {
-  @property({ type: Boolean }) expanded = false;
+  @property({ type: Boolean, reflect: false }) expanded = false;
 
-  @property({ type: String }) direction: 'main' | 'cross' = 'cross';
+  @property({ type: String }) action: 'vertical' | 'horizontal' | 'detail' = 'vertical';
 
   @i18n() i18n = I18nService.keys.actions;
+
+  @state({ type: String, reflect: true, attribute: 'aria-expanded' }) protected ariaExpanded?: string;
+
+  @state({ type: String, reflect: true, attribute: 'aria-haspopup' }) protected ariaHasPopup?: string;
 
   static get styles() {
     return [super.styles, styles];
   }
 
   private get iconDirection() {
-    if (this.direction === 'main') {
+    if (this.action === 'vertical') {
       return this.expanded ? 'down' : 'right';
-    } else {
+    } else if (this.action === 'horizontal') {
       return this.expanded ? 'left' : 'right';
+    } else {
+      return null;
+    }
+  }
+
+  private get iconShape() {
+    if (this.action === 'detail') {
+      return this.expanded ? 'detail-collapse' : 'detail-expand';
+    } else {
+      return 'angle';
     }
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.shape = 'angle';
     this.ariaLabel = this.i18n.expand;
   }
 
   render() {
     return html`
       <div class="private-host">
-        <cds-icon .shape=${this.shape} .direction=${this.iconDirection}></cds-icon>
+        <cds-icon .shape=${this.iconShape} .direction=${this.iconDirection}></cds-icon>
       </div>
     `;
   }
 
   updated(props: Map<string, any>) {
     super.updated(props);
-    this.setAttribute('aria-expanded', `${this.expanded}`);
+    this.ariaExpanded = `${this.expanded}`;
     this.ariaLabel = this.expanded ? this.i18n.close : this.i18n.expand;
+    this.ariaHasPopup = this.action === 'detail' ? 'true' : null;
   }
 }

@@ -65,18 +65,25 @@ export function actionExpand() {
     static styles = [baseStyles];
     @state() private expandOne = false;
     @state() private expandTwo = false;
+    @state() private expandThree = false;
 
     render() {
       return html`
         <div cds-layout="vertical gap:lg">
           <cds-action-expand
+            action="vertical"
             .expanded=${this.expandOne}
             @click=${() => (this.expandOne = !this.expandOne)}
           ></cds-action-expand>
           <cds-action-expand
-            direction="main"
+            action="horizontal"
             .expanded=${this.expandTwo}
             @click=${() => (this.expandTwo = !this.expandTwo)}
+          ></cds-action-expand>
+          <cds-action-expand
+            action="detail"
+            .expanded=${this.expandThree}
+            @click=${() => (this.expandThree = !this.expandThree)}
           ></cds-action-expand>
         </div>
       `;

@@ -38,7 +38,7 @@ export class DraggableListController {
     host.addController(this);
   }
 
-  async hostConnected() {
+  async initialize() {
     await this.host.updateComplete;
     this.addDragEventListeners();
     this.addKeyboardEventListeners();
@@ -56,7 +56,7 @@ export class DraggableListController {
   }
 
   hostDisconnected() {
-    this.observer.disconnect();
+    this.observer?.disconnect();
   }
 
   private initializeKeyListController() {

@@ -4,7 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { html, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
+import { query } from 'lit/decorators/query.js';
+import { queryAll } from 'lit/decorators/query-all.js';
 import pipe from 'ramda/es/pipe.js';
 import { registerElementSafely, state } from '@cds/core/internal';
 import '@cds/core/pagination/register.js';
@@ -23,6 +25,7 @@ import { exclamationCircleIcon } from '@cds/core/icon/shapes/exclamation-circle.
 import { disconnectIcon } from '@cds/core/icon/shapes/disconnect.js';
 import { viewColumnsIcon } from '@cds/core/icon/shapes/view-columns.js';
 import { paginate, filter, sortStrings, sortList, getVMData, TestVM, StatusDisplayType, StatusIconType, getVMOrderPreference, groupArray, swapBetweenLists } from './storybook.js';
+import { GridA11yController } from '../grid/grid-a11y.controller.js';
 
 ClarityIcons.addIcons(checkCircleIcon, exclamationTriangleIcon, exclamationCircleIcon, disconnectIcon, filterIcon, viewColumnsIcon);
 
@@ -179,6 +182,10 @@ export function all() {
         <h2 cds-text="section">Row Fixed</h2>
         ${rowFixed()}
       </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Row Sticky</h2>
+        ${rowSticky()}
+      </div>
       <div cds-layout="vertical gap:lg" style="min-height: 650px">
         <h2 cds-text="section">Performance</h2>
         ${performance()}
@@ -218,10 +225,12 @@ export function all() {
 export function basic() {
   return html`
     <cds-grid aria-label="basic datagrid demo" style="--body-height: 360px">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
+      <!-- <cds-grid-column-group> -->
+        <cds-grid-column>Host</cds-grid-column>
+        <cds-grid-column>Status</cds-grid-column>
+        <cds-grid-column>CPU</cds-grid-column>
+        <cds-grid-column>Memory</cds-grid-column>
+      <!-- </cds-grid-column-group> -->
       <cds-grid-row>
         <cds-grid-cell>vm-host-001</cds-grid-cell>
         <cds-grid-cell>online</cds-grid-cell>
@@ -557,12 +566,13 @@ export function columnOverflow() {
 export function rtl() {
   class DemoRtl extends LitElement {
     @state() private data = getVMData();
-    @state() private currentDetail: any = null;
+    @state() private currentVM: TestVM;
+    @state() private anchor: HTMLElement;
 
     render() {
       return html`
-        <cds-grid aria-label="rtl datagrid demo" dir="rtl" style="--body-height: 360px">
-          <cds-grid-column type="action" aria-label="detail view column"></cds-grid-column>
+        <cds-grid dir="rtl" aria-label="row detail datagrid demo" style="--body-height: 360px">
+          <cds-grid-column type="action" aria-label="row detail column"></cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
@@ -570,30 +580,32 @@ export function rtl() {
           ${this.data.map(entry => html`
           <cds-grid-row>
             <cds-grid-cell type="action">
-              <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail-demo" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
+              <!-- todo: support inverse direction for icon and rtl -->
+              <cds-action-expand action="detail" .expanded=${this.currentVM?.id === entry.id} @click=${(e: any) => this.showDetail(e, entry)}></cds-action-expand>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
-            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
             <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
             <cds-grid-cell>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-          <cds-grid-detail ?hidden=${!this.currentDetail} anchor="${this.currentDetail?.id}-detail-demo" @closeChange=${this.closeDetail} dir="rtl">
-            <h2>Host: ${this.currentDetail?.id}</h2>
-            <p>Status: ${this.currentDetail?.status}</p>
-            <p>CPU: ${this.currentDetail?.cpu}%</p>
-            <p>Memory: ${this.currentDetail?.memory}%</p>
-          </cds-grid-detail>
-        </cds-grid>
-      `;
+          ${this.currentVM ? html`
+          <cds-grid-detail .anchor=${this.anchor} @closeChange=${() => (this.currentVM = null) as any}>
+            <h2 cds-text="section">${this.currentVM?.id}</h2>
+            <p cds-text="body">Status: ${this.currentVM?.status}</p>
+            <p cds-text="body">CPU: ${this.currentVM?.cpu}%</p>
+            <p cds-text="body">Memory: ${this.currentVM?.memory}%</p>
+          </cds-grid-detail>` : ''}
+        </cds-grid>`;
     }
 
-    private showDetail(id: string) {
-      this.currentDetail = id !== this.currentDetail?.id ? this.data.find(i => i.id === id) : null;
-    }
-
-    private closeDetail() {
-      this.currentDetail = null;
+    private showDetail(event: any, vm: TestVM) {
+      if (this.currentVM?.id !== vm.id) {
+        this.currentVM = vm;
+        this.anchor = event.target;
+      } else {
+        this.currentVM = null;
+      }
     }
   }
 
@@ -1088,7 +1100,8 @@ export function columnVisibility() {
 export function rowDetail() {
   class DemoRowDetail extends LitElement {
     @state() private data = getVMData();
-    @state() private currentDetail: any = null;
+    @state() private currentVM: TestVM;
+    @state() private anchor: HTMLElement;
 
     render() {
       return html`
@@ -1101,7 +1114,7 @@ export function rowDetail() {
           ${this.data.map(entry => html`
           <cds-grid-row>
             <cds-grid-cell type="action">
-              <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail-demo" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
+              <cds-action-expand action="detail" .expanded=${this.currentVM?.id === entry.id} @click=${(e: any) => this.showDetail(e, entry)}></cds-action-expand>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
             <cds-grid-cell>${entry.status}</cds-grid-cell>
@@ -1109,22 +1122,23 @@ export function rowDetail() {
             <cds-grid-cell>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-          <cds-grid-detail ?hidden=${!this.currentDetail} anchor="${this.currentDetail?.id}-detail-demo" @closeChange=${this.closeDetail}>
-            <h2 cds-text="section">${this.currentDetail?.id}</h2>
-            <p cds-text="body">Status: ${this.currentDetail?.status}</p>
-            <p cds-text="body">CPU: ${this.currentDetail?.cpu}%</p>
-            <p cds-text="body">Memory: ${this.currentDetail?.memory}%</p>
-          </cds-grid-detail>
-        </cds-grid>
-      `;
+          ${this.currentVM ? html`
+          <cds-grid-detail .anchor=${this.anchor} @closeChange=${() => (this.currentVM = null) as any}>
+            <h2 cds-text="section">${this.currentVM?.id}</h2>
+            <p cds-text="body">Status: ${this.currentVM?.status}</p>
+            <p cds-text="body">CPU: ${this.currentVM?.cpu}%</p>
+            <p cds-text="body">Memory: ${this.currentVM?.memory}%</p>
+          </cds-grid-detail>` : ''}
+        </cds-grid>`;
     }
 
-    private showDetail(id: string) {
-      this.currentDetail = id !== this.currentDetail?.id ? this.data.find(i => i.id === id) : null;
-    }
-
-    private closeDetail() {
-      this.currentDetail = null;
+    private showDetail(event: any, vm: TestVM) {
+      if (this.currentVM?.id !== vm.id) {
+        this.currentVM = vm;
+        this.anchor = event.target;
+      } else {
+        this.currentVM = null;
+      }
     }
   }
 
@@ -1826,11 +1840,11 @@ export function performance() {
             <input type="number" min="20" .value=${`${this.numberOfRows}`} @input=${(e: any) => this.setRows(parseInt(e.target.value))} />
           </cds-input>
           <br />
-          <cds-button action="outline" @click=${this.toggleGrid}>Render Large Grid</cds-button>
-          <cds-button action="outline" @click=${this.toggleVisibility}>css visibility</cds-button>
+          <button @click=${this.toggleGrid}>Render Large Grid</button>
+          <button @click=${this.toggleVisibility}>css visibility</button>
           <br /><br />
           ${this.showParseAndRender ? html`
-          <cds-grid aria-label="performance datagrid demo" ?hidden=${this.hide} style="--body-height: 360px; max-width: 800px">
+          <cds-grid aria-label="performance datagrid demo" ?hidden=${this.hide} style="--body-height: 360px; width: 800px">
             <cds-grid-column>Host</cds-grid-column>
             <cds-grid-column>Status</cds-grid-column>
             <cds-grid-column>CPU</cds-grid-column>
@@ -2087,7 +2101,7 @@ export function rowHeight() {
 
     render() {
       return html`
-        <cds-grid aria-label="row height datagrid demo" style="--row-height: 48px; --column-height: 48px; --body-height: 360px;">
+        <cds-grid aria-label="row height datagrid demo" style="--row-height: 48px; --column-height: 48px; --body-height: 420px;">
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
@@ -2160,6 +2174,33 @@ export function rowFixed() {
 
   registerElementSafely('demo-grid-row-fixed', DemoRowFixed);
   return html`<demo-grid-row-fixed></demo-grid-row-fixed>`;
+}
+
+export function rowSticky() {
+  class DemoRowSticky extends LitElement {
+    @state() private data = [...getVMData(), ...getVMData()];
+
+    render() {
+      return html`
+        <cds-grid aria-label="row sticky datagrid demo" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map((entry, i) => html`
+          <cds-grid-row .position=${i !== 0 && !(i % 5) ? 'sticky' : null}>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-row-sticky', DemoRowSticky);
+  return html`<demo-grid-row-sticky></demo-grid-row-sticky>`;
 }
 
 export function rangeSelect() {
@@ -2406,10 +2447,6 @@ export function asyncData() {
     private async load() {
       this.data = [];
       this.data = await new Promise(resolve => setTimeout(() => resolve(getVMData()), 2000));
-    }
-
-    protected createRenderRoot() {
-      return this;
     }
   }
 
@@ -2678,4 +2715,118 @@ export function ariaGrid() {
     </div>
   </section>
   `;
+}
+
+export function ariaGridController() {
+  class DemoGridA11yController extends LitElement {
+    @query('section') grid: HTMLElement;
+    @queryAll('section > div:first-child > div') columns: NodeListOf<HTMLElement>;
+    @queryAll('section > div:not(:first-child)') rows: NodeListOf<HTMLElement & { cells: NodeListOf<HTMLElement> }>;
+  
+    private gridA11yController = new GridA11yController(this);
+
+    static styles = [css`
+      [role='grid'] {
+        width: 500px;
+        border: 1px solid #ccc;
+      }
+
+      [role='row'] {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        /* border-bottom: 1px solid #ccc; */
+      }
+
+      [role='grid'] [aria-rowindex]:nth-child(odd) {
+        filter: brightness(97%);
+      }
+
+      [role='grid'] [aria-rowindex]:hover {
+        filter: brightness(94%);
+      }
+
+      [aria-colcount='5'] [role='row'] {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      }
+
+      [role='gridcell'],
+      [role='rowheader'],
+      [role='columnheader'] {
+        padding: 12px 18px;
+      }
+
+      [role='columnheader']:last-child,
+      [role='gridcell']:last-child,
+      [role='row']:last-child {
+        border-right: none;
+      }
+
+      [role='columnheader'] {
+        border-bottom: 1px solid #ccc;
+      }
+      
+      [role='grid'] {
+        background: #eee;
+        overflow: hidden;
+      }
+
+      [role='gridcell'] {
+        background: #fff;
+      }
+
+      [aria-rowspan],
+      [role='rowheader'],
+      [role='columnheader'] {
+        background: none;
+        font-weight: 500;
+      }
+    `]
+  
+    render() {
+      return html`
+        <section>
+          <div role="row">
+            <div>Host</div>
+            <div>Status</div>
+            <div>CPU</div>
+            <div>Memory</div>
+          </div>
+          <div>
+            <div>vm-host-001</div>
+            <div>online</div>
+            <div>5%</div>
+            <div>10%</div>
+          </div>
+          <div>
+            <div>vm-host-003</div>
+            <div>online</div>
+            <div>10%</div>
+            <div>30%</div>
+          </div>
+          <div>
+            <div>vm-host-002</div>
+            <div>online</div>
+            <div>20%</div>
+            <div>35%</div>
+          </div>
+          <div>
+            <div>vm-host-011</div>
+            <div>offline</div>
+            <div>90%</div>
+            <div>80%</div>
+          </div>
+        </section>
+      `;
+    }
+  
+    async connectedCallback() {
+      super.connectedCallback();
+      await this.updateComplete;
+      this.rows.forEach(r => r.cells = r.querySelectorAll('div'));
+      this.gridA11yController.initialize();
+    }
+  }
+  
+  registerElementSafely('grid-a11y-test-element', DemoGridA11yController);
+  return html`<grid-a11y-test-element></grid-a11y-test-element>`;
 }

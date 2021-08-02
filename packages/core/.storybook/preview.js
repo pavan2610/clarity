@@ -121,6 +121,7 @@ export const parameters = {
           'Cell Editable',
           'Range Select',
           'Row Fixed',
+          'Row Sticky',
           'Row Draggable',
           'Row Swappable',
           'Column Draggable',

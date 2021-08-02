@@ -4,13 +4,27 @@
 
 @import './../../styles/tokens/generated/index';
 
-// todo: update to internal overlay 
+// todo: update to internal overlay
 :host {
-  --width: 70%;
+  --width: 75%;
+  --inset-inline-start: auto;
+  --inset-inline-end: 0;
   display: contents;
 }
 
-dialog {
+cds-internal-overlay {
+  --backdrop-background: none;
+  width: var(--width);
+  display: block;
+  inset-inline-start: var(--inset-inline-start);
+  inset-inline-end: var(--inset-inline-end);
+}
+
+cds-internal-overlay::part(private-host) {
+  height: 100%;
+}
+
+.detail {
   background: $cds-alias-object-container-background;
   z-index: 999;
   border: 0;
@@ -19,13 +33,11 @@ dialog {
   padding: 0;
   margin: 0;
   display: block;
-  width: var(--width);
+  width: 100%;
   height: 100%;
   top: 0;
   bottom: 0;
-  inset-inline-start: auto;
-  inset-inline-end: 0;
-  position: absolute;
+  position: fixed;
   padding: $cds-global-space-9;
 }
 
@@ -48,18 +60,10 @@ dialog[tabindex='0'] {
 }
 
 .caret {
-  background: #fff;
-  width: 20px;
-  height: 20px;
-  border-left: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  transform: rotate(45deg);
+  background: $cds-alias-object-container-background;
+  width: $cds-global-space-4;
+  height: calc(var(--row-height) - #{$cds-global-space-2});
   position: absolute;
-  inset-inline-start: -11px;
+  inset-inline-start: calc(#{$cds-global-space-3} * -1);
   top: var(--caret-top);
-}
-
-:host([dir='rtl']) .caret {
-  // todo: RTL service
-  transform: rotate(-135deg);
 }

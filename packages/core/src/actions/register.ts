@@ -9,13 +9,15 @@ import { ClarityIcons } from '@cds/core/icon/icon.service.js';
 import { ellipsisVerticalIcon } from '@cds/core/icon/shapes/ellipsis-vertical.js';
 import { dragHandleIcon } from '@cds/core/icon/shapes/drag-handle.js';
 import { angleIcon } from '@cds/core/icon/shapes/angle.js';
+import { detailExpandIcon } from '@cds/core/icon/shapes/detail-expand.js';
+import { detailCollapseIcon } from '@cds/core/icon/shapes/detail-collapse.js';
 import { CdsAction } from './action.element.js';
 import { CdsActionSort } from './action-sort.element.js';
 import { CdsActionExpand } from './action-expand.element.js';
 import { CdsActionHandle } from './action-handle.element.js';
 import { CdsActionResize } from './action-resize.element.js';
 
-ClarityIcons.addIcons(angleIcon, dragHandleIcon, ellipsisVerticalIcon);
+ClarityIcons.addIcons(angleIcon, dragHandleIcon, ellipsisVerticalIcon, detailExpandIcon, detailCollapseIcon);
 
 registerElementSafely('cds-action', CdsAction);
 registerElementSafely('cds-action-sort', CdsActionSort);

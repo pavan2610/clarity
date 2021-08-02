@@ -15,3 +15,41 @@ Row and column heights defaults to the `--cds-alias-object-interaction-touch-tar
 You can customize the row height by defining the `--row-height` and `--column-height` property.
 
 <Story id="stories-grid--row-height" />
+
+```html
+<cds-grid style="--row-height: 48px; --column-height: 48px; --body-height: 420px;">
+  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
+  <cds-grid-row>
+    <cds-grid-cell>vm-host-001</cds-grid-cell>
+    <cds-grid-cell>online</cds-grid-cell>
+    <cds-grid-cell>5%</cds-grid-cell>
+    <cds-grid-cell>10%</cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-footer></cds-grid-footer>
+</cds-grid>
+```
+
+## API
+
+### cds-grid
+
+<Props of={'cds-grid'} />
+
+### cds-grid-column
+
+<Props of={'cds-grid-column'} />
+
+### cds-grid-row
+
+<Props of={'cds-grid-row'} />
+
+### cds-grid-cell
+
+<Props of={'cds-grid-cell'} />
+
+### cds-grid-footer
+
+<Props of={'cds-grid-footer'} />

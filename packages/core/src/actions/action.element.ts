@@ -25,7 +25,7 @@ import styles from './action.element.scss';
 export class CdsAction extends CdsBaseButton {
   @property({ type: String }) shape = 'ellipsis-vertical';
 
-  @property({ type: String }) ariaLabel?: string;
+  @state({ type: String, attribute: 'aria-label' }) ariaLabel?: string;
 
   @state({ type: Boolean, reflect: true, attribute: 'cds-action' }) cdsAction = true;
 
@@ -46,6 +46,12 @@ export class CdsAction extends CdsBaseButton {
 
     if (!this.ariaLabel && !this.readonly) {
       LogService.warn('A aria-label is required for interactive cds-action type', this);
+    }
+
+    if (props.has('readonly')) {
+      this.readonly && !this.hasAttribute('aria-label')
+        ? this.setAttribute('aria-hidden', 'true')
+        : this.removeAttribute('aria-hidden');
     }
   }
 }

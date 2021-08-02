@@ -31,16 +31,4 @@ describe('cds-grid-cell', () => {
     await componentIsStable(component);
     expect(component.shadowRoot.querySelector('[part=cell]')).toBeTruthy();
   });
-
-  it('should set proper aria role attribute (a11y controller)', async () => {
-    await componentIsStable(component);
-    expect(component).toBeTruthy();
-    expect(component.getAttribute('role')).toBe('gridcell');
-  });
-
-  it('should set the proper aria-colindex (a11y controller)', async () => {
-    component.colIndex = 1;
-    await componentIsStable(component);
-    expect(component.getAttribute('aria-colindex')).toBe('1');
-  });
 });

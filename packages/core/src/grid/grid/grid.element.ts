@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
+import { query } from 'lit/decorators/query.js';
 import { queryAssignedNodes } from 'lit/decorators/query-assigned-nodes.js';
 import { eventOptions } from 'lit/decorators/event-options.js';
-import { query } from 'lit/decorators/query.js';
 import {
   baseStyles,
   createId,
@@ -13,7 +13,7 @@ import {
 import { CdsGridRow } from '../row/grid-row.element.js';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
 import { CdsGridColumn } from '../column/grid-column.element.js';
-import { GridColumnGroupSizeController } from './grid-column-group-size.controller.js';
+import { GridColumnGroupSizeController } from '../column/grid-column-group-size.controller.js';
 import styles from './grid.element.scss';
 import { GridA11yController } from './grid-a11y.controller.js';
 import { GridRangeSelectionController } from './grid-range-selection.controller.js';
@@ -27,10 +27,6 @@ export class CdsGrid extends LitElement {
 
   @state({ type: String, reflect: true }) protected _id = createId();
 
-  @state({ type: Number }) rowCount = 0;
-
-  @state({ type: Number }) colCount = 0;
-
   /** @private */
   @queryAssignedNodes('columns', true, 'cds-grid-column') columns: NodeListOf<CdsGridColumn>;
 
@@ -38,7 +34,12 @@ export class CdsGrid extends LitElement {
   @queryAssignedNodes('', true, 'cds-grid-row') rows: NodeListOf<CdsGridRow>;
 
   /** @private */
-  @query('.grid-body') grid: HTMLElement;
+  @query('.grid-body', true) protected gridBody: HTMLElement;
+
+  /** @private */
+  get cells(): NodeListOf<CdsGridCell> {
+    return this.querySelectorAll('cds-grid-cell');
+  }
 
   protected gridA11yController = new GridA11yController(this);
 
@@ -49,7 +50,7 @@ export class CdsGrid extends LitElement {
   protected gridKeyNavigationController = new KeyNavigationGridController(this, {
     keyGridRows: 'rows',
     keyGridCells: 'cells',
-    keyGrid: 'grid',
+    keyGrid: 'gridBody',
   });
 
   protected draggableColumnController = new DraggableListController(this, {
@@ -58,7 +59,7 @@ export class CdsGrid extends LitElement {
     dropZone: 'cds-grid-column',
   });
 
-  protected draggableListController = new DraggableListController(this, {
+  protected draggableRowController = new DraggableListController(this, {
     layout: 'vertical',
     item: 'cds-grid-row',
     dropZone: 'cds-grid-placeholder',
@@ -67,25 +68,31 @@ export class CdsGrid extends LitElement {
 
   static styles = [baseStyles, styles];
 
-  /** @private */
-  get cells(): CdsGridCell[] {
-    return Array.from(this.rows)
-      .map(r => (r.cells ? Array.from(r.cells) : []))
-      .flat();
-  }
+  private rowInteractionsInitialized = false;
+  private columnsInitialized = false;
+  private rowsInitialized = false;
 
   render() {
     return html`
-      <div class="private-host">
-        <div class="grid" @scroll=${this.setContentVisibitity}>
+      <div
+        class="private-host"
+        @mouseover=${this.initializeRowInteractions}
+        @mousedown=${this.initializeRowInteractions}
+        @keydown=${this.initializeRowInteractions}
+        @focus=${this.initializeRowInteractions}
+      >
+        <div class="grid">
           <div role="rowgroup" class="column-row-group">
-            <div role="row" @mousedown=${this.initializeColumnWidths} @keydown=${this.initializeColumnWidths}>
-              <slot name="columns" @slotchange=${this.createColumnGrids}></slot>
+            <div
+              role="row"
+              aria-rowindex="1"
+              @mousedown=${this.initializeColumnInteractions}
+              @keydown=${this.initializeColumnInteractions}
+            >
+              <slot name="columns"></slot>
             </div>
           </div>
-          <div class="grid-body" role="rowgroup">
-            <slot @slotchange=${this.updateRows}></slot><slot name="placeholder"></slot>
-          </div>
+          <div class="grid-body" role="rowgroup"><slot></slot><slot name="placeholder"></slot></div>
         </div>
         <div class="footer">
           <slot name="footer"></slot>
@@ -95,28 +102,47 @@ export class CdsGrid extends LitElement {
     `;
   }
 
-  private async updateRows() {
-    this.rowCount = this.rows.length;
-    this.colCount = this.columns.length;
-    this.rows.forEach((r, i) => (r.rowIndex = i + 1));
-    this.columns.forEach((c, i) => (c.colIndex = i + 1));
-    await this.updateComplete;
-    this.gridKeyNavigationController.initializeKeyGrid();
+  firstUpdated(props: Map<string, any>) {
+    super.firstUpdated(props);
+
+    this.shadowRoot.addEventListener('slotchange', (e: any) => {
+      if (this.columnsAndRowsHaveInitialized(e.target.getAttribute('name'))) {
+        this.gridA11yController.initialize();
+        this.gridColumnGroupSizeController.createColumnGrids();
+
+        if (this.rowInteractionsInitialized) {
+          this.gridKeyNavigationController.initialize();
+        }
+      }
+    });
   }
 
   @eventOptions({ once: true })
-  private setContentVisibitity() {
-    this.style.setProperty('--row-content-visibility', 'visible'); // rows default to 'auto' for initial render, on scroll eager render to prevent cliping
+  private initializeRowInteractions() {
+    if (!this.rowInteractionsInitialized) {
+      this.gridKeyNavigationController.initialize();
+      this.gridRangeSelectionController.initialize();
+      this.draggableRowController.initialize();
+      this.rowInteractionsInitialized = true;
+    }
   }
 
   @eventOptions({ once: true })
-  private initializeColumnWidths() {
+  private initializeColumnInteractions() {
     this.gridColumnGroupSizeController.initializeColumnWidths();
-    this.columns.forEach((c: any) => c.gridColumnSizeController.initializeResizer());
+    this.draggableColumnController.initialize();
+    this.columns.forEach((c: any) => c.gridColumnSizeController.initialize());
   }
 
-  private createColumnGrids() {
-    this.gridColumnGroupSizeController.createColumnGrids();
-    this.columns[this.columns.length - 1].resizable = 'hidden';
+  private columnsAndRowsHaveInitialized(slotName: string) {
+    if (slotName === 'columns') {
+      this.columnsInitialized = true;
+    }
+
+    if (slotName === null) {
+      this.rowsInitialized = true;
+    }
+
+    return (slotName === null || slotName === 'columns') && this.columnsInitialized && this.rowsInitialized;
   }
 }

@@ -10,7 +10,7 @@ import { GridRowPositionController } from './grid-row-position.controller.js';
 import { registerElementSafely, property } from '@cds/core/internal';
 
 class GridRowPositionTestElement extends LitElement {
-  @property() position: '' | 'fixed';
+  @property() position: '' | 'fixed' | 'sticky';
   protected gridRowPositionController = new GridRowPositionController(this);
 }
 
@@ -29,17 +29,20 @@ describe('grid-row-position.controller', () => {
     removeTestElement(element);
   });
 
-  it('should set a offset scroll height if fixed position', async () => {
+  it('should default to no offset', async () => {
     await componentIsStable(component);
-    expect(component.style.getPropertyValue('--scroll-padding-top')).toBe('');
+    expect(element.style.getPropertyValue('--scroll-padding-top')).toBe('');
+  });
 
+  it('should set a offset scroll height if fixed position', async () => {
     component.position = 'fixed';
     await componentIsStable(component);
-    expect(component.style.getPropertyValue('--scroll-padding-top')).toBe('calc(var(--row-height) * 2)');
+    expect(element.style.getPropertyValue('--scroll-padding-top')).toBe('calc(var(--row-height) * 2)');
+  });
 
-    component.style.setProperty('--scroll-padding-top', '20px');
-    component.position = '';
+  it('should set a offset scroll height if sticky position', async () => {
+    component.position = 'sticky';
     await componentIsStable(component);
-    expect(component.style.getPropertyValue('--scroll-padding-top')).toBe('');
+    expect(element.style.getPropertyValue('--scroll-padding-top')).toBe('calc(var(--row-height) * 2)');
   });
 });

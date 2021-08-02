@@ -49,6 +49,8 @@ export { viewColumnsIcon, viewColumnsIconName } from './shapes/view-columns.js';
 export { vmBugIcon, vmBugIconName } from './shapes/vm-bug.js';
 export { vmBugInverseIcon, vmBugInverseIconName } from './shapes/vm-bug-inverse.js';
 export { warningStandardIcon, warningStandardIconName } from './shapes/warning-standard.js';
+export { detailExpandIcon, detailExpandIconName } from './shapes/detail-expand.js';
+export { detailCollapseIcon, detailCollapseIconName } from './shapes/detail-collapse.js';
 
 // SHAPES - ESSENTIAL
 export { accessibility1Icon, accessibility1IconName } from './shapes/accessibility-1.js';
