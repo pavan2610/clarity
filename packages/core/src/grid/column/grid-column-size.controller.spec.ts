@@ -7,13 +7,14 @@
 import { html, LitElement } from 'lit';
 import { query } from 'lit/decorators/query.js';
 import { registerElementSafely, state, property } from '@cds/core/internal';
+import { CdsActionResize } from '@cds/core/actions';
 import { createTestElement, removeTestElement, componentIsStable, onceEvent } from '@cds/core/test';
 import { GridColumnSizeController } from './grid-column-size.controller.js';
 
 class GridColumnSizeTestElement extends LitElement {
   @property() width?: string;
   @state() colIndex = 1;
-  @query('#handle') resizeHandle: any;
+  @query('#handle') resizeHandle: CdsActionResize;
   gridColumnSizeController = new GridColumnSizeController(this);
 
   render() {
@@ -35,6 +36,7 @@ describe('grid-column-size.controller', () => {
     );
     component = element.querySelector<GridColumnSizeTestElement>('grid-column-size-test-element');
     component.colIndex = 1;
+    component.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); // trigger initialization
   });
 
   afterEach(() => {
@@ -48,12 +50,9 @@ describe('grid-column-size.controller', () => {
   });
 
   it('should resize a column when resizeChange occurs', async () => {
-    const event = onceEvent(component, 'widthChange');
-    component.resizeHandle.dispatchEvent(new CustomEvent('resizeChange', { detail: -10 }));
+    component.resizeHandle.dispatchEvent(new CustomEvent('resizeChange', { detail: -10, bubbles: true }));
     await componentIsStable(component);
     expect(element.style.getPropertyValue('--ch1')).toBe('90px');
-    const e = await event;
-    expect(e.detail).toBe(90);
   });
 
   // it('should set the row column size when column header is resized', async () => {

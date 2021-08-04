@@ -9,20 +9,30 @@ export type GridColumnPosition = ReactiveControllerHost &
 
 export class GridColumnPositionController {
   private globalStyle = supportsAdoptingStyleSheets() ? new CSSStyleSheet() : null;
+  private previousPosition: 'initial' | 'sticky' | 'fixed' = 'initial';
 
   get hostGrid() {
     return this.host.parentElement as HTMLElement & { _id: string };
   }
 
   constructor(private host: GridColumnPosition) {
-    host.addController(this as any);
+    host.addController(this);
 
     if (this.globalStyle) {
       (document as any).adoptedStyleSheets = [...(document as any).adoptedStyleSheets, this.globalStyle];
     }
   }
 
-  calculateColumnPositionStyles() {
+  async hostUpdated() {
+    await this.host.updateComplete;
+
+    if (this.host.colIndex && this.host.position !== this.previousPosition) {
+      this.previousPosition = this.host.position;
+      this.calculateColumnPositionStyles();
+    }
+  }
+
+  private calculateColumnPositionStyles() {
     const gridPosition = this.hostGrid.getBoundingClientRect();
     const side = this.host.offsetLeft < gridPosition.width / 2 ? 'left' : 'right';
     (this.globalStyle as any).replaceSync(`${this.getPositionStyle(side, gridPosition)}\n${this.borderStyle(side)}`);

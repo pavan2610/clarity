@@ -13,7 +13,7 @@ import { onAnyKey } from '../utils/keycodes.js';
 import { stopEvent } from './../utils/events.js';
 
 // @dynamic
-export class CdsBaseButton extends LitElement {
+export class CdsBaseButton<T = any> extends LitElement<T> {
   @property({ type: Boolean }) readonly = false;
 
   @property({ type: String }) type: 'button' | 'submit';
@@ -105,7 +105,7 @@ export class CdsBaseButton extends LitElement {
    * We have to append a hidden button outside the web component in the light DOM
    * This allows us to trigger native submit events within a form element.
    */
-  private triggerNativeButtonBehavior(event: Event) {
+  private triggerNativeButtonBehavior(event: any) {
     if (!this.readonly) {
       if (this.disabled) {
         stopEvent(event);
@@ -131,7 +131,7 @@ export class CdsBaseButton extends LitElement {
     }
   }
 
-  private emulateKeyBoardEventBehavior(evt: KeyboardEvent) {
+  private emulateKeyBoardEventBehavior(evt: any) {
     onAnyKey(['enter', 'space'], evt, () => {
       if (!this.readonly) {
         this.click();

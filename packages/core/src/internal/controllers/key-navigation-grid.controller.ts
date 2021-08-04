@@ -1,4 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
+import { onChildListMutation, onFirstInteraction } from '@cds/core/internal';
 import { getTabableItems } from '../utils/keycodes.js';
 
 export interface KeyNavigationGridConfig {
@@ -8,6 +9,8 @@ export interface KeyNavigationGridConfig {
 }
 
 export class KeyNavigationGridController {
+  private observers: MutationObserver[] = [];
+
   private get grid() {
     return (this.host as any)[this.config.keyGrid] as HTMLElement;
   }
@@ -27,14 +30,23 @@ export class KeyNavigationGridController {
 
   async hostConnected() {
     await this.host.updateComplete;
-    this.grid.addEventListener('mousedown', (e: MouseEvent) => this.activateCell(e));
-    this.grid.addEventListener('keydown', (e: KeyboardEvent) => this.focusCell(e));
+
+    onFirstInteraction(this.host, () => {
+      this.initializeTabIndex();
+      this.grid.addEventListener('mousedown', (e: MouseEvent) => this.activateCell(e));
+      this.grid.addEventListener('keydown', (e: KeyboardEvent) => this.focusCell(e));
+    });
+
+    this.observers.push(onChildListMutation(this.host, () => this.initializeTabIndex()));
   }
 
-  initialize() {
+  hostDisconnected() {
+    this.observers.forEach(o => o.disconnect());
+  }
+
+  private initializeTabIndex() {
     this.cells.forEach((i: HTMLElement) => i.setAttribute('tabindex', '-1'));
-    const firstCell = this.cells[0];
-    firstCell?.setAttribute('tabindex', '0');
+    this.cells[0]?.setAttribute('tabindex', '0');
   }
 
   private activateCell(e: any) {

@@ -23,7 +23,7 @@ import styles from './action-resize.element.scss';
  * @element cds-action-resize
  * @slot - For projecting text content or cds-icon
  */
-export class CdsActionResize extends CdsAction {
+export class CdsActionResize extends CdsAction<{ resizeChange: number }> {
   @property({ type: String }) direction: 'main' | 'cross' = 'cross';
 
   @event() resizeChange: EventEmitter<number>;
@@ -44,11 +44,6 @@ export class CdsActionResize extends CdsAction {
     `;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.ariaLabel = this.i18n.resize;
-  }
-
   firstUpdated(props: Map<string, any>) {
     super.firstUpdated(props);
 
@@ -57,6 +52,11 @@ export class CdsActionResize extends CdsAction {
       this.listenForKeyboardResize();
       this.addEventListener('blur', () => (this.keyActive = false));
     }
+  }
+
+  updated(props: Map<string, any>) {
+    this.ariaLabel = !this.readonly ? this.i18n.resize : null;
+    super.updated(props);
   }
 
   private listenForMouseResize() {

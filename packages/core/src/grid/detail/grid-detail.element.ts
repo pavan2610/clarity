@@ -1,10 +1,9 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, PropertyValues } from 'lit';
 import { query } from 'lit/decorators/query.js';
-import '@cds/core/internal-components/close-button/register.js';
 import { baseStyles, i18n, I18nService, property } from '@cds/core/internal';
 import styles from './grid-detail.element.scss';
 
-export class CdsGridDetail extends LitElement {
+export class CdsGridDetail extends LitElement<{ closeChange: void }> {
   @property({ type: String, reflect: true }) slot = 'detail';
 
   @property({ type: Boolean }) hidden = false;
@@ -31,10 +30,10 @@ export class CdsGridDetail extends LitElement {
       : ''}`;
   }
 
-  async updated(props: Map<string, any>) {
+  async updated(props: PropertyValues<this>) {
     super.updated(props);
 
-    if (props.has('anchor')) {
+    if (props.has('anchor') && this.anchor) {
       await this.updateComplete;
       this.setAnchorPointer();
     }
@@ -46,7 +45,7 @@ export class CdsGridDetail extends LitElement {
   }
 
   private setAnchorPointer() {
-    const top = this.anchor.getBoundingClientRect()?.top - this.overlay?.getBoundingClientRect().top - 8;
+    const top = this.anchor?.getBoundingClientRect()?.top - this.overlay?.getBoundingClientRect().top - 8;
     this.style.setProperty('--caret-top', `${top}px`);
     this.parentElement?.style.setProperty('--body-overflow', this.hidden ? 'auto' : 'hidden');
   }

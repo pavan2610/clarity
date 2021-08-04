@@ -1,12 +1,12 @@
 import { LitElement, html } from 'lit';
 import { query } from 'lit/decorators/query.js';
 import { baseStyles, i18n, I18nService, property, state } from '@cds/core/internal';
-import styles from './grid-column.element.scss';
+import { CdsActionResize } from '@cds/core/actions';
 import { GridColumnSizeController } from './grid-column-size.controller.js';
 import { GridColumnPositionController } from './grid-column-position.controller.js';
-import { CdsActionResize } from '@cds/core/actions';
+import styles from './grid-column.element.scss';
 
-export class CdsGridColumn extends LitElement {
+export class CdsGridColumn extends LitElement<{ resizeChange: number }> {
   @i18n() i18n = I18nService.keys.grid;
 
   @property({ type: String }) width?: string;
@@ -38,25 +38,10 @@ export class CdsGridColumn extends LitElement {
       <div part="column">
         <slot></slot>
         ${this.resizable !== 'hidden'
-          ? html`<cds-action-resize
-                .readonly=${this.resizable === false}
-                aria-label=${this.i18n.resizeColumn}
-              ></cds-action-resize>
+          ? html` <cds-action-resize .readonly=${this.resizable === false}></cds-action-resize>
               <div class="line"></div>`
           : ''}
       </div>
     `;
-  }
-
-  async updated(props: Map<string, any>) {
-    super.updated(props);
-
-    await this.updateComplete;
-    if (
-      (this.colIndex && this.position !== undefined && props.get('position')) ||
-      (this.colIndex && this.position !== 'initial')
-    ) {
-      this.gridColumnPositionController.calculateColumnPositionStyles();
-    }
   }
 }

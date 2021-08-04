@@ -6,49 +6,59 @@ export class GridRangeSelectionController {
   private firstCell: CdsGridCell;
   private activeCell: CdsGridCell;
 
+  private get enabled() {
+    return this.host.rangeSelection && !Array.from(this.host.rows).find(r => r.draggable);
+  }
+
   constructor(
     private host: ReactiveControllerHost &
       HTMLElement & { cells: NodeListOf<any> | any[]; rows: NodeListOf<any>; rangeSelection: boolean }
-  ) {}
+  ) {
+    host.addController(this);
+  }
 
-  async initialize() {
+  async hostConnected() {
     await this.host.updateComplete;
-
-    if (this.host.rangeSelection) {
-      if (!Array.from(this.host.rows).find(r => r.draggable)) {
-        this.setupMouseEvents();
-      }
-
-      this.setupKeyboardListeners();
-    }
+    this.setupKeyboardListeners();
+    this.setupMouseEvents();
   }
 
   private setupMouseEvents() {
     this.host.shadowRoot.addEventListener('mousedown', (e: any) => {
       // preserve right click for context menus & keyboard mouse control https://apple.stackexchange.com/questions/32715/how-do-i-open-the-context-menu-from-a-mac-keyboard
-      if (e.buttons === 1 && !e.ctrlKey) {
+      if (this.enabled && e.buttons === 1 && !e.ctrlKey) {
         this.setFirstCell(e);
       }
     });
-    this.host.shadowRoot.addEventListener('mouseover', (e: any) =>
-      this.setActiveCell(e.composedPath().find((i: any) => i.tagName === 'CDS-GRID-CELL'))
-    );
-    this.host.shadowRoot.addEventListener('mouseup', () => this.stopSelection());
+
+    this.host.shadowRoot.addEventListener('mouseover', (e: any) => {
+      if (this.enabled) {
+        this.setActiveCell(e.composedPath().find((i: any) => i.tagName === 'CDS-GRID-CELL'));
+      }
+    });
+
+    this.host.shadowRoot.addEventListener('mouseup', () => {
+      if (this.enabled) {
+        this.stopSelection();
+      }
+    });
   }
 
   private setupKeyboardListeners() {
     this.host.addEventListener('cdsKeyChange', (e: any) => {
-      this.setActiveCell(e.detail.activeItem);
+      if (this.enabled) {
+        this.setActiveCell(e.detail.activeItem);
 
-      if (!e.detail.shiftKey) {
-        this.stopSelection();
-        this.resetAllActiveCells();
-        this.host.dispatchEvent(new CustomEvent('rangeSelectionChange', { detail: [] }));
+        if (!e.detail.shiftKey) {
+          this.stopSelection();
+          this.resetAllActiveCells();
+          this.host.dispatchEvent(new CustomEvent('rangeSelectionChange', { detail: [] }));
+        }
       }
     });
 
     this.host.addEventListener('keydown', (e: any) => {
-      if (e.code === 'ShiftLeft' && e.shiftKey && !this.selectionActive) {
+      if (this.enabled && e.code === 'ShiftLeft' && e.shiftKey && !this.selectionActive) {
         this.setFirstCell(e);
       }
     });
@@ -99,9 +109,6 @@ export class GridRangeSelectionController {
       }
     });
 
-    Array.from(this.host.cells)
-      .filter(c => c.active)
-      .forEach((cell: CdsGridCell) => cell.dispatchEvent(new CustomEvent('selectedChange', { detail: cell })));
     this.host.dispatchEvent(
       new CustomEvent('rangeSelectionChange', { detail: Array.from(this.host.cells).filter(c => c.active) })
     );

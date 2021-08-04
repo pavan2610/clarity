@@ -30,8 +30,10 @@
   margin: 0;
   display: flex;
   gap: #{$cds-global-layout-space-sm};
-  padding-inline: $cds-global-space-6 $cds-global-space-8;
-  padding-block: $cds-global-space-4 $cds-global-space-4;
+  padding: $cds-global-space-4 $cds-global-space-8 $cds-global-space-4 $cds-global-space-6;
+  padding-block: #{$cds-global-space-4};
+  padding-inline-start: #{$cds-global-space-6};
+  padding-inline-end: #{$cds-global-space-8};
   align-items: center;
   height: 100%;
   position: sticky !important;
@@ -77,9 +79,9 @@ cds-action-resize {
 
 [_active] + .line,
 [_key-active] + .line {
-  background: $cds-alias-status-alt-tint;
+  border-right: $cds-global-space-2 dotted $cds-alias-object-interaction-background-highlight;
 }
 
 :host([cds-draggable*='target']) [part='column'] {
-  box-shadow: 0 $cds-alias-object-border-width-200 0 $cds-alias-status-alt-tint;
+  box-shadow: 0 $cds-alias-object-border-width-200 0 $cds-alias-object-interaction-background-highlight;
 }

@@ -7,15 +7,19 @@
 import { html, LitElement } from 'lit';
 import { registerElementSafely, state } from '@cds/core/internal';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
-import { GridColumnGroupSize, GridColumnGroupSizeController } from './grid-column-group-size.controller.js';
+import {
+  ColumnSizeType,
+  GridColumnGroupSize,
+  GridColumnGroupSizeController,
+} from './grid-column-group-size.controller.js';
 
-const columns = ([document.createElement('div'), document.createElement('div'), document.createElement('div')].map(
-  (c: any, i) => {
+const columns = [document.createElement('div'), document.createElement('div'), document.createElement('div')].map(
+  (c: ColumnSizeType, i) => {
     c.width = `${(i + 1) * 100}px`;
     c.colIndex = i + 1;
     return c;
   }
-) as any) as NodeListOf<HTMLElement & { width?: string; colIndex?: number }>;
+);
 
 class GridColumnGroupSizeTestElement extends LitElement implements GridColumnGroupSize {
   @state() columns = columns;
@@ -40,8 +44,12 @@ describe('grid-column-size.controller', () => {
     removeTestElement(element);
   });
 
+  function intializeController() {
+    component.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+  }
+
   it('should create the grid layout for column headers', async () => {
-    component.gridColumnSizeController.createColumnGrids();
+    intializeController();
     await componentIsStable(component);
     expect(component.style.getPropertyValue('--ch-grid').trim()).toBe(
       'var(--ch1, 100px) var(--ch2, 200px) var(--ch3, 300px)'
@@ -49,7 +57,7 @@ describe('grid-column-size.controller', () => {
   });
 
   it('should create the grid layout for row cells', async () => {
-    component.gridColumnSizeController.createColumnGrids();
+    intializeController();
     await componentIsStable(component);
     expect(component.style.getPropertyValue('--c-grid').trim()).toBe(
       'var(--c1, 100px) var(--c2, 200px) var(--c3, 300px)'
@@ -58,12 +66,11 @@ describe('grid-column-size.controller', () => {
 
   it('should initialize the grid column width sizes if a fixed layout', async () => {
     component.columnLayout = 'flex';
-    component.gridColumnSizeController.initializeColumnWidths();
     await componentIsStable(component);
     expect(component.style.getPropertyValue('--ch1').trim()).toBe('');
 
     component.columnLayout = 'fixed';
-    component.gridColumnSizeController.initializeColumnWidths();
+    intializeController();
     await componentIsStable(component);
     expect(component.style.getPropertyValue('--ch1').trim()).toBe('100px');
     expect(component.style.getPropertyValue('--ch2').trim()).toBe('200px');

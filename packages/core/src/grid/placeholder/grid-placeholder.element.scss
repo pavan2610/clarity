@@ -34,7 +34,7 @@ cds-icon {
 :host([cds-draggable*='target']) [part='placeholder']::after {
   width: 100%;
   height: $cds-global-space-2;
-  background: $cds-alias-status-alt-tint;
+  background: $cds-alias-object-interaction-background-highlight;
   content: '';
   position: absolute;
   top: 0;

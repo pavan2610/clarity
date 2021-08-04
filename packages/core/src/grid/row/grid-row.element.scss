@@ -61,5 +61,5 @@
 }
 
 :host([cds-draggable*='target']) {
-  --border-top: inset 0 #{$cds-alias-object-border-width-300} 0 calc(#{$cds-global-space-1} * -1) #{$cds-alias-status-alt-tint};
+  --border-top: inset 0 #{$cds-alias-object-border-width-300} 0 calc(#{$cds-global-space-1} * -1) #{$cds-alias-object-interaction-background-highlight};
 }

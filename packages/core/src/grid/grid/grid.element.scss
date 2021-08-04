@@ -65,7 +65,7 @@
   position: relative;
 }
 
-.grid {
+.scroll-container {
   overflow: var(--body-overflow);
   height: var(--body-height, 100%);
   width: 100%;
@@ -84,8 +84,8 @@
   background: var(--background);
 }
 
-.column-row-group {
-  display: contents; // safari...
+[role='rowgroup']:first-child {
+  display: contents; // allow column role=rowgroup wrapper but row to be sticky relative to grid container
 }
 
 [role='row'] {

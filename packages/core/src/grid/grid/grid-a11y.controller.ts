@@ -1,4 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
+import { isSafari } from '@cds/core/internal';
 
 export type GridA11y = ReactiveControllerHost &
   HTMLElement & {
@@ -8,15 +9,34 @@ export type GridA11y = ReactiveControllerHost &
   };
 
 export class GridA11yController {
+  private observers: MutationObserver[] = [];
+
   constructor(private host: GridA11y) {
     host.addController(this);
   }
 
-  hostConnected() {
+  async hostConnected() {
+    await this.host.updateComplete;
     this.intializeColumnSort();
+    this.update();
+
+    const observer = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') {
+          this.update();
+        }
+      }
+    });
+
+    this.observers.push(observer);
+    observer.observe(this.host, { childList: true });
   }
 
-  initialize() {
+  hostDisconnected() {
+    this.observers.forEach(o => o.disconnect());
+  }
+
+  update() {
     this.initializeGrid();
     this.intializeColumns();
     this.initializeRows();
@@ -33,7 +53,7 @@ export class GridA11yController {
   private initializeGrid() {
     const grid = this.host.grid ? this.host.grid : this.host;
     grid.setAttribute('role', 'grid');
-    this.host.setAttribute('aria-rowcount', `${this.host.rows.length + 1}`); // +1 for column header row offset
+    this.host.setAttribute('aria-rowcount', `${this.host.rows?.length + 1}`); // +1 for column header row offset
     this.host.setAttribute('aria-colcount', `${this.host.columns.length}`);
   }
 
@@ -42,6 +62,14 @@ export class GridA11yController {
       c.setAttribute('role', 'columnheader');
       c.setAttribute('aria-colindex', `${i + 1}`);
 
+      if (isSafari()) {
+        // Only visible columnheader text should be read to SRs but Safari violates this and
+        // reads the aria-label of buttons when navigating between cells.
+        // Combining scope + aria-label tricks Safari + VO into the correct behavior
+        c.setAttribute('scope', 'col');
+        c.setAttribute('aria-label', c.textContent);
+      }
+
       if (c.querySelector('cds-action-sort')) {
         c.setAttribute('aria-sort', 'none');
       }
@@ -49,7 +77,7 @@ export class GridA11yController {
   }
 
   private initializeRows() {
-    this.host.rows.forEach((r, i) => {
+    this.host.rows?.forEach((r, i) => {
       r.setAttribute('role', 'row');
       r.setAttribute('aria-rowindex', `${i + 2}`); // +2 for column header row offset
       this.initializeCells(r.cells);
@@ -57,7 +85,7 @@ export class GridA11yController {
   }
 
   private initializeCells(cells: NodeListOf<HTMLElement>) {
-    cells.forEach((c, i) => {
+    cells?.forEach((c, i) => {
       if (!c.hasAttribute('role')) {
         c.setAttribute('role', 'gridcell');
       }

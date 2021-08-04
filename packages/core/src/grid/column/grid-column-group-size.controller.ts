@@ -1,19 +1,44 @@
+import { onChildListMutation, onFirstInteraction } from '@cds/core/internal';
 import { ReactiveControllerHost } from 'lit';
 
+export type ColumnSizeType = HTMLElement & {
+  width?: string;
+  colIndex?: number;
+  type?: string;
+  resizable?: true | false | 'hidden';
+};
 export type GridColumnGroupSize = ReactiveControllerHost &
   HTMLElement & {
-    columns: NodeListOf<
-      HTMLElement & { width?: string; colIndex?: number; type?: string; resizable?: true | false | 'hidden' }
-    >;
+    columns: NodeListOf<ColumnSizeType> | ColumnSizeType[];
     columnLayout: 'fixed' | 'flex';
   };
 
 export class GridColumnGroupSizeController {
+  private observers: MutationObserver[] = [];
+
   constructor(private host: GridColumnGroupSize) {
-    host.addController(this as any);
+    host.addController(this);
   }
 
-  initializeColumnWidths() {
+  async hostConnected() {
+    await this.host.updateComplete;
+    this.createColumnGrids();
+
+    onFirstInteraction(this.host, () => this.initializeColumnWidths());
+
+    this.observers.push(
+      onChildListMutation(this.host, async () => {
+        await this.host.updateComplete;
+        this.createColumnGrids();
+      })
+    );
+  }
+
+  hostDisconnected() {
+    this.observers.forEach(o => o.disconnect());
+  }
+
+  private initializeColumnWidths() {
     if (this.host.columnLayout === 'fixed') {
       Array.from(this.host.columns)
         .filter(c => !c.hidden)
@@ -26,7 +51,7 @@ export class GridColumnGroupSizeController {
     }
   }
 
-  createColumnGrids() {
+  private createColumnGrids() {
     const columns = Array.from(this.host.columns);
     columns[this.host.getAttribute('dir') === 'rtl' ? 0 : columns.length - 1].resizable = 'hidden';
 

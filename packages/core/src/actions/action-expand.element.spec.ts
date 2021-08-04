@@ -49,7 +49,8 @@ describe('cds-action-expand', () => {
     expect(component.getAttribute('aria-expanded')).toBe('true');
   });
 
-  it('should set the proper direction for expanding on the cross axis', async () => {
+  it('should set the proper direction for expanding on the horizontal axis', async () => {
+    component.action = 'horizontal';
     await componentIsStable(component);
     expect(component.shadowRoot.querySelector('cds-icon').direction).toBe('right');
 
@@ -58,8 +59,8 @@ describe('cds-action-expand', () => {
     expect(component.shadowRoot.querySelector('cds-icon').direction).toBe('left');
   });
 
-  it('should set the proper direction for expanding on the main axis', async () => {
-    component.direction = 'main';
+  it('should set the proper direction for expanding on the vertical axis', async () => {
+    component.action = 'vertical';
     await componentIsStable(component);
     expect(component.shadowRoot.querySelector('cds-icon').direction).toBe('right');
 

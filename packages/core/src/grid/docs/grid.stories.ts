@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, PropertyValues } from 'lit';
 import { query } from 'lit/decorators/query.js';
 import { queryAll } from 'lit/decorators/query-all.js';
 import pipe from 'ramda/es/pipe.js';
@@ -590,7 +590,7 @@ export function rtl() {
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
           ${this.currentVM ? html`
-          <cds-grid-detail .anchor=${this.anchor} @closeChange=${() => (this.currentVM = null) as any}>
+          <cds-grid-detail .anchor=${this.anchor} @closeChange=${(): void => (this.currentVM = null)}>
             <h2 cds-text="section">${this.currentVM?.id}</h2>
             <p cds-text="body">Status: ${this.currentVM?.status}</p>
             <p cds-text="body">CPU: ${this.currentVM?.cpu}%</p>
@@ -669,8 +669,9 @@ export function kitchenSink() {
     search: string,
     page: number,
     pageSize: number,
-    idFilterDropdownVisible: boolean,
-    columnsDropdownVisible: boolean,
+    idFilterAnchor: HTMLElement,
+    columnsDropdownAnchor: HTMLElement,
+    detailAnchor: HTMLElement,
     selectedColumns: ColumnTypes
   }
 
@@ -683,8 +684,9 @@ export function kitchenSink() {
     pageSize: 10,
     search: '',
     page: 0,
-    idFilterDropdownVisible: false,
-    columnsDropdownVisible: false,
+    idFilterAnchor: null,
+    columnsDropdownAnchor: null,
+    detailAnchor: null
   };
 
   class DemoKitchenSink extends LitElement {
@@ -695,18 +697,12 @@ export function kitchenSink() {
         <cds-grid aria-label="Active VM Management" style="--body-height: 360px">
           <cds-grid-column type="action" resizable="hidden">
             <cds-checkbox>
-              <input type="checkbox" .checked=${!this.state.data.find(i => !i.selected)} @change=${(e: any) => this.selectAll(e)} aria-label="select all" />
+              <input type="checkbox" .checked=${!this.state.data.find(i => !i.selected)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
             </cds-checkbox>
           </cds-grid-column>
           <cds-grid-column type="action" aria-label="expand row detail column"></cds-grid-column>
           <cds-grid-column resizable width="180px">
-            Host
-            <cds-action id="id-filter" @click=${() => (this.state = { ...this.state, idFilterDropdownVisible: true })} aria-label="column filter options" shape="filter"></cds-action>
-            <cds-dropdown ?hidden=${!this.state.idFilterDropdownVisible} @hiddenChange=${() => (this.state = { ...this.state, idFilterDropdownVisible: false })} anchor="#id-filter">
-              <cds-input>
-                <input type="text" placeholder="Search" aria-label="search rows" .value=${this.state.search} @input=${(e: any) => this.search(e.target.value)} />
-              </cds-input>
-            </cds-dropdown>
+            Host <cds-action @click=${(e: any) => (this.state = { ...this.state, idFilterAnchor: e.target })} aria-label="column filter options" shape="filter"></cds-action>
           </cds-grid-column>
           ${this.columnVisible(ColumnTypes.Status) ? html`
           <cds-grid-column resizable width="180px">
@@ -718,11 +714,11 @@ export function kitchenSink() {
           <cds-grid-row .selected=${entry.selected} id=${entry.id}>
             <cds-grid-cell type="action">
               <cds-checkbox>
-                <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="Select ${entry.id}" />
+                <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="select host ${entry.id}" />
               </cds-checkbox>
             </cds-grid-cell>
             <cds-grid-cell type="action">
-              <cds-action-expand .expanded=${this.currentDetail?.id === entry.id} id="${entry.id}-detail" @click=${() => this.showDetail(entry.id)}></cds-action-expand>
+              <cds-action-expand action="detail" .expanded=${this.currentDetail?.id === entry.id} @click=${(e: any) => this.showDetail(entry.id, e.target)}></cds-action-expand>
             </cds-grid-cell>
             <cds-grid-cell role="rowheader">
               ${entry.id}
@@ -738,24 +734,7 @@ export function kitchenSink() {
             ${this.columnVisible(ColumnTypes.Memory) ? html`<cds-grid-cell>${entry.memory}%</cds-grid-cell>` : ''}
           </cds-grid-row>`)}
           <cds-grid-footer>
-            <cds-action id="toggle-columns" @click=${() => (this.state = { ...this.state, columnsDropdownVisible: true })} aria-label="filter column" shape="view-columns"></cds-action>
-            <cds-dropdown ?hidden=${!this.state.columnsDropdownVisible} @hiddenChange=${() => (this.state = { ...this.state, columnsDropdownVisible: false })} anchor="#toggle-columns" position="top">
-              <cds-checkbox-group layout="vertical">
-                <cds-checkbox>
-                  <label>Status</label>
-                  <input type="checkbox" value=${ColumnTypes.Status} @click=${this.selectColumns} .checked=${this.columnVisible(ColumnTypes.Status)} />
-                </cds-checkbox>
-                <cds-checkbox>
-                  <label>CPU</label>
-                  <input type="checkbox" value=${ColumnTypes.CPU} @click=${this.selectColumns} .checked=${this.columnVisible(ColumnTypes.CPU)} />
-                </cds-checkbox>
-                <cds-checkbox>
-                  <label>Memory</label>
-                  <input type="checkbox" value=${ColumnTypes.Memory} @click=${this.selectColumns} .checked=${this.columnVisible(ColumnTypes.Memory)} />
-                </cds-checkbox>
-              </cds-checkbox-group>
-              <cds-button action="flat" @click=${() => (this.state = { ...this.state, selectedColumns: ColumnTypes.All })} ?disabled=${this.columnVisible(ColumnTypes.All)}>Select All</cds-button>
-            </cds-dropdown>
+            <cds-action @click=${(e: any) => (this.state = { ...this.state, columnsDropdownAnchor: e.target })} aria-label="filter columns" shape="view-columns"></cds-action>
             <cds-pagination>
               <span style="margin-right: auto;">${this.state.data.filter(i => i.selected).length} selected</span>
               <cds-select control-width="shrink">
@@ -776,7 +755,7 @@ export function kitchenSink() {
               <cds-pagination-button ?disabled=${this.state.page === this.pageCount - 1} action="last" @click=${this.lastPage} aria-label="go to last"></cds-pagination-button>
             </cds-pagination>
           </cds-grid-footer>
-          <cds-grid-detail ?hidden=${!this.currentDetail} anchor="${this.currentDetail?.id}-detail" @closeChange=${this.closeDetail}>
+          <cds-grid-detail ?hidden=${!this.currentDetail} .anchor=${this.state.detailAnchor} @closeChange=${this.closeDetail}>
             <section cds-layout="vertical gap:xxl">
               <div cds-layout="horizontal gap:md">
                 <h2 cds-text="heading">${this.currentDetail?.id}</h2>
@@ -798,10 +777,34 @@ export function kitchenSink() {
             </section>
           </cds-grid-detail>
         </cds-grid>
+        ${this.state.idFilterAnchor ? html`
+        <cds-dropdown @closeChange=${() => (this.state = { ...this.state, idFilterAnchor: null as any })} .anchor=${this.state.idFilterAnchor}>
+          <cds-input>
+            <input type="text" placeholder="Search" aria-label="search rows" .value=${this.state.search} @input=${(e: any) => this.search(e.target.value)} />
+          </cds-input>
+        </cds-dropdown>` : ''}
+        ${this.state.columnsDropdownAnchor ? html`
+        <cds-dropdown @closeChange=${() => (this.state = { ...this.state, columnsDropdownAnchor: null as any })} .anchor=${this.state.columnsDropdownAnchor} position="top">
+          <cds-checkbox-group layout="vertical">
+            <cds-checkbox>
+              <label>Status</label>
+              <input type="checkbox" value=${ColumnTypes.Status} @click=${this.selectColumns} .checked=${this.columnVisible(ColumnTypes.Status)} />
+            </cds-checkbox>
+            <cds-checkbox>
+              <label>CPU</label>
+              <input type="checkbox" value=${ColumnTypes.CPU} @click=${this.selectColumns} .checked=${this.columnVisible(ColumnTypes.CPU)} />
+            </cds-checkbox>
+            <cds-checkbox>
+              <label>Memory</label>
+              <input type="checkbox" value=${ColumnTypes.Memory} @click=${this.selectColumns} .checked=${this.columnVisible(ColumnTypes.Memory)} />
+            </cds-checkbox>
+          </cds-checkbox-group>
+          <cds-button action="flat" @click=${() => (this.state = { ...this.state, selectedColumns: ColumnTypes.All })} ?disabled=${this.columnVisible(ColumnTypes.All)}>Select All</cds-button>
+        </cds-dropdown>` : ''}
         <br />
         <section cds-layout="vertical gap:lg">
           <cds-button action="outline" @click=${this.resetState}>clear local storage</cds-button>
-          <pre style="width: 100%; overflow: auto;">${JSON.stringify({ ...this.state, data: this.state.data.map(i => i.id).join(','), orderPreference: this.state.orderPreference.join(',') }, null, 2)}</pre>
+          <pre style="width: 100%; overflow: auto;">${JSON.stringify({ ...this.state, idFilterAnchor: null, columnsDropdownAnchor: null, detailAnchor: null, data: this.state.data.map(i => i.id).join(','), orderPreference: this.state.orderPreference.join(',') }, null, 2)}</pre>
         </section>`;
     }
 
@@ -810,9 +813,9 @@ export function kitchenSink() {
       this.state = JSON.parse(localStorage.getItem('CORE_KITCHEN_SINK_DEMO')) ?? this.state;
     }
 
-    updated(props: Map<string, any>) {
+    updated(props: PropertyValues) {
       super.updated(props);
-      localStorage.setItem('CORE_KITCHEN_SINK_DEMO', JSON.stringify({ ...this.state, idFilterDropdownVisible: false, columnsDropdownVisible: false }));
+      localStorage.setItem('CORE_KITCHEN_SINK_DEMO', JSON.stringify({ ...this.state, idFilterAnchor: null, columnsDropdownAnchor: null, detailAnchor: null }));
     }
 
     private get currentDetail() {
@@ -843,8 +846,8 @@ export function kitchenSink() {
       this.state = { ...this.state, search: value, page: 0 };
     }
 
-    private showDetail(id: string) {
-      this.state = { ...this.state, currentDetail: id !== this.state.currentDetail ? this.state.data.find(i => i.id === id).id : null };
+    private showDetail(id: string, detailAnchor: HTMLElement) {
+      this.state = { ...this.state, currentDetail: id !== this.state.currentDetail ? this.state.data.find(i => i.id === id).id : null, detailAnchor };
     }
 
     private closeDetail() {
@@ -953,7 +956,7 @@ export function pagination() {
               <cds-pagination-button aria-label="go to first" ?disabled=${this.currentPage === 0} action="first" @click=${this.firstPage}></cds-pagination-button>
               <cds-pagination-button aria-label="go to previous" ?disabled=${this.currentPage === 0} action="prev" @click=${this.prevPage}></cds-pagination-button>
               <cds-input cds-pagination-number>
-                <input type="number" size="1" aria-label="current page" @input=${this.setPage} .value=${this.currentPage + 1} min="1" max=${this.pageCount} />
+                <input type="number" size="1" aria-label="current page" @input=${this.setPage} .valueAsNumber=${this.currentPage + 1} min="1" max=${this.pageCount} />
                 <cds-control-message>/ ${this.pageCount}</cds-control-message>
               </cds-input>
               <cds-pagination-button aria-label="go to next" ?disabled=${this.currentPage === this.pageCount - 1} action="next" @click=${this.nextPage}></cds-pagination-button>
@@ -968,7 +971,7 @@ export function pagination() {
       this.updateList();
     }
 
-    updated(props: Map<string, any>) {
+    updated(props: PropertyValues) {
       super.updated(props);
       if (
         (props.has('currentPage') && props.get('currentPage') !== this.currentPage) ||
@@ -1033,8 +1036,8 @@ export function columnVisibility() {
 
   class DemoColumnVisibility extends LitElement {
     @state() private data = getVMData();
-    @state() private toggleColumns = false;
     @state() private selectedColumns = ColumnTypes.All;
+    @state() private columnAnchor: HTMLElement;
 
     render() {
       return html`
@@ -1044,37 +1047,36 @@ export function columnVisibility() {
           ${this.checked(ColumnTypes.CPU) ? html`<cds-grid-column>CPU</cds-grid-column>` : ''}
           ${this.checked(ColumnTypes.Memory) ? html`<cds-grid-column>Memory</cds-grid-column>` : ''}
           ${this.data.map(entry => html`
-            <cds-grid-row>
-              <cds-grid-cell>${entry.id}</cds-grid-cell>
-              ${this.checked(ColumnTypes.Status) ? html`<cds-grid-cell>${entry.status}</cds-grid-cell>` : ''}
-              ${this.checked(ColumnTypes.CPU) ? html`<cds-grid-cell>${entry.cpu}%</cds-grid-cell>` : ''}
-              ${this.checked(ColumnTypes.Memory) ? html`<cds-grid-cell>${entry.memory}%</cds-grid-cell>` : ''}
-            </cds-grid-row>
-          `)}
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            ${this.checked(ColumnTypes.Status) ? html`<cds-grid-cell>${entry.status}</cds-grid-cell>` : ''}
+            ${this.checked(ColumnTypes.CPU) ? html`<cds-grid-cell>${entry.cpu}%</cds-grid-cell>` : ''}
+            ${this.checked(ColumnTypes.Memory) ? html`<cds-grid-cell>${entry.memory}%</cds-grid-cell>` : ''}
+          </cds-grid-row>`)}
           <cds-grid-footer>
-            <cds-action id="toggle-columns" @click=${() => (this.toggleColumns = true)} aria-label="filter column" shape="view-columns"></cds-action>
-            <cds-dropdown ?hidden=${!this.toggleColumns} @hiddenChange=${() => (this.toggleColumns = false)} anchor="#toggle-columns" position="top">
-              <cds-checkbox-group layout="vertical">
-                <cds-checkbox>
-                  <label>Status</label>
-                  <input type="checkbox" value=${ColumnTypes.Status} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.Status)} />
-                </cds-checkbox>
-                <cds-checkbox>
-                  <label>CPU</label>
-                  <input type="checkbox" value=${ColumnTypes.CPU} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.CPU)} />
-                </cds-checkbox>
-                <cds-checkbox>
-                  <label>Memory</label>
-                  <input type="checkbox" value=${ColumnTypes.Memory} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.Memory)} />
-                </cds-checkbox>
-              </cds-checkbox-group>
-              <cds-button action="flat" @click=${this.selectAll} ?disabled=${this.checked(ColumnTypes.All)}>
-                Select All
-              </cds-button>
-            </cds-dropdown>
+            <cds-action @click=${(e: any) => (this.columnAnchor = e.target)} aria-label="filter column" shape="view-columns"></cds-action>
           </cds-grid-footer>
         </cds-grid>
-      `;
+        ${this.columnAnchor ? html`
+        <cds-dropdown @closeChange=${(): void => this.columnAnchor = null} .anchor=${this.columnAnchor} position="top">
+          <cds-checkbox-group layout="vertical">
+            <cds-checkbox>
+              <label>Status</label>
+              <input type="checkbox" value=${ColumnTypes.Status} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.Status)} />
+            </cds-checkbox>
+            <cds-checkbox>
+              <label>CPU</label>
+              <input type="checkbox" value=${ColumnTypes.CPU} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.CPU)} />
+            </cds-checkbox>
+            <cds-checkbox>
+              <label>Memory</label>
+              <input type="checkbox" value=${ColumnTypes.Memory} @click=${this.selectColumns} .checked=${this.checked(ColumnTypes.Memory)} />
+            </cds-checkbox>
+          </cds-checkbox-group>
+          <cds-button action="flat" @click=${this.selectAll} ?disabled=${this.checked(ColumnTypes.All)}>
+            Select All
+          </cds-button>
+        </cds-dropdown>` : ''}`;
     }
 
     private selectColumns() {
@@ -1114,7 +1116,7 @@ export function rowDetail() {
           ${this.data.map(entry => html`
           <cds-grid-row>
             <cds-grid-cell type="action">
-              <cds-action-expand action="detail" .expanded=${this.currentVM?.id === entry.id} @click=${(e: any) => this.showDetail(e, entry)}></cds-action-expand>
+              <cds-action-expand aria-label="view host ${entry.id} details" action="detail" .expanded=${this.currentVM?.id === entry.id} @click=${(e: any) => this.showDetail(e, entry)}></cds-action-expand>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
             <cds-grid-cell>${entry.status}</cds-grid-cell>
@@ -1276,10 +1278,11 @@ export function rowAction() {
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
-        <cds-dropdown ?hidden=${!this.selectedEntry} .anchor=${this.anchor} @hiddenChange=${() => (this.selectedEntry = null) as any}>
+        ${this.selectedEntry ? html`
+        <cds-dropdown .anchor=${this.anchor} @closeChange=${() => (this.selectedEntry = null) as any}>
           <cds-button @click=${() => this.shutdown(this.selectedEntry)} action="flat" size="sm">Shutdown ${this.selectedEntry?.id}</cds-button>
           <cds-button @click=${() => this.restart(this.selectedEntry)} action="flat" size="sm">Restart ${this.selectedEntry?.id}</cds-button>
-        </cds-dropdown>`;
+        </cds-dropdown>` : ''}`;
     }
 
     private select(e: any, entry: TestVM) {
@@ -1305,7 +1308,7 @@ export function rowAction() {
 export function rowBatchAction() {
   class DemoRowBatchAction extends LitElement {
     @state() private data = getVMData();
-    @state() private openAction = false;
+    @state() private batchActionAnchor: HTMLElement;
     @state() private get allSelected() {
       return !this.data.find(i => !i.selected);
     }
@@ -1319,12 +1322,7 @@ export function rowBatchAction() {
             </cds-checkbox>
           </cds-grid-column>
           <cds-grid-column>
-            Host
-            <cds-action id="batch-action" @click=${() => (this.openAction = true)} aria-label="host options"></cds-action>
-            <cds-dropdown ?hidden=${!this.openAction} anchor="#batch-action" @hiddenChange=${() => (this.openAction = false)}>
-              <cds-button action="flat" size="sm" @click=${() => this.action('Restart')}>Restart Selected</cds-button>
-              <cds-button action="flat" size="sm" @click=${() => this.action('Shutdown')}>Shutdown Selected</cds-button>
-            </cds-dropdown>
+            Host <cds-action @click=${(e: any) => this.batchActionAnchor = e.target} aria-label="available host options"></cds-action>
           </cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
@@ -1333,7 +1331,7 @@ export function rowBatchAction() {
           <cds-grid-row .selected=${entry.selected}>
             <cds-grid-cell type="action">
               <cds-checkbox>
-                <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="select ${entry.id}" />
+                <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="select host ${entry.id}" />
               </cds-checkbox>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -1343,6 +1341,11 @@ export function rowBatchAction() {
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
+        ${this.batchActionAnchor ? html`
+        <cds-dropdown .anchor=${this.batchActionAnchor} @closeChange=${() => (this.batchActionAnchor = null as any)} position="bottom">
+          <cds-button action="flat" size="sm" @click=${() => this.action('Restart')}>Restart Selected</cds-button>
+          <cds-button action="flat" size="sm" @click=${() => this.action('Shutdown')}>Shutdown Selected</cds-button>
+        </cds-dropdown>` : ''}
       `;
     }
 
@@ -1358,12 +1361,8 @@ export function rowBatchAction() {
 
     private action(name: string) {
       alert(`${name}: ${this.data.filter(i => i.selected).map(i => i.id).reduce((p, n) => `${p} ${n}`, '')}`);
-      this.openAction = false;
+      this.batchActionAnchor = null;
       this.data.forEach(i => (i.selected = false));
-    }
-
-    protected createRenderRoot() {
-      return this;
     }
   }
 
@@ -1397,7 +1396,7 @@ export function rowSort() {
         </cds-grid>`;
     }
 
-    updated(props: Map<string, any>) {
+    updated(props: PropertyValues) {
       super.updated(props);
       if (props.has('sortType') && props.get('sortType') !== this.sortType) {
         this.filteredList = sortStrings([...this.data], 'id', this.sortType);
@@ -1438,7 +1437,7 @@ export function rowMultiSort() {
       `;
     }
 
-    updated(props: Map<string, any>) {
+    updated(props: PropertyValues) {
       super.updated(props);
       if (props.has('sortState')) {
         this.updateList();
@@ -1468,13 +1467,7 @@ export function columnFilter() {
       return html`
         <cds-grid aria-label="column filter datagrid demo" style="--body-height: 360px">
           <cds-grid-column>
-            Host
-            <cds-action id="id-filter-demo" @click=${(e: any) => (this.anchor = e.target)} shape="filter" aria-label="search available stocks"></cds-action>
-            <cds-dropdown ?hidden=${!this.anchor} @hiddenChange=${() => (this.anchor = null) as any} .anchor=${this.anchor}>
-              <cds-input>
-                <input type="text" aria-label="search hosts" placeholder="Search" @input=${(e: any) => (this.search = e.target.value)} />
-              </cds-input>
-            </cds-dropdown>
+            Host <cds-action @click=${(e: any) => (this.anchor = e.target)} shape="filter" aria-label="search hosts"></cds-action>
           </cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
@@ -1487,17 +1480,20 @@ export function columnFilter() {
             <cds-grid-cell>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-        </cds-grid>`;
+        </cds-grid>
+        ${this.anchor ? html`
+        <cds-dropdown @closeChange=${() => (this.anchor = null) as any} .anchor=${this.anchor}>
+          <cds-input>
+            <input type="text" aria-label="search hosts" placeholder="Search" @input=${(e: any) => (this.search = e.target.value)} />
+          </cds-input>
+        </cds-dropdown>` : ''}
+        `;
     }
 
-    updated(props: Map<string, any>) {
+    updated(props: PropertyValues) {
       super.updated(props);
       if (props.has('search') && props.get('search') !== this.search) {
         this.filteredList = filter([...this.data], 'id', this.search);
-      }
-
-      if (props.has('anchor') && props.get('anchor') !== this.anchor) {
-        setTimeout(() => props.get('anchor')?.focus());
       }
     }
   }
@@ -1536,7 +1532,7 @@ export function columnMultiFilter() {
         </section>`;
     }
 
-    updated(props: Map<string, any>) {
+    updated(props: PropertyValues) {
       super.updated(props);
       if (props.has('search') && props.get('search') !== this.search) {
         this.filteredList = [...this.data].filter(i =>
@@ -1993,6 +1989,7 @@ export function rowSwappable() {
     @state() private listTwo = getVMData().slice(4, 7);
     @state() private selectedEntryId: string;
     @state() private ariaLiveMessage = '';
+    @state() private dropdownAnchor: HTMLElement;
 
     render() {
       return html`
@@ -2003,7 +2000,7 @@ export function rowSwappable() {
           ${this.listOne.map(entry => html`
           <cds-grid-row id=${entry.id} draggable="true">
             <cds-grid-cell type="action">
-              <cds-action-handle aria-label="sort ${entry.id} row" id="selected-${entry.id}-action" @click=${() => this.selectedEntryId = entry.id}></cds-action-handle>
+              <cds-action-handle aria-label="sort ${entry.id} row" @click=${(e: any) => this.selectEntry(entry, e.target)}></cds-action-handle>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
             <cds-grid-cell>${entry.status}</cds-grid-cell>
@@ -2023,7 +2020,7 @@ export function rowSwappable() {
           ${this.listTwo.map(entry => html`
           <cds-grid-row id=${entry.id} draggable="true">
             <cds-grid-cell type="action">
-              <cds-action-handle aria-label="sort ${entry.id} row" id="selected-${entry.id}-action" @click=${() => this.selectedEntryId = entry.id}></cds-action-handle>
+              <cds-action-handle aria-label="sort ${entry.id} row" @click=${(e: any) => this.selectEntry(entry, e.target)}></cds-action-handle>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
             <cds-grid-cell>${entry.status}</cds-grid-cell>
@@ -2031,9 +2028,14 @@ export function rowSwappable() {
           <cds-grid-placeholder draggable="false">Staging Environment</cds-grid-placeholder>
           <cds-grid-footer>List Two: ${this.listTwo.map(j => html`${j.id} `)}</cds-grid-footer>
         </cds-grid>
-        <cds-dropdown ?hidden=${!this.selectedEntryId} anchor="#selected-${this.selectedEntryId}-action" @hiddenChange=${() => (this.selectedEntryId = null) as any}>
+        <cds-dropdown ?hidden=${!this.selectedEntryId} .anchor=${this.dropdownAnchor} @closeChange=${() => (this.dropdownAnchor = null) as any}>
           <cds-button @click=${this.appendToOtherGrid} action="flat" size="sm">Move to <span>${this.listOne.find(i => i.id === this.selectedEntryId) ? 'Staging' : 'Production'}</span></cds-button>
         </cds-dropdown>`;
+    }
+
+    private selectEntry(entry: TestVM, anchor: HTMLElement) {
+      this.dropdownAnchor = anchor;
+      this.selectedEntryId = entry.id;
     }
 
     private appendToOtherGrid() {
@@ -2051,7 +2053,6 @@ export function rowSwappable() {
       this.listOne = [...this.listOne];
       this.listTwo = [...this.listTwo];
       this.selectedEntryId = null;
-      setTimeout(() => (this.shadowRoot.querySelector(`#selected-${item.id}-action`) as any).focus(), 0);
     }
 
     private sortOne(e: any) {
@@ -2260,11 +2261,12 @@ export function rangeSelectContextMenu() {
             <cds-grid-cell>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-          <cds-dropdown ?hidden=${!this.anchor} .anchor=${this.anchor} @hiddenChange=${() => (this.anchor = null) as void}>
-            <cds-button @click=${() => this.exportToCSV()} action="flat" block>Export to CSV</cds-button>
-            <cds-button @click=${() => this.logCSV()} action="flat" block>Log CSV</cds-button>
-          </cds-dropdown>
         </cds-grid>
+        ${this.anchor ? html`
+        <cds-dropdown .anchor=${this.anchor} @closeChange=${() => (this.anchor = null) as void}>
+          <cds-button @click=${() => this.exportToCSV()} action="flat" block>Export to CSV</cds-button>
+          <cds-button @click=${() => this.logCSV()} action="flat" block>Log CSV</cds-button>
+        </cds-dropdown>` : ''}
         <pre cds-text="body">${this.csv}</pre>
       `;
     }
@@ -2285,7 +2287,7 @@ export function rangeSelectContextMenu() {
       const rows = groupArray(this.activeCells.map(c => this.rows[c.rowIndex - 1][this.columns[c.colIndex - 1].key]), columns.length).map(c => c.join(',')).join('\n');
       this.csv = `${columns.join(',')}\n${rows}`;
       this.anchor = null;
-      setTimeout(() => this.shadowRoot.querySelector<HTMLElement>(`cds-grid-cell[tabindex='0']`).focus());
+      // setTimeout(() => this.shadowRoot.querySelector<HTMLElement>(`cds-grid-cell[tabindex='0']`).focus());
     }
 
     private exportToCSV() {
@@ -2439,7 +2441,7 @@ export function asyncData() {
         </cds-grid>`;
     }
 
-    firstUpdated(props: Map<string, any>) {
+    firstUpdated(props: PropertyValues) {
       super.firstUpdated(props);
       this.load();
     }
