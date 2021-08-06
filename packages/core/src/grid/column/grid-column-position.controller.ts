@@ -1,4 +1,3 @@
-import { supportsAdoptingStyleSheets } from '@cds/core/internal';
 import { ReactiveControllerHost } from 'lit';
 
 export type GridColumnPosition = ReactiveControllerHost &
@@ -8,7 +7,7 @@ export type GridColumnPosition = ReactiveControllerHost &
   };
 
 export class GridColumnPositionController {
-  private globalStyle = supportsAdoptingStyleSheets() ? new CSSStyleSheet() : null;
+  private styles: HTMLElement;
   private previousPosition: 'initial' | 'sticky' | 'fixed' = 'initial';
 
   get hostGrid() {
@@ -17,10 +16,6 @@ export class GridColumnPositionController {
 
   constructor(private host: GridColumnPosition) {
     host.addController(this);
-
-    if (this.globalStyle) {
-      (document as any).adoptedStyleSheets = [...(document as any).adoptedStyleSheets, this.globalStyle];
-    }
   }
 
   async hostUpdated() {
@@ -28,6 +23,12 @@ export class GridColumnPositionController {
 
     if (this.host.colIndex && this.host.position !== this.previousPosition) {
       this.previousPosition = this.host.position;
+      
+      if (!this.styles) {
+        this.styles = document.createElement('style');
+        this.hostGrid.append(this.styles);
+      }
+
       this.calculateColumnPositionStyles();
     }
   }
@@ -35,7 +36,7 @@ export class GridColumnPositionController {
   private calculateColumnPositionStyles() {
     const gridPosition = this.hostGrid.getBoundingClientRect();
     const side = this.host.offsetLeft < gridPosition.width / 2 ? 'left' : 'right';
-    (this.globalStyle as any).replaceSync(`${this.getPositionStyle(side, gridPosition)}\n${this.borderStyle(side)}`);
+    this.styles.innerHTML = `${this.getPositionStyle(side, gridPosition)}\n${this.borderStyle(side)}`;
   }
 
   private getPositionStyle(side: 'left' | 'right', gridPosition: DOMRect) {
@@ -44,8 +45,7 @@ export class GridColumnPositionController {
     const right = this.host.position === 'fixed' ? `${position.right - position.left - position.width}px` : 'initial';
 
     return `
-    [__id='${this.hostGrid._id}'] cds-grid-column:nth-child(${this.host.colIndex}),
-    [__id='${this.hostGrid._id}'] cds-grid-cell:nth-child(${this.host.colIndex}) {
+    [__id='${this.hostGrid._id}'] [aria-colindex="${this.host.colIndex}"] {
       ${side === 'left' ? `left: ${left};` : ''}
       ${side === 'right' ? `right: ${right};` : ''}
       ${this.host.position === 'sticky' ? `left: 0px;` : ''}
@@ -55,7 +55,7 @@ export class GridColumnPositionController {
   private borderStyle(side: 'left' | 'right') {
     return this.host.position !== 'initial'
       ? `
-      [__id='${this.hostGrid._id}'] cds-grid-cell:nth-child(${this.host.colIndex}) {
+      [__id='${this.hostGrid._id}'] cds-grid-cell[aria-colindex="${this.host.colIndex}"] {
         --border-${
           side === 'left' ? 'right' : 'left'
         }: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);

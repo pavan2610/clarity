@@ -20,10 +20,15 @@
   position: relative;
   grid-column: 1 / -1;
   color: $cds-global-typography-color-500;
+  text-align: center;
+}
+
+[role='row'] {
+  height: 100%;
 }
 
 cds-icon {
-  --color: var(--cds-alias-object-container-background-shade);
+  --color: #{$cds-alias-object-interaction-color-disabled};
 }
 
 :host([draggable='false']) [part='placeholder'] {

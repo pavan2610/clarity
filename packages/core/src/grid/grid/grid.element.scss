@@ -38,9 +38,14 @@
   --border-bottom: 0;
 }
 
+:host([border*='stripe']) ::slotted(cds-grid-row),
 :host([border*='none']) ::slotted(cds-grid-row) {
   --border-top: 0;
   --border-bottom: 0;
+}
+
+:host([border*='stripe']) ::slotted(cds-grid-row:nth-child(even)) {
+  --background: #{$cds-alias-object-container-background-tint};
 }
 
 /* column alignments */

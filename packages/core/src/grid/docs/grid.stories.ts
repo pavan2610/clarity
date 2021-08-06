@@ -646,7 +646,9 @@ export function placeholder() {
       <cds-grid-column>Status</cds-grid-column>
       <cds-grid-column>CPU</cds-grid-column>
       <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-placeholder></cds-grid-placeholder>
+      <cds-grid-placeholder>
+        <p cds-text="subsection">No VMs were found.</p>
+      </cds-grid-placeholder>
       <cds-grid-footer></cds-grid-footer>
     </cds-grid>
   `;
@@ -1582,10 +1584,6 @@ export function columnFixed() {
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>`;
     }
-
-    protected createRenderRoot() { // todo: shadow dom breaks fixed position here
-      return this;
-    }
   }
 
   registerElementSafely('demo-grid-column-fixed', DemoColumnFixed);
@@ -1625,10 +1623,6 @@ export function columnFixedDynamic() {
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>`;
     }
-
-    protected createRenderRoot() {
-      return this;
-    }
   }
 
   registerElementSafely('demo-column-fixed-dynamic', DemoColumnFixedDyanmic);
@@ -1655,10 +1649,6 @@ export function columnMultiFixed() {
         </cds-grid-row>`)}
         <cds-grid-footer></cds-grid-footer>
       </cds-grid>`;
-    }
-
-    protected createRenderRoot() {
-      return this; // todo: shadow dom breaks fixed position here
     }
   }
 
@@ -1687,10 +1677,6 @@ export function columnSticky() {
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>`;
     }
-
-    protected createRenderRoot() {
-      return this; // todo: shadow dom breaks sticky position here
-    }
   }
 
   registerElementSafely('demo-grid-column-sticky', DemoColumnSticky);
@@ -1713,7 +1699,7 @@ export function cellEditable() {
             <cds-grid-cell aria-readonly="true">${entry.id}</cds-grid-cell>
             <cds-grid-cell @keyup=${(e: any) => this.toggleEdit(e, entry)} @dblclick=${(e: any) => this.toggleEdit(e, entry)}>
               <cds-input>
-                <input ?readonly=${!entry.selected} class="${entry.id}-input" type="text" .value=${entry.about}  aria-label="${entry.id} about cell" />
+                <input ?readonly=${!entry.selected} class="${entry.id}-input" type="text" .value=${entry.about}  aria-label="${entry.id} about cell" @change=${(e: any) => entry.about = e.target.value} />
               </cds-input>
             </cds-grid-cell>
             <cds-grid-cell aria-readonly="true">${entry.cpu}%</cds-grid-cell>
@@ -1733,17 +1719,6 @@ export function cellEditable() {
         this.data = [...this.data];
         e.target.closest('cds-grid-cell').focus();
       }
-    }
-
-
-
-    private saveCell(e: any, entry: TestVM) {
-      // if (e.code === 'Enter' || e.code === 'Escape' || e.type === 'blur') {
-      //   entry.selected = false;
-      //   this.data = [...this.data];
-      //   console.log('saveCell');
-      //   e.preventDefault();
-      // }
     }
   }
 
@@ -1930,7 +1905,7 @@ export function rowDraggable() {
             <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
             <cds-grid-cell>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
-          <cds-grid-placeholder draggable="false"></cds-grid-placeholder>
+          <cds-grid-placeholder draggable="false">&nbsp;</cds-grid-placeholder>
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
         <p>aria-live:</p>
@@ -2392,6 +2367,33 @@ export function borderNone() {
 
   registerElementSafely('demo-grid-border-none', DemoBorderNone);
   return html`<demo-grid-border-none></demo-grid-border-none>`;
+}
+
+export function borderStripe() {
+  class DemoBorderStripe extends LitElement {
+    @state() private data = getVMData();
+
+    render() {
+      return html`
+        <cds-grid aria-label="border stripe datagrid demo" border="stripe" style="--body-height: 360px">
+          <cds-grid-column>Host</cds-grid-column>
+          <cds-grid-column>Status</cds-grid-column>
+          <cds-grid-column>CPU</cds-grid-column>
+          <cds-grid-column>Memory</cds-grid-column>
+          ${this.data.map(entry => html`
+          <cds-grid-row>
+            <cds-grid-cell>${entry.id}</cds-grid-cell>
+            <cds-grid-cell>${entry.status}</cds-grid-cell>
+            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
+            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+          </cds-grid-row>`)}
+          <cds-grid-footer></cds-grid-footer>
+        </cds-grid>`;
+    }
+  }
+
+  registerElementSafely('demo-grid-border-stripe', DemoBorderStripe);
+  return html`<demo-grid-border-stripe></demo-grid-border-stripe>`;
 }
 
 export function rowHeader() {
