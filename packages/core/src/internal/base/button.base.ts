@@ -13,7 +13,7 @@ import { onAnyKey } from '../utils/keycodes.js';
 import { stopEvent } from './../utils/events.js';
 
 // @dynamic
-export class CdsBaseButton<T = any> extends LitElement<T> {
+export class CdsBaseButton extends LitElement {
   @property({ type: Boolean }) readonly = false;
 
   @property({ type: String }) type: 'button' | 'submit';

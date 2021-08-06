@@ -6,7 +6,7 @@ import { GridColumnSizeController } from './grid-column-size.controller.js';
 import { GridColumnPositionController } from './grid-column-position.controller.js';
 import styles from './grid-column.element.scss';
 
-export class CdsGridColumn extends LitElement<{ resizeChange: number }> {
+export class CdsGridColumn extends LitElement {
   @i18n() i18n = I18nService.keys.grid;
 
   @property({ type: String }) width?: string;

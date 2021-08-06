@@ -17,7 +17,7 @@ import { GridA11yController } from './grid-a11y.controller.js';
 import { GridRangeSelectionController } from './grid-range-selection.controller.js';
 import styles from './grid.element.scss';
 
-export class CdsGrid extends LitElement<{ rangeSelectionChange: CdsGridCell[] }> {
+export class CdsGrid extends LitElement {
   @property({ type: String }) columnLayout: 'fixed' | 'flex' = 'fixed';
 
   @property({ type: String }) border: 'row' | 'cell' | 'column' | 'none' = 'row';

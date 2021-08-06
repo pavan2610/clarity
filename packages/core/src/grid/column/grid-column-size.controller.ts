@@ -29,7 +29,7 @@ export class GridColumnSizeController {
     await this.host.updateComplete;
     await onFirstInteraction(this.hostGrid);
     this.observers.push(elementResize(this.host, () => this.updateResizedCellWidth(), false));
-    this.host.resizeHandle?.addEventListener('resizeChange', e => this.updateResizedColumnWidth(e.detail));
+    this.host.resizeHandle?.addEventListener('resizeChange', (e: any) => this.updateResizedColumnWidth(e.detail));
   }
 
   hostUpdated() {

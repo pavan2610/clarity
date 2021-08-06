@@ -23,7 +23,7 @@ import styles from './action-resize.element.scss';
  * @element cds-action-resize
  * @slot - For projecting text content or cds-icon
  */
-export class CdsActionResize extends CdsAction<{ resizeChange: number }> {
+export class CdsActionResize extends CdsAction {
   @property({ type: String }) direction: 'main' | 'cross' = 'cross';
 
   @event() resizeChange: EventEmitter<number>;

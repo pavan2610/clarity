@@ -3,7 +3,7 @@ import { query } from 'lit/decorators/query.js';
 import { baseStyles, i18n, I18nService, property } from '@cds/core/internal';
 import styles from './grid-detail.element.scss';
 
-export class CdsGridDetail extends LitElement<{ closeChange: void }> {
+export class CdsGridDetail extends LitElement {
   @property({ type: String, reflect: true }) slot = 'detail';
 
   @property({ type: Boolean }) hidden = false;

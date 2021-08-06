@@ -22,7 +22,7 @@ import styles from './action.element.scss';
  * @element cds-action
  * @slot - For projecting text content or cds-icon
  */
-export class CdsAction<T = any> extends CdsBaseButton<T> {
+export class CdsAction extends CdsBaseButton {
   @property({ type: String }) shape = 'ellipsis-vertical';
 
   @state({ type: String, attribute: 'aria-label', reflect: true }) ariaLabel?: string;

@@ -21,29 +21,3 @@ declare global {
     'cds-placeholder': HTMLElement;
   }
 }
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-type Union<T, K> = T & K;
-type CustomElementMap<T> = { [K in keyof T]: CustomEvent<T[K]> };
-declare module 'lit-element/lit-element.js' {
-  interface LitElement<J = any> {
-    addEventListener<K extends KeysOfUnion<CustomElementMap<J> & HTMLElementEventMap>>(
-      type: K,
-      listener: (this: HTMLElement, ev: Union<CustomElementMap<J>, HTMLElementEventMap>[K]) => any,
-      options?: boolean | AddEventListenerOptions
-    ): void;
-    addEventListener(
-      type: string,
-      listener: EventListenerOrEventListenerObject,
-      options?: boolean | AddEventListenerOptions
-    ): void;
-  }
-}
-
-// const col = { } as CdsGridColumn;
-// col.addEventListener('resizeChange', (e) => console.log(e.detail));
-// col.addEventListener('click', (e) => console.log(e));
-
-// const el = document.createElement('div');
-// el.addEventListener('keyup', e => console.log(e));
-// el.addEventListener('click', e => console.log(e));
