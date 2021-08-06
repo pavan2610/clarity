@@ -27,10 +27,9 @@ export class GridColumnSizeController {
 
   async hostConnected() {
     await this.host.updateComplete;
-    onFirstInteraction(this.hostGrid, () => {
-      this.observers.push(elementResize(this.host, () => this.updateResizedCellWidth(), false));
-      this.host.resizeHandle?.addEventListener('resizeChange', e => this.updateResizedColumnWidth(e.detail));
-    });
+    await onFirstInteraction(this.hostGrid);
+    this.observers.push(elementResize(this.host, () => this.updateResizedCellWidth(), false));
+    this.host.resizeHandle?.addEventListener('resizeChange', e => this.updateResizedColumnWidth(e.detail));
   }
 
   hostUpdated() {

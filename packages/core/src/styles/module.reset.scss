@@ -42,4 +42,5 @@ html[cds-focus-trap] {
   overflow: hidden !important;
   width: 100vw;
   height: 100vh;
+  padding-right: calc(#{$cds-global-space-7} - #{$cds-global-space-1}) !important;
 }

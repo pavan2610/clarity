@@ -11,7 +11,7 @@ export class CdsDropdown extends CdsInternalOverlay {
       css`
         :host {
           display: block;
-          position: absolute;
+          position: fixed;
           --backdrop-background: none;
         }
 

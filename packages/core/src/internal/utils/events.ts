@@ -39,3 +39,24 @@ export const getElementUpdates = (element: HTMLElement, propertyKey: string, cal
 
   return listenForAttributeChange(element, propertyKey, val => callback(val));
 };
+
+export function onFirstInteraction(element: HTMLElement) {
+  return new Promise(resolve => {
+    element.addEventListener('mouseover', resolve, { once: true });
+    element.addEventListener('mousedown', resolve, { once: true });
+    element.addEventListener('keydown', resolve, { once: true });
+    element.addEventListener('focus', resolve, { once: true });
+  });
+}
+
+export function onChildListMutation(element: HTMLElement, fn: () => void) {
+  const observer = new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'childList') {
+        fn();
+      }
+    }
+  });
+  observer.observe(element, { childList: true });
+  return observer;
+}

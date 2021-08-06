@@ -33,6 +33,7 @@ export * from './services/log.service.js';
 export * from './utils/async.js';
 export * from './utils/a11y.js';
 export * from './utils/array.js';
+export * from './utils/browser.js';
 export * from './services/keycodes.service.js';
 export * from './utils/conditional.js';
 export * from './utils/exists.js';
@@ -69,35 +70,3 @@ export {
   AnimationTreeItemExpandConfig,
   AnimationTreeItemExpandName,
 } from './motion/animations/cds-tree-item-expand.js';
-
-// temporary
-export function isSafari() {
-  return (navigator.vendor.match(/apple/i) || '').length > 0;
-}
-
-export function onChildListMutation(element: HTMLElement, fn: () => void) {
-  const observer = new MutationObserver(mutations => {
-    for (const mutation of mutations) {
-      if (mutation.type === 'childList') {
-        fn();
-      }
-    }
-  });
-  observer.observe(element, { childList: true });
-  return observer;
-}
-
-export function onFirstInteraction(element: HTMLElement, fn: () => void) {
-  let once = false;
-  const run = () => {
-    if (!once) {
-      fn();
-      once = true;
-    }
-  };
-
-  element.addEventListener('mouseover', run, { once: true });
-  element.addEventListener('mousedown', run, { once: true });
-  element.addEventListener('keydown', run, { once: true });
-  element.addEventListener('focus', run, { once: true });
-}

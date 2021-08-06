@@ -79,7 +79,7 @@ cds-action-resize {
 
 [_active] + .line,
 [_key-active] + .line {
-  border-right: $cds-global-space-2 dotted $cds-alias-object-interaction-background-highlight;
+  border-right: $cds-global-space-2 solid $cds-alias-object-interaction-background-highlight;
 }
 
 :host([cds-draggable*='target']) [part='column'] {

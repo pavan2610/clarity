@@ -24,7 +24,7 @@ export class GridColumnGroupSizeController {
     await this.host.updateComplete;
     this.createColumnGrids();
 
-    onFirstInteraction(this.host, () => this.initializeColumnWidths());
+    onFirstInteraction(this.host).then(() => this.initializeColumnWidths());
 
     this.observers.push(
       onChildListMutation(this.host, async () => {

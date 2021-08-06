@@ -31,7 +31,7 @@ export class KeyNavigationGridController {
   async hostConnected() {
     await this.host.updateComplete;
 
-    onFirstInteraction(this.host, () => {
+    onFirstInteraction(this.host).then(() => {
       this.initializeTabIndex();
       this.grid.addEventListener('mousedown', (e: MouseEvent) => this.activateCell(e));
       this.grid.addEventListener('keydown', (e: KeyboardEvent) => this.focusCell(e));
@@ -60,8 +60,13 @@ export class KeyNavigationGridController {
     }
   }
 
+  private elementInputType(_el: HTMLElement) {
+    // return /^(?:input|select|textarea)$/i.test(el.nodeName);
+    return false;
+  }
+
   private focusCell(e: KeyboardEvent) {
-    if (this.validKeyCode(e)) {
+    if (this.validKeyCode(e) && !this.elementInputType(e.target as HTMLElement)) {
       const { x, y } = this.getNextItemCoordinate(e);
       const activeItem = this.rows[y].children[x] as HTMLElement;
       this.setActiveCell(e, activeItem);

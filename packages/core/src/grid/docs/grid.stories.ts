@@ -692,12 +692,16 @@ export function kitchenSink() {
   class DemoKitchenSink extends LitElement {
     @state() private state: GridState = initialState;
 
+    get selected() {
+      return this.state.data.filter(i => i.selected);
+    }
+
     render() {
       return html`
         <cds-grid aria-label="Active VM Management" style="--body-height: 360px">
           <cds-grid-column type="action" resizable="hidden">
             <cds-checkbox>
-              <input type="checkbox" .checked=${!this.state.data.find(i => !i.selected)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
+              <input type="checkbox" .checked=${this.selected.length === this.state.data.length} .indeterminate=${(this.selected.length > 0) && (this.selected.length < this.state.data.length)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
             </cds-checkbox>
           </cds-grid-column>
           <cds-grid-column type="action" aria-label="expand row detail column"></cds-grid-column>
@@ -1203,16 +1207,20 @@ export function rowMultiSelect() {
   selectableData[1].selected = true;
   selectableData[3].selected = true;
 
+
   class DemoRowMultiSelect extends LitElement {
     @state() private data = selectableData;
-    @state() private allSelected = false;
+
+    get selected() {
+      return this.data.filter(i => i.selected);
+    }
 
     render() {
       return html`
         <cds-grid aria-label="row multi select datagrid demo" aria-multiselectable="true" style="--body-height: 360px">
           <cds-grid-column type="action"  aria-label="selection column">
             <cds-checkbox>
-              <input type="checkbox" .checked=${this.allSelected} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
+              <input type="checkbox" .checked=${this.selected.length === this.data.length} .indeterminate=${(this.selected.length > 0) && (this.selected.length < this.data.length)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
             </cds-checkbox>
           </cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
@@ -1223,7 +1231,7 @@ export function rowMultiSelect() {
           <cds-grid-row .selected=${entry.selected}>
             <cds-grid-cell type="action">
               <cds-checkbox>
-                <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="select host ${entry.id}" />
+                <input type="checkbox" .checked=${entry.selected} value=${entry.id} @change=${(e: any) => this.select(entry, e)} aria-label="select host ${entry.id}" />
               </cds-checkbox>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
@@ -1235,15 +1243,13 @@ export function rowMultiSelect() {
         </cds-grid>`;
     }
 
-    private select(entry: TestVM, checked: boolean) {
-      this.data.find(i => i.id === entry.id).selected = checked;
-      this.allSelected = !this.data.find(i => !i.selected);
+    private select(entry: TestVM, e: Event) {
+      this.data.find(i => i.id === entry.id).selected = (e.target as HTMLInputElement).checked;
       this.data = [...this.data];
     }
 
-    private selectAll(e: any) {
-      this.allSelected = e.target.checked;
-      this.data.forEach(i => (i.selected = e.target.checked));
+    private selectAll(e: Event) {
+      this.data.forEach(i => (i.selected = (e.target as HTMLInputElement).checked));
       this.data = [...this.data];
     }
   }
@@ -1309,8 +1315,9 @@ export function rowBatchAction() {
   class DemoRowBatchAction extends LitElement {
     @state() private data = getVMData();
     @state() private batchActionAnchor: HTMLElement;
-    @state() private get allSelected() {
-      return !this.data.find(i => !i.selected);
+
+    get selected() {
+      return this.data.filter(i => i.selected);
     }
 
     render() {
@@ -1318,7 +1325,7 @@ export function rowBatchAction() {
         <cds-grid aria-label="row batch action datagrid demo" style="--body-height: 360px">
           <cds-grid-column type="action">
             <cds-checkbox>
-              <input type="checkbox" .checked=${this.allSelected} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
+              <input type="checkbox" .checked=${this.selected.length === this.data.length} .indeterminate=${(this.selected.length > 0) && (this.selected.length < this.data.length)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
             </cds-checkbox>
           </cds-grid-column>
           <cds-grid-column>
@@ -1704,15 +1711,10 @@ export function cellEditable() {
           ${this.data.map(entry => html`
           <cds-grid-row>
             <cds-grid-cell aria-readonly="true">${entry.id}</cds-grid-cell>
-            <cds-grid-cell>
-              ${entry.selected
-                ? html`
-                <cds-input>
-                  <input class="${entry.id}-input" type="text" .value=${entry.about} @keyup=${(e: any) => this.updateEntry(e, entry)} aria-label="${entry.id} about cell" />
-                </cds-input>`
-                : html`
-                <cds-action class="${entry.id}-button" @click=${() => this.editEntry(entry)} aria-label="edit ${entry.id} about cell" shape="pencil"></cds-action>
-                <span>${entry.about}</span>`}
+            <cds-grid-cell @keyup=${(e: any) => this.toggleEdit(e, entry)} @dblclick=${(e: any) => this.toggleEdit(e, entry)}>
+              <cds-input>
+                <input ?readonly=${!entry.selected} class="${entry.id}-input" type="text" .value=${entry.about}  aria-label="${entry.id} about cell" />
+              </cds-input>
             </cds-grid-cell>
             <cds-grid-cell aria-readonly="true">${entry.cpu}%</cds-grid-cell>
             <cds-grid-cell aria-readonly="true">${entry.memory}%</cds-grid-cell>
@@ -1721,19 +1723,27 @@ export function cellEditable() {
         </cds-grid>`;
     }
 
-    private updateEntry(e: any, entry: any) {
-      if (e.code === 'Enter' || e.code === 'Escape') {
-        entry.about = e.target.value;
+    private toggleEdit(e: any, entry: TestVM) {
+      if (!entry.selected && (e.code === 'Enter' || e.type === 'dblclick')) {
+        entry.selected = true;
+        this.data = [...this.data];
+        e.target.querySelector('input').focus();
+      } else if (entry.selected && (e.code === 'Enter' || e.code === 'Escape' || e.type === 'blur')) {
         entry.selected = false;
         this.data = [...this.data];
-        setTimeout(() => this.shadowRoot.querySelector<HTMLElement>(`.${entry.id}-button`).focus());
+        e.target.closest('cds-grid-cell').focus();
       }
     }
 
-    private editEntry(entry: any) {
-      entry.selected = true;
-      this.data = [...this.data];
-      setTimeout(() => this.shadowRoot.querySelector<HTMLElement>(`.${entry.id}-input`).focus());
+
+
+    private saveCell(e: any, entry: TestVM) {
+      // if (e.code === 'Enter' || e.code === 'Escape' || e.type === 'blur') {
+      //   entry.selected = false;
+      //   this.data = [...this.data];
+      //   console.log('saveCell');
+      //   e.preventDefault();
+      // }
     }
   }
 

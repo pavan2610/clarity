@@ -141,7 +141,7 @@ export function getTabableItems(el: HTMLElement) {
   const tabableSelector = [
     'a[href]',
     'area[href]',
-    'input:not([disabled])',
+    'input:not([disabled]):not([readonly])',
     'button:not([disabled])',
     'select:not([disabled])',
     'textarea:not([disabled])',
