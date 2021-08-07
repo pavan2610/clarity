@@ -1,1 +1,73 @@
-<p>detail works!</p>
+<h2>@cds/core Grid with detail</h2>
+<section cds-layout="vertical gap:md">
+  <p>Notes on a Clarity core grid</p>
+  <ul>
+    <li>
+      bind to [attr.propertyName] for the dynamic values on web component attributes/properties. E.g - cds-action-expand
+      button that toggles the details needs aria-label and expanded to be controlled via Angular
+    </li>
+    <li>Use a method like showDetail to control the grid detail [anchor] and the currentVM</li>
+    <li>By setting currentVM to null when nothing is selected hide/show of details is a simple *ngIf</li>
+  </ul>
+</section>
+<cds-grid aria-label="row detail datagrid demo" style="--body-height: 360px;">
+  <!-- TODO: investigate why I need to set width here -->
+  <cds-grid-column width="36px" type="action" aria-label="row detail column"></cds-grid-column>
+  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
+  <cds-grid-row *ngFor="let vm of data | async">
+    <cds-grid-cell type="action">
+      <cds-action-expand
+        [attr.aria-label]="getDetails(vm.id)"
+        (click)="showDetail($event, vm)"
+        action="detail"
+        [attr.expanded]="this.currentVM?.id === vm.id"
+      ></cds-action-expand>
+    </cds-grid-cell>
+    <cds-grid-cell>{{ vm.id }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.status }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.cpu }}%</cds-grid-cell>
+    <cds-grid-cell>{{ vm.memory }}%</cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-footer></cds-grid-footer>
+  <cds-grid-detail aria-labelledby="heading" [anchor]="this.anchor" *ngIf="currentVM" (closeChange)="currentVM = null">
+    <section cds-layout="vertical align:center gap:lg">
+      <h2 id="heading" cds-text="section" cds-layout="align:left">{{ this.currentVM?.id }}</h2>
+      <p cds-text="body">Status: {{ this.currentVM?.status }}</p>
+      <p cds-text="body">CPU: {{ this.currentVM?.cpu }}%</p>
+      <p cds-text="body">Memory: {{ this.currentVM?.memory }}%</p>
+    </section>
+  </cds-grid-detail>
+</cds-grid>
+<h2>@clr/angular Datagrid with detail</h2>
+<section cds-layout="vertical gap:md">
+  <p>Notes on a Clarity Angular Datagrid</p>
+</section>
+<clr-datagrid style="width: 100%;">
+  <clr-dg-column>ID</clr-dg-column>
+  <clr-dg-column>Status</clr-dg-column>
+  <clr-dg-column>Memory</clr-dg-column>
+  <clr-dg-column>About</clr-dg-column>
+
+  <clr-dg-row *ngFor="let vm of data | async" [clrDgItem]="vm">
+    <clr-dg-cell>{{ vm.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.memory }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.about }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-detail *clrIfDetail="let detail">
+    <clr-dg-detail-header>{{ detail.id }}</clr-dg-detail-header>
+    <clr-dg-detail-body>
+      <section cds-layout="vertical align:center gap:lg">
+        <p cds-text="body">Status: {{ detail.status }}</p>
+        <p cds-text="body">CPU: {{ detail.cpu }}%</p>
+        <p cds-text="body">Memory: {{ detail.memory }}%</p>
+      </section>
+    </clr-dg-detail-body>
+  </clr-dg-detail>
+
+  <clr-dg-footer>Datagrid footer</clr-dg-footer>
+</clr-datagrid>

@@ -8,6 +8,14 @@
  * Interal demo data and utilities used for example apps and documentation
  */
 
+export enum ColumnTypes {
+  Host = 1,
+  Status = 2,
+  CPU = 4,
+  Memory = 8,
+  All = ColumnTypes.Host | ColumnTypes.Status | ColumnTypes.CPU | ColumnTypes.Memory,
+}
+
 export interface TestVM {
   id: string;
   status: 'online' | 'disruption' | 'offline' | 'deactivated';
@@ -29,14 +37,6 @@ export enum StatusIconType {
   disruption = 'exclamation-triangle',
   offline = 'exclamation-circle',
   deactivated = 'disconnect',
-}
-
-export enum ColumnTypes {
-  Host = 1,
-  Status = 2,
-  CPU = 4,
-  Memory = 8,
-  All = ColumnTypes.Host | ColumnTypes.Status | ColumnTypes.CPU | ColumnTypes.Memory,
 }
 
 /**

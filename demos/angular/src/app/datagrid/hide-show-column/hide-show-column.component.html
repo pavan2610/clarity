@@ -1,1 +1,76 @@
-<p>hide-show-column works!</p>
+<h2>@cds/core Hidable columns grid</h2>
+<p>This is a basic <strong>@cds/core</strong> grid.</p>
+
+<cds-grid aria-label="column visibility datagrid demo" style="--body-height: 360px;">
+  <ng-container *ngFor="let column of dataFields">
+    <cds-grid-column *ngIf="isColumnVisible(column)" [id]="column">
+      {{ column | titlecase }}
+    </cds-grid-column>
+  </ng-container>
+
+  <cds-grid-row *ngFor="let vm of data">
+    <cds-grid-cell *ngFor="let column of dataFields" [attr.hidden]="!isColumnVisible(column)">
+      {{ $any(vm)[column] }}
+    </cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-footer>
+    <cds-action (click)="setAnchor($event)" aria-label="filter column" shape="view-columns"></cds-action>
+  </cds-grid-footer>
+</cds-grid>
+<cds-dropdown
+  (closeChange)="this.columnAnchor = null; hiddenColumnPicker = !hiddenColumnPicker"
+  *ngIf="columnAnchor"
+  [anchor]="columnAnchor"
+  position="top"
+>
+  <form [formGroup]="hideShowForm">
+    <cds-checkbox-group formGroupName="columns" layout="vertical">
+      <cds-checkbox *ngFor="let column of dataFields">
+        <label>{{ column }}</label>
+        <input type="checkbox" [formControlName]="column" />
+      </cds-checkbox>
+    </cds-checkbox-group>
+  </form>
+  <cds-button action="flat" [attr.disabled]="allColumnsVisible ? null : true" (click)="showAllColumns()">
+    Select All
+  </cds-button>
+</cds-dropdown>
+
+<h2>@clr/angular Hideable columns datagrid</h2>
+<p>This is a basic <strong>@clr/angular</strong> datagrid.</p>
+<clr-datagrid style="height: 360px;">
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: false }">
+      ID
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: false }">
+      Status
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: false }">
+      Memory
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: false }">
+      Selected
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: false }">
+      About
+    </ng-container>
+  </clr-dg-column>
+
+  <clr-dg-row *ngFor="let vm of data">
+    <clr-dg-cell>{{ vm.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.memory }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.selected }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.about }}</clr-dg-cell>
+  </clr-dg-row>
+  <clr-dg-footer>Datagrid footer</clr-dg-footer>
+</clr-datagrid>

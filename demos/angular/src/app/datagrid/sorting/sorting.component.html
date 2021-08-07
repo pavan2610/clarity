@@ -1,1 +1,48 @@
-<p>sorting works!</p>
+<h2>@cds/core Grid with column sorting</h2>
+<section cds-layout="vertical gap:md">
+  <p>Notes on a Clarity core grid filtering</p>
+  <ul>
+    <li></li>
+  </ul>
+</section>
+
+<cds-grid aria-label="row sort datagrid demo" style="--body-height: 360px;">
+  <cds-grid-column>
+    Host
+    <cds-action-sort aria-label="sort hosts" [attr.sort]="sortType" (sortChange)="sortGrid($event)"></cds-action-sort>
+  </cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
+  <cds-grid-row *ngFor="let vm of sortedData">
+    <cds-grid-cell>{{ vm.id }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.status }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.cpu }}%</cds-grid-cell>
+    <cds-grid-cell>{{ vm.memory }}%</cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-footer></cds-grid-footer>
+</cds-grid>
+
+<h2>@clr/angular Datagrid with built in column string filter</h2>
+<section cds-layout="vertical gap:md">
+  <p>Notes on a Clarity core grid filtering</p>
+  <ul>
+    <li>With the Angular datagrid, when a model property is bound to a column sorting and filtering is turned on</li>
+    <li>Sorting happens when user clicks the column text</li>
+  </ul>
+</section>
+<clr-datagrid style="height: 360px;">
+  <clr-dg-column [clrDgField]="'id'">ID</clr-dg-column>
+  <clr-dg-column>Status</clr-dg-column>
+  <clr-dg-column>Memory</clr-dg-column>
+  <clr-dg-column>About</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let vm of data" [clrDgItem]="vm">
+    <clr-dg-cell>{{ vm.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.memory }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.about }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>Datagrid footer</clr-dg-footer>
+</clr-datagrid>

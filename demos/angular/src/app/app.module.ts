@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { cloudIcon, ClarityIcons } from '@cds/core/icon';
+
+import '@cds/core/grid/register.js';
 // import '@cds/core/icon/register.js';
 // import '@cds/core/accordion/register.js';
 // import '@cds/core/alert/register.js';
@@ -30,7 +33,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, CdsModule, ReactiveFormsModule, ClarityModule, BrowserAnimationsModule],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    CdsModule,
+    ReactiveFormsModule,
+    ClarityModule,
+    BrowserAnimationsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

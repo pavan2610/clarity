@@ -11,8 +11,10 @@ export class AppComponent {
   showDgDemos = true;
   activeRoute = '';
 
-  constructor(router: Router) {
-    router.events.subscribe(value => (this.activeRoute = router.url.toString()));
+  constructor(private router: Router) {}
+
+  ngAfterViewInit() {
+    this.router.events.subscribe(value => (this.activeRoute = this.router.url.toString()));
   }
 
   handleGroupExpand(event: Event) {

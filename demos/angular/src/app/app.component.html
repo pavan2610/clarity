@@ -7,7 +7,7 @@
       <cds-navigation expanded>
         <cds-navigation-group [expanded]="showDgDemos" (expandedChange)="handleGroupExpand($event)">
           <cds-navigation-start>Datagrid</cds-navigation-start>
-          <cds-navigation-item [active]="'/datagrid/basic' === activeRoute">
+          <cds-navigation-item [active]="'/datagrid/basic' === activeRoute || '/datagrid' === activeRoute">
             <a routerLink="/datagrid/basic">Basic</a>
           </cds-navigation-item>
           <cds-navigation-item [active]="'/datagrid/detail' === activeRoute">
@@ -41,7 +41,7 @@
       </cds-navigation>
       <cds-divider orientation="vertical"></cds-divider>
     </div>
-    <div class="app-content">
+    <div class="app-content" cds-layout="p-r:lg p-l:md">
       <router-outlet></router-outlet>
     </div>
   </div>

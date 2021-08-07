@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DatagridRoutingModule } from './datagrid-routing.module';
 import { DatagridComponent } from './datagrid.component';
@@ -19,8 +18,7 @@ import { MultiSelectComponent } from './multi-select/multi-select.component';
 import { DetailComponent } from './detail/detail.component';
 
 import { CdsModule } from '@cds/angular';
-
-import '@cds/core/grid/register.js';
+import { VmService } from './vm.service';
 
 @NgModule({
   declarations: [
@@ -37,6 +35,7 @@ import '@cds/core/grid/register.js';
     PinColumnsComponent,
     DetailComponent,
   ],
-  imports: [CommonModule, DatagridRoutingModule, ClarityModule, CdsModule],
+  imports: [CommonModule, DatagridRoutingModule, ClarityModule, CdsModule, FormsModule, ReactiveFormsModule],
+  providers: [VmService],
 })
 export class DatagridModule {}
