@@ -25,9 +25,15 @@ import styles from './action.element.scss';
 export class CdsAction extends CdsBaseButton {
   @property({ type: String }) shape = 'ellipsis-vertical';
 
+  @property({ type: String }) status?: 'active' | '';
+
   @state({ type: String, attribute: 'aria-label', reflect: true }) ariaLabel?: string;
 
-  @state({ type: Boolean, reflect: true, attribute: 'cds-action' }) cdsAction = true;
+  @state({ type: String, reflect: true, attribute: 'aria-expanded' }) ariaExpanded?: string;
+
+  @state({ type: String, reflect: true, attribute: 'aria-haspopup' }) ariaHasPopup?: string;
+
+  @state({ type: Boolean, reflect: true, attribute: 'cds-action' }) protected cdsAction = true;
 
   static get styles() {
     return [baseStyles, styles];
@@ -36,7 +42,7 @@ export class CdsAction extends CdsBaseButton {
   render() {
     return html`
       <div class="private-host">
-        <slot><cds-icon .shape=${this.shape}></cds-icon></slot>
+        <slot><cds-icon .shape=${this.shape} ?solid=${this.status === 'active'} .innerOffset=${1}></cds-icon></slot>
       </div>
     `;
   }

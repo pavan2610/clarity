@@ -28,7 +28,7 @@
   background: var(--color);
 }
 
-:host([direction='main']) {
+:host([direction='horizontal']) {
   --cursor: ns-resize;
   transform: rotate(90deg);
 }

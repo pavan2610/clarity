@@ -25,6 +25,15 @@
   cursor: var(--cursor) !important;
 }
 
+:host([status='active']) {
+  --color: #{$cds-alias-status-info};
+}
+
+:host([shape='close']) {
+  --icon-width: #{$cds-global-space-8};
+  --icon-height: #{$cds-global-space-8};
+}
+
 :host(:hover) {
   --color: #{$cds-alias-object-interaction-color-hover};
 }

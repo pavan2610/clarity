@@ -1,4 +1,4 @@
-import { onChildListMutation, onFirstInteraction } from '@cds/core/internal';
+import { onChildListMutation } from '@cds/core/internal';
 import { ReactiveControllerHost } from 'lit';
 
 export type ColumnSizeType = HTMLElement & {
@@ -23,8 +23,7 @@ export class GridColumnGroupSizeController {
   async hostConnected() {
     await this.host.updateComplete;
     this.createColumnGrids();
-
-    onFirstInteraction(this.host).then(() => this.initializeColumnWidths());
+    this.host.addEventListener('resizeChange', () => this.initializeColumnWidths(), { once: true, capture: true });
 
     this.observers.push(
       onChildListMutation(this.host, async () => {
@@ -40,19 +39,24 @@ export class GridColumnGroupSizeController {
 
   private initializeColumnWidths() {
     if (this.host.columnLayout === 'fixed') {
-      Array.from(this.host.columns)
-        .filter(c => !c.hidden)
-        .forEach(c =>
-          this.host.style.setProperty(
-            `--ch${c.colIndex}`,
-            c.width ? c.width : `${parseInt(getComputedStyle(c).width)}px`
-          )
-        );
+      const columns = Array.from(this.host.columns);
+
+      columns.filter(c => !c.hidden && c.width).forEach(c => this.host.style.setProperty(`--ch${c.colIndex}`, c.width));
+
+      columns
+        .filter(c => !c.hidden && !c.width && c.colIndex !== columns.length)
+        .forEach(c => this.host.style.setProperty(`--ch${c.colIndex}`, `${parseInt(getComputedStyle(c).width)}px`));
+
+      const lastCol = columns.find(c => !c.hidden && c.colIndex === columns.length);
+      const lastColWidth = lastCol.width ? lastCol.width : `${parseInt(getComputedStyle(lastCol).width)}px`;
+      this.host.style.setProperty(`--ch${lastCol.colIndex}`, `minmax(${lastColWidth}, 100%)`);
     }
   }
 
   private createColumnGrids() {
     const columns = Array.from(this.host.columns);
+
+    // todo: broken, hide/show columns this will not be set correctly
     columns[this.host.getAttribute('dir') === 'rtl' ? 0 : columns.length - 1].resizable = 'hidden';
 
     const colWidths = columns

@@ -14,6 +14,7 @@ export interface I18nStrings {
     expand: string;
     close: string;
     resize: string;
+    filter: string;
   };
   alert: {
     closeButtonAriaLabel: string;
@@ -56,6 +57,7 @@ export const componentStringsDefault = {
     expand: 'Expand',
     close: 'Close',
     resize: 'Resize',
+    filter: 'Filter',
   },
   alert: {
     closeButtonAriaLabel: 'Close',

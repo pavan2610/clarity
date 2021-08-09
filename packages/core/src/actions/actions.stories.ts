@@ -21,11 +21,40 @@ export default {
   },
 };
 
+export function all() {
+  return html`
+    <div cds-layout="vertical gap:lg">
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Action</h2>
+        ${action()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Action Resize</h2>
+        ${actionResize()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Action Sort</h2>
+        ${actionSort()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Action Handle</h2>
+        ${actionHandle()}
+      </div>
+      <div cds-layout="vertical gap:lg">
+        <h2 cds-text="section">Action Expand</h2>
+        ${actionExpand()}
+      </div>
+    </div>
+  `;
+}
+
 export function action() {
   return html`
     <div cds-layout="horizontal gap:lg">
       <cds-action aria-label="open options"></cds-action>
-      <cds-action aria-label="open menu" shape="bars"></cds-action>
+      <cds-action shape="bars" aria-label="open menu"></cds-action>
+      <cds-action shape="filter" aria-label="filter column"></cds-action>
+      <cds-action shape="close" aria-label="close message"></cds-action>
     </div>
   `;
 }
@@ -33,8 +62,8 @@ export function action() {
 export function actionResize() {
   return html`
     <div cds-layout="horizontal gap:xl">
-      <cds-action-resize direction="cross" aria-label="resize column"></cds-action-resize>
-      <cds-action-resize direction="main" aria-label="resize column"></cds-action-resize>
+      <cds-action-resize direction="vertical" aria-label="resize column"></cds-action-resize>
+      <cds-action-resize direction="horizontal" aria-label="resize window"></cds-action-resize>
     </div>
   `;
 }
@@ -44,11 +73,21 @@ export function actionSort() {
     @state() private sort: 'none' | 'ascending' | 'descending' = 'none';
 
     render() {
-      return html`<cds-action-sort
-        .sort=${this.sort}
-        @sortChange=${(e: any) => (this.sort = e.detail)}
-        aria-label="sort column"
-      ></cds-action-sort>`;
+      return html`
+        <div cds-layout="horizontal gap:lg">
+          <cds-action-sort
+            .sort=${this.sort}
+            @sortChange=${(e: any) => (this.sort = e.detail)}
+            aria-label="sort"
+          ></cds-action-sort>
+          <cds-action-sort sort="ascending" aria-label="sort"></cds-action-sort>
+          <cds-action-sort sort="descending" aria-label="sort"></cds-action-sort>
+        </div>
+      `;
+    }
+
+    protected createRenderRoot() {
+      return this;
     }
   }
 
@@ -69,7 +108,7 @@ export function actionExpand() {
 
     render() {
       return html`
-        <div cds-layout="vertical gap:lg">
+        <div cds-layout="horizontal gap:lg">
           <cds-action-expand
             action="vertical"
             .expanded=${this.expandOne}
@@ -92,12 +131,4 @@ export function actionExpand() {
 
   registerElementSafely('demo-action-expand', DemoActionExpand);
   return html`<demo-action-expand></demo-action-expand>`;
-}
-
-export function actionVisibility() {
-  return html``;
-}
-
-export function actionClose() {
-  return html``;
 }

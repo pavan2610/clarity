@@ -29,7 +29,7 @@ const config = {
   baseDir: './src',
   outDir: './dist/core',
   entryPoints: {
-    modules: ['./src', './src/internal', './src/test'],
+    modules: ['./src', './src/internal', './src/demo', './src/test'],
     components: [
       './src/actions',
       './src/accordion',

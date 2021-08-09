@@ -37,8 +37,8 @@ export class CdsActionSort extends CdsAction {
     return html`
       <div class="private-host">
         <div cds-layout="vertical align:center">
-          <cds-icon shape="angle" direction="up" inner-offset="2" size="14"></cds-icon>
-          <cds-icon shape="angle" direction="down" inner-offset="2" size="14"></cds-icon>
+          <cds-icon shape="angle" direction="up" inner-offset="2" size="12"></cds-icon>
+          <cds-icon shape="angle" direction="down" inner-offset="2" size="12"></cds-icon>
         </div>
       </div>
     `;

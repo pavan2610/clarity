@@ -128,6 +128,7 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
             '@cds/core/datalist/register.js': '/dist/core/datalist/register.js',
             '@cds/core/date': '/dist/core/date/index.js',
             '@cds/core/date/register.js': '/dist/core/date/register.js',
+            '@cds/core/demo': '/dist/core/demo/index.js',
             '@cds/core/divider': '/dist/core/divider/index.js',
             '@cds/core/divider/register.js': '/dist/core/divider/register.js',
             '@cds/core/file': '/dist/core/file/index.js',

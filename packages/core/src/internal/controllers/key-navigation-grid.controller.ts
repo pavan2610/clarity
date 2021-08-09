@@ -1,5 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
-import { onChildListMutation, onFirstInteraction } from '@cds/core/internal';
+import { onChildListMutation, onFirstInteraction } from '../utils/events.js';
 import { getTabableItems } from '../utils/keycodes.js';
 
 export interface KeyNavigationGridConfig {

@@ -36,25 +36,25 @@ the DOM is required to ensure the best a11y experience and that the column sizin
   </cds-grid-row>
   <cds-grid-footer>
     <cds-action id="toggle-columns" shape="view-columns" aria-label="filter column"></cds-action>
-    <cds-dropdown anchor="#toggle-columns" position="top">
-      <cds-checkbox-group layout="vertical">
-        <cds-checkbox>
-          <label>Status</label>
-          <input type="checkbox" checked />
-        </cds-checkbox>
-        <cds-checkbox>
-          <label>CPU</label>
-          <input type="checkbox" checked />
-        </cds-checkbox>
-        <cds-checkbox>
-          <label>Memory</label>
-          <input type="checkbox" />
-        </cds-checkbox>
-      </cds-checkbox-group>
-      <cds-button action="flat">Select All</cds-button>
-    </cds-dropdown>
   </cds-grid-footer>
 </cds-grid>
+<cds-dropdown anchor="#toggle-columns (element ref)" position="top">
+  <cds-checkbox-group layout="vertical">
+    <cds-checkbox>
+      <label>Status</label>
+      <input type="checkbox" checked />
+    </cds-checkbox>
+    <cds-checkbox>
+      <label>CPU</label>
+      <input type="checkbox" checked />
+    </cds-checkbox>
+    <cds-checkbox>
+      <label>Memory</label>
+      <input type="checkbox" />
+    </cds-checkbox>
+  </cds-checkbox-group>
+  <cds-button action="flat">Select All</cds-button>
+</cds-dropdown>
 ```
 
 ## API

@@ -70,10 +70,10 @@ describe('grid-column-size.controller', () => {
     expect(component.style.getPropertyValue('--ch1').trim()).toBe('');
 
     component.columnLayout = 'fixed';
-    intializeController();
+    component.dispatchEvent(new CustomEvent('resizeChange', { bubbles: true }));
     await componentIsStable(component);
     expect(component.style.getPropertyValue('--ch1').trim()).toBe('100px');
     expect(component.style.getPropertyValue('--ch2').trim()).toBe('200px');
-    expect(component.style.getPropertyValue('--ch3').trim()).toBe('300px');
+    expect(component.style.getPropertyValue('--ch3').trim()).toBe('minmax(300px, 100%)');
   });
 });

@@ -41,18 +41,12 @@ Columns can dynamically be placed into a fixed position.
 ```html
 <cds-grid>
   <cds-grid-column position="fixed">
-    Host
-    <cds-action aria-label="pin host column">
-      <cds-icon shape="pin" solid></cds-icon>
-    </cds-action>
+    Host <cds-action status="active" aria-label="unpin host column" shape="pin"></cds-action>
   </cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>
   <cds-grid-column>CPU</cds-grid-column>
   <cds-grid-column position="initial">
-    Memory
-    <cds-action aria-label="pin memory column">
-      <cds-icon shape="pin" solid></cds-icon>
-    </cds-action>
+    Memory <cds-action aria-label="pin memory column" shape="pin"></cds-action>
   </cds-grid-column>
   <cds-grid-row>
     <cds-grid-cell>vm-host-001</cds-grid-cell>

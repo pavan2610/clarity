@@ -1,13 +1,21 @@
+/*
+ * Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/**
+ * Interal demo data and utilities used for example apps and documentation
+ */
+
 export interface TestVM {
   id: string;
-  status: VMStatus;
+  status: 'online' | 'disruption' | 'offline' | 'deactivated';
   cpu: number;
   memory: number;
   selected: boolean;
   about: string;
 }
-
-export type VMStatus = 'online' | 'disruption' | 'offline' | 'deactivated';
 
 export enum StatusDisplayType {
   online = 'success',
@@ -23,6 +31,10 @@ export enum StatusIconType {
   deactivated = 'disconnect',
 }
 
+/**
+ * @demo
+ * This is a demo function used to standardize demos across framework examples. Do not use in production.
+ */
 export function getVMData(): TestVM[] {
   return [
     { id: 'vm-host-001', status: 'online', cpu: 5, memory: 10, selected: false, about: 'Lorem ipsum dolor sit amet' },
@@ -104,14 +116,26 @@ export function getVMData(): TestVM[] {
   ];
 }
 
-export function getVMOrderPreference() {
-  return getVMData().map(vm => vm.id);
+/**
+ * @demo
+ * This is a demo function used to standardize demos across framework examples. Do not use in production.
+ */
+export function getVMDataAsync(delay = 0): Promise<TestVM[]> {
+  return new Promise(resolve => setTimeout(() => resolve(getVMData()), delay));
 }
 
+/**
+ * @demo
+ * This is a demo function used to standardize demos across framework examples. Do not use in production.
+ */
 export function filter<T>(list: T[], key: string, term: string) {
   return [...list].filter(i => (i as any)[key].toLocaleLowerCase().includes(term.toLocaleLowerCase()));
 }
 
+/**
+ * @demo
+ * This is a demo function used to standardize demos across framework examples. Do not use in production.
+ */
 export function sortStrings<T>(list: T[], key: string, sortType: 'none' | 'ascending' | 'descending') {
   if (sortType === 'ascending') {
     return list.sort((a: any, b: any) => a[key].localeCompare(b[key]));
@@ -124,18 +148,10 @@ export function sortStrings<T>(list: T[], key: string, sortType: 'none' | 'ascen
   return list;
 }
 
-export function sortNumbers(list: any[], key: string, sortType: 'none' | 'ascending' | 'descending') {
-  if (sortType === 'ascending') {
-    return list.sort((a, b) => a[key] - b[key]);
-  }
-
-  if (sortType === 'descending') {
-    return list.sort((a, b) => b[key] - a[key]);
-  }
-
-  return list;
-}
-
+/**
+ * @demo
+ * This is a demo function used to standardize demos across framework examples. Do not use in production.
+ */
 export function swapBetweenLists<T>(
   targetList: (T & { id: string })[],
   fromList: (T & { id: string })[],
@@ -147,6 +163,10 @@ export function swapBetweenLists<T>(
   return { targetList: [...targetList], fromList: [...fromList] };
 }
 
+/**
+ * @demo
+ * This is a demo function used to standardize demos across framework examples. Do not use in production.
+ */
 export function paginate<T>(arr: T[], size: number) {
   return [...arr].reduce((acc, val, i) => {
     const idx = Math.floor(i / size);
@@ -156,20 +176,11 @@ export function paginate<T>(arr: T[], size: number) {
   }, [] as T[][]);
 }
 
-export function randomNum(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-export function setRandomValues(valueList: { value: any }[]) {
-  return [
-    ...valueList.map(d => {
-      d.value = randomNum(0, 999);
-      return d;
-    }),
-  ];
-}
-
-export function sortList<T>(target: T & { id: any }, src: T & { id: any }, list: { id: any }[]) {
+/**
+ * @demo
+ * This is a demo function used to standardize demos across framework examples. Do not use in production.
+ */
+export function swapItems<T>(target: T & { id: any }, src: T & { id: any }, list: { id: any }[]) {
   const data = [...list];
   const srcIndex = data.findIndex(i => i.id === src.id);
   const targetIndex = data.findIndex(i => i.id === target.id);
@@ -178,6 +189,10 @@ export function sortList<T>(target: T & { id: any }, src: T & { id: any }, list:
   return data;
 }
 
+/**
+ * @demo
+ * This is a demo function used to standardize demos across framework examples. Do not use in production.
+ */
 export function groupArray(arr: any[], size: number) {
   return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
 }

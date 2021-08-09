@@ -23,7 +23,7 @@ export class GridA11yController {
     const observer = new MutationObserver(mutations => {
       for (const mutation of mutations) {
         if (mutation.type === 'childList') {
-          this.update();
+          this.host.updateComplete.then(() => this.update());
         }
       }
     });

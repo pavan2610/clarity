@@ -20,13 +20,7 @@ filter against your list based on the applied column.
 ```html
 <cds-grid>
   <cds-grid-column>
-    Host
-    <cds-action id="id-filter-demo" shape="filter" aria-label="search available hosts"></cds-action>
-    <cds-search hidden anchor="#id-filter-demo (element ref)">
-      <cds-search>
-        <input type="search" aria-label="search hosts" placeholder="Search" />
-      </cds-search>
-    </cds-dropdown>
+    Host <cds-action id="id-filter-demo" shape="filter" aria-label="search available hosts"></cds-action>
   </cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>
   <cds-grid-column>CPU</cds-grid-column>
@@ -38,6 +32,11 @@ filter against your list based on the applied column.
     <cds-grid-cell>10%</cds-grid-cell>
   </cds-grid-row>
 </cds-grid>
+<cds-dropdown hidden anchor="#id-filter-demo (element ref)">
+  <cds-search>
+    <input type="search" aria-label="search hosts" placeholder="Search" />
+  </cds-search>
+</cds-dropdown>
 ```
 
 ## API

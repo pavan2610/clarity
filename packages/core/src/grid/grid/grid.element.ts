@@ -11,9 +11,10 @@ import {
 } from '@cds/core/internal';
 import { CdsGridRow } from '../row/grid-row.element.js';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
-import { CdsGridColumn } from '../column/grid-column.element.js';
-import { GridColumnGroupSizeController } from '../column/grid-column-group-size.controller.js';
 import { GridA11yController } from './grid-a11y.controller.js';
+import { CdsGridColumn } from '../column/grid-column.element.js';
+import { GridRowVisibilityController } from '../row/grid-row-visibility.controller.js';
+import { GridColumnGroupSizeController } from '../column/grid-column-group-size.controller.js';
 import { GridRangeSelectionController } from './grid-range-selection.controller.js';
 import styles from './grid.element.scss';
 
@@ -33,7 +34,10 @@ export class CdsGrid extends LitElement {
   @queryAssignedNodes('', true, 'cds-grid-row') rows: NodeListOf<CdsGridRow>;
 
   /** @private */
-  @query('.grid-body', true) protected gridBody: HTMLElement;
+  @query('.grid-body', true) gridBody: HTMLElement;
+
+  /** @private */
+  @query('.column-row', true) columnRow: HTMLElement; // aria controller handle this?
 
   /** @private */
   get cells(): NodeListOf<CdsGridCell> {
@@ -41,6 +45,8 @@ export class CdsGrid extends LitElement {
   }
 
   protected gridA11yController = new GridA11yController(this);
+
+  protected gridRowVisibilityController = new GridRowVisibilityController(this);
 
   protected gridRangeSelectionController = new GridRangeSelectionController(this);
 
@@ -72,7 +78,7 @@ export class CdsGrid extends LitElement {
       <div class="private-host">
         <div class="scroll-container">
           <div role="rowgroup">
-            <div role="row" aria-rowindex="1">
+            <div role="row" aria-rowindex="1" class="column-row">
               <slot name="columns"></slot>
             </div>
           </div>

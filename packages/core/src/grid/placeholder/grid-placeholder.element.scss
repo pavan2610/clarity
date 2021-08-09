@@ -6,7 +6,7 @@
 
 :host {
   /* stylelint-disable-next-line property-no-unknown */
-  content-visibility: var(--row-content-visibility, visible);
+  content-visibility: var(--row-content-visibility, auto);
   flex: 1;
 }
 
