@@ -1,0 +1,25 @@
+@import '~modern-normalize/modern-normalize.css'; // css reset
+// react-script css optimization chokes on minified styles
+// so I resort to unminified styles.
+@import '~@cds/core/global'; // clarity global styles
+@import '~@cds/core/styles/module.shims'; // non-evergreen browser shims
+@import '~@cds/city/css/bundles/default.min'; // load base font
+
+#root {
+  height: 100vh;
+}
+
+main {
+  height: 100%;
+}
+
+.demo-header {
+  background: var(--cds-global-color-blue-1000);
+  color: var(--cds-global-color-gray-0);
+}
+
+.router-container {
+  // check if cds-layout could replace these styles
+  display: flex;
+  height: 100%;
+}
