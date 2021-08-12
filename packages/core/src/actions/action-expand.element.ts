@@ -67,8 +67,6 @@ export class CdsActionExpand extends CdsAction {
 
   updated(props: Map<string, any>) {
     super.updated(props);
-    this.ariaExpanded = `${this.expanded}`;
     this.ariaLabel = this.expanded ? this.i18n.close : this.i18n.expand;
-    this.ariaHasPopup = this.action === 'detail' ? 'true' : null;
   }
 }

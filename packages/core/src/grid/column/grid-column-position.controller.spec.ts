@@ -48,7 +48,6 @@ describe('grid-column-position.controller', () => {
 
   it('should support fixed left position', async () => {
     await componentIsStable(grid);
-    console.log(firstColumn, firstCell);
     expect(getComputedStyle(firstColumn).left).toBe('0px');
     expect(getComputedStyle(firstColumn).right).toBe('auto');
     expect(getComputedStyle(firstCell).getPropertyValue('--border-left').trim()).toBe('0');
@@ -57,23 +56,23 @@ describe('grid-column-position.controller', () => {
     );
   });
 
-  // it('should support fixed right position', async () => {
-  //   await componentIsStable(grid);
-  //   expect(getComputedStyle(lastColumn).right).toBe('0px');
-  //   expect(getComputedStyle(lastColumn).left).toBe('auto');
-  //   expect(getComputedStyle(lastCell).getPropertyValue('--border-left').trim()).toBe(
-  //     'calc((1 / 20) * 1rem) solid hsl(198, 14%, 82%)'
-  //   );
-  // });
+  it('should support fixed right position', async () => {
+    await componentIsStable(grid);
+    expect(getComputedStyle(lastColumn).right).toBe('0px');
+    expect(getComputedStyle(lastColumn).left).toBe('auto');
+    expect(getComputedStyle(lastCell).getPropertyValue('--border-left').trim()).toBe(
+      'calc((1 / 20) * 1rem) solid hsl(198, 14%, 82%)'
+    );
+  });
 
-  // it('should support sticky position', async () => {
-  //   firstColumn.position = 'sticky';
-  //   await componentIsStable(grid);
-  //   expect(getComputedStyle(firstColumn).left).toBe('0px');
-  //   expect(getComputedStyle(firstColumn).right).toBe('auto');
-  //   expect(getComputedStyle(firstCell).getPropertyValue('--border-left').trim()).toBe('0');
-  //   expect(getComputedStyle(firstCell).getPropertyValue('--border-right').trim()).toBe(
-  //     'calc((1 / 20) * 1rem) solid hsl(198, 14%, 82%)'
-  //   );
-  // });
+  it('should support sticky position', async () => {
+    firstColumn.position = 'sticky';
+    await componentIsStable(grid);
+    expect(getComputedStyle(firstColumn).left).toBe('0px');
+    expect(getComputedStyle(firstColumn).right).toBe('auto');
+    expect(getComputedStyle(firstCell).getPropertyValue('--border-left').trim()).toBe('0');
+    expect(getComputedStyle(firstCell).getPropertyValue('--border-right').trim()).toBe(
+      'calc((1 / 20) * 1rem) solid hsl(198, 14%, 82%)'
+    );
+  });
 });

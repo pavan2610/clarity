@@ -4,9 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { css, html, LitElement, PropertyValues } from 'lit';
+import { html, LitElement, PropertyValues } from 'lit';
 import { query } from 'lit/decorators/query.js';
-import { queryAll } from 'lit/decorators/query-all.js';
 import pipe from 'ramda/es/pipe.js';
 import { registerElementSafely, state } from '@cds/core/internal';
 import { paginate, filter, sortStrings, swapItems, getVMData, TestVM, StatusDisplayType, StatusIconType, groupArray, swapBetweenLists, getVMDataAsync } from '@cds/core/demo';
@@ -25,7 +24,6 @@ import { exclamationTriangleIcon } from '@cds/core/icon/shapes/exclamation-trian
 import { exclamationCircleIcon } from '@cds/core/icon/shapes/exclamation-circle.js';
 import { disconnectIcon } from '@cds/core/icon/shapes/disconnect.js';
 import { viewColumnsIcon } from '@cds/core/icon/shapes/view-columns.js';
-import { GridA11yController } from '../grid/grid-a11y.controller.js';
 
 ClarityIcons.addIcons(checkCircleIcon, exclamationTriangleIcon, exclamationCircleIcon, disconnectIcon, filterIcon, viewColumnsIcon);
 
@@ -619,7 +617,7 @@ export function responsive() {
 
     render() {
       return html`
-        <cds-grid aria-label="responsive datagrid demo" style="width: 340px; --body-height: 420px">
+        <cds-grid aria-label="responsive datagrid demo" style="width: 320px; --body-height: 420px">
           <cds-grid-column position="fixed" width="120px">Host</cds-grid-column>
           <cds-grid-column width="200px">Status</cds-grid-column>
           <cds-grid-column width="200px">CPU</cds-grid-column>
@@ -800,6 +798,7 @@ export function kitchenSink() {
               <input type="checkbox" value=${ColumnTypes.Memory} @click=${this.selectColumns} .checked=${this.columnVisible(ColumnTypes.Memory)} />
             </cds-checkbox>
           </cds-checkbox-group>
+          <cds-divider></cds-divider>
           <cds-button action="flat" @click=${() => (this.state = { ...this.state, selectedColumns: ColumnTypes.All })} ?disabled=${this.columnVisible(ColumnTypes.All)}>Select All</cds-button>
         </cds-dropdown>` : ''}
         <br />
@@ -1271,7 +1270,7 @@ export function rowAction() {
           ${this.data.map(entry => html`
           <cds-grid-row>
             <cds-grid-cell type="action">
-              <cds-action id="${entry.id}-action" @click=${(e: any) => this.select(e, entry)} aria-label="choose available host actions"></cds-action>
+              <cds-action popup="row-actions" aria-label="host actions" @click=${(e: any) => this.select(e, entry)}></cds-action>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
             <cds-grid-cell>${entry.status}</cds-grid-cell>
@@ -1280,11 +1279,10 @@ export function rowAction() {
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
-        ${this.selectedEntry ? html`
-        <cds-dropdown .anchor=${this.anchor} @closeChange=${() => (this.selectedEntry = null) as any}>
-          <cds-button @click=${() => this.shutdown(this.selectedEntry)} action="flat" size="sm">Shutdown ${this.selectedEntry?.id}</cds-button>
-          <cds-button @click=${() => this.restart(this.selectedEntry)} action="flat" size="sm">Restart ${this.selectedEntry?.id}</cds-button>
-        </cds-dropdown>` : ''}`;
+        <cds-dropdown ?hidden=${!this.selectedEntry} id="row-actions" .anchor=${this.anchor} @closeChange=${() => (this.selectedEntry = null) as any}>
+          <cds-button action="flat" size="sm" @click=${() => this.shutdown(this.selectedEntry)}>Shutdown ${this.selectedEntry?.id}</cds-button>
+          <cds-button action="flat" size="sm" @click=${() => this.restart(this.selectedEntry)}>Restart ${this.selectedEntry?.id}</cds-button>
+        </cds-dropdown>`;
     }
 
     private select(e: any, entry: TestVM) {
@@ -1325,7 +1323,7 @@ export function rowBatchAction() {
             </cds-checkbox>
           </cds-grid-column>
           <cds-grid-column>
-            Host <cds-action @click=${(e: any) => this.batchActionAnchor = e.target} aria-label="available host options"></cds-action>
+            Host <cds-action popup="row-actions" @click=${(e: any) => this.batchActionAnchor = e.target} aria-label="available host options"></cds-action>
           </cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
@@ -1345,7 +1343,7 @@ export function rowBatchAction() {
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>
         ${this.batchActionAnchor ? html`
-        <cds-dropdown .anchor=${this.batchActionAnchor} @closeChange=${() => (this.batchActionAnchor = null as any)} position="bottom">
+        <cds-dropdown id="row-actions" .anchor=${this.batchActionAnchor} @closeChange=${() => (this.batchActionAnchor = null as any)} position="bottom">
           <cds-button action="flat" size="sm" @click=${() => this.action('Restart')}>Restart Selected</cds-button>
           <cds-button action="flat" size="sm" @click=${() => this.action('Shutdown')}>Shutdown Selected</cds-button>
         </cds-dropdown>` : ''}
@@ -2237,8 +2235,8 @@ export function rangeSelectContextMenu() {
         </cds-grid>
         ${this.anchor ? html`
         <cds-dropdown .anchor=${this.anchor} @closeChange=${() => (this.anchor = null) as void}>
-          <cds-button @click=${() => this.exportToCSV()} action="flat" block>Export to CSV</cds-button>
-          <cds-button @click=${() => this.logCSV()} action="flat" block>Log CSV</cds-button>
+          <cds-button action="flat" size="sm" @click=${() => this.exportToCSV()}>Export to CSV</cds-button>
+          <cds-button action="flat" size="sm" @click=${() => this.logCSV()}>Log CSV</cds-button>
         </cds-dropdown>` : ''}
         <pre cds-text="body">${this.csv}</pre>
       `;
@@ -2514,321 +2512,32 @@ export function columnAlignRight() {
   return html`<demo-grid-column-align-right></demo-grid-column-align-right>`;
 }
 
-export function ariaGrid() {
-  return html`
-  <style>
-    .aria-grid-examples [role='grid'] {
-      width: 500px;
-      border: 1px solid #ccc;
-    }
+export function dropdownTest() {
+  class DemoDropdown extends LitElement {
+    @query('cds-button') anchor: HTMLElement;
+    @state() showDropdown = false;
 
-    .aria-grid-examples [role='row'] {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      /* border-bottom: 1px solid #ccc; */
-    }
-
-    .aria-grid-examples [role='grid'] [aria-rowindex]:nth-child(odd) {
-      filter: brightness(97%);
-    }
-
-    .aria-grid-examples [role='grid'] [aria-rowindex]:hover {
-      filter: brightness(94%);
-    }
-
-    .aria-grid-examples [aria-colcount='5'] [role='row'] {
-      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    }
-
-    .aria-grid-examples [role='gridcell'],
-    .aria-grid-examples [role='rowheader'],
-    .aria-grid-examples [role='columnheader'] {
-      padding: 12px 18px;
-    }
-
-    .aria-grid-examples [role='columnheader']:last-child,
-    .aria-grid-examples [role='gridcell']:last-child,
-    .aria-grid-examples [role='row']:last-child {
-      border-right: none;
-    }
-
-    .aria-grid-examples [role='columnheader'] {
-      border-bottom: 1px solid #ccc;
-    }
-    
-    .aria-grid-examples [role='grid'] {
-      background: #eee;
-      overflow: hidden;
-    }
-
-    .aria-grid-examples [role='gridcell'] {
-      background: #fff;
-    }
-
-    .aria-grid-examples [aria-rowspan],
-    .aria-grid-examples [role='rowheader'],
-    .aria-grid-examples [role='columnheader'] {
-      background: none;
-      font-weight: 500;
-    }
-  </style>
-  <section class="aria-grid-examples" cds-layout="vertical gap:lg">
-    <h2 cds-text="subsection" id="basic-grid">Basic Grid</h2>
-    <div aria-labelledby="basic-grid" role="grid" aria-colcount="4" aria-rowcount="4">
-      <div role="row">
-        <div role="columnheader" aria-colindex="1">Host</div>
-        <div role="columnheader" aria-colindex="2">Status</div>
-        <div role="columnheader" aria-colindex="3">CPU</div>
-        <div role="columnheader" aria-colindex="4">Memory</div>
-      </div>
-      <div role="row" aria-rowindex="1">
-        <div role="gridcell" aria-colindex="1">vm-host-001</div>
-        <div role="gridcell" aria-colindex="2">online</div>
-        <div role="gridcell" aria-colindex="3">5%</div>
-        <div role="gridcell" aria-colindex="4">10%</div>
-      </div>
-      <div role="row" aria-rowindex="2">
-        <div role="gridcell" aria-colindex="1">vm-host-003</div>
-        <div role="gridcell" aria-colindex="2">online</div>
-        <div role="gridcell" aria-colindex="3">10%</div>
-        <div role="gridcell" aria-colindex="4">30%</div>
-      </div>
-      <div role="row" aria-rowindex="3">
-        <div role="gridcell" aria-colindex="1">vm-host-002</div>
-        <div role="gridcell" aria-colindex="2">online</div>
-        <div role="gridcell" aria-colindex="3">20%</div>
-        <div role="gridcell" aria-colindex="4">35%</div>
-      </div>
-      <div role="row" aria-rowindex="4">
-        <div role="gridcell" aria-colindex="1">vm-host-011</div>
-        <div role="gridcell" aria-colindex="2">offline</div>
-        <div role="gridcell" aria-colindex="3">90%</div>
-        <div role="gridcell" aria-colindex="4">80%</div>
-      </div>
-    </div>
-
-    <h2 cds-text="subsection" id="row-headers">Row Headers</h2>
-    <div aria-labelledby="row-headers" role="grid" aria-colcount="4" aria-rowcount="4">
-      <div role="row">
-        <div role="columnheader" aria-colindex="1">Host</div>
-        <div role="columnheader" aria-colindex="2">Status</div>
-        <div role="columnheader" aria-colindex="3">CPU</div>
-        <div role="columnheader" aria-colindex="4">Memory</div>
-      </div>
-      <div role="row" aria-rowindex="1">
-        <div role="rowheader" aria-colindex="1">vm-host-001</div>
-        <div role="gridcell" aria-colindex="2">online</div>
-        <div role="gridcell" aria-colindex="3">5%</div>
-        <div role="gridcell" aria-colindex="4">10%</div>
-      </div>
-      <div role="row" aria-rowindex="2">
-        <div role="rowheader" aria-colindex="1">vm-host-003</div>
-        <div role="gridcell" aria-colindex="2">online</div>
-        <div role="gridcell" aria-colindex="3">10%</div>
-        <div role="gridcell" aria-colindex="4">30%</div>
-      </div>
-      <div role="row" aria-rowindex="3">
-        <div role="rowheader" aria-colindex="1">vm-host-002</div>
-        <div role="gridcell" aria-colindex="2">online</div>
-        <div role="gridcell" aria-colindex="3">20%</div>
-        <div role="gridcell" aria-colindex="4">35%</div>
-      </div>
-      <div role="row" aria-rowindex="4">
-        <div role="rowheader" aria-colindex="1">vm-host-011</div>
-        <div role="gridcell" aria-colindex="2">offline</div>
-        <div role="gridcell" aria-colindex="3">90%</div>
-        <div role="gridcell" aria-colindex="4">80%</div>
-      </div>
-    </div>
-
-    <h2 cds-text="subsection" id="column-span">Column Span</h2>
-    <div aria-labelledby="column-span" role="grid" aria-colcount="4" aria-rowcount="4">
-      <div role="row">
-        <div role="columnheader" aria-colspan="2" aria-colindex="1" style="grid-column: 1 / 3">Details</div>
-        <div role="columnheader" aria-colspan="2" aria-colindex="3" style="grid-column: 3 / 5">Resources</div>
-      </div>
-      <div role="row">
-        <div role="columnheader" aria-colindex="1">Host</div>
-        <div role="columnheader" aria-colindex="2">Status</div>
-        <div role="columnheader" aria-colindex="3">CPU</div>
-        <div role="columnheader" aria-colindex="4">Memory</div>
-      </div>
-      <div role="row" aria-rowindex="1">
-        <div role="gridcell" aria-colindex="1">vm-host-001</div>
-        <div role="gridcell" aria-colindex="2">online</div>
-        <div role="gridcell" aria-colindex="3">5%</div>
-        <div role="gridcell" aria-colindex="4">10%</div>
-      </div>
-      <div role="row" aria-rowindex="2">
-        <div role="gridcell" aria-colindex="1">vm-host-003</div>
-        <div role="gridcell" aria-colindex="2">online</div>
-        <div role="gridcell" aria-colindex="3">10%</div>
-        <div role="gridcell" aria-colindex="4">30%</div>
-      </div>
-      <div role="row" aria-rowindex="3">
-        <div role="gridcell" aria-colindex="1">vm-host-002</div>
-        <div role="gridcell" aria-colindex="2">online</div>
-        <div role="gridcell" aria-colindex="3">20%</div>
-        <div role="gridcell" aria-colindex="4">35%</div>
-      </div>
-      <div role="row" aria-rowindex="4">
-        <div role="gridcell" aria-colindex="1">vm-host-011</div>
-        <div role="gridcell" aria-colindex="2">offline</div>
-        <div role="gridcell" aria-colindex="3">90%</div>
-        <div role="gridcell" aria-colindex="4">80%</div>
-      </div>
-    </div>
-
-    <h2 cds-text="subsection" id="row-span">Row Span</h2>
-    <div aria-labelledby="row-span" role="grid" aria-colcount="5" aria-rowcount="4" style="width: 650px !important">
-      <div role="row">
-        <div role="columnheader" aria-colindex="1">Environment</div>
-        <div role="columnheader" aria-colindex="2">Host</div>
-        <div role="columnheader" aria-colindex="3">Status</div>
-        <div role="columnheader" aria-colindex="4">CPU</div>
-        <div role="columnheader" aria-colindex="5">Memory</div>
-      </div>
-      <div role="row" aria-rowindex="1">
-        <div role="gridcell" aria-colindex="1" aria-rowspan="2">Production</div>  
-        <div role="gridcell" aria-colindex="2">vm-host-001</div>
-        <div role="gridcell" aria-colindex="3">online</div>
-        <div role="gridcell" aria-colindex="4">5%</div>
-        <div role="gridcell" aria-colindex="5">10%</div>
-      </div>
-      <div role="row" aria-rowindex="2" style="grid-template-columns: 1fr 1fr 1fr 1fr; width: 520px; margin-left:130px">
-        <div role="gridcell" aria-colindex="2">vm-host-003</div>
-        <div role="gridcell" aria-colindex="3">online</div>
-        <div role="gridcell" aria-colindex="4">10%</div>
-        <div role="gridcell" aria-colindex="5">30%</div>
-      </div>
-      <div role="row" aria-rowindex="3">
-        <div role="gridcell" aria-colindex="1" aria-rowspan="2">Staging</div>
-        <div role="gridcell" aria-colindex="2">vm-host-002</div>
-        <div role="gridcell" aria-colindex="3">online</div>
-        <div role="gridcell" aria-colindex="4">20%</div>
-        <div role="gridcell" aria-colindex="5">35%</div>
-      </div>
-      <div role="row" aria-rowindex="4" style="grid-template-columns: 1fr 1fr 1fr 1fr; width: 520px; margin-left:130px">
-        <div role="gridcell" aria-colindex="1">vm-host-011</div>
-        <div role="gridcell" aria-colindex="2">offline</div>
-        <div role="gridcell" aria-colindex="3">90%</div>
-        <div role="gridcell" aria-colindex="4">80%</div>
-      </div>
-    </div>
-  </section>
-  `;
-}
-
-export function ariaGridController() {
-  class DemoGridA11yController extends LitElement {
-    @query('section') grid: HTMLElement;
-    @queryAll('section > div:first-child > div') columns: NodeListOf<HTMLElement>;
-    @queryAll('section > div:not(:first-child)') rows: NodeListOf<HTMLElement & { cells: NodeListOf<HTMLElement> }>;
-  
-    private gridA11yController = new GridA11yController(this);
-
-    static styles = [css`
-      [role='grid'] {
-        width: 500px;
-        border: 1px solid #ccc;
-      }
-
-      [role='row'] {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        /* border-bottom: 1px solid #ccc; */
-      }
-
-      [role='grid'] [aria-rowindex]:nth-child(odd) {
-        filter: brightness(97%);
-      }
-
-      [role='grid'] [aria-rowindex]:hover {
-        filter: brightness(94%);
-      }
-
-      [aria-colcount='5'] [role='row'] {
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-      }
-
-      [role='gridcell'],
-      [role='rowheader'],
-      [role='columnheader'] {
-        padding: 12px 18px;
-      }
-
-      [role='columnheader']:last-child,
-      [role='gridcell']:last-child,
-      [role='row']:last-child {
-        border-right: none;
-      }
-
-      [role='columnheader'] {
-        border-bottom: 1px solid #ccc;
-      }
-      
-      [role='grid'] {
-        background: #eee;
-        overflow: hidden;
-      }
-
-      [role='gridcell'] {
-        background: #fff;
-      }
-
-      [aria-rowspan],
-      [role='rowheader'],
-      [role='columnheader'] {
-        background: none;
-        font-weight: 500;
-      }
-    `]
-  
     render() {
       return html`
-        <section>
-          <div role="row">
-            <div>Host</div>
-            <div>Status</div>
-            <div>CPU</div>
-            <div>Memory</div>
-          </div>
-          <div>
-            <div>vm-host-001</div>
-            <div>online</div>
-            <div>5%</div>
-            <div>10%</div>
-          </div>
-          <div>
-            <div>vm-host-003</div>
-            <div>online</div>
-            <div>10%</div>
-            <div>30%</div>
-          </div>
-          <div>
-            <div>vm-host-002</div>
-            <div>online</div>
-            <div>20%</div>
-            <div>35%</div>
-          </div>
-          <div>
-            <div>vm-host-011</div>
-            <div>offline</div>
-            <div>90%</div>
-            <div>80%</div>
-          </div>
-        </section>
-      `;
-    }
-  
-    async connectedCallback() {
-      super.connectedCallback();
-      await this.updateComplete;
-      this.rows.forEach(r => r.cells = r.querySelectorAll('div'));
-      this.gridA11yController.initialize();
+        <div cds-layout="p:lg">
+          <cds-button
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls="action-1"  
+            @click=${() => this.showDropdown = true}>open</cds-button>
+
+          ${this.showDropdown ? html`
+          <cds-dropdown .anchor=${this.anchor} @closeChange=${() => this.showDropdown = false}>
+            <button>Save</button>
+            <button>Load</button>
+            <cds-divider></cds-divider>
+            <button>Export</button>
+            <a href="#">Exit</a>
+          </cds-dropdown>` : ''}
+        </div>`;
     }
   }
-  
-  registerElementSafely('grid-a11y-test-element', DemoGridA11yController);
-  return html`<grid-a11y-test-element></grid-a11y-test-element>`;
+
+  registerElementSafely('demo-dropdown', DemoDropdown);
+  return html`<demo-dropdown></demo-dropdown>`;
 }

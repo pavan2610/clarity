@@ -40,14 +40,14 @@ describe('cds-action-expand', () => {
     expect(component.getAttribute('aria-label')).toBe('Close');
   });
 
-  it('should set appropriate aria-expanded value from expand state', async () => {
-    await componentIsStable(component);
-    expect(component.getAttribute('aria-expanded')).toBe('false');
+  // it('should set appropriate aria-expanded value from expand state', async () => {
+  //   await componentIsStable(component);
+  //   expect(component.getAttribute('aria-expanded')).toBe('false');
 
-    component.expanded = true;
-    await componentIsStable(component);
-    expect(component.getAttribute('aria-expanded')).toBe('true');
-  });
+  //   component.expanded = true;
+  //   await componentIsStable(component);
+  //   expect(component.getAttribute('aria-expanded')).toBe('true');
+  // });
 
   it('should set the proper direction for expanding on the horizontal axis', async () => {
     component.action = 'horizontal';

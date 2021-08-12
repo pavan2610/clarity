@@ -8,6 +8,7 @@
   --min-height: var(--column-height, #{$cds-alias-object-interaction-touch-target});
   --min-width: fit-content;
   --justify-content: var(--column-justify-content, start);
+  --resize-display: block;
   top: 0;
   z-index: 998;
   position: sticky;
@@ -72,9 +73,10 @@
 }
 
 cds-action-resize {
-  position: absolute;
-  right: 0;
   --height: #{$cds-global-layout-space-lg};
+  display: var(--resize-display);
+  position: absolute;
+  right: $cds-global-space-1;
 }
 
 [_active] + .line,

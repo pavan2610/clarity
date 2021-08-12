@@ -4,11 +4,14 @@ import { isSafari } from '@cds/core/internal';
 export type GridA11y = ReactiveControllerHost &
   HTMLElement & {
     grid?: HTMLElement;
+    columnGroup?: HTMLElement;
+    columnRow?: HTMLElement;
     columns: NodeListOf<HTMLElement>;
+    rowGroup?: HTMLElement;
     rows: NodeListOf<HTMLElement & { cells: NodeListOf<HTMLElement> }>;
   };
 
-export class GridA11yController {
+export class AriaGridController {
   private observers: MutationObserver[] = [];
 
   constructor(private host: GridA11y) {
@@ -53,7 +56,11 @@ export class GridA11yController {
   private initializeGrid() {
     const grid = this.host.grid ? this.host.grid : this.host;
     grid.setAttribute('role', 'grid');
-    this.host.setAttribute('aria-rowcount', `${this.host.rows?.length + 1}`); // +1 for column header row offset
+    this.host.rowGroup?.setAttribute('role', 'rowgroup');
+    this.host.columnGroup?.setAttribute('role', 'rowgroup');
+    this.host.columnRow?.setAttribute('role', 'row');
+    this.host.columnRow?.setAttribute('aria-rowindex', '1');
+    this.host.setAttribute('aria-rowcount', `${this.host.rows?.length + 1}`);
     this.host.setAttribute('aria-colcount', `${this.host.columns.length}`);
   }
 
@@ -61,6 +68,7 @@ export class GridA11yController {
     this.host.columns.forEach((c, i) => {
       c.setAttribute('role', 'columnheader');
       c.setAttribute('aria-colindex', `${i + 1}`);
+      c.setAttribute('aria-sort', 'none');
 
       if (isSafari()) {
         // Only visible columnheader text should be read to SRs but Safari violates this and
@@ -68,10 +76,6 @@ export class GridA11yController {
         // Combining scope + aria-label tricks Safari + VO into the correct behavior
         c.setAttribute('scope', 'col');
         c.setAttribute('aria-label', c.textContent);
-      }
-
-      if (c.querySelector('cds-action-sort')) {
-        c.setAttribute('aria-sort', 'none');
       }
     });
   }

@@ -29,10 +29,6 @@ export class CdsAction extends CdsBaseButton {
 
   @state({ type: String, attribute: 'aria-label', reflect: true }) ariaLabel?: string;
 
-  @state({ type: String, reflect: true, attribute: 'aria-expanded' }) ariaExpanded?: string;
-
-  @state({ type: String, reflect: true, attribute: 'aria-haspopup' }) ariaHasPopup?: string;
-
   @state({ type: Boolean, reflect: true, attribute: 'cds-action' }) protected cdsAction = true;
 
   static get styles() {

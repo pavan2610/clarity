@@ -1,7 +1,7 @@
 import { ReactiveControllerHost } from 'lit';
 
 export class GridRowVisibilityController {
-  constructor(private host: ReactiveControllerHost & HTMLElement & { gridBody: HTMLElement }) {
+  constructor(private host: ReactiveControllerHost & HTMLElement & { rowGroup: HTMLElement }) {
     this.host.addController(this); // created on grid rather that row to only run once
   }
 

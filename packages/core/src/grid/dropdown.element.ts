@@ -1,55 +1,25 @@
 import { css, html } from 'lit';
 import { query } from 'lit/decorators/query.js';
-import { property } from '@cds/core/internal';
-import { CdsInternalOverlay } from '../internal-components/overlay';
+import { AriaPopupController, property } from '@cds/core/internal';
+import { CdsInternalOverlay } from '@cds/core/internal-components/overlay';
 
-/** placeholder component */
+/**
+ * Placeholder/WIP component
+ */
 export class CdsDropdown extends CdsInternalOverlay {
-  static get styles() {
-    return [
-      ...super.styles,
-      css`
-        :host {
-          display: block;
-          position: fixed;
-          --backdrop-background: none;
-        }
-
-        :host([hidden]) {
-          display: none !important;
-        }
-
-        .content {
-          background: var(--cds-alias-object-overlay-background);
-          border: 0;
-          box-shadow: var(--cds-alias-object-shadow-100);
-          padding: 12px;
-          margin: 0;
-          display: block;
-          width: max-content;
-          position: absolute;
-        }
-
-        .overlay-backdrop {
-          position: absolute;
-        }
-
-        ::slotted(cds-button) {
-          width: 100%;
-          display: block;
-          margin-bottom: 4px;
-        }
-      `,
-    ];
-  }
-
   @property({ type: Boolean }) hidden = false;
 
-  @property({ type: String }) position: 'top' | 'bottom' = 'bottom';
+  @property({ type: String }) position: 'top' | 'bottom' | 'right' = 'bottom';
 
-  @property({ type: Object, reflect: false }) anchor: HTMLElement;
+  @property({ type: String, reflect: true }) anchor: HTMLElement | string;
 
   @query('.content', true) content: HTMLElement;
+
+  protected ariaPopupController = new AriaPopupController(this);
+
+  get trigger() {
+    return this.focusTrap.previousFocus;
+  }
 
   render() {
     return html` ${this.backdropTemplate}
@@ -59,34 +29,77 @@ export class CdsDropdown extends CdsInternalOverlay {
   firstUpdated(props: Map<string, any>) {
     super.firstUpdated(props);
     this.cdsMotion = 'off';
-
-    this.addEventListener('closeChange', () => this.close());
   }
 
   async updated(props: Map<string, any>) {
     super.updated(props);
     await this.updateComplete;
 
-    if (!this.hidden) {
+    if (!this.hidden && this.anchor) {
       this.open();
     }
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.close();
+    this.closeOverlay();
   }
 
   private open() {
-    const anchorRect = this.anchor.getBoundingClientRect();
-    this.content.style.left = `${anchorRect.left}px`;
-    this.content.style.top =
-      this.position === 'top'
-        ? `${anchorRect.top - this.content.getBoundingClientRect().height}px`
-        : `${anchorRect.bottom + 1}px`;
+    const trigger = this.focusTrap.previousFocus.getBoundingClientRect();
+
+    if (this.position === 'top') {
+      this.content.style.top = `${trigger.top - this.content.getBoundingClientRect().height}px`;
+      this.content.style.left = `${trigger.left}px`;
+    }
+
+    if (this.position === 'bottom') {
+      this.content.style.top = `${trigger.bottom + 4}px`;
+      this.content.style.left = `${trigger.left}px`;
+    }
+
+    if (this.position === 'right') {
+      this.content.style.top = `${trigger.top + 2}px`;
+      this.content.style.left = `${trigger.right}px`;
+    }
   }
 
-  private close() {
-    this.anchor?.focus();
+  static get styles() {
+    return [
+      ...super.styles,
+      css`
+        :host {
+          display: block;
+          --backdrop-background: none;
+        }
+
+        :host([hidden]) {
+          display: none !important;
+        }
+
+        :host([anchor]) {
+          position: fixed;
+        }
+
+        :host([anchor]) .content {
+          position: fixed;
+        }
+
+        .content {
+          background: var(--cds-alias-object-overlay-background);
+          border: 0;
+          box-shadow: var(--cds-alias-object-shadow-100);
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          min-width: 140px;
+          min-height: 40px;
+        }
+
+        .overlay-backdrop {
+          position: absolute;
+        }
+      `,
+    ];
   }
 }

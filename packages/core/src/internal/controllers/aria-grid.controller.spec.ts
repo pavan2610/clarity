@@ -7,9 +7,9 @@
 import { html, LitElement } from 'lit';
 import { queryAll } from 'lit/decorators/query-all.js';
 import { query } from 'lit/decorators/query.js';
-import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
-import { GridA11yController } from './grid-a11y.controller.js';
 import { registerElementSafely } from '@cds/core/internal';
+import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
+import { AriaGridController } from './aria-grid.controller.js';
 
 class GridA11yTestElement extends LitElement {
   @queryAll('.column') columns: NodeListOf<HTMLElement>;
@@ -17,7 +17,7 @@ class GridA11yTestElement extends LitElement {
   @queryAll('.cell') cells: NodeListOf<HTMLElement>;
   @query('.grid') grid: HTMLElement;
 
-  gridA11yController = new GridA11yController(this);
+  ariaGridController = new AriaGridController(this);
 
   render() {
     return html`
@@ -48,7 +48,7 @@ class GridA11yTestElement extends LitElement {
     super.connectedCallback();
     await this.updateComplete;
     this.rows.forEach(r => (r.cells = r.querySelectorAll('.cell')));
-    this.gridA11yController.update();
+    this.ariaGridController.update();
   }
 
   protected createRenderRoot() {

@@ -19,13 +19,13 @@ export class GridColumnSizeController {
 
   constructor(private host: GridColumnSize) {
     this.host.addController(this);
-
-    if ((this.host.type === 'action' || this.host.getAttribute('type') === 'action') && !this.host.width) {
-      this.host.width = '36px';
-    }
   }
 
   async hostConnected() {
+    if ((this.host.type === 'action' || this.host.getAttribute('type') === 'action') && !this.host.width) {
+      this.host.width = '36px';
+    }
+
     await this.host.updateComplete;
     await onFirstInteraction(this.hostGrid);
     this.observers.push(elementResize(this.host, () => this.updateResizedCellWidth(), false));

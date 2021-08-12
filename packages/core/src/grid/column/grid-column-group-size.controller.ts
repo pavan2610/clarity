@@ -56,9 +56,6 @@ export class GridColumnGroupSizeController {
   private createColumnGrids() {
     const columns = Array.from(this.host.columns);
 
-    // todo: broken, hide/show columns this will not be set correctly
-    columns[this.host.getAttribute('dir') === 'rtl' ? 0 : columns.length - 1].resizable = 'hidden';
-
     const colWidths = columns
       .filter(c => !c.hidden)
       .reduce((p, c) => `${p} ${`var(--ch${c.colIndex}, ${c.width ? c.width : '1fr'})`}`, '');

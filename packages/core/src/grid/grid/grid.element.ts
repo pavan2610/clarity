@@ -8,10 +8,10 @@ import {
   property,
   DraggableListController,
   KeyNavigationGridController,
+  AriaGridController,
 } from '@cds/core/internal';
 import { CdsGridRow } from '../row/grid-row.element.js';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
-import { GridA11yController } from './grid-a11y.controller.js';
 import { CdsGridColumn } from '../column/grid-column.element.js';
 import { GridRowVisibilityController } from '../row/grid-row-visibility.controller.js';
 import { GridColumnGroupSizeController } from '../column/grid-column-group-size.controller.js';
@@ -34,17 +34,20 @@ export class CdsGrid extends LitElement {
   @queryAssignedNodes('', true, 'cds-grid-row') rows: NodeListOf<CdsGridRow>;
 
   /** @private */
-  @query('.grid-body', true) gridBody: HTMLElement;
+  @query('.row-group', true) rowGroup: HTMLElement;
 
   /** @private */
-  @query('.column-row', true) columnRow: HTMLElement; // aria controller handle this?
+  @query('.column-group', true) columnGroup: HTMLElement;
+
+  /** @private */
+  @query('.column-row', true) columnRow: HTMLElement;
 
   /** @private */
   get cells(): NodeListOf<CdsGridCell> {
     return this.querySelectorAll('cds-grid-cell');
   }
 
-  protected gridA11yController = new GridA11yController(this);
+  protected ariaGridController = new AriaGridController(this);
 
   protected gridRowVisibilityController = new GridRowVisibilityController(this);
 
@@ -55,7 +58,7 @@ export class CdsGrid extends LitElement {
   protected keyNavigationGridController = new KeyNavigationGridController(this, {
     keyGridRows: 'rows',
     keyGridCells: 'cells',
-    keyGrid: 'gridBody',
+    keyGrid: 'rowGroup',
   });
 
   protected draggableColumnController = new DraggableListController(this, {
@@ -77,12 +80,12 @@ export class CdsGrid extends LitElement {
     return html`
       <div class="private-host">
         <div class="scroll-container">
-          <div role="rowgroup">
-            <div role="row" aria-rowindex="1" class="column-row">
+          <div class="column-group">
+            <div class="column-row">
               <slot name="columns"></slot>
             </div>
           </div>
-          <div class="grid-body" role="rowgroup">
+          <div class="row-group">
             <slot></slot>
             <slot name="placeholder"></slot>
           </div>
