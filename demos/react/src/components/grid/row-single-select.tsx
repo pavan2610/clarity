@@ -1,8 +1,12 @@
+import { useState } from 'react';
+
 import { CdsGrid, CdsGridColumn, CdsGridRow, CdsGridCell, CdsGridFooter } from '@cds/react/grid';
 import { CdsRadio } from '@cds/react/radio';
-import { getVMData } from '@cds/core/demo';
+import { getVMData, TestVM } from '@cds/core/demo';
 
 function RowSingleSelect() {
+  const [selectedItem, selected] = useState<TestVM>();
+
   const data = getVMData();
 
   return (
@@ -16,11 +20,16 @@ function RowSingleSelect() {
           <CdsGridColumn>CPU</CdsGridColumn>
           <CdsGridColumn>Memory</CdsGridColumn>
 
-          {data.map((item: any) => (
+          {data.map((item: TestVM) => (
             <CdsGridRow key={item.id}>
               <CdsGridCell type="action">
                 <CdsRadio>
-                  <input type="radio" name="hosts" aria-label="select host vm-host-001" />
+                  <input
+                    type="radio"
+                    name="hosts"
+                    aria-label="select host vm-host-001"
+                    onChange={() => selected(item)}
+                  />
                 </CdsRadio>
               </CdsGridCell>
               <CdsGridCell>{item.id}</CdsGridCell>
@@ -30,7 +39,7 @@ function RowSingleSelect() {
             </CdsGridRow>
           ))}
 
-          <CdsGridFooter></CdsGridFooter>
+          <CdsGridFooter>{selectedItem ? `Selected item's id: ` + selectedItem.id : ''}</CdsGridFooter>
         </CdsGrid>
       </div>
     </div>
