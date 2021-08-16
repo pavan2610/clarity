@@ -11,8 +11,7 @@ export class CdsGridPlaceholder extends LitElement {
     return html`
       <div role="row">
         <div role="cell" part="placeholder" cds-layout="vertical gap:lg align:center">
-          <slot name="icon"><cds-icon shape="filter" size="xl"></cds-icon></slot>
-          <slot></slot>
+          <slot><cds-icon shape="filter" size="xl"></cds-icon></slot>
         </div>
       </div>
     `;

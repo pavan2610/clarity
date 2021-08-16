@@ -9,6 +9,8 @@
   --min-width: fit-content;
   --justify-content: var(--column-justify-content, start);
   --resize-display: block;
+  --padding-block: #{$cds-global-space-3};
+  --padding-inline: #{$cds-global-space-6} #{$cds-global-space-8};
   top: 0;
   z-index: 998;
   position: sticky;
@@ -31,10 +33,8 @@
   margin: 0;
   display: flex;
   gap: #{$cds-global-layout-space-sm};
-  padding: $cds-global-space-4 $cds-global-space-8 $cds-global-space-4 $cds-global-space-6;
-  padding-block: #{$cds-global-space-4};
-  padding-inline-start: #{$cds-global-space-6};
-  padding-inline-end: #{$cds-global-space-8};
+  padding-block: var(--padding-block);
+  padding-inline: var(--padding-inline);
   align-items: center;
   height: 100%;
   position: sticky !important;

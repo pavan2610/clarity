@@ -1,7 +1,5 @@
 import { LitElement, html } from 'lit';
-import { query } from 'lit/decorators/query.js';
 import { baseStyles, i18n, I18nService, property, state } from '@cds/core/internal';
-import { CdsActionResize } from '@cds/core/actions';
 import { GridColumnSizeController } from './grid-column-size.controller.js';
 import { GridColumnPositionController } from './grid-column-position.controller.js';
 import styles from './grid-column.element.scss';
@@ -19,10 +17,6 @@ export class CdsGridColumn extends LitElement {
 
   @state({ type: String, attribute: 'slot', reflect: true }) slot = 'columns';
 
-  /** @private */
-  @query('cds-action-resize') resizeHandle: CdsActionResize;
-
-  /** @private */
   get colIndex() {
     return parseInt(this.getAttribute('aria-colindex'));
   }

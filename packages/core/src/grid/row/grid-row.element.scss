@@ -55,6 +55,12 @@
   --background: #{$cds-alias-object-interaction-background-hover};
 }
 
+// disable hover when row detail is active
+:host([_detail-row]) [part='row'],
+:host([_detail-row]) ::slotted(cds-grid-cell) {
+  --background: #{$cds-alias-object-container-background} !important;
+}
+
 :host([draggable='true']) {
   -webkit-user-drag: element;
   user-select: none;

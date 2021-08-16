@@ -27,6 +27,7 @@
   height: 100%;
 }
 
+::slotted(cds-icon[shape='filter']),
 cds-icon {
   --color: #{$cds-alias-object-interaction-color-disabled};
 }

@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit';
 import { query } from 'lit/decorators/query.js';
-import { queryAssignedNodes } from 'lit/decorators/query-assigned-nodes.js';
 import {
   baseStyles,
   createId,
@@ -9,6 +8,7 @@ import {
   DraggableListController,
   KeyNavigationGridController,
   AriaGridController,
+  querySlotAll,
 } from '@cds/core/internal';
 import { CdsGridRow } from '../row/grid-row.element.js';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
@@ -28,10 +28,13 @@ export class CdsGrid extends LitElement {
   @state({ type: String, reflect: true }) protected _id = createId();
 
   /** @private */
-  @queryAssignedNodes('columns', true, 'cds-grid-column') columns: NodeListOf<CdsGridColumn>;
+  @querySlotAll('cds-grid-column') columns: NodeListOf<CdsGridColumn>;
 
   /** @private */
-  @queryAssignedNodes('', true, 'cds-grid-row') rows: NodeListOf<CdsGridRow>;
+  @querySlotAll('cds-grid-row') rows: NodeListOf<CdsGridRow>;
+
+  /** @private */
+  @querySlotAll('cds-grid-cell') cells: NodeListOf<CdsGridCell>;
 
   /** @private */
   @query('.row-group', true) rowGroup: HTMLElement;
@@ -41,11 +44,6 @@ export class CdsGrid extends LitElement {
 
   /** @private */
   @query('.column-row', true) columnRow: HTMLElement;
-
-  /** @private */
-  get cells(): NodeListOf<CdsGridCell> {
-    return this.querySelectorAll('cds-grid-cell');
-  }
 
   protected ariaGridController = new AriaGridController(this);
 

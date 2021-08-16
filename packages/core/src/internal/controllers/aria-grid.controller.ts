@@ -1,5 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
-import { isSafari } from '@cds/core/internal';
+import { isSafari } from '../utils/browser.js';
 
 export type GridA11y = ReactiveControllerHost &
   HTMLElement & {

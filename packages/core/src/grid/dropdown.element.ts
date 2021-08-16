@@ -94,6 +94,7 @@ export class CdsDropdown extends CdsInternalOverlay {
           flex-direction: column;
           min-width: 140px;
           min-height: 40px;
+          padding: 12px;
         }
 
         .overlay-backdrop {

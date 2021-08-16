@@ -42,10 +42,19 @@ export const getElementUpdates = (element: HTMLElement, propertyKey: string, cal
 
 export function onFirstInteraction(element: HTMLElement) {
   return new Promise(resolve => {
-    element.addEventListener('mouseover', resolve, { once: true });
-    element.addEventListener('mousedown', resolve, { once: true });
-    element.addEventListener('keydown', resolve, { once: true });
-    element.addEventListener('focus', resolve, { once: true });
+    const update = () => {
+      resolve(null);
+      (element as any).__cdsTouched = true;
+    };
+
+    if ((element as any).__cdsTouched) {
+      resolve(null);
+    }
+
+    element.addEventListener('mouseover', update, { once: true });
+    element.addEventListener('mousedown', update, { once: true });
+    element.addEventListener('keydown', update, { once: true });
+    element.addEventListener('focus', update, { once: true });
   });
 }
 

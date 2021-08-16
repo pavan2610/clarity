@@ -7,12 +7,10 @@ export class CdsGridCell extends LitElement {
 
   @state({ type: Boolean, reflect: true }) active: boolean;
 
-  /** @private */
   get rowIndex() {
     return parseInt(this.parentElement.getAttribute('aria-rowindex'));
   }
 
-  /** @private */
   get colIndex() {
     return parseInt(this.getAttribute('aria-colindex'));
   }

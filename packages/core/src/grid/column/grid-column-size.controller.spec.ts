@@ -8,7 +8,7 @@ import { html, LitElement } from 'lit';
 import { query } from 'lit/decorators/query.js';
 import { registerElementSafely, state, property } from '@cds/core/internal';
 import { CdsActionResize } from '@cds/core/actions';
-import { createTestElement, removeTestElement, componentIsStable, onceEvent } from '@cds/core/test';
+import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
 import { GridColumnSizeController } from './grid-column-size.controller.js';
 
 class GridColumnSizeTestElement extends LitElement {
@@ -50,7 +50,7 @@ describe('grid-column-size.controller', () => {
   });
 
   it('should resize a column when resizeChange occurs', async () => {
-    component.resizeHandle.dispatchEvent(new CustomEvent('resizeChange', { detail: -10, bubbles: true }));
+    component.shadowRoot.dispatchEvent(new CustomEvent('resizeChange', { detail: -10, bubbles: true }));
     await componentIsStable(component);
     expect(element.style.getPropertyValue('--ch1')).toBe('90px');
   });

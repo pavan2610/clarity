@@ -46,6 +46,7 @@
 
 :host([border*='stripe']) ::slotted(cds-grid-row:nth-child(even)) {
   --background: #{$cds-alias-object-container-background-tint};
+  filter: alpha(opacity=50);
 }
 
 /* column alignments */

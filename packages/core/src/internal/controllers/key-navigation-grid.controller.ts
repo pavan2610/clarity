@@ -37,7 +37,7 @@ export class KeyNavigationGridController {
       this.grid.addEventListener('keydown', (e: KeyboardEvent) => this.focusCell(e));
     });
 
-    this.observers.push(onChildListMutation(this.host, () => this.initializeTabIndex()));
+    this.observers.push(onChildListMutation(this.grid, () => this.initializeTabIndex()));
   }
 
   hostDisconnected() {

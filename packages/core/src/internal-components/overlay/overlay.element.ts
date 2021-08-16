@@ -18,6 +18,7 @@ import {
   property,
   AnimationModalEnterName,
   reverseAnimation,
+  AriaPopupController,
 } from '@cds/core/internal';
 import { html } from 'lit';
 import { query } from 'lit/decorators/query.js';
@@ -97,6 +98,12 @@ export class CdsInternalOverlay extends CdsBaseFocusTrap implements Animatable {
 
   @property({ type: String })
   role = 'dialog';
+
+  protected ariaPopupController = new AriaPopupController(this);
+
+  get trigger() {
+    return this.focusTrap.previousFocus;
+  }
 
   // renderRoot needs delegatesFocus so that focus can cross the shadowDOM
   // inside an element with aria-modal set to true
