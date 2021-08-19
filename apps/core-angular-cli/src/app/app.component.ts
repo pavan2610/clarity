@@ -3,9 +3,8 @@ import pipe from 'ramda/es/pipe.js';
 import '@cds/core/grid/register.js';
 import '@cds/core/checkbox/register.js';
 import '@cds/core/pagination/register.js';
-import { TestVM, paginate, sortStrings, filter, StatusIconType, StatusDisplayType, getVMData } from '@cds/core/demo';
+import { TestVM, paginate, sortStrings, filter, StatusIconType, StatusDisplayType, getVMData, ColumnTypes } from '@cds/core/demo';
 import { ClarityIcons, disconnectIcon, exclamationCircleIcon, exclamationTriangleIcon } from '@cds/core/icon';
-import { ColumnTypes, VMService } from './vm.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 ClarityIcons.addIcons(exclamationTriangleIcon, exclamationCircleIcon, disconnectIcon);
@@ -39,8 +38,7 @@ export class AppComponent {
 
   get filteredVMs() {
     return pipe(
-      (d: TestVM[]) =>
-        d.sort((a, b) => (this.data.map(v => v.id).indexOf(a.id) > this.data.map(v => v.id).indexOf(b.id) ? 1 : -1)),
+      (d: TestVM[]) => d.sort((a, b) => (this.data.map(v => v.id).indexOf(a.id) > this.data.map(v => v.id).indexOf(b.id) ? 1 : -1)),
       d => filter<TestVM>(d, 'id', this.form.controls.search.value),
       d => sortStrings<TestVM>(d, 'status', this.sortType),
       d => paginate<TestVM>(d, this.form.controls.pageSize.value)[this.form.controls.page.value - 1]
@@ -60,9 +58,7 @@ export class AppComponent {
     this.columns.forEach(i => (this.form.controls.columns as FormGroup).addControl(i, new FormControl(true)));
     this.data.forEach(i => (this.form.controls.rows as FormGroup).addControl(i.id, new FormControl(false)));
     this.form.controls.search.valueChanges.subscribe(() => this.form.controls.page.setValue(1));
-    this.form.controls.allRows.valueChanges.subscribe(value =>
-      this.data.forEach(i => this.form.controls.rows.get(i.id)?.setValue(value))
-    );
+    this.form.controls.allRows.valueChanges.subscribe(value => this.data.forEach(i => this.form.controls.rows.get(i.id)?.setValue(value)));
   }
 
   showAllColumns() {
@@ -74,14 +70,10 @@ export class AppComponent {
   }
 
   columnVisible(value: number) {
-    return (
-      value ===
-      (this.columns
-        .map(col => (this.form.controls.columns.get(col)?.value ? ColumnTypes[col] : 0))
-        .filter(i => i)
-        .reduce((p, n) => p + n, 0) &
-        value)
-    );
+    return (value === (this.columns
+      .map(col => (this.form.controls.columns.get(col)?.value ? ColumnTypes[col] : 0))
+      .filter(i => i)
+      .reduce((p, n) => p + n, 0) & value));
   }
 
   nextPage() {

@@ -5,7 +5,6 @@
  */
 
 import { CdsAction } from '@cds/core/actions';
-import { property, assignSlotNames } from '@cds/core/internal';
 
 /**
  * Control Action Button
@@ -23,15 +22,4 @@ import { property, assignSlotNames } from '@cds/core/internal';
  * @element cds-control-action
  * @slot - For projecting text content or cds-icon
  */
-export class CdsControlAction extends CdsAction {
-  /** Set the action type placement within the supporting input control */
-  @property({ type: String, reflect: true }) action: 'label' | 'prefix' | 'suffix' | string;
-
-  updated(props: Map<string, any>) {
-    super.updated(props);
-
-    if (props.has('action')) {
-      assignSlotNames([this, this.action ?? false]);
-    }
-  }
-}
+export class CdsControlAction extends CdsAction { }

@@ -53,6 +53,7 @@
   inset: 0;
   background: hsl(200deg 100% 50% / 20%);
   content: '';
+  pointer-events: none;
 }
 
 ::slotted([cds-action]) {

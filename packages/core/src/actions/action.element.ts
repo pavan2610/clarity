@@ -5,7 +5,7 @@
  */
 
 import { html } from 'lit';
-import { property, baseStyles, CdsBaseButton, LogService, state } from '@cds/core/internal';
+import { property, baseStyles, CdsBaseButton, LogService, state, assignSlotNames } from '@cds/core/internal';
 import styles from './action.element.scss';
 
 /**
@@ -31,6 +31,13 @@ export class CdsAction extends CdsBaseButton {
 
   @state({ type: Boolean, reflect: true, attribute: 'cds-action' }) protected cdsAction = true;
 
+  /** Set the action type placement within the supporting input control */
+  @property({ type: String, reflect: true }) action: 'label' | 'prefix' | 'suffix' | string;
+
+  private get isControlAction() {
+    return this.action === 'label' || this.action === 'prefix' || this.action === 'suffix';
+  }
+
   static get styles() {
     return [baseStyles, styles];
   }
@@ -54,6 +61,10 @@ export class CdsAction extends CdsBaseButton {
       this.readonly && !this.hasAttribute('aria-label')
         ? this.setAttribute('aria-hidden', 'true')
         : this.removeAttribute('aria-hidden');
+    }
+
+    if (props.has('action') && this.isControlAction) {
+      assignSlotNames([this, this.action ?? false]);
     }
   }
 }

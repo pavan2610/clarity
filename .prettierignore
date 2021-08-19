@@ -11,7 +11,7 @@ golden/
 packages/core/**/*.css.ts
 packages/core/custom-elements.json
 packages/core/src/styles/tokens/generated/**
-packages/core/src/grid/docs/grid.stories.ts
+packages/core/src/grid/docs/*.stories.ts
 packages/core/dist/
 packages/react/coverage/
 packages/react/dist/
@@ -20,6 +20,7 @@ apps/core-create-react-app
 .cache
 apps/website/.vuepress/config.js
 apps/core-snowpack/build
+apps/core-angular-cli/
 .netlify
 apps/website/data/core-demos.json
 

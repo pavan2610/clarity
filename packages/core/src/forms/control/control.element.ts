@@ -352,7 +352,7 @@ export class CdsControl extends LitElement {
   private setupResponsive() {
     if (this.responsive && this.labelLayout === ControlLabelLayout.default && this.controlLabel) {
       const layoutConfig = { layouts: formLayouts, initialLayout: this.layout };
-      this.addEventListener('elementRectChange', () => {
+      this.addEventListener('cdsResizeChange', () => {
         calculateOptimalLayout(this, layoutConfig).then(updated => {
           if (updated) {
             this.layoutChange.emit(this.layout, { bubbles: true });

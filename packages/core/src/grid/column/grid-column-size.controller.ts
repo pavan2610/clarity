@@ -1,5 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
-import { elementResize, isNumericString, onFirstInteraction } from '@cds/core/internal';
+import { isNumericString, onFirstInteraction } from '@cds/core/internal';
 
 export type GridColumnSize = ReactiveControllerHost &
   HTMLElement & {
@@ -23,7 +23,6 @@ export class GridColumnSizeController {
     this.setActionWidth();
     await this.host.updateComplete;
     await onFirstInteraction(this.hostGrid);
-    this.observers.push(elementResize(this.host, () => this.updateResizedCellWidth(), false));
     this.host.shadowRoot?.addEventListener('resizeChange', (e: any) => {
       this.host.dispatchEvent(new CustomEvent('resizeChange', { detail: e.detail, bubbles: true }));
       this.updateResizedColumnWidth(e.detail);
@@ -44,10 +43,6 @@ export class GridColumnSizeController {
       this.host.width = '36px';
       this.hostGrid.rows.forEach(r => (r.cells[0].type = 'action'));
     }
-  }
-
-  private updateResizedCellWidth() {
-    this.hostGrid?.style.setProperty(`--c${this.host.colIndex}`, `${parseInt(getComputedStyle(this.host).width)}px`);
   }
 
   private updateSetColumnWidth() {

@@ -8,6 +8,7 @@ import { css, html, LitElement } from 'lit';
 import { query } from 'lit/decorators/query.js';
 import { queryAll } from 'lit/decorators/query-all.js';
 import {
+  customElement,
   baseStyles,
   DraggableListController,
   AriaGridController,
@@ -17,7 +18,9 @@ import {
   state,
   AriaPopupController,
   AriaPopupTriggerController,
-  property,
+  ResponsiveController,
+  querySlotAll,
+  onAnyKey,
 } from '@cds/core/internal';
 import '@cds/core/badge/register.js';
 import { swapItems } from '@cds/core/demo';
@@ -556,4 +559,38 @@ export function ariaPopupController() {
   registerElementSafely('demo-popup', DemoAriaPopup);
   registerElementSafely('demo-trigger', DemoAriaPopupTrigger);
   return html`<demo-popup-controller></demo-popup-controller>`;
+}
+
+export function responsiveController() {
+  class DemoResponsiveController extends LitElement {
+    protected responsiveController = new ResponsiveController(this);
+    @state() rect = { };
+    static get styles() {
+      return [
+        baseStyles,
+        css`
+          :host {
+            border: 2px solid #ccc;
+            padding: 12px;
+            width: 250px;
+            height: 250px;
+            resize: both;
+            overflow: hidden;
+          }
+        `,
+      ];
+    }
+
+    render() {
+      return html`<pre>${JSON.stringify(this.rect, null, 2)}</pre>`;
+    }
+
+    connectedCallback() {
+      super.connectedCallback();
+      this.addEventListener('cdsResizeChange', (e: any) => this.rect = e.detail);
+    }
+  }
+
+  registerElementSafely('demo-responsive-controller', DemoResponsiveController);
+  return html`<demo-responsive-controller></demo-responsive-controller>`;
 }

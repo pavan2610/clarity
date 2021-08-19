@@ -6,19 +6,22 @@
 
 import { html } from 'lit';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
-import { CdsGridDetail } from './grid-detail.element.js';
+import { CdsGridDetail } from '@cds/core/grid';
 import '@cds/core/grid/register.js';
 
 describe('cds-grid-detail', () => {
   let component: CdsGridDetail;
   let element: HTMLElement;
+  let anchor: HTMLElement;
 
   beforeEach(async () => {
     element = await createTestElement(html`
       <div id="test-anchor"></div>
-      <cds-grid-detail anchor="test-anchor"></cds-grid-detail>
+      <cds-grid-detail></cds-grid-detail>
     `);
     component = element.querySelector<CdsGridDetail>('cds-grid-detail');
+    anchor = element.querySelector('#test-anchor');
+    component.anchor = anchor;
   });
 
   afterEach(() => {

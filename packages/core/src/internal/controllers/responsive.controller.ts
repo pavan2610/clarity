@@ -17,7 +17,7 @@ export class ResponsiveController {
       window.requestAnimationFrame(() => {
         this.elementRect = entries[0].contentRect;
         ((this.host as unknown) as HTMLElement).dispatchEvent(
-          new CustomEvent('elementRectChange', { detail: this.elementRect })
+          new CustomEvent('cdsResizeChange', { detail: this.elementRect })
         );
         this.host.requestUpdate();
       });

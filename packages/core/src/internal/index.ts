@@ -24,6 +24,7 @@ export * from './controllers/responsive.controller.js';
 export * from './decorators/animate.js';
 export * from './decorators/query-slot.js';
 export * from './decorators/property.js';
+export * from './decorators/element.js';
 export * from './decorators/event.js';
 export * from './directives/spread-props.js';
 export * from './decorators/id.js';

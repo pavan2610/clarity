@@ -229,7 +229,7 @@ export class CdsInternalControlGroup extends LitElement {
   private setupResponsive() {
     if (this.responsive) {
       const layoutConfig = { layouts: formLayouts, initialLayout: this.layout };
-      this.addEventListener('elementRectChange', () =>
+      this.addEventListener('cdsResizeChange', () =>
         calculateOptimalLayout(this, layoutConfig).then(() => this.layoutChange.emit(this.layout, { bubbles: true }))
       );
     }

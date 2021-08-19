@@ -41,6 +41,10 @@
   padding: $cds-global-space-9;
 }
 
+:host([_overlay='full']) {
+  inset: 0 !important;
+}
+
 cds-action {
   position: absolute;
   top: $cds-global-space-6;

@@ -29,7 +29,9 @@
   --color: #{$cds-alias-status-info};
 }
 
-:host([shape='close']) {
+:host([shape='close']),
+:host([shape='info-circle']),
+::slotted([shape='info-circle']) {
   --icon-width: #{$cds-global-space-8};
   --icon-height: #{$cds-global-space-8};
 }

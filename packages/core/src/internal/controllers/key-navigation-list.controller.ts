@@ -45,16 +45,7 @@ export class KeyNavigationListController {
     });
 
     this.hostRoot.addEventListener('keydown', (e: any) => {
-      if (
-        e.code === 'ArrowUp' ||
-        e.code === 'ArrowDown' ||
-        e.code === 'ArrowLeft' ||
-        e.code === 'ArrowRight' ||
-        e.code === 'End' ||
-        e.code === 'Home' ||
-        e.code === 'PageUp' ||
-        e.code === 'PageDown'
-      ) {
+      if (this.validKeyCode(e)) {
         const currentItem = Array.from(this.listItems).find(
           c => c === e.target.closest(this.listItems[0].tagName.toLocaleLowerCase()) ?? c === e.target
         );
@@ -74,6 +65,19 @@ export class KeyNavigationListController {
       const firstCell = this.listItems[0];
       firstCell?.setAttribute('tabindex', '0');
     }
+  }
+
+  private validKeyCode(e: KeyboardEvent) {
+    return (
+      e.code === 'ArrowUp' ||
+      e.code === 'ArrowDown' ||
+      e.code === 'ArrowLeft' ||
+      e.code === 'ArrowRight' ||
+      e.code === 'End' ||
+      e.code === 'Home' ||
+      e.code === 'PageUp' ||
+      e.code === 'PageDown'
+    );
   }
 
   private setActiveCell(e: any, activeItem: HTMLElement, prev?: HTMLElement) {

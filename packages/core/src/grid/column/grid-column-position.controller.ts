@@ -3,12 +3,12 @@ import { ReactiveControllerHost } from 'lit';
 export type GridColumnPosition = ReactiveControllerHost &
   HTMLElement & {
     colIndex: number;
-    position: 'initial' | 'sticky' | 'fixed';
+    position: '' | 'sticky' | 'fixed';
   };
 
 export class GridColumnPositionController {
   private styles: HTMLElement;
-  private previousPosition: 'initial' | 'sticky' | 'fixed' = 'initial';
+  private previousPosition: '' | 'sticky' | 'fixed' = '';
 
   get hostGrid() {
     return this.host.parentElement as HTMLElement & { _id: string };
@@ -53,7 +53,7 @@ export class GridColumnPositionController {
   }
 
   private borderStyle(side: 'left' | 'right') {
-    return this.host.position !== 'initial'
+    return this.host.position !== ''
       ? `
       [__id='${this.hostGrid._id}'] cds-grid-cell[aria-colindex="${this.host.colIndex}"] {
         --border-${

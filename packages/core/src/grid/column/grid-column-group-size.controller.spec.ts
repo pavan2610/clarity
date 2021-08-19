@@ -56,14 +56,6 @@ describe('grid-column-size.controller', () => {
     );
   });
 
-  it('should create the grid layout for row cells', async () => {
-    intializeController();
-    await componentIsStable(component);
-    expect(component.style.getPropertyValue('--c-grid').trim()).toBe(
-      'var(--c1, 100px) var(--c2, 200px) var(--c3, 300px)'
-    );
-  });
-
   it('should initialize the grid column width sizes if a fixed layout', async () => {
     component.columnLayout = 'flex';
     await componentIsStable(component);

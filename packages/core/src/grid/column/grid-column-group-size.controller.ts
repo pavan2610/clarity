@@ -1,5 +1,5 @@
-import { onChildListMutation } from '@cds/core/internal';
 import { ReactiveControllerHost } from 'lit';
+import { onChildListMutation } from '@cds/core/internal';
 
 export type ColumnSizeType = HTMLElement & {
   width?: string;
@@ -7,6 +7,7 @@ export type ColumnSizeType = HTMLElement & {
   type?: string;
   resizable?: true | false | 'hidden';
 };
+
 export type GridColumnGroupSize = ReactiveControllerHost &
   HTMLElement & {
     columns: NodeListOf<ColumnSizeType> | ColumnSizeType[];
@@ -54,16 +55,9 @@ export class GridColumnGroupSizeController {
   }
 
   private createColumnGrids() {
-    const columns = Array.from(this.host.columns);
-
-    const colWidths = columns
+    const colWidths = Array.from(this.host.columns)
       .filter(c => !c.hidden)
       .reduce((p, c) => `${p} ${`var(--ch${c.colIndex}, ${c.width ? c.width : '1fr'})`}`, '');
     this.host.style.setProperty('--ch-grid', colWidths);
-
-    const rowColWidths = columns
-      .filter(c => !c.hidden)
-      .reduce((p, c) => `${p} ${`var(--c${c.colIndex}, ${c.width ? c.width : '1fr'})`}`, '');
-    this.host.style.setProperty('--c-grid', rowColWidths);
   }
 }

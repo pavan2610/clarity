@@ -9,11 +9,11 @@ export class CdsGridColumn extends LitElement {
 
   @property({ type: String }) width?: string;
 
-  @property({ type: String }) type: 'default' | 'action';
+  @property({ type: String }) type: '' | 'action';
 
   @property({ type: String }) resizable: true | false | 'hidden' = false;
 
-  @property({ type: String }) position: 'initial' | 'sticky' | 'fixed' = 'initial';
+  @property({ type: String }) position: '' | 'sticky' | 'fixed' = '';
 
   @state({ type: String, attribute: 'slot', reflect: true }) slot = 'columns';
 

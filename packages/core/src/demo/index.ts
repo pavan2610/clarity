@@ -31,6 +31,14 @@ export enum StatusIconType {
   deactivated = 'disconnect',
 }
 
+export enum ColumnTypes {
+  Host = 1,
+  Status = 2,
+  CPU = 4,
+  Memory = 8,
+  All = ColumnTypes.Host | ColumnTypes.Status | ColumnTypes.CPU | ColumnTypes.Memory,
+}
+
 /**
  * @demo
  * This is a demo function used to standardize demos across framework examples. Do not use in production.

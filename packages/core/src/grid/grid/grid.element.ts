@@ -9,6 +9,7 @@ import {
   KeyNavigationGridController,
   AriaGridController,
   querySlotAll,
+  ResponsiveController,
 } from '@cds/core/internal';
 import { CdsGridRow } from '../row/grid-row.element.js';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
@@ -21,31 +22,27 @@ import styles from './grid.element.scss';
 export class CdsGrid extends LitElement {
   @property({ type: String }) columnLayout: 'fixed' | 'flex' = 'fixed';
 
-  @property({ type: String }) border: 'row' | 'cell' | 'column' | 'none' = 'row';
+  @property({ type: String }) border: 'row' | 'cell' | 'column' | 'none' | 'stripe' = 'row';
 
   @property({ type: Boolean }) rangeSelection = true;
 
   @state({ type: String, reflect: true }) protected _id = createId();
 
-  /** @private */
-  @querySlotAll('cds-grid-column') columns: NodeListOf<CdsGridColumn>;
+  @query('.row-group', true) readonly rowGroup: HTMLElement;
 
-  /** @private */
-  @querySlotAll('cds-grid-row') rows: NodeListOf<CdsGridRow>;
+  @query('.column-row', true) readonly columnRow: HTMLElement;
+  
+  @query('.column-group', true) readonly columnGroup: HTMLElement;
 
-  /** @private */
-  @querySlotAll('cds-grid-cell') cells: NodeListOf<CdsGridCell>;
-
-  /** @private */
-  @query('.row-group', true) rowGroup: HTMLElement;
-
-  /** @private */
-  @query('.column-group', true) columnGroup: HTMLElement;
-
-  /** @private */
-  @query('.column-row', true) columnRow: HTMLElement;
+  @querySlotAll('cds-grid-row') readonly rows: NodeListOf<CdsGridRow>;
+  
+  @querySlotAll('cds-grid-cell') readonly cells: NodeListOf<CdsGridCell>;
+  
+  @querySlotAll('cds-grid-column') readonly columns: NodeListOf<CdsGridColumn>;
 
   protected ariaGridController = new AriaGridController(this);
+
+  protected responsiveController = new ResponsiveController(this);
 
   protected gridRowVisibilityController = new GridRowVisibilityController(this);
 

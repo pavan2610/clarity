@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { baseStyles, i18n, I18nService, property, state } from '@cds/core/internal';
-import styles from './grid-detail.element.scss';
 import { CdsInternalOverlay } from '@cds/core/internal-components/overlay';
+import styles from './grid-detail.element.scss';
 
 export class CdsGridDetail extends CdsInternalOverlay {
   @property({ type: Boolean }) hidden = false;
@@ -9,6 +9,8 @@ export class CdsGridDetail extends CdsInternalOverlay {
   @property({ type: Object }) anchor: HTMLElement;
 
   @state({ type: String, reflect: true, attribute: 'slot' }) slot = 'detail';
+
+  @state({ type: String, reflect: true }) protected overlay: '' | 'full' = '';
 
   @i18n() i18n = I18nService.keys.grid;
 
@@ -26,7 +28,7 @@ export class CdsGridDetail extends CdsInternalOverlay {
 
   render() {
     return html` ${this.backdropTemplate}
-      <div class="private-host" part="private-host" tabindex="-1" aria-modal="true" role="dialog">
+      <div class="private-host" tabindex="-1">
         <div class="detail">
           <slot></slot>
           <cds-action
@@ -42,6 +44,7 @@ export class CdsGridDetail extends CdsInternalOverlay {
   constructor() {
     super();
     this.cdsMotion = 'off';
+    this.grid?.addEventListener('cdsResizeChange', (e: any) => this.overlay = e.detail.width > 500 ? '' : 'full');
   }
 
   async updated(props: Map<string, any>) {
