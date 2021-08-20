@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { ColumnTypes, TestVM } from '@cds/core/demo';
 import { VmService } from '../vm.service';
 
@@ -21,17 +20,6 @@ export class HideShowColumnComponent {
   dataFields!: string[];
   // a boolean flag to control column picker element visibility
   hiddenColumnPicker = true;
-  // A subscription that can observe changes to the controls in the form group
-  subscription!: Subscription;
-
-  // a private var w/ set/get functions so that it can keep track of the all selected state in the form
-  // private allSelected!: boolean;
-  // get allSelectedState(): boolean {
-  //   return (this.hideShowForm.controls.columns as FormGroup);
-  // }
-  // set allSelectedState(value: boolean) {
-  //   this.allSelected = value;
-  // }
 
   getControlValue(column: string) {
     return this.hideShowForm.controls.columns.get(column)?.value;
@@ -48,7 +36,6 @@ export class HideShowColumnComponent {
   }
 
   constructor(private formBuilder: FormBuilder, private vmData: VmService) {
-    // Fetch Data.
     this.data = vmData.get();
     this.dataFields = Object.keys(this.data[0]);
     this.hideShowForm = this.formBuilder.group({

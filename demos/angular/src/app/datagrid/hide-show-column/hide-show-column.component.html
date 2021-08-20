@@ -14,7 +14,12 @@
     </cds-grid-cell>
   </cds-grid-row>
   <cds-grid-footer>
-    <cds-action (click)="setAnchor($event)" aria-label="filter column" shape="view-columns"></cds-action>
+    <cds-action
+      (click)="setAnchor($event)"
+      [status]="allColumnsVisible ? 'active' : ''"
+      aria-label="filter column"
+      shape="view-columns"
+    ></cds-action>
   </cds-grid-footer>
 </cds-grid>
 <cds-dropdown
