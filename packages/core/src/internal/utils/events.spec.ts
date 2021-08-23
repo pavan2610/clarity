@@ -120,7 +120,11 @@ describe('onChildListMutation', () => {
   let list: HTMLUListElement;
 
   beforeEach(async () => {
-    element = await createTestElement(html`<ul><li>one</li></ul>`);
+    element = await createTestElement(
+      html`<ul>
+        <li>one</li>
+      </ul>`
+    );
     list = element.querySelector('ul');
   });
 

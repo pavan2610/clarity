@@ -11,22 +11,22 @@ export function columnVisibility() {
   @customElement('demo-grid-column-visibility') // @ts-ignore
   class DemoColumnVisibility extends LitElement {
     @state() private data = getVMData();
-    @state() private selectedColumns = ColumnTypes.All;
+    @state() private selectedColumns = 7;
     @state() private columnAnchor: HTMLElement;
 
     render() {
       return html`
-        <cds-grid aria-label="column visibility datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="column visibility datagrid demo" height="360">
           <cds-grid-column>Host</cds-grid-column>
           ${this.checked(ColumnTypes.Status) ? html`<cds-grid-column>Status</cds-grid-column>` : ''}
           ${this.checked(ColumnTypes.CPU) ? html`<cds-grid-column>CPU</cds-grid-column>` : ''}
-          ${this.checked(ColumnTypes.Memory) ? html`<cds-grid-column>Memory</cds-grid-column>` : ''}
+          <cds-grid-column ?hidden=${!this.checked(ColumnTypes.Memory)}>Memory</cds-grid-column>
           ${this.data.map(entry => html`
           <cds-grid-row>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
             ${this.checked(ColumnTypes.Status) ? html`<cds-grid-cell>${entry.status}</cds-grid-cell>` : ''}
             ${this.checked(ColumnTypes.CPU) ? html`<cds-grid-cell>${entry.cpu}%</cds-grid-cell>` : ''}
-            ${this.checked(ColumnTypes.Memory) ? html`<cds-grid-cell>${entry.memory}%</cds-grid-cell>` : ''}
+            <cds-grid-cell ?hidden=${!this.checked(ColumnTypes.Memory)}>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-footer>
             <cds-action popup="column-visbility" @click=${(e: any) => (this.columnAnchor = e.target)} aria-label="filter column" shape="view-columns" .status=${!this.checked(ColumnTypes.All) ? 'active' : ''}></cds-action>

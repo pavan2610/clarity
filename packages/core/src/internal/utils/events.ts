@@ -58,11 +58,11 @@ export function onFirstInteraction(element: HTMLElement) {
   });
 }
 
-export function onChildListMutation(element: HTMLElement, fn: () => void) {
+export function onChildListMutation(element: HTMLElement, fn: (mutation?: MutationRecord) => void) {
   const observer = new MutationObserver(mutations => {
     for (const mutation of mutations) {
       if (mutation.type === 'childList') {
-        fn();
+        fn(mutation);
       }
     }
   });

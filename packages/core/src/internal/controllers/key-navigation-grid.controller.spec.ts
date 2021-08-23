@@ -7,10 +7,11 @@
 import { html, LitElement } from 'lit';
 import { query } from 'lit/decorators/query.js';
 import { queryAll } from 'lit/decorators/query-all.js';
-import { registerElementSafely } from '@cds/core/internal';
+import { customElement } from '@cds/core/internal';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
 import { KeyNavigationGridController } from './key-navigation-grid.controller.js';
 
+@customElement('grid-key-navigation-controller-test-element')
 class GridKeyNavigationControllerTestElement extends LitElement {
   @query('section') keyGrid: HTMLElement;
   @queryAll('section > div') keyGridRows: NodeListOf<HTMLElement>;
@@ -55,8 +56,6 @@ class GridKeyNavigationControllerTestElement extends LitElement {
     `;
   }
 }
-
-registerElementSafely('grid-key-navigation-controller-test-element', GridKeyNavigationControllerTestElement);
 
 describe('grid-column-size.controller', () => {
   let component: GridKeyNavigationControllerTestElement;

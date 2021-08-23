@@ -7,7 +7,7 @@ export default {
 
 export function placeholder() {
   return html`
-    <cds-grid aria-label="placeholder datagrid demo" style="--body-height: 360px">
+    <cds-grid aria-label="placeholder datagrid demo" height="360">
       <cds-grid-column>Host</cds-grid-column>
       <cds-grid-column>Status</cds-grid-column>
       <cds-grid-column>CPU</cds-grid-column>

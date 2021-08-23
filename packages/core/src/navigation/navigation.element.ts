@@ -101,12 +101,6 @@ export class CdsNavigation extends LitElement implements Animatable {
   protected groupItem = true;
 
   /**
-   * Set and update the aria-active descended value onto the navigation.
-   */
-  @property({ type: String, reflect: true, attribute: 'aria-activedescendant' })
-  ariaActiveDescendant: any;
-
-  /**
    *
    * Vertical navigation elements can be either wide or narrow. Expanded indicates it should be wide.
    * When navigation is wide cds-navigation-start button elements and cds-navigation-item a elements display

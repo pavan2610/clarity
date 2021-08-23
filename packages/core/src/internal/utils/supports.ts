@@ -15,6 +15,7 @@ class BrowserFeatures {
   supports = {
     js: true,
     flexGap: supportsFlexGap(),
+    ariaReflect: supportsAriaReflect(),
   };
 
   constructor() {
@@ -47,4 +48,13 @@ function supportsFlexGap(): boolean {
   const isSupported = flex.scrollHeight === 1; // flex container should be 1px high from the row-gap
   (flex.parentNode as Element).removeChild(flex);
   return isSupported;
+}
+
+/**
+ * All browser support ariaReflection except Firefox
+ * https://wicg.github.io/aom/aria-reflection-explainer.html
+ * https://developer.mozilla.org/en-US/docs/Web/API/Element/ariaLabel
+ */
+function supportsAriaReflect() {
+  return !Object.getPrototypeOf(document).hasOwnProperty('ariaLabel');
 }

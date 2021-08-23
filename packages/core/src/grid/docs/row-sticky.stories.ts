@@ -8,7 +8,7 @@ export default {
 
 export function rowSticky() {
   return html`
-  <cds-grid aria-label="row sticky datagrid demo" style="--body-height: 360px">
+  <cds-grid aria-label="row sticky datagrid demo" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>

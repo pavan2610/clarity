@@ -18,7 +18,7 @@ export function rowSwappable() {
 
     render() {
       return html`
-        <cds-grid aria-label="production VMs" @cdsDraggableChange=${this.sortOne} style="--body-height: 360px">
+        <cds-grid aria-label="production VMs" @cdsDraggableChange=${this.sortOne} height="360">
           <cds-grid-column type="action" aria-label="draggable action column"></cds-grid-column>
           <cds-grid-column>Production Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
@@ -38,7 +38,7 @@ export function rowSwappable() {
         <p>aria-live:</p>
         <div aria-live="assertive" role="log" aria-atomic="true">${this.ariaLiveMessage}</div>
 
-        <cds-grid aria-label="staging VMs" @cdsDraggableChange=${this.sortTwo} style="--body-height: 360px">
+        <cds-grid aria-label="staging VMs" @cdsDraggableChange=${this.sortTwo} height="360">
           <cds-grid-column type="action" aria-label="draggable action column"></cds-grid-column>
           <cds-grid-column>Staging Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>

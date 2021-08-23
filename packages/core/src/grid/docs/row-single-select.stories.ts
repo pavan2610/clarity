@@ -19,7 +19,7 @@ export function rowSingleSelect() {
 
     render() {
       return html`
-        <cds-grid aria-label="row single select datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="row single select datagrid demo" height="360">
           <cds-grid-column type="action" aria-label="host selection column"></cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>

@@ -1,33 +1,32 @@
 import { css, html, LitElement } from 'lit';
-import { registerElementSafely, ResponsiveController } from '@cds/core/internal';
+import { customElement, ResponsiveController } from '@cds/core/internal';
 import { createTestElement, onceEvent, removeTestElement } from '@cds/core/test';
 
+@customElement('responsive-controller-test-element') // @ts-ignore
 class ResponsiveControllerTestElement extends LitElement {
   responsiveController = new ResponsiveController(this);
 
-  static styles = [css`
-    :host {
-      display: block;
-      width: 200px;
-      height: 200px;
-    }
-  `];
+  static styles = [
+    css`
+      :host {
+        display: block;
+        width: 200px;
+        height: 200px;
+      }
+    `,
+  ];
 
   render() {
     return html`...`;
   }
 }
 
-registerElementSafely('responsive-controller-test-element', ResponsiveControllerTestElement);
-
 describe('responsive.controller', () => {
   let component: HTMLElement;
   let element: HTMLElement;
 
   beforeEach(async () => {
-    element = await createTestElement(
-      html`<responsive-controller-test-element></responsive-controller-test-element>`
-    );
+    element = await createTestElement(html`<responsive-controller-test-element></responsive-controller-test-element>`);
     component = element.querySelector('responsive-controller-test-element');
   });
 
@@ -45,6 +44,5 @@ describe('responsive.controller', () => {
     });
 
     component.style.width = '500px';
-    console.log(component);
   });
 });

@@ -5,6 +5,7 @@
  */
 
 import {
+  AriaReflectionController,
   Animatable,
   animate,
   baseStyles,
@@ -94,12 +95,14 @@ export class CdsInternalOverlay extends CdsBaseFocusTrap implements Animatable {
   cdsMotionChange: EventEmitter<string>;
 
   @property({ type: String })
-  ariaModal = 'true';
+  ariaModal: 'true' = 'true';
 
   @property({ type: String })
   role = 'dialog';
 
   protected ariaPopupController = new AriaPopupController(this);
+
+  protected ariaReflectionController = new AriaReflectionController(this);
 
   get trigger() {
     return this.focusTrap.previousFocus;
@@ -122,7 +125,7 @@ export class CdsInternalOverlay extends CdsBaseFocusTrap implements Animatable {
 
   firstUpdated(props: Map<string, any>) {
     super.firstUpdated(props);
-    this.backdrop.addEventListener('click', this.fireEventOnBackdropClick);
+    this.backdrop?.addEventListener('click', this.fireEventOnBackdropClick);
   }
 
   updated(props: Map<string, any>) {
@@ -149,7 +152,7 @@ export class CdsInternalOverlay extends CdsBaseFocusTrap implements Animatable {
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('keydown', this.fireEventOnEscape);
-    this.backdrop.removeEventListener('click', this.fireEventOnBackdropClick);
+    this.backdrop?.removeEventListener('click', this.fireEventOnBackdropClick);
   }
 
   constructor() {

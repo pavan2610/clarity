@@ -3,11 +3,10 @@ import { isSafari } from '../utils/browser.js';
 
 export type GridA11y = ReactiveControllerHost &
   HTMLElement & {
-    grid?: HTMLElement;
-    columnGroup?: HTMLElement;
-    columnRow?: HTMLElement;
+    columnGroup: HTMLElement;
+    columnRow: HTMLElement;
     columns: NodeListOf<HTMLElement>;
-    rowGroup?: HTMLElement;
+    rowGroup: HTMLElement;
     rows: NodeListOf<HTMLElement & { cells: NodeListOf<HTMLElement> }>;
   };
 
@@ -47,54 +46,54 @@ export class AriaGridController {
 
   private intializeColumnSort() {
     this.host.addEventListener('sortChange', (e: any) => {
-      e.composedPath()
-        .find((i: any) => i.getAttribute && i.getAttribute('role') === 'columnheader')
-        ?.setAttribute('aria-sort', e.detail);
+      const col = e.composedPath().find((i: HTMLElement) => i.role === 'columnheader');
+      if (col) {
+        col.ariaSort = e.detail;
+      }
     });
   }
 
   private initializeGrid() {
-    const grid = this.host.grid ? this.host.grid : this.host;
-    grid.setAttribute('role', 'grid');
-    this.host.rowGroup?.setAttribute('role', 'rowgroup');
-    this.host.columnGroup?.setAttribute('role', 'rowgroup');
-    this.host.columnRow?.setAttribute('role', 'row');
-    this.host.columnRow?.setAttribute('aria-rowindex', '1');
-    this.host.setAttribute('aria-rowcount', `${this.host.rows?.length + 1}`);
-    this.host.setAttribute('aria-colcount', `${this.host.columns.length}`);
+    this.host.role = 'grid';
+    this.host.rowGroup.role = 'rowgroup';
+    this.host.columnGroup.role = 'rowgroup';
+    this.host.columnRow.role = 'row';
+    this.host.columnRow.ariaRowIndex = '1';
+    this.host.ariaRowCount = `${this.host.rows?.length + 1}`;
+    this.host.ariaColCount = `${this.host.columns.length}`;
   }
 
   private intializeColumns() {
     this.host.columns.forEach((c, i) => {
-      c.setAttribute('role', 'columnheader');
-      c.setAttribute('aria-colindex', `${i + 1}`);
-      c.setAttribute('aria-sort', 'none');
+      c.role = 'columnheader';
+      c.ariaColIndex = `${i + 1}`;
+      c.ariaSort = 'none';
 
       if (isSafari()) {
         // Only visible columnheader text should be read to SRs but Safari violates this and
         // reads the aria-label of buttons when navigating between cells.
         // Combining scope + aria-label tricks Safari + VO into the correct behavior
         c.setAttribute('scope', 'col');
-        c.setAttribute('aria-label', c.textContent);
+        c.ariaLabel = c.textContent;
       }
     });
   }
 
   private initializeRows() {
     this.host.rows?.forEach((r, i) => {
-      r.setAttribute('role', 'row');
-      r.setAttribute('aria-rowindex', `${i + 2}`); // +2 for column header row offset
+      r.role = 'row';
+      r.ariaRowIndex = `${i + 2}`; // +2 for column header row offset
       this.initializeCells(r.cells);
     });
   }
 
   private initializeCells(cells: NodeListOf<HTMLElement>) {
     cells?.forEach((c, i) => {
-      if (!c.hasAttribute('role')) {
-        c.setAttribute('role', 'gridcell');
+      if (!c.role) {
+        c.role = 'gridcell';
       }
 
-      c.setAttribute('aria-colindex', `${i + 1}`); // colindex starts at 1
+      c.ariaColIndex = `${i + 1}`; // colindex starts at 1
     });
   }
 }

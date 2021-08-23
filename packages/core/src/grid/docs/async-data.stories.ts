@@ -14,7 +14,7 @@ export function asyncData() {
 
     render() {
       return html`
-        <cds-grid aria-label="async loading datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="async loading datagrid demo" height="360">
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>

@@ -8,7 +8,7 @@ export default {
 
 export function columnAlignCenter() {
   return html`
-  <cds-grid column-align="center" aria-label="column align center datagrid demo" style="--body-height: 360px;">
+  <cds-grid column-align="center" aria-label="column align center datagrid demo" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>
@@ -26,7 +26,7 @@ export function columnAlignCenter() {
 
 export function columnAlignRight() {
   return html`
-  <cds-grid column-align="right" aria-label="column align right datagrid demo" style="--body-height: 360px;">
+  <cds-grid column-align="right" aria-label="column align right datagrid demo" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>

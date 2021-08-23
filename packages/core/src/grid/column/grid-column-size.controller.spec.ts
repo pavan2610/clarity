@@ -6,61 +6,71 @@
 
 import { html, LitElement } from 'lit';
 import { query } from 'lit/decorators/query.js';
-import { registerElementSafely, state, property } from '@cds/core/internal';
-import { CdsActionResize } from '@cds/core/actions';
+import { customElement } from '@cds/core/internal';
+// import { CdsActionResize } from '@cds/core/actions';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
-import { GridColumnSizeController } from './grid-column-size.controller.js';
-
-class GridColumnSizeTestElement extends LitElement {
-  @property() width?: string;
-  @state() colIndex = 1;
-  @query('#handle') resizeHandle: CdsActionResize;
-  gridColumnSizeController = new GridColumnSizeController(this);
-
-  render() {
-    return html`<div id="handle"></div>`;
-  }
-}
-
-registerElementSafely('grid-column-size-test-element', GridColumnSizeTestElement);
+// import { GridColumnSizeController } from './grid-column-size.controller.js';
+import '@cds/core/grid/register.js';
+import { CdsGrid, CdsGridColumn, CdsGridCell } from '@cds/core/grid';
 
 describe('grid-column-size.controller', () => {
-  let component: GridColumnSizeTestElement;
   let element: HTMLElement;
+  let grid: CdsGrid;
+  let columns: NodeListOf<CdsGridColumn>;
+  let cells: NodeListOf<CdsGridCell>;
 
   beforeEach(async () => {
     element = await createTestElement(
-      html`<grid-column-size-test-element
-        style="height: 100px; width: 100px; display: block;"
-      ></grid-column-size-test-element>`
+      html` <cds-grid style="width: 500px">
+        <cds-grid-column type="action">...</cds-grid-column>
+        <cds-grid-column resizable>Column 1</cds-grid-column>
+        <cds-grid-column resizable>Column 2</cds-grid-column>
+        <cds-grid-row>
+          <cds-grid-cell>Cell 1</cds-grid-cell>
+          <cds-grid-cell>Cell 2</cds-grid-cell>
+        </cds-grid-row>
+        <cds-grid-row>
+          <cds-grid-cell>Cell 2-1</cds-grid-cell>
+          <cds-grid-cell>Cell 2-2</cds-grid-cell>
+        </cds-grid-row>
+      </cds-grid>`
     );
-    component = element.querySelector<GridColumnSizeTestElement>('grid-column-size-test-element');
-    component.colIndex = 1;
-    component.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); // trigger initialization
+    grid = element.querySelector<CdsGrid>('cds-grid');
+    columns = element.querySelectorAll<CdsGridColumn>('cds-grid-column');
+    cells = element.querySelectorAll<CdsGridCell>('cds-grid-cell');
+    grid.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); // trigger initialization
   });
 
   afterEach(() => {
     removeTestElement(element);
   });
 
+  it('should lock width to 36px and 0 padding when column is of type action', async () => {
+    await componentIsStable(columns[0]);
+    expect(grid.style.getPropertyValue('--ch1')).toBe('36px');
+    expect(getComputedStyle(columns[0]).getPropertyValue('--padding-block').trim()).toBe('0');
+
+    await componentIsStable(cells[0]);
+    expect(getComputedStyle(cells[0]).getPropertyValue('--padding-block').trim()).toBe('0');
+  });
+
   it('should set CSS Custom Property for column custom width values', async () => {
-    component.width = '200px';
-    await componentIsStable(component);
-    expect(element.style.getPropertyValue('--ch1')).toBe('200px');
+    columns[0].width = '200px';
+    await componentIsStable(columns[0]);
+    expect(grid.style.getPropertyValue('--ch1')).toBe('200px');
+  });
+
+  it('should allow numeric width', async () => {
+    columns[2].width = '200';
+    await componentIsStable(columns[2]);
+    expect(grid.style.getPropertyValue('--ch3')).toBe('200px');
   });
 
   it('should resize a column when resizeChange occurs', async () => {
-    component.shadowRoot.dispatchEvent(new CustomEvent('resizeChange', { detail: -10, bubbles: true }));
-    await componentIsStable(component);
-    expect(element.style.getPropertyValue('--ch1')).toBe('90px');
+    await componentIsStable(grid);
+    await componentIsStable(columns[1]);
+    columns[1].shadowRoot.dispatchEvent(new CustomEvent('resizeChange', { detail: -10, bubbles: true }));
+    await componentIsStable(columns[0]);
+    expect(grid.style.getPropertyValue('--ch2')).toBe('488px');
   });
-
-  // it('should set the row column size when column header is resized', async () => {
-  //   component.gridColumnSizeController.initializeResizer();
-  //   await componentIsStable(component);
-  //   component.style.width = '100%';
-  //   element.style.width = '50px';
-  //   await componentIsStable(component);
-  //   expect(element.style.getPropertyValue('--c1')).toBe('200px');
-  // });
 });

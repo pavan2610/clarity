@@ -16,7 +16,7 @@ export function rowMultiSort() {
 
     render() {
       return html`
-        <cds-grid aria-label="row multi sort datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="row multi sort datagrid demo" height="360">
           <cds-grid-column>
             Host <cds-action-sort aria-label="sort host" .sort=${this.sortState.id} @sortChange=${(e: any) => (this.sortState = { ...this.sortState, id: e.detail })}></cds-action-sort>
           </cds-grid-column>

@@ -22,4 +22,4 @@ import { CdsAction } from '@cds/core/actions';
  * @element cds-control-action
  * @slot - For projecting text content or cds-icon
  */
-export class CdsControlAction extends CdsAction { }
+export class CdsControlAction extends CdsAction {}

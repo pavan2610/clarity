@@ -8,7 +8,6 @@ import {
   Animatable,
   animate,
   AnimationTreeItemExpandName,
-  AriaBooleanAttributeValues,
   baseStyles,
   createId,
   event,
@@ -64,22 +63,13 @@ export class CdsTreeItem extends LitElement implements Animatable {
   @i18n() i18n = I18nService.keys.treeview;
 
   @state({ type: String, reflect: true, attribute: 'role' })
-  protected role = 'treeitem';
+  role = 'treeitem';
 
   @property({ type: String })
   cdsMotion = 'on';
 
   @event()
   cdsMotionChange: EventEmitter<string>;
-
-  @state({ type: String, reflect: true, attribute: 'aria-disabled' })
-  protected ariaDisabled: AriaBooleanAttributeValues | undefined = 'false';
-
-  @state({ type: String, reflect: true, attribute: 'aria-expanded' })
-  protected ariaExpanded: AriaBooleanAttributeValues | undefined = 'false';
-
-  @state({ type: String, reflect: true, attribute: 'aria-selected' })
-  protected ariaSelected: AriaBooleanAttributeValues | undefined = 'false';
 
   @property({ type: Boolean, reflect: true, attribute: 'multi-select' })
   multiSelect = false;

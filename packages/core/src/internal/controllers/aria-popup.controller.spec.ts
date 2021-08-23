@@ -1,27 +1,27 @@
 import { html, LitElement } from 'lit';
-import { registerElementSafely } from '@cds/core/internal';
+import { customElement, AriaPopupController } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
-import { AriaPopupController } from './aria-popup.controller.js';
 
+@customElement('aria-popup-controller-test-element')
 class AriaPopupControllerTestElement extends LitElement {
   ariaPopupController = new AriaPopupController(this);
+  trigger: HTMLElement;
   render() {
     return html`...`;
   }
 }
 
-registerElementSafely('aria-popup-controller-test-element', AriaPopupControllerTestElement);
-
 describe('aria-popup.controller', () => {
-  let component: HTMLElement & { trigger: HTMLElement };
+  let component: AriaPopupControllerTestElement;
   let element: HTMLElement;
   let trigger: HTMLElement;
 
   beforeEach(async () => {
     element = await createTestElement(
-      html`<div popup="popup-el"></div><aria-popup-controller-test-element id="popup-el" hidden></aria-popup-controller-test-element>`
+      html`<div popup="popup-el"></div>
+        <aria-popup-controller-test-element id="popup-el" hidden></aria-popup-controller-test-element>`
     );
-    component = element.querySelector('aria-popup-controller-test-element');
+    component = element.querySelector<AriaPopupControllerTestElement>('aria-popup-controller-test-element');
     trigger = element.querySelector('div');
     component.trigger = trigger;
   });

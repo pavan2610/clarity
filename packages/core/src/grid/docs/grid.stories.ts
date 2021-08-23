@@ -29,9 +29,9 @@ import { columnAlignRight, columnAlignCenter } from './column-align.stories.js';
 import { columnDraggable } from './column-draggable.stories.js';
 import { columnFilter } from './column-filter.stories.js';
 import { columnFixed, columnFixedDynamic, columnMultiFixed } from './column-fixed.stories.js';
-import { columnResize, columnFixedWidth, columnFlexWidth } from './column-resize.stories.js';
+import { columnResize, columnFlexWidth } from './column-resize.stories.js';
 import { columnMultiFilter } from './column-multi-filter.stories.js';
-import { columnOverflow } from './column-width.stories.js';
+import { columnOverflow, columnFixedWidth } from './column-width.stories.js';
 import { columnSticky } from './column-sticky.stories.js';
 import { columnVisibility } from './column-visibility.stories.js';
 import { compact } from './compact.stories.js';
@@ -272,7 +272,7 @@ export function all() {
 
 export function basic() {
   return html`
-    <cds-grid aria-label="basic datagrid demo" style="--body-height: 360px">
+    <cds-grid aria-label="basic datagrid demo" height="360">
       <!-- <cds-grid-column-group> -->
         <cds-grid-column>Host</cds-grid-column>
         <cds-grid-column>Status</cds-grid-column>
@@ -364,8 +364,8 @@ export function basic() {
 
 export function keyboard() {
   return html`
-    <cds-grid aria-label="keyboard navigation datagrid demo" style="--body-height: 360px">
-      <cds-grid-column width="200px">Key</cds-grid-column>
+    <cds-grid aria-label="keyboard navigation datagrid demo" height="360">
+      <cds-grid-column width="200">Key</cds-grid-column>
       <cds-grid-column>Function</cds-grid-column>
       <cds-grid-row>
         <cds-grid-cell>Right Arrow</cds-grid-cell>
@@ -516,7 +516,7 @@ export function dynamicGrid() {
     render() {
       return html`
         ${this._model ? html`
-        <cds-grid aria-label=${this._model.gridLabel} style="--body-height: 360px;">
+        <cds-grid aria-label=${this._model.gridLabel} height="360">
           ${this._model.select === 'single' ? html`
           <cds-grid-column type="action">
             <cds-checkbox>

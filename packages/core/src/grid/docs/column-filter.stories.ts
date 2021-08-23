@@ -17,7 +17,7 @@ export function columnFilter() {
 
     render() {
       return html`
-        <cds-grid aria-label="column filter datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="column filter datagrid demo" height="360">
           <cds-grid-column>
             Host <cds-action popup="column-filter" @click=${(e: any) => (this.anchor = e.target)} shape="filter" .status=${this.search ? 'active' : ''} aria-label="search hosts"></cds-action>
           </cds-grid-column>

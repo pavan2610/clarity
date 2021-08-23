@@ -27,8 +27,6 @@ export class CdsAction extends CdsBaseButton {
 
   @property({ type: String }) status?: 'active' | '';
 
-  @state({ type: String, attribute: 'aria-label', reflect: true }) ariaLabel?: string;
-
   @state({ type: Boolean, reflect: true, attribute: 'cds-action' }) protected cdsAction = true;
 
   /** Set the action type placement within the supporting input control */

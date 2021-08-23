@@ -16,7 +16,7 @@ export function rtl() {
 
     render() {
       return html`
-        <cds-grid dir="rtl" aria-label="row detail datagrid demo" style="--body-height: 360px">
+        <cds-grid dir="rtl" aria-label="row detail datagrid demo" height="360">
           <cds-grid-column type="action" aria-label="row detail column"></cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>

@@ -27,7 +27,7 @@ export function performance() {
           <button @click=${this.toggleVisibility}>css visibility</button>
           <br /><br />
           ${this.showParseAndRender ? html`
-          <cds-grid aria-label="performance datagrid demo" ?hidden=${this.hide} style="--body-height: 360px; width: 800px">
+          <cds-grid aria-label="performance datagrid demo" ?hidden=${this.hide} height="360" style="width: 800px">
             <cds-grid-column>Host</cds-grid-column>
             <cds-grid-column>Status</cds-grid-column>
             <cds-grid-column>CPU</cds-grid-column>

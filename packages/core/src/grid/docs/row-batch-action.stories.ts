@@ -19,7 +19,7 @@ export function rowBatchAction() {
 
     render() {
       return html`
-        <cds-grid aria-label="row batch action datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="row batch action datagrid demo" height="360">
           <cds-grid-column type="action">
             <cds-checkbox>
               <input type="checkbox" .checked=${this.selected === this.data.length} .indeterminate=${(this.selected > 0) && (this.selected < this.data.length)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />

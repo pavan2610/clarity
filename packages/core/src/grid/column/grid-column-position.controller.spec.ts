@@ -14,6 +14,7 @@ import { CdsGrid } from '../grid/grid.element.js';
 describe('grid-column-position.controller', () => {
   let grid: CdsGrid;
   let firstColumn: CdsGridColumn;
+  let secondColumn: CdsGridColumn;
   let lastColumn: CdsGridColumn;
   let firstCell: CdsGridCell;
   let lastCell: CdsGridCell;
@@ -21,11 +22,11 @@ describe('grid-column-position.controller', () => {
 
   beforeEach(async () => {
     element = await createTestElement(html`
-      <cds-grid>
-        <cds-grid-column id="first-grid-column" position="fixed">Stock</cds-grid-column>
-        <cds-grid-column id="second-grid-column" position="fixed">Average</cds-grid-column>
-        <cds-grid-column>Current</cds-grid-column>
-        <cds-grid-column id="last-grid-column" position="fixed">About</cds-grid-column>
+      <cds-grid height="300" style="width: 300px">
+        <cds-grid-column id="first-grid-column" width="150" position="fixed">Host</cds-grid-column>
+        <cds-grid-column id="second-grid-column" width="350">Status</cds-grid-column>
+        <cds-grid-column width="500">CPU</cds-grid-column>
+        <cds-grid-column id="last-grid-column" width="150" position="fixed">Memory</cds-grid-column>
         <cds-grid-row>
           <cds-grid-cell id="first-grid-cell">APPL</cds-grid-cell>
           <cds-grid-cell>$1000</cds-grid-cell>
@@ -37,6 +38,7 @@ describe('grid-column-position.controller', () => {
 
     grid = element.querySelector<CdsGrid>('cds-grid');
     firstColumn = element.querySelector<CdsGridColumn>('#first-grid-column');
+    secondColumn = element.querySelector<CdsGridColumn>('#second-grid-column');
     lastColumn = element.querySelector<CdsGridColumn>('#last-grid-column');
     firstCell = element.querySelector<CdsGridCell>('#first-grid-cell');
     lastCell = element.querySelector<CdsGridCell>('#last-grid-cell');
@@ -46,21 +48,35 @@ describe('grid-column-position.controller', () => {
     removeTestElement(element);
   });
 
-  it('should support fixed left position', async () => {
-    await componentIsStable(grid);
-    expect(getComputedStyle(firstColumn).left).toBe('0px');
-    expect(getComputedStyle(firstColumn).right).toBe('auto');
-    expect(getComputedStyle(firstCell).getPropertyValue('--border-left').trim()).toBe('0');
-    expect(getComputedStyle(firstCell).getPropertyValue('--border-right').trim()).toBe(
-      'calc((1 / 20) * 1rem) solid hsl(198, 14%, 82%)'
-    );
+  it('should write style to host grid tag', async () => {
+    await componentIsStable(lastColumn);
+    const styles = Array.from(grid.querySelectorAll('style'))
+      .map(s => s.innerHTML)
+      .join('\n');
+    expect(styles.includes('cds-grid-cell[aria-colindex="1"]'));
+    expect(styles.includes('cds-grid-cell[aria-colindex="4"]'));
+    expect(styles.includes('left: 0;'));
+    expect(styles.includes('right: 0;'));
+    expect(styles.includes('--border-left'));
+    expect(styles.includes('--border-right'));
   });
 
-  it('should support fixed right position', async () => {
+  it('should support fixed position', async () => {
     await componentIsStable(grid);
-    expect(getComputedStyle(lastColumn).right).toBe('0px');
-    expect(getComputedStyle(lastColumn).left).toBe('auto');
-    expect(getComputedStyle(lastCell).getPropertyValue('--border-left').trim()).toBe(
+    const firstColStyle = getComputedStyle(firstColumn);
+    const lastColStyle = getComputedStyle(lastColumn);
+    const firstCellStyle = getComputedStyle(firstCell);
+
+    expect(firstColStyle.position).toBe('sticky');
+    expect(firstColStyle.left).toBe('0px');
+
+    expect(lastColumn.position).toBe('fixed');
+    expect(lastColStyle.position).toBe('sticky');
+
+    expect(firstColStyle.right).toBe('auto');
+    expect(firstCellStyle.position).toBe('sticky');
+    expect(firstCellStyle.getPropertyValue('--border-left').trim()).toBe('0');
+    expect(firstCellStyle.getPropertyValue('--border-right').trim()).toBe(
       'calc((1 / 20) * 1rem) solid hsl(198, 14%, 82%)'
     );
   });
@@ -68,10 +84,16 @@ describe('grid-column-position.controller', () => {
   it('should support sticky position', async () => {
     firstColumn.position = 'sticky';
     await componentIsStable(grid);
-    expect(getComputedStyle(firstColumn).left).toBe('0px');
-    expect(getComputedStyle(firstColumn).right).toBe('auto');
-    expect(getComputedStyle(firstCell).getPropertyValue('--border-left').trim()).toBe('0');
-    expect(getComputedStyle(firstCell).getPropertyValue('--border-right').trim()).toBe(
+    const firstColStyle = getComputedStyle(firstColumn);
+    const firstCellStyle = getComputedStyle(firstCell);
+
+    expect(firstColStyle.position).toBe('sticky');
+    expect(firstColStyle.left).toBe('0px');
+    expect(firstColStyle.right).toBe('auto');
+
+    expect(firstCellStyle.position).toBe('sticky');
+    expect(firstCellStyle.getPropertyValue('--border-left').trim()).toBe('0');
+    expect(firstCellStyle.getPropertyValue('--border-right').trim()).toBe(
       'calc((1 / 20) * 1rem) solid hsl(198, 14%, 82%)'
     );
   });

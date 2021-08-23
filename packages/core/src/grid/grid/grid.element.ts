@@ -10,17 +10,20 @@ import {
   AriaGridController,
   querySlotAll,
   ResponsiveController,
+  AriaReflectionController,
 } from '@cds/core/internal';
 import { CdsGridRow } from '../row/grid-row.element.js';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
 import { CdsGridColumn } from '../column/grid-column.element.js';
 import { GridRowVisibilityController } from '../row/grid-row-visibility.controller.js';
-import { GridColumnGroupSizeController } from '../column/grid-column-group-size.controller.js';
+import { GridLayoutController } from './grid-layout.controller.js';
 import { GridRangeSelectionController } from './grid-range-selection.controller.js';
 import styles from './grid.element.scss';
 
 export class CdsGrid extends LitElement {
   @property({ type: String }) columnLayout: 'fixed' | 'flex' = 'fixed';
+
+  @property({ type: String }) height: string;
 
   @property({ type: String }) border: 'row' | 'cell' | 'column' | 'none' | 'stripe' = 'row';
 
@@ -31,24 +34,26 @@ export class CdsGrid extends LitElement {
   @query('.row-group', true) readonly rowGroup: HTMLElement;
 
   @query('.column-row', true) readonly columnRow: HTMLElement;
-  
+
   @query('.column-group', true) readonly columnGroup: HTMLElement;
 
   @querySlotAll('cds-grid-row') readonly rows: NodeListOf<CdsGridRow>;
-  
+
   @querySlotAll('cds-grid-cell') readonly cells: NodeListOf<CdsGridCell>;
-  
+
   @querySlotAll('cds-grid-column') readonly columns: NodeListOf<CdsGridColumn>;
 
   protected ariaGridController = new AriaGridController(this);
 
   protected responsiveController = new ResponsiveController(this);
 
+  protected gridLayoutController = new GridLayoutController(this);
+
+  protected ariaReflectionController = new AriaReflectionController(this);
+
   protected gridRowVisibilityController = new GridRowVisibilityController(this);
 
   protected gridRangeSelectionController = new GridRangeSelectionController(this);
-
-  protected gridColumnGroupSizeController = new GridColumnGroupSizeController(this);
 
   protected keyNavigationGridController = new KeyNavigationGridController(this, {
     keyGridRows: 'rows',

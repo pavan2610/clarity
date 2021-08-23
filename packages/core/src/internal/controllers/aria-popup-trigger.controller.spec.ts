@@ -1,16 +1,15 @@
 import { html, LitElement } from 'lit';
-import { registerElementSafely } from '@cds/core/internal';
+import { customElement } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
 import { AriaPopupTriggerController } from './aria-popup-trigger.controller.js';
 
+@customElement('aria-popup-controller-test-element')
 class AriaPopupTriggerControllerTestElement extends LitElement {
   ariaPopupTriggerController = new AriaPopupTriggerController(this);
   render() {
     return html`...`;
   }
 }
-
-registerElementSafely('aria-popup-controller-test-element', AriaPopupTriggerControllerTestElement);
 
 describe('aria-popup-trigger.controller', () => {
   let component: HTMLElement;
@@ -20,7 +19,7 @@ describe('aria-popup-trigger.controller', () => {
     element = await createTestElement(
       html`<aria-popup-controller-test-element popup="popup-el"></aria-popup-controller-test-element>`
     );
-    component = element.querySelector('aria-popup-controller-test-element');
+    component = element.querySelector<AriaPopupTriggerControllerTestElement>('aria-popup-controller-test-element');
   });
 
   afterEach(() => {

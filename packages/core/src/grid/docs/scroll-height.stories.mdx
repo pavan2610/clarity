@@ -11,10 +11,11 @@ import { Meta, Props, Story, Preview } from '@web/storybook-prebuilt/addon-docs/
   </cds-alert>
 </cds-alert-group>
 
-The `--body-height` property allows control of the height of the grid. By default, the grid will expand to the number of provided rows.
+The `height` property and `--body-height` CSS Property allows control of the scroll
+height of the grid. By default, the grid will expand to the number of provided rows.
 
 ```html
-<cds-grid style="--body-height: 400px">
+<cds-grid height="400">
   <cds-grid-column>Host</cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>
   <cds-grid-column>CPU</cds-grid-column>

@@ -11,5 +11,6 @@ describe('browser support feature checks', () => {
     const supportValues = document.body.getAttribute('cds-supports');
     expect(supportValues).toContain('js');
     expect(supportValues).toContain('flex-gap');
+    expect(supportValues).toContain('aria-reflect');
   });
 });

@@ -16,7 +16,7 @@ export function rowAction() {
 
     render() {
       return html`
-        <cds-grid aria-label="row action datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="row action datagrid demo" height="360">
           <cds-grid-column type="action" aria-label="selection column"></cds-grid-column>
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>

@@ -126,12 +126,22 @@ export function iconsButtons() {
       <cds-input>
         <label>icon button</label>
         <input placeholder="example" />
-        <cds-control-action action="suffix" shape="close" aria-label="clear example input" onclick="alert('!')"></cds-control-action>
+        <cds-control-action
+          action="suffix"
+          shape="close"
+          aria-label="clear example input"
+          onclick="alert('!')"
+        ></cds-control-action>
       </cds-input>
 
       <cds-input>
         <label>icon button label</label>
-        <cds-control-action action="label" shape="info-circle" aria-label="get more details" onclick="alert('!')"></cds-control-action>
+        <cds-control-action
+          action="label"
+          shape="info-circle"
+          aria-label="get more details"
+          onclick="alert('!')"
+        ></cds-control-action>
         <input placeholder="example" />
       </cds-input>
 
@@ -140,14 +150,23 @@ export function iconsButtons() {
         <input placeholder="example" />
         <cds-control-message>
           message text
-          <cds-control-action shape="info-circle" aria-label="get more details" onclick="alert('!')"></cds-control-action>
+          <cds-control-action
+            shape="info-circle"
+            aria-label="get more details"
+            onclick="alert('!')"
+          ></cds-control-action>
         </cds-control-message>
       </cds-input>
 
       <cds-password>
         <label>additional actions to existing input types</label>
         <input type="password" value="123456" />
-        <cds-control-action action="suffix" shape="close" aria-label="clear password input" onclick="alert('!')"></cds-control-action>
+        <cds-control-action
+          action="suffix"
+          shape="close"
+          aria-label="clear password input"
+          onclick="alert('!')"
+        ></cds-control-action>
       </cds-password>
     </cds-form-group>
   `;
@@ -224,7 +243,12 @@ export function editableContent() {
             @keydown=${this.updateInput}
             value="example content"
           />
-          <cds-control-action action="prefix" shape="pencil" aria-label="edit text content" @click="${this.toggleInput}"></cds-control-action>
+          <cds-control-action
+            action="prefix"
+            shape="pencil"
+            aria-label="edit text content"
+            @click="${this.toggleInput}"
+          ></cds-control-action>
         </cds-input>
       `;
     }

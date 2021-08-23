@@ -24,7 +24,7 @@ import styles from './breadcrumb.element.scss';
  */
 export class CdsBreadcrumb extends LitElement {
   @state({ type: String, reflect: true, attribute: 'role' })
-  protected role = 'navigation';
+  role = 'navigation';
 
   @state({ type: Array }) private navItems: Element[] = [];
 

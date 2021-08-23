@@ -8,7 +8,6 @@ import { css, html, LitElement } from 'lit';
 import { query } from 'lit/decorators/query.js';
 import { queryAll } from 'lit/decorators/query-all.js';
 import {
-  customElement,
   baseStyles,
   DraggableListController,
   AriaGridController,
@@ -19,8 +18,6 @@ import {
   AriaPopupController,
   AriaPopupTriggerController,
   ResponsiveController,
-  querySlotAll,
-  onAnyKey,
 } from '@cds/core/internal';
 import '@cds/core/badge/register.js';
 import { swapItems } from '@cds/core/demo';
@@ -397,7 +394,7 @@ export function ariaGridController() {
     @queryAll('section > div:first-child > div') columns: NodeListOf<HTMLElement>;
     @queryAll('section > div:not(:first-child)') rows: NodeListOf<HTMLElement & { cells: NodeListOf<HTMLElement> }>;
 
-    private ariaGridController = new AriaGridController(this);
+    private ariaGridController = new AriaGridController(this as any); // todo
 
     static styles = [
       css`
@@ -564,7 +561,7 @@ export function ariaPopupController() {
 export function responsiveController() {
   class DemoResponsiveController extends LitElement {
     protected responsiveController = new ResponsiveController(this);
-    @state() rect = { };
+    @state() rect = {};
     static get styles() {
       return [
         baseStyles,
@@ -587,7 +584,7 @@ export function responsiveController() {
 
     connectedCallback() {
       super.connectedCallback();
-      this.addEventListener('cdsResizeChange', (e: any) => this.rect = e.detail);
+      this.addEventListener('cdsResizeChange', (e: any) => (this.rect = e.detail));
     }
   }
 

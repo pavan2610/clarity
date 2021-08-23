@@ -5,7 +5,6 @@
  */
 
 import {
-  AriaBooleanAttributeValues,
   arrayHead,
   arrayTail,
   baseStyles,
@@ -45,16 +44,10 @@ import styles from './tree.element.scss';
  */
 export class CdsTree extends LitElement {
   @state({ type: String, reflect: true, attribute: 'role' })
-  protected role = 'tree';
+  role = 'tree';
 
   @property({ type: Boolean, attribute: 'multi-select' })
   multiSelect = false;
-
-  @state({ type: String, reflect: true, attribute: 'aria-activedescendant' })
-  ariaActiveDescendant: string;
-
-  @state({ type: String, reflect: true, attribute: 'aria-multiselectable' })
-  protected ariaMultiSelectable: AriaBooleanAttributeValues = 'false';
 
   @querySlot('cds-tree-item') private firstChildItem: CdsTreeItem;
 

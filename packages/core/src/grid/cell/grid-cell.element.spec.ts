@@ -14,7 +14,7 @@ describe('cds-grid-cell', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    element = await createTestElement(html`<div aria-rowindex="3"><cds-grid-cell aria-colindex="2"></cds-grid-cell></div>`);
+    element = await createTestElement(html`<cds-grid-cell></cds-grid-cell></div>`);
     component = element.querySelector<CdsGridCell>('cds-grid-cell');
   });
 
@@ -30,15 +30,5 @@ describe('cds-grid-cell', () => {
   it('should enable style access via css part "cell"', async () => {
     await componentIsStable(component);
     expect(component.shadowRoot.querySelector('[part=cell]')).toBeTruthy();
-  });
-
-  it('should provide a colIndex prop from set aria-colindex', async () => {
-    await componentIsStable(component);
-    expect(component.colIndex).toBe(2);
-  });
-
-  it('should provide a rowIndex prop from set parent aria-rowindex', async () => {
-    await componentIsStable(component);
-    expect(component.rowIndex).toBe(3);
   });
 });

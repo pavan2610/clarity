@@ -1,10 +1,11 @@
 import { html, LitElement } from 'lit';
 import { query } from 'lit/decorators/query.js';
 import { queryAll } from 'lit/decorators/query-all.js';
-import { registerElementSafely } from '@cds/core/internal';
+import { customElement } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
 import { GridRangeSelectionController } from './grid-range-selection.controller.js';
 
+@customElement('grid-range-select-controller-test-element')
 class GridRangeSelectionControllerTestElement extends LitElement {
   @query('section') grid: HTMLElement;
   @queryAll('section button') cells: NodeListOf<HTMLElement>;
@@ -18,8 +19,6 @@ class GridRangeSelectionControllerTestElement extends LitElement {
   }
 }
 
-registerElementSafely('grid-range-select-controller-test-element', GridRangeSelectionControllerTestElement);
-
 describe('grid-range-select.controller', () => {
   let component: HTMLElement;
   let element: HTMLElement;
@@ -28,7 +27,9 @@ describe('grid-range-select.controller', () => {
     element = await createTestElement(
       html`<grid-range-select-controller-test-element></grid-range-select-controller-test-element>`
     );
-    component = element.querySelector('grid-range-select-controller-test-element');
+    component = element.querySelector<GridRangeSelectionControllerTestElement>(
+      'grid-range-select-controller-test-element'
+    );
   });
 
   afterEach(() => {

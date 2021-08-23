@@ -47,18 +47,18 @@ export function kitchenSink() {
 
     render() {
       return html`
-        <cds-grid aria-label="Active VM Management" style="--body-height: 360px">
-          <cds-grid-column type="action" resizable="hidden">
+        <cds-grid aria-label="Active VM Management" height="360">
+          <cds-grid-column type="action">
             <cds-checkbox>
               <input type="checkbox" .checked=${this.selected === this.state.data.length} .indeterminate=${(this.selected > 0) && (this.selected < this.state.data.length)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
             </cds-checkbox>
           </cds-grid-column>
           <cds-grid-column type="action" aria-label="expand row detail column"></cds-grid-column>
-          <cds-grid-column resizable width="180px">
+          <cds-grid-column resizable width="180">
             Host <cds-action popup="id-filter" @click=${(e: any) => (this.state = { ...this.state, idFilterAnchor: e.target })} aria-label="column filter options" shape="filter" .status=${this.state.search ? 'active' : ''}></cds-action>
           </cds-grid-column>
           ${this.columnVisible(ColumnTypes.Status) ? html`
-          <cds-grid-column resizable width="180px">
+          <cds-grid-column resizable width="180">
             Status <cds-action-sort .sort=${this.state.sortType} @sortChange=${(e: any) => this.setSortType(e.detail)}></cds-action-sort>
           </cds-grid-column>`: ''}
           ${this.columnVisible(ColumnTypes.CPU) ? html`<cds-grid-column resizable>CPU</cds-grid-column>`: ''}

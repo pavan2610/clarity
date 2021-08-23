@@ -16,7 +16,7 @@ export function rowSort() {
 
     render() {
       return html`
-        <cds-grid aria-label="row sort datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="row sort datagrid demo" height="360">
           <cds-grid-column>
             Host <cds-action-sort aria-label="sort hosts" .sort=${this.sortType} @sortChange=${(e: any) => (this.sortType = e.detail)}></cds-action-sort>
           </cds-grid-column>

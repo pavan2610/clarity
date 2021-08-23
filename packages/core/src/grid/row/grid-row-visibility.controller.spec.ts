@@ -7,8 +7,9 @@
 import { html, css, LitElement } from 'lit';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
 import { GridRowVisibilityController } from './grid-row-visibility.controller.js';
-import { registerElementSafely } from '@cds/core/internal';
+import { customElement } from '@cds/core/internal';
 
+@customElement('grid-row-visibility-test-element')
 class GridRowVisibilityTestElement extends LitElement {
   gridBody: HTMLElement;
   static styles = [
@@ -20,8 +21,6 @@ class GridRowVisibilityTestElement extends LitElement {
   ];
   protected gridRowVisibilityController = new GridRowVisibilityController(this);
 }
-
-registerElementSafely('grid-row-visibility-test-element', GridRowVisibilityTestElement);
 
 describe('grid-row-visibility.controller', () => {
   let component: GridRowVisibilityTestElement;

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/** 
+/**
  * Hacks/workarounds for specific browsers, only when absolutly needed
  */
 

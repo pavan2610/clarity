@@ -5,39 +5,32 @@
  */
 
 import { html, LitElement } from 'lit';
-import { registerElementSafely, state } from '@cds/core/internal';
+import { customElement, state } from '@cds/core/internal';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
-import {
-  ColumnSizeType,
-  GridColumnGroupSize,
-  GridColumnGroupSizeController,
-} from './grid-column-group-size.controller.js';
+import { ColumnSizeType, GridColumnGroupSize, GridLayoutController } from './grid-layout.controller.js';
 
 const columns = [document.createElement('div'), document.createElement('div'), document.createElement('div')].map(
   (c: ColumnSizeType, i) => {
     c.width = `${(i + 1) * 100}px`;
-    c.colIndex = i + 1;
+    c.ariaColIndex = `${i + 1}`;
     return c;
   }
 );
 
-class GridColumnGroupSizeTestElement extends LitElement implements GridColumnGroupSize {
+@customElement('grid-layout-test-element') // @ts-ignore
+class GridLayoutTestElement extends LitElement implements GridColumnGroupSize {
   @state() columns = columns;
   @state() columnLayout: 'fixed' | 'flex' = 'fixed';
-  gridColumnSizeController = new GridColumnGroupSizeController(this);
+  gridLayoutController = new GridLayoutController(this);
 }
 
-registerElementSafely('grid-column-group-size-test-element', GridColumnGroupSizeTestElement);
-
 describe('grid-column-size.controller', () => {
-  let component: GridColumnGroupSizeTestElement;
+  let component: GridLayoutTestElement;
   let element: HTMLElement;
 
   beforeEach(async () => {
-    element = await createTestElement(
-      html`<grid-column-group-size-test-element></grid-column-group-size-test-element>`
-    );
-    component = element.querySelector<GridColumnGroupSizeTestElement>('grid-column-group-size-test-element');
+    element = await createTestElement(html`<grid-layout-test-element></grid-layout-test-element>`);
+    component = element.querySelector<GridLayoutTestElement>('grid-layout-test-element');
   });
 
   afterEach(() => {

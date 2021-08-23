@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { customElement, registerElementSafely, state } from '@cds/core/internal';
+import { customElement, state } from '@cds/core/internal';
 import { getVMData, groupArray } from '@cds/core/demo';
 import { CdsGridCell } from '@cds/core/grid';
 
@@ -16,7 +16,7 @@ export function rangeSelect() {
 
     render() {
       return html`
-        <cds-grid aria-label="range selection datagrid demo" @rangeSelectionChange=${(e: any) => this.activeCells = e.detail} style="--body-height: 490px">
+        <cds-grid aria-label="range selection datagrid demo" @rangeSelectionChange=${(e: any) => this.activeCells = e.detail} height="490">
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
@@ -31,13 +31,13 @@ export function rangeSelect() {
           <cds-grid-footer>
             <p cds-text="body">
               <strong>CPU:</strong>
-              ${(this.activeCells.filter(c => c.colIndex === 3).reduce((prev, cell) => prev + this.data.find(i => i.id === cell.parentElement.id).cpu, 0) / (this.activeCells.length ? this.activeCells.length : 1)).toFixed(2)}%
+              ${(this.activeCells.filter(c => c.ariaColIndex === '3').reduce((prev, cell) => prev + this.data.find(i => i.id === cell.parentElement.id).cpu, 0) / (this.activeCells.length ? this.activeCells.length : 1)).toFixed(2)}%
               <strong>Memory:</strong>
-              ${(this.activeCells.filter(c => c.colIndex === 4).reduce((prev, cell) => prev + this.data.find(i => i.id === cell.parentElement.id).memory, 0) / (this.activeCells.length ? this.activeCells.length : 1)).toFixed(2)}%
+              ${(this.activeCells.filter(c => c.ariaColIndex === '4').reduce((prev, cell) => prev + this.data.find(i => i.id === cell.parentElement.id).memory, 0) / (this.activeCells.length ? this.activeCells.length : 1)).toFixed(2)}%
             </p>
           </cds-grid-footer>
         </cds-grid>
-        <p cds-text="body">Active Cells: ${this.activeCells.map(c => html`(${c.colIndex},${c.rowIndex}) `)}</p>
+        <p cds-text="body">Active Cells: ${this.activeCells.map(c => html`(${c.ariaColIndex},${c.parentElement.ariaRowIndex}) `)}</p>
       `;
     }
   }
@@ -55,7 +55,7 @@ export function rangeSelectContextMenu() {
 
     render() {
       return html`
-        <cds-grid aria-label="range select context menu datagrid demo" @rangeSelectionChange=${(e: any) => this.activeCells = e.detail} style="--body-height: 490px">
+        <cds-grid aria-label="range select context menu datagrid demo" @rangeSelectionChange=${(e: any) => this.activeCells = e.detail} height="490">
           ${this.columns.map(c => html`<cds-grid-column>${c.label}</cds-grid-column>`)}
           ${this.rows.map(entry => html`  
           <cds-grid-row id=${entry.id}>
@@ -76,8 +76,8 @@ export function rangeSelectContextMenu() {
     connectedCallback() {
       super.connectedCallback();
       window.addEventListener('contextmenu', (e: any) => {
-        const cell = e.path.find((e: any) => e.tagName === 'CDS-GRID-CELL');
-        if (this.activeCells.length && cell?.active && e.target === this) {
+        const cell: CdsGridCell = e.path.find((e: any) => e.tagName === 'CDS-GRID-CELL');
+        if (this.activeCells.length && cell?.highlight && e.target === this) {
           e.preventDefault();
           this.anchor = cell;
         }
@@ -85,8 +85,8 @@ export function rangeSelectContextMenu() {
     }
 
     private logCSV() {
-      const columns = Array.from(new Set(this.activeCells.map(c => c.colIndex - 1))).map(i => this.columns[i].label);
-      const rows = groupArray(this.activeCells.map(c => (this.rows[c.rowIndex - 1] as any)[this.columns[c.colIndex - 1].key]), columns.length).map(c => c.join(',')).join('\n');
+      const columns = Array.from(new Set(this.activeCells.map(c => parseInt(c.ariaColIndex) - 1))).map(i => this.columns[i].label);
+      const rows = groupArray(this.activeCells.map(c => (this.rows[parseInt(c.parentElement.ariaRowIndex) - 1] as any)[this.columns[parseInt(c.ariaColIndex) - 1].key]), columns.length).map(c => c.join(',')).join('\n');
       this.csv = `${columns.join(',')}\n${rows}`;
       this.anchor = null;
     }

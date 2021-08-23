@@ -1,14 +1,13 @@
 import { html, LitElement } from 'lit';
-import { registerElementSafely } from '@cds/core/internal';
+import { customElement } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
 
+@customElement('draggable-list-controller-test-element')
 class DraggableListControllerTestElement extends LitElement {
   render() {
     return html`...`;
   }
 }
-
-registerElementSafely('draggable-list-controller-test-element', DraggableListControllerTestElement);
 
 describe('draggable-list.controller', () => {
   let component: HTMLElement;
@@ -18,7 +17,7 @@ describe('draggable-list.controller', () => {
     element = await createTestElement(
       html`<draggable-list-controller-test-element></draggable-list-controller-test-element>`
     );
-    component = element.querySelector('draggable-list-controller-test-element');
+    component = element.querySelector<DraggableListControllerTestElement>('draggable-list-controller-test-element');
   });
 
   afterEach(() => {

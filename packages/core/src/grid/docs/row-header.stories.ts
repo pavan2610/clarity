@@ -8,8 +8,8 @@ export default {
 
 export function rowHeader() {
   return html`
-  <cds-grid  aria-label="row header datagrid demo" style="--body-height: 360px;">
-    <cds-grid-column width="120px">Host</cds-grid-column>
+  <cds-grid  aria-label="row header datagrid demo" height="360">
+    <cds-grid-column width="120">Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>
     <cds-grid-column>Memory</cds-grid-column>

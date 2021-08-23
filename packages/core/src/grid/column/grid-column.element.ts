@@ -1,5 +1,13 @@
 import { LitElement, html } from 'lit';
-import { baseStyles, i18n, I18nService, property, state } from '@cds/core/internal';
+import {
+  baseStyles,
+  i18n,
+  I18nService,
+  property,
+  state,
+  HiddenController,
+  AriaReflectionController,
+} from '@cds/core/internal';
 import { GridColumnSizeController } from './grid-column-size.controller.js';
 import { GridColumnPositionController } from './grid-column-position.controller.js';
 import styles from './grid-column.element.scss';
@@ -11,15 +19,15 @@ export class CdsGridColumn extends LitElement {
 
   @property({ type: String }) type: '' | 'action';
 
-  @property({ type: String }) resizable: true | false | 'hidden' = false;
+  @property({ type: Boolean }) resizable = false;
 
   @property({ type: String }) position: '' | 'sticky' | 'fixed' = '';
 
   @state({ type: String, attribute: 'slot', reflect: true }) slot = 'columns';
 
-  get colIndex() {
-    return parseInt(this.getAttribute('aria-colindex'));
-  }
+  protected hiddenController = new HiddenController(this);
+
+  protected ariaReflectionController = new AriaReflectionController(this);
 
   protected gridColumnSizeController = new GridColumnSizeController(this);
 
@@ -31,10 +39,8 @@ export class CdsGridColumn extends LitElement {
     return html`
       <div part="column">
         <slot></slot>
-        ${this.resizable !== 'hidden'
-          ? html` <cds-action-resize .readonly=${this.resizable === false}></cds-action-resize>
-              <div class="line"></div>`
-          : ''}
+        <cds-action-resize .readonly=${this.resizable === false}></cds-action-resize>
+        <div class="line"></div>
       </div>
     `;
   }

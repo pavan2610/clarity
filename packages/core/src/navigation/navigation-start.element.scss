@@ -43,6 +43,6 @@
   color: var(--color);
 }
 
-:host([is-group-start][_active]:not([_expanded])) {
+:host([is-group-start][cds-active]:not([_expanded])) {
   background: #{$cds-alias-object-interaction-background-active};
 }

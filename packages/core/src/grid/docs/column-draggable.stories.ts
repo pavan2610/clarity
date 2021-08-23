@@ -16,7 +16,7 @@ export function columnDraggable() {
 
     render() {
       return html`
-        <cds-grid aria-label="column draggable datagrid demo" @cdsDraggableChange=${this.sortColumns} style="--body-height: 360px">
+        <cds-grid aria-label="column draggable datagrid demo" @cdsDraggableChange=${this.sortColumns} height="360">
           ${this.columns.map(c => html`
             <cds-grid-column draggable="true" column-key="${c.key}">
               ${c.label} <cds-action-handle aria-label="sort ${c.label} column"></cds-action-handle>

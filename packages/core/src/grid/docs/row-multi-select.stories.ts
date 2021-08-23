@@ -22,7 +22,7 @@ export function rowMultiSelect() {
 
     render() {
       return html`
-        <cds-grid aria-label="row multi select datagrid demo" aria-multiselectable="true" style="--body-height: 360px">
+        <cds-grid aria-label="row multi select datagrid demo" aria-multiselectable="true" height="360">
           <cds-grid-column type="action">
             <cds-checkbox>
               <input type="checkbox" .checked=${this.selected === this.data.length} .indeterminate=${(this.selected > 0) && (this.selected < this.data.length)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />

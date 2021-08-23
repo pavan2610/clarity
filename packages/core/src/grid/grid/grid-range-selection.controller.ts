@@ -1,5 +1,6 @@
 import { ReactiveControllerHost } from 'lit';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
+import { CdsGridRow } from '../row/grid-row.element.js';
 
 export class GridRangeSelectionController {
   private selectionActive = false;
@@ -12,7 +13,11 @@ export class GridRangeSelectionController {
 
   constructor(
     private host: ReactiveControllerHost &
-      HTMLElement & { cells: NodeListOf<any> | any[]; rows: NodeListOf<any>; rangeSelection: boolean }
+      HTMLElement & {
+        cells: NodeListOf<CdsGridCell> | CdsGridCell[];
+        rows: NodeListOf<CdsGridRow>;
+        rangeSelection: boolean;
+      }
   ) {
     host.addController(this);
   }
@@ -85,32 +90,30 @@ export class GridRangeSelectionController {
   }
 
   private resetAllActiveCells() {
-    this.host.cells.forEach((cell: any) => (cell.active = false));
+    this.host.cells.forEach(cell => cell.removeAttribute('highlight'));
   }
 
   private calculateSelection() {
-    const x1 = this.firstCell.colIndex;
-    const x2 = this.activeCell.colIndex;
-    const y1 = this.firstCell.rowIndex;
-    const y2 = this.activeCell.rowIndex;
+    const x1 = parseInt(this.firstCell.ariaColIndex);
+    const x2 = parseInt(this.activeCell.ariaColIndex);
+    const y1 = parseInt(this.firstCell.parentElement.ariaRowIndex);
+    const y2 = parseInt(this.activeCell.parentElement.ariaRowIndex);
 
     this.resetAllActiveCells();
     this.host.cells.forEach((cell: CdsGridCell) => {
-      if (
-        (x1 <= x2 && cell.colIndex >= x1 && cell.colIndex <= x2) ||
-        (x1 >= x2 && cell.colIndex <= x1 && cell.colIndex >= x2)
-      ) {
-        if (
-          (y1 <= y2 && cell.rowIndex >= y1 && cell.rowIndex <= y2) ||
-          (y1 >= y2 && cell.rowIndex <= y1 && cell.rowIndex >= y2)
-        ) {
-          cell.active = true;
+      const colIndex = parseInt(cell.ariaColIndex);
+      const rowIndex = parseInt(cell.parentElement.ariaRowIndex);
+      if ((x1 <= x2 && colIndex >= x1 && colIndex <= x2) || (x1 >= x2 && colIndex <= x1 && colIndex >= x2)) {
+        if ((y1 <= y2 && rowIndex >= y1 && rowIndex <= y2) || (y1 >= y2 && rowIndex <= y1 && rowIndex >= y2)) {
+          cell.setAttribute('highlight', '');
         }
       }
     });
 
     this.host.dispatchEvent(
-      new CustomEvent('rangeSelectionChange', { detail: Array.from(this.host.cells).filter(c => c.active) })
+      new CustomEvent('rangeSelectionChange', {
+        detail: Array.from(this.host.cells).filter(c => c.hasAttribute('highlight')),
+      })
     );
   }
 }

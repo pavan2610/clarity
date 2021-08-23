@@ -41,13 +41,17 @@
   --cell-height: var(--min-height); // alias for slotted elements
 }
 
+:host([type='action']) {
+  --padding-block: 0;
+  --padding-inline: 0;
+}
+
 :host([type='action']) [part='cell'] {
-  padding: 0;
   justify-content: center;
   min-width: #{$cds-global-space-11};
 }
 
-:host([_active]) [part='cell']::after {
+:host([highlight]) [part='cell']::after {
   display: block;
   position: absolute;
   inset: 0;

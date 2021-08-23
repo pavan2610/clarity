@@ -43,7 +43,7 @@ cds-icon[shape='times'] {
 }
 
 :host(:not([readonly])) {
-  &:host([_active]),
+  &:host([cds-active]),
   &:host(:hover),
   &:host(:focus),
   &:host(:active) {
@@ -62,7 +62,7 @@ cds-icon[shape='times'] {
     }
   }
 
-  &:host([_active]),
+  &:host([cds-active]),
   &:host(:active) {
     .private-host {
       box-shadow: 0 #{$cds-global-space-1} 0 0 var(--border-color) inset;

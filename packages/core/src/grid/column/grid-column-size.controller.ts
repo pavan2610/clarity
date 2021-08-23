@@ -3,7 +3,6 @@ import { isNumericString, onFirstInteraction } from '@cds/core/internal';
 
 export type GridColumnSize = ReactiveControllerHost &
   HTMLElement & {
-    colIndex: number;
     width?: string;
     type?: string;
   };
@@ -23,6 +22,8 @@ export class GridColumnSizeController {
     this.setActionWidth();
     await this.host.updateComplete;
     await onFirstInteraction(this.hostGrid);
+
+    this.hostGrid.shadowRoot?.addEventListener('slotchange', () => this.setActionWidth());
     this.host.shadowRoot?.addEventListener('resizeChange', (e: any) => {
       this.host.dispatchEvent(new CustomEvent('resizeChange', { detail: e.detail, bubbles: true }));
       this.updateResizedColumnWidth(e.detail);
@@ -39,15 +40,19 @@ export class GridColumnSizeController {
   }
 
   private setActionWidth() {
-    if ((this.host.type === 'action' || this.host.getAttribute('type') === 'action') && !this.host.width) {
+    if (this.host.type === 'action' || this.host.getAttribute('type') === 'action') {
       this.host.width = '36px';
-      this.hostGrid.rows.forEach(r => (r.cells[0].type = 'action'));
+      const index = Array.from((this.hostGrid as any).columns).indexOf(this.host);
+      this.hostGrid.rows.forEach(r => r.cells[index].setAttribute('type', 'action'));
     }
   }
 
   private updateSetColumnWidth() {
-    if (this.host.width && this.host.colIndex !== undefined) {
-      this.hostGrid.style.setProperty(`--ch${this.host.colIndex}`, this.host.width);
+    if (this.host.width && this.host.ariaColIndex !== undefined) {
+      this.hostGrid.style.setProperty(
+        `--ch${this.host.ariaColIndex}`,
+        isNumericString(this.host.width) ? `${this.host.width}px` : this.host.width
+      );
     }
   }
 
@@ -56,6 +61,6 @@ export class GridColumnSizeController {
       isNumericString(this.host.width) || this.host.width?.includes('px') ? parseInt(this.host.width) : 36,
       parseInt(getComputedStyle(this.host).width) + width
     );
-    this.hostGrid.style.setProperty(`--ch${this.host.colIndex}`, `${updatedWidth}px`);
+    this.hostGrid.style.setProperty(`--ch${this.host.ariaColIndex}`, `${updatedWidth}px`);
   }
 }

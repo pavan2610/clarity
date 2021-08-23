@@ -8,7 +8,7 @@ export default {
 
 export function borderCell() {
   return html`
-  <cds-grid aria-label="border cell datagrid demo" border="cell" style="--body-height: 360px">
+  <cds-grid aria-label="border cell datagrid demo" border="cell" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>
@@ -26,7 +26,7 @@ export function borderCell() {
 
 export function borderColumn() {
   return html`
-  <cds-grid aria-label="border column datagrid demo" border="column" style="--body-height: 360px">
+  <cds-grid aria-label="border column datagrid demo" border="column" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>
@@ -44,7 +44,7 @@ export function borderColumn() {
 
 export function borderNone() {
   return html`
-  <cds-grid aria-label="border none datagrid demo" border="none" style="--body-height: 360px">
+  <cds-grid aria-label="border none datagrid demo" border="none" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>
@@ -62,7 +62,7 @@ export function borderNone() {
 
 export function borderStripe() {
   return html`
-  <cds-grid aria-label="border stripe datagrid demo" border="stripe" style="--body-height: 360px">
+  <cds-grid aria-label="border stripe datagrid demo" border="stripe" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>

@@ -19,7 +19,7 @@ export function pagination() {
 
     render() {
       return html`
-        <cds-grid aria-label="pagination datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="pagination datagrid demo" height="360">
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>

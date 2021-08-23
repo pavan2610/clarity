@@ -6,15 +6,14 @@
 
 import { html, LitElement } from 'lit';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
+import { customElement, property } from '@cds/core/internal';
 import { GridRowPositionController } from './grid-row-position.controller.js';
-import { registerElementSafely, property } from '@cds/core/internal';
 
+@customElement('grid-row-position-test-element')
 class GridRowPositionTestElement extends LitElement {
   @property() position: '' | 'fixed' | 'sticky';
   protected gridRowPositionController = new GridRowPositionController(this);
 }
-
-registerElementSafely('grid-row-position-test-element', GridRowPositionTestElement);
 
 describe('grid-row-position.controller', () => {
   let component: GridRowPositionTestElement;

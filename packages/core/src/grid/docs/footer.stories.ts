@@ -9,7 +9,7 @@ export default {
 
 export function footer() {
   return html`
-  <cds-grid aria-label="footer datagrid demo" style="--body-height: 360px">
+  <cds-grid aria-label="footer datagrid demo" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>
@@ -27,7 +27,7 @@ export function footer() {
 
 export function footerOptional() {
   return html`
-  <cds-grid aria-label="footer optional datagrid demo" style="--body-height: 360px">
+  <cds-grid aria-label="footer optional datagrid demo" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>

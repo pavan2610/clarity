@@ -1,10 +1,6 @@
 import { ReactiveControllerHost } from 'lit';
 
-export type GridColumnPosition = ReactiveControllerHost &
-  HTMLElement & {
-    colIndex: number;
-    position: '' | 'sticky' | 'fixed';
-  };
+export type GridColumnPosition = ReactiveControllerHost & HTMLElement & { position: '' | 'sticky' | 'fixed' };
 
 export class GridColumnPositionController {
   private styles: HTMLElement;
@@ -21,9 +17,9 @@ export class GridColumnPositionController {
   async hostUpdated() {
     await this.host.updateComplete;
 
-    if (this.host.colIndex && this.host.position !== this.previousPosition) {
+    if (this.host.ariaColIndex && this.host.position !== this.previousPosition) {
       this.previousPosition = this.host.position;
-      
+
       if (!this.styles) {
         this.styles = document.createElement('style');
         this.hostGrid.append(this.styles);
@@ -45,7 +41,7 @@ export class GridColumnPositionController {
     const right = this.host.position === 'fixed' ? `${position.right - position.left - position.width}px` : 'initial';
 
     return `
-    [__id='${this.hostGrid._id}'] [aria-colindex="${this.host.colIndex}"] {
+    [__id='${this.hostGrid._id}'] [aria-colindex="${this.host.ariaColIndex}"] {
       ${side === 'left' ? `left: ${left};` : ''}
       ${side === 'right' ? `right: ${right};` : ''}
       ${this.host.position === 'sticky' ? `left: 0px;` : ''}
@@ -55,7 +51,7 @@ export class GridColumnPositionController {
   private borderStyle(side: 'left' | 'right') {
     return this.host.position !== ''
       ? `
-      [__id='${this.hostGrid._id}'] cds-grid-cell[aria-colindex="${this.host.colIndex}"] {
+      [__id='${this.hostGrid._id}'] cds-grid-cell[aria-colindex="${this.host.ariaColIndex}"] {
         --border-${
           side === 'left' ? 'right' : 'left'
         }: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);

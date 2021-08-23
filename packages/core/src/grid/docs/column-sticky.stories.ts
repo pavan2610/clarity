@@ -8,11 +8,11 @@ export default {
 
 export function columnSticky() {
   return html`
-  <cds-grid aria-label="column sticky datagrid demo" style="--body-height: 360px">
-    <cds-grid-column width="200px">Host</cds-grid-column>
-    <cds-grid-column width="200px" position="sticky">Status</cds-grid-column>
-    <cds-grid-column width="1000px">CPU</cds-grid-column>
-    <cds-grid-column width="1000px">Memory</cds-grid-column>
+  <cds-grid aria-label="column sticky datagrid demo" height="360">
+    <cds-grid-column width="200">Host</cds-grid-column>
+    <cds-grid-column width="200" position="sticky">Status</cds-grid-column>
+    <cds-grid-column width="1000">CPU</cds-grid-column>
+    <cds-grid-column width="1000">Memory</cds-grid-column>
     ${getVMData().map(entry => html`
     <cds-grid-row>
       <cds-grid-cell>${entry.id}</cds-grid-cell>

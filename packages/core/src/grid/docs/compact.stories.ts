@@ -8,7 +8,7 @@ export default {
 
 export function compact() {
   return html`
-  <cds-grid aria-label="compact datagrid demo" cds-theme="compact" style="--body-height: 360px">
+  <cds-grid aria-label="compact datagrid demo" cds-theme="compact" height="360">
     <cds-grid-column>Host</cds-grid-column>
     <cds-grid-column>Status</cds-grid-column>
     <cds-grid-column>CPU</cds-grid-column>

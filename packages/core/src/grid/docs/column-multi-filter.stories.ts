@@ -21,7 +21,7 @@ export function columnMultiFilter() {
             <label>Search VMs</label>
             <input type="search" placeholder="search" @input=${(e: any) => (this.search = e.target.value)} />
           </cds-search>
-          <cds-grid aria-label="column multi filter datagrid demo" style="--body-height: 360px">
+          <cds-grid aria-label="column multi filter datagrid demo" height="360">
             <cds-grid-column>Host</cds-grid-column>
             <cds-grid-column>Status</cds-grid-column>
             <cds-grid-column>CPU</cds-grid-column>

@@ -14,7 +14,7 @@ export function cellEditable() {
 
     render() {
       return html`
-        <cds-grid aria-label="cell editable datagrid demo" style="--body-height: 360px">
+        <cds-grid aria-label="cell editable datagrid demo" height="360">
           <cds-grid-column>Host</cds-grid-column>
           <cds-grid-column>About</cds-grid-column>
           <cds-grid-column>CPU</cds-grid-column>
