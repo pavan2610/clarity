@@ -1,1 +1,57 @@
-<p>single-select works!</p>
+<h2>@cds/core Grid with single selection behavior</h2>
+<section cds-layout="vertical gap:md m-b:md">
+  <p>Notes on implementing Clarity core single selection</p>
+  <ul>
+    <li>Need to manage the selected item; affects template state and layout</li>
+    <li>Need to manage selected row state</li>
+  </ul>
+</section>
+<cds-grid aria-label="row single select grid demo" style="--body-height: 360px;">
+  <cds-grid-column type="action" aria-label="host selection column"></cds-grid-column>
+  <cds-grid-column>Host</cds-grid-column>
+  <cds-grid-column>Status</cds-grid-column>
+  <cds-grid-column>CPU</cds-grid-column>
+  <cds-grid-column>Memory</cds-grid-column>
+  <cds-grid-row *ngFor="let vm of data" [selected]="selectedItem?.id === vm.id ? true : false">
+    <cds-grid-cell>
+      <cds-radio>
+        <input type="radio" name="hosts" [id]="vm.id" aria-label="select host" (change)="vmSelectChange($event)" />
+      </cds-radio>
+    </cds-grid-cell>
+    <cds-grid-cell>
+      {{ vm.id }}
+    </cds-grid-cell>
+    <cds-grid-cell>{{ vm.status }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.cpu }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.memory }}%</cds-grid-cell>
+  </cds-grid-row>
+
+  <cds-grid-footer> Selected: {{ selectedItem ? selectedItem?.id : 'No selection' }} </cds-grid-footer>
+</cds-grid>
+\
+<h2>@clr/angular single select datagrid</h2>
+<p>This is a single select <strong>@clr/angular</strong> datagrid.</p>
+<section cds-layout="m-y:md">
+  <h3>Selected clr VMs:</h3>
+  <span>{{ clrSelectedVM?.id }} </span>
+</section>
+<clr-datagrid style="height: 360px;" [(clrDgSingleSelected)]="clrSelectedVM">
+  <clr-dg-column>ID</clr-dg-column>
+  <clr-dg-column>Status</clr-dg-column>
+  <clr-dg-column>Memory</clr-dg-column>
+  <clr-dg-column>Selected</clr-dg-column>
+  <clr-dg-column>About</clr-dg-column>
+
+  <clr-dg-row *ngFor="let vm of data" [clrDgItem]="vm">
+    <clr-dg-cell>{{ vm.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.memory }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.selected }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.about }}</clr-dg-cell>
+  </clr-dg-row>
+  <clr-dg-footer>
+    <div cds-layout="horizontal align:fill align:left">
+      Selected VM: {{ clrSelectedVM ? clrSelectedVM.id : 'None selected' }}
+    </div>
+  </clr-dg-footer>
+</clr-datagrid>

@@ -1,1 +1,63 @@
-<p>pin-columns works!</p>
+<h2>@cds/core Grid with pinned column behaviors</h2>
+<section cds-layout="vertical gap:md m-b:md">
+  <p>Notes on implementing Clarity core single row action</p>
+  <ul>
+    <li>There is no equivalent for angular</li>
+    <li>There are multiple core implementation demos to demonstrate different behaviors</li>
+  </ul>
+</section>
+<h3>Fixed width</h3>
+<p>
+  This demo fixes all of the column widths to various sizes in px. The x-axis overflow and fixed column behavior is
+  observed when the browser is resized or the width of the grid is smaller than the summed width of its columns.
+</p>
+
+<cds-grid aria-label="column fixed datagrid demo" style="--body-height: 360px; width: 650px;">
+  <cds-grid-column width="150px" position="fixed">Host</cds-grid-column>
+  <cds-grid-column width="350px">Status</cds-grid-column>
+  <cds-grid-column width="500px">CPU</cds-grid-column>
+  <cds-grid-column width="150px" position="fixed">Memory</cds-grid-column>
+  <cds-grid-row *ngFor="let vm of data">
+    <cds-grid-cell>{{ vm.id }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.status }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.cpu }}%</cds-grid-cell>
+    <cds-grid-cell>{{ vm.memory }}%</cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-footer></cds-grid-footer>
+</cds-grid>
+
+<h3>Dynamic Fixed columns</h3>
+<p>
+  This demo enables the user to fix or 'pin' two of the columns. When there is overflow, those columns remin visible and
+  the rest scroll on the x-axis..
+</p>
+
+<cds-grid aria-label="columns fixed dynamic datagrid demo" style="--body-height: 360px; width: 650px;">
+  <cds-grid-column width="200px" resizable [position]="pinFirst ? 'fixed' : ''">
+    Host
+    <cds-action
+      (click)="pinFirst = !this.pinFirst"
+      [status]="pinFirst ? 'active' : ''"
+      shape="pin"
+      aria-label="pin host column"
+    ></cds-action>
+  </cds-grid-column>
+  <cds-grid-column width="400px" resizable>Status</cds-grid-column>
+  <cds-grid-column width="1000px" resizable>CPU</cds-grid-column>
+  <cds-grid-column width="200px" resizable [position]="pinLast ? 'fixed' : ''">
+    Memory
+    <cds-action
+      (click)="pinLast = !this.pinLast"
+      [status]="pinLast ? 'active' : ''"
+      shape="pin"
+      aria-label="pin memory column"
+    ></cds-action>
+  </cds-grid-column>
+  <cds-grid-row *ngFor="let vm of data">
+    <cds-grid-cell>{{ vm.id }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.status }}</cds-grid-cell>
+    <cds-grid-cell>{{ vm.cpu }}%</cds-grid-cell>
+    <cds-grid-cell>{{ vm.memory }}%</cds-grid-cell>
+  </cds-grid-row>
+  <cds-grid-footer></cds-grid-footer>
+</cds-grid>

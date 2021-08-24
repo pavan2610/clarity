@@ -1,7 +1,7 @@
 <h2>@cds/core multi-action grid</h2>
 <p>This is a multi-action <strong>@cds/core</strong> grid.</p>
 
-<div [formGroup]="paginationForm">
+<div [formGroup]="multiActionForm">
   <cds-grid aria-label="column visibility datagrid demo" style="--body-height: 360px;">
     <cds-grid-column type="action" resizable="hidden">
       <cds-checkbox>
@@ -13,6 +13,14 @@
         />
       </cds-checkbox>
     </cds-grid-column>
+    <cds-grid-column>
+      Host
+      <cds-action
+        popup="row-actions"
+        (click)="showBatchActions($event)"
+        aria-label="available host options"
+      ></cds-action>
+    </cds-grid-column>
     <cds-grid-column *ngFor="let column of dataFields" [id]="column">
       {{ column | titlecase }}
     </cds-grid-column>
@@ -20,7 +28,7 @@
     <cds-grid-row
       *ngFor="let vm of data; let i = index"
       formGroupName="rows"
-      [selected]="paginationForm.controls.rows.get(vm.id)?.value"
+      [selected]="multiActionForm.controls.rows.get(vm.id)?.value"
     >
       <cds-grid-cell type="action">
         <cds-checkbox>
@@ -33,37 +41,34 @@
     </cds-grid-row>
     <cds-grid-footer> There are {{ data.length }} virtual machines. </cds-grid-footer>
   </cds-grid>
+  <ng-container *ngIf="batchActionAnchor">
+    <cds-dropdown
+      id="row-actions"
+      [hidden]="!batchActionAnchor"
+      [anchor]="batchActionAnchor"
+      (closeChange)="batchActionAnchor = null"
+      position="bottom"
+    >
+      <cds-button action="flat" size="sm" (click)="batchAction('Restart')">Restart Selected</cds-button>
+      <cds-button action="flat" size="sm" (click)="batchAction('Shutdown')">Shutdown Selected</cds-button>
+    </cds-dropdown>
+  </ng-container>
 </div>
 
-<h2>@clr/angular Hideable columns datagrid</h2>
-<p>This is a basic <strong>@clr/angular</strong> datagrid.</p>
-Selected vms: <span *ngFor="let vm of clrNgSelected">{{ vm.id }} </span>
+<h2>@clr/angular batch action datagrid</h2>
+<p>This is a <strong>@clr/angular</strong> batch action datagrid.</p>
 <clr-datagrid style="height: 360px;" [(clrDgSelected)]="clrNgSelected">
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">
-      ID
-    </ng-container>
-  </clr-dg-column>
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">
-      Status
-    </ng-container>
-  </clr-dg-column>
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">
-      Memory
-    </ng-container>
-  </clr-dg-column>
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">
-      Selected
-    </ng-container>
-  </clr-dg-column>
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">
-      About
-    </ng-container>
-  </clr-dg-column>
+  <clr-dg-action-bar>
+    <div class="btn-group">
+      <button type="button" class="btn btn-sm btn-secondary" (click)="clrAction('Shutdown')">Shutdown selected</button>
+      <button type="button" class="btn btn-sm btn-secondary" (click)="clrAction('Restart')">Restart selected</button>
+    </div>
+  </clr-dg-action-bar>
+  <clr-dg-column>ID</clr-dg-column>
+  <clr-dg-column>Status</clr-dg-column>
+  <clr-dg-column>Memory</clr-dg-column>
+  <clr-dg-column>Selected</clr-dg-column>
+  <clr-dg-column>About</clr-dg-column>
 
   <clr-dg-row *ngFor="let vm of data" [clrDgItem]="vm">
     <clr-dg-cell>{{ vm.id }}</clr-dg-cell>

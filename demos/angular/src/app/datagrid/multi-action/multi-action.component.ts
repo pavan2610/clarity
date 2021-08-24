@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ColumnTypes, TestVM } from '@cds/core/demo';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { VmService } from '../vm.service';
@@ -10,50 +10,63 @@ import { VmService } from '../vm.service';
 })
 export class MultiActionComponent {
   ColumnTypes = ColumnTypes;
-
+  batchActionAnchor: EventTarget | null = null;
   clrNgSelected: TestVM[] = [];
+  cdsSelected: Set<string> = new Set();
+  get cdsSelectedVMs(): string[] {
+    return Array.from(this.cdsSelected);
+  }
   // Form group for the generated form controls
   // A list of test VM's to display in a grid
   data: TestVM[] = [];
   // Extracted 'fields' from a row of data -> These will become columns
   dataFields!: string[];
 
-  paginationForm!: FormGroup;
+  multiActionForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private vmData: VmService) {
     this.data = vmData.get();
     this.dataFields = Object.keys(this.data[0]);
-    this.paginationForm = this.formBuilder.group({
+    this.multiActionForm = this.formBuilder.group({
       allRows: [false],
       currentPage: [1],
       pageSize: [10],
       rows: new FormGroup({}),
     });
-    this.data.forEach(vm => (this.paginationForm.controls.rows as FormGroup).addControl(vm.id, new FormControl(false)));
-    this.paginationForm.controls.allRows.valueChanges.subscribe(value =>
-      this.data.forEach(i => this.paginationForm.controls.rows.get(i.id)?.setValue(value))
+    this.data.forEach(vm =>
+      (this.multiActionForm.controls.rows as FormGroup).addControl(vm.id, new FormControl(false))
     );
-    console.log(this.paginationForm);
+    this.multiActionForm.controls.allRows.valueChanges.subscribe(value =>
+      this.data.forEach(i => this.multiActionForm.controls.rows.get(i.id)?.setValue(value))
+    );
   }
 
   get selectedCount() {
-    return this.data.map(i => this.paginationForm.controls.rows.get(i.id)?.value).filter((i: any) => i).length;
+    return this.data.map(i => this.multiActionForm.controls.rows.get(i.id)?.value).filter((i: any) => i).length;
   }
 
-  nextPage() {
-    const page = this.paginationForm.controls.currentPage.value;
-    if (page <= this.pageCount) {
-      this.paginationForm.controls.currentPage.setValue(page + 1);
-    }
+  get selectedCdsVMs() {
+    return this.data
+      .map(vm => {
+        if (this.multiActionForm.controls.rows.get(vm.id)?.value) {
+          return vm;
+        } else {
+          return;
+        }
+      })
+      .filter(vm => vm !== undefined);
   }
 
-  get pageCount() {
-    return Math.ceil(this.data.length / this.paginationForm.controls.pageSize.value);
+  batchAction(action: string) {
+    alert(`${action}: ${this.selectedCdsVMs.map(vm => vm?.id)}`);
+    this.batchActionAnchor = null;
   }
-  previousPage() {
-    const page = this.paginationForm.controls.currentPage.value;
-    if (page > 0) {
-      this.paginationForm.controls.currentPage.setValue(page - 1);
-    }
+
+  clrAction(action: string) {
+    alert(`${action}: ${this.clrNgSelected.map(vm => vm?.id)}`);
+  }
+
+  showBatchActions(event: Event) {
+    this.batchActionAnchor = event.target;
   }
 }
