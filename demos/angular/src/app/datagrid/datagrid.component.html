@@ -1,7 +1,79 @@
-<div cds-layout="p-l:md">
+<div cds-layout="p-b:xxl">
   <h1>Datagrid</h1>
   <cds-divider orientation="horizontal"></cds-divider>
-  <section class="dg-content" cds-layout="vertical gap:md align:horizontal-stretch">
+  <div cds-layout="vertical gap:md">
+    <h2>Dev Notes</h2>
+    <cds-button (click)="showDevNotes = !showDevNotes"> {{ showDevNotes ? 'Hide' : 'Show' }} dev notes</cds-button>
+    <div *ngIf="showDevNotes" cds-layout="vertical gap:md align:horizontal-stretch">
+      <h3>CdsGrid Accessibility</h3>
+      <p>
+        Where possible CdsGrid (and children elements) handle accessibility internally. In some cases it is the
+        responsibility of the consuming application to provide the accessibility features, usually in the form of aria
+        attributes.
+      </p>
+      <div>
+        <h4>Internal Accessibility</h4>
+        Internally different grid elements will set up accessibility attributes:
+        <ul>
+          <li>
+            <strong>cds-grid:</strong>
+            <ul>
+              <li></li>
+            </ul>
+          </li>
+          <li>
+            <strong>cds-grid-column:</strong>
+            <ul>
+              <li>role</li>
+              <li>aria-colindex</li>
+              <li>aria-sort</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h4>Developer Accessibility</h4>
+        <ul>
+          <li>
+            <strong>cds-grid:</strong>
+            <ul>
+              <li>aria-label</li>
+            </ul>
+          </li>
+          <li>
+            <strong>cds-grid-column:</strong>
+            <ul></ul>
+          </li>
+          <li>
+            <strong>cds-action-expand</strong>
+            Use this element to toggle row details
+            <ul>
+              <li>aria-label</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <h3>Consuming CdsGrid in the Angular framework</h3>
+      <p>
+        If you are coming to the CdsGrid after using the <code>@clr/angular ClrDatagrid</code> component, there are some
+        differences in possible solutions that can be used to architect a core grid. In general, lean on and leverage
+        Angular for its strengths and rely on teh core elements to provide a standard HTML based API and stateless
+        nature. The power of this core architecture results in several things which, as usual in software, are a series
+        of trade-offs.
+      </p>
+      <p>
+        Apps must handle the state and use the API to pass the state to an element. This does require additional wiring
+        that was previously encapsulated inside ClrDatagrid. However, this also means applications gain full control
+        over things that previously were difficult or impossible to accomplish with ClrDatagrid.
+      </p>
+      <p>
+        This module is a series of almost 1:1 comparisons for various features provided in ClrDatagrid so that a
+        developer can look at the code and run the app to see the differences between developing with CdsGrid vs
+        ClrDatagrid.
+      </p>
+    </div>
+  </div>
+  <section cds-layout="vertical p-b:xl gap:md align:horizontal-stretch">
     <router-outlet></router-outlet>
   </section>
 </div>

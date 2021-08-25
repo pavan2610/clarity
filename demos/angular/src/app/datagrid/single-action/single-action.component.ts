@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ColumnTypes, TestVM } from '@cds/core/demo';
+import { TestVM } from '@cds/core/demo';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { VmService } from '../vm.service';
 
@@ -9,7 +9,6 @@ import { VmService } from '../vm.service';
   styleUrls: ['./single-action.component.scss'],
 })
 export class SingleActionComponent {
-  ColumnTypes = ColumnTypes;
   // Form group for the generated form controls
   // hideShowForm!: FormGroup;
   // reference to the click event target for positioning the popover ui w/ hide/show checkboxes

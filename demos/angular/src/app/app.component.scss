@@ -1,5 +1,6 @@
 #demo-app {
   height: 100vh;
+  overflow: hidden;
 }
 
 #app-header {
@@ -7,14 +8,11 @@
 }
 
 .app-content {
+  height: calc(100vh + 3rem);
+  overflow-y: auto;
   width: 100%;
 }
 
 #app-sidenav {
   width: fit-content;
-}
-
-#app-sidenav,
-.app-content {
-  height: calc(100vh + 3rem);
 }

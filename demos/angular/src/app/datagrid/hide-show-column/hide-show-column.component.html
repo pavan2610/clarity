@@ -44,38 +44,16 @@
 <h2>@clr/angular Hideable columns datagrid</h2>
 <p>This is a basic <strong>@clr/angular</strong> datagrid.</p>
 <clr-datagrid style="height: 360px;">
-  <clr-dg-column>
+  <clr-dg-column *ngFor="let column of dataFields">
     <ng-container *clrDgHideableColumn="{ hidden: false }">
-      ID
-    </ng-container>
-  </clr-dg-column>
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">
-      Status
-    </ng-container>
-  </clr-dg-column>
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">
-      Memory
-    </ng-container>
-  </clr-dg-column>
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">
-      Selected
-    </ng-container>
-  </clr-dg-column>
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">
-      About
+      {{ column | uppercase }}
     </ng-container>
   </clr-dg-column>
 
   <clr-dg-row *ngFor="let vm of data">
-    <clr-dg-cell>{{ vm.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.memory }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.selected }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.about }}</clr-dg-cell>
+    <clr-dg-cell *ngFor="let column of dataFields">
+      {{ $any(vm)[column] }}
+    </clr-dg-cell>
   </clr-dg-row>
   <clr-dg-footer>Datagrid footer</clr-dg-footer>
 </clr-datagrid>

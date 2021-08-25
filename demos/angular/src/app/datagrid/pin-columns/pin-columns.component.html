@@ -12,16 +12,18 @@
   observed when the browser is resized or the width of the grid is smaller than the summed width of its columns.
 </p>
 
+<!-- Need a more generic way to iterate columns and utalize metadata (width) for the columns -->
 <cds-grid aria-label="column fixed datagrid demo" style="--body-height: 360px; width: 650px;">
   <cds-grid-column width="150px" position="fixed">Host</cds-grid-column>
   <cds-grid-column width="350px">Status</cds-grid-column>
   <cds-grid-column width="500px">CPU</cds-grid-column>
   <cds-grid-column width="150px" position="fixed">Memory</cds-grid-column>
+  <cds-grid-column width="150px" position="fixed">Selected</cds-grid-column>
+  <cds-grid-column width="150px" position="fixed">About</cds-grid-column>
   <cds-grid-row *ngFor="let vm of data">
-    <cds-grid-cell>{{ vm.id }}</cds-grid-cell>
-    <cds-grid-cell>{{ vm.status }}</cds-grid-cell>
-    <cds-grid-cell>{{ vm.cpu }}%</cds-grid-cell>
-    <cds-grid-cell>{{ vm.memory }}%</cds-grid-cell>
+    <cds-grid-cell *ngFor="let column of dataFields">
+      {{ $any(vm)[column] }}
+    </cds-grid-cell>
   </cds-grid-row>
   <cds-grid-footer></cds-grid-footer>
 </cds-grid>

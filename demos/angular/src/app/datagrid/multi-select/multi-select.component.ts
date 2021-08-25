@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ColumnTypes, TestVM } from '@cds/core/demo';
+import { TestVM } from '@cds/core/demo';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { VmService } from '../vm.service';
 
@@ -9,13 +9,10 @@ import { VmService } from '../vm.service';
   styleUrls: ['./multi-select.component.scss'],
 })
 export class MultiSelectComponent {
-  ColumnTypes = ColumnTypes;
-
+  // Array to hold items selected in the Angular ClrDatagrid
   clrNgSelected: TestVM[] = [];
-  cdsSelected: Set<string> = new Set();
-  get cdsSelectedVMs(): string[] {
-    return Array.from(this.cdsSelected);
-  }
+  //
+  // cdsSelected: Array<string> = [];
   // Form group for the generated form controls
   // A list of test VM's to display in a grid
   data: TestVM[] = [];
@@ -46,12 +43,14 @@ export class MultiSelectComponent {
   }
 
   get selectedCdsVMs() {
-    return this.data.map(i => {
-      if (this.multiSelectForm.controls.rows.get(i.id)?.value) {
-        return i;
-      } else {
-        return;
-      }
-    });
+    return this.data
+      .map(i => {
+        if (this.multiSelectForm.controls.rows.get(i.id)?.value) {
+          return i;
+        } else {
+          return;
+        }
+      })
+      .filter(vm => vm !== undefined);
   }
 }

@@ -13,25 +13,23 @@
 </section>
 
 <cds-grid aria-label="column filter datagrid demo" style="--body-height: 360px;">
-  <cds-grid-column>
-    ID
-    <cds-action
-      (click)="toggleFilter($event)"
-      shape="filter"
-      [status]="this.search ? 'active' : ''"
-      aria-label="search hosts"
-    ></cds-action>
+  <cds-grid-column *ngFor="let column of dataFields" [id]="column">
+    {{ column | titlecase }}
+    <ng-container *ngIf="column === 'id'">
+      <cds-action
+        (click)="toggleFilter($event)"
+        shape="filter"
+        [status]="this.search ? 'active' : ''"
+        aria-label="search hosts"
+      ></cds-action>
+    </ng-container>
   </cds-grid-column>
-  <cds-grid-column>Status</cds-grid-column>
-  <cds-grid-column>CPU</cds-grid-column>
-  <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row *ngFor="let vm of filteredList">
-    <cds-grid-cell>{{ vm.id }}</cds-grid-cell>
-    <cds-grid-cell>{{ vm.status }}</cds-grid-cell>
-    <cds-grid-cell>{{ vm.cpu }}%</cds-grid-cell>
-    <cds-grid-cell>{{ vm.memory }}%</cds-grid-cell>
+    <cds-grid-cell *ngFor="let column of dataFields">
+      {{ $any(vm)[column] }}
+    </cds-grid-cell>
   </cds-grid-row>
-  <cds-grid-footer></cds-grid-footer>
+  <cds-grid-footer>Grid Footer</cds-grid-footer>
 </cds-grid>
 
 <ng-container *ngIf="anchor">
@@ -66,13 +64,17 @@
 <clr-datagrid style="height: 360px;">
   <clr-dg-column [clrDgField]="'id'">ID</clr-dg-column>
   <clr-dg-column>Status</clr-dg-column>
+  <clr-dg-column>CPU</clr-dg-column>
   <clr-dg-column>Memory</clr-dg-column>
+  <clr-dg-column>Selected</clr-dg-column>
   <clr-dg-column>About</clr-dg-column>
 
   <clr-dg-row *clrDgItems="let vm of data" [clrDgItem]="vm">
     <clr-dg-cell>{{ vm.id }}</clr-dg-cell>
     <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.cpu }}</clr-dg-cell>
     <clr-dg-cell>{{ vm.memory }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.selected }}</clr-dg-cell>
     <clr-dg-cell>{{ vm.about }}</clr-dg-cell>
   </clr-dg-row>
 

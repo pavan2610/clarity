@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ColumnTypes, TestVM } from '@cds/core/demo';
+import { TestVM } from '@cds/core/demo';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { VmService } from '../vm.service';
 
@@ -9,7 +9,6 @@ import { VmService } from '../vm.service';
   styleUrls: ['./multi-action.component.scss'],
 })
 export class MultiActionComponent {
-  ColumnTypes = ColumnTypes;
   batchActionAnchor: EventTarget | null = null;
   clrNgSelected: TestVM[] = [];
   cdsSelected: Set<string> = new Set();
@@ -26,16 +25,19 @@ export class MultiActionComponent {
 
   constructor(private formBuilder: FormBuilder, private vmData: VmService) {
     this.data = vmData.get();
-    this.dataFields = Object.keys(this.data[0]);
+    this.dataFields = vmData.fields;
+    // Reactive form for the Rows
     this.multiActionForm = this.formBuilder.group({
       allRows: [false],
       currentPage: [1],
       pageSize: [10],
       rows: new FormGroup({}),
     });
+    // Generate a control for each row with the vm id
     this.data.forEach(vm =>
       (this.multiActionForm.controls.rows as FormGroup).addControl(vm.id, new FormControl(false))
     );
+    // Listen for changes to the controls and set the value on the correct form control
     this.multiActionForm.controls.allRows.valueChanges.subscribe(value =>
       this.data.forEach(i => this.multiActionForm.controls.rows.get(i.id)?.setValue(value))
     );

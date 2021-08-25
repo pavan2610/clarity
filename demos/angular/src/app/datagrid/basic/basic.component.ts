@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VmService } from '../vm.service';
 import { TestVM } from '@cds/core/demo';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-basic',
@@ -9,9 +8,11 @@ import { Observable } from 'rxjs';
   styleUrls: ['./basic.component.scss'],
 })
 export class BasicComponent {
-  data: Observable<TestVM[]>;
+  data: TestVM[];
+  dataFields!: string[];
 
   constructor(private vmData: VmService) {
-    this.data = vmData.asyncGet();
+    this.data = vmData.get();
+    this.dataFields = vmData.fields;
   }
 }

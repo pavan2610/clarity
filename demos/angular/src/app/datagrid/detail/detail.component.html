@@ -1,35 +1,42 @@
-<h2>@cds/core Grid with detail</h2>
+<h3>@cds/core Grid with detail</h3>
 <section cds-layout="vertical gap:md">
   <p>Notes on a Clarity core grid</p>
   <ul>
     <li>
-      bind to [attr.propertyName] for the dynamic values on web component attributes/properties. E.g - cds-action-expand
-      button that toggles the details needs aria-label and expanded to be controlled via Angular
+      Bind vm properties to for the correct aria states
+      <ul>
+        <li>Columns will set up: role, aria-colindex and aria-sort internally</li>
+      </ul>
     </li>
-    <li>Use a method like showDetail to control the grid detail [anchor] and the currentVM</li>
-    <li>By setting currentVM to null when nothing is selected hide/show of details is a simple *ngIf</li>
+    <li>
+      The toggleDetail method:
+      <ul>
+        <li>is called with the click event and the vm object</li>
+        <li>will control the grid detail [anchor] and the currentVM</li>
+        <li>When there is a currentVM, use *ngIf on `cds-grid-detail` and add details to the DOM.</li>
+      </ul>
+    </li>
   </ul>
 </section>
 <cds-grid aria-label="row detail datagrid demo" style="--body-height: 360px;">
   <!-- TODO: investigate why I need to set width here -->
   <cds-grid-column width="36px" type="action" aria-label="row detail column"></cds-grid-column>
-  <cds-grid-column>Host</cds-grid-column>
-  <cds-grid-column>Status</cds-grid-column>
-  <cds-grid-column>CPU</cds-grid-column>
-  <cds-grid-column>Memory</cds-grid-column>
-  <cds-grid-row *ngFor="let vm of data | async">
+  <cds-grid-column *ngFor="let column of dataFields" [id]="column">
+    {{ column | titlecase }}
+  </cds-grid-column>
+  <cds-grid-row *ngFor="let vm of data">
+    <!-- Add in the button for detail pane toggle and use the currentVM to set up its aria state -->
     <cds-grid-cell type="action">
       <cds-action-expand
         [attr.aria-label]="getDetails(vm.id)"
-        (click)="showDetail($event, vm)"
+        (click)="toggleDetail($event, vm)"
         action="detail"
         [attr.expanded]="this.currentVM?.id === vm.id"
       ></cds-action-expand>
     </cds-grid-cell>
-    <cds-grid-cell>{{ vm.id }}</cds-grid-cell>
-    <cds-grid-cell>{{ vm.status }}</cds-grid-cell>
-    <cds-grid-cell>{{ vm.cpu }}%</cds-grid-cell>
-    <cds-grid-cell>{{ vm.memory }}%</cds-grid-cell>
+    <cds-grid-cell *ngFor="let column of dataFields">
+      {{ $any(vm)[column] }}
+    </cds-grid-cell>
   </cds-grid-row>
   <cds-grid-footer></cds-grid-footer>
   <cds-grid-detail aria-labelledby="heading" [anchor]="this.anchor" *ngIf="currentVM" (closeChange)="currentVM = null">
@@ -51,7 +58,7 @@
   <clr-dg-column>Memory</clr-dg-column>
   <clr-dg-column>About</clr-dg-column>
 
-  <clr-dg-row *ngFor="let vm of data | async" [clrDgItem]="vm">
+  <clr-dg-row *ngFor="let vm of data" [clrDgItem]="vm">
     <clr-dg-cell>{{ vm.id }}</clr-dg-cell>
     <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
     <clr-dg-cell>{{ vm.memory }}</clr-dg-cell>

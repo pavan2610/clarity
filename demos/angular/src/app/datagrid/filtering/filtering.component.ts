@@ -9,6 +9,7 @@ import { VmService } from '../vm.service';
 })
 export class FilteringComponent implements OnInit {
   data: TestVM[];
+  dataFields!: string[];
   anchor: EventTarget | null = null;
   search: string = '';
   hiddenFilter = true;
@@ -16,6 +17,7 @@ export class FilteringComponent implements OnInit {
 
   constructor(private vmData: VmService) {
     this.data = vmData.get();
+    this.dataFields = vmData.fields;
   }
 
   ngOnInit() {

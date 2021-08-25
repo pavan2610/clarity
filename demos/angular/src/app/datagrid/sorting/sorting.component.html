@@ -7,18 +7,16 @@
 </section>
 
 <cds-grid aria-label="row sort datagrid demo" style="--body-height: 360px;">
-  <cds-grid-column>
-    Host
-    <cds-action-sort aria-label="sort hosts" [attr.sort]="sortType" (sortChange)="sortGrid($event)"></cds-action-sort>
+  <cds-grid-column *ngFor="let column of dataFields" [id]="column">
+    {{ column | titlecase }}
+    <ng-container *ngIf="column === 'id'">
+      <cds-action-sort aria-label="sort hosts" [attr.sort]="sortType" (sortChange)="sortGrid($event)"></cds-action-sort>
+    </ng-container>
   </cds-grid-column>
-  <cds-grid-column>Status</cds-grid-column>
-  <cds-grid-column>CPU</cds-grid-column>
-  <cds-grid-column>Memory</cds-grid-column>
   <cds-grid-row *ngFor="let vm of sortedData">
-    <cds-grid-cell>{{ vm.id }}</cds-grid-cell>
-    <cds-grid-cell>{{ vm.status }}</cds-grid-cell>
-    <cds-grid-cell>{{ vm.cpu }}%</cds-grid-cell>
-    <cds-grid-cell>{{ vm.memory }}%</cds-grid-cell>
+    <cds-grid-cell *ngFor="let column of dataFields">
+      {{ $any(vm)[column] }}
+    </cds-grid-cell>
   </cds-grid-row>
   <cds-grid-footer></cds-grid-footer>
 </cds-grid>

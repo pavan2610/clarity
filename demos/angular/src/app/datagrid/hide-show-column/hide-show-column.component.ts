@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ColumnTypes, TestVM } from '@cds/core/demo';
+import { TestVM } from '@cds/core/demo';
 import { VmService } from '../vm.service';
 
 @Component({
@@ -9,14 +9,11 @@ import { VmService } from '../vm.service';
   styleUrls: ['./hide-show-column.component.scss'],
 })
 export class HideShowColumnComponent {
-  ColumnTypes = ColumnTypes;
   // Form group for the generated form controls
   hideShowForm!: FormGroup;
-  // reference to the click event target for positioning the popover ui w/ hide/show checkboxes
+  // Store a reference to the click event target for positioning the popover ui w/ hide/show checkboxes
   columnAnchor: EventTarget | null = null;
-  // A list of test VM's to display in a grid
   data: TestVM[] = [];
-  // Extracted 'fields' from a row of data -> These will become columns
   dataFields!: string[];
   // a boolean flag to control column picker element visibility
   hiddenColumnPicker = true;
@@ -29,15 +26,20 @@ export class HideShowColumnComponent {
     return this.hideShowForm.controls.columns.get(columnType)?.value;
   }
 
-  get allColumnsVisible() {
+  get allColumnsVisible(): boolean {
     return !!this.dataFields
       .map(column => this.hideShowForm.controls.columns.get(column)?.value)
       .filter(value => !value).length;
   }
 
+  // Set up our data (sync) and get data fields from the service
+  // Then set up the hideShowForm with a columns group
+  // Then add a new Control for every row of data
+  // Want to have some columns never be hide-able? This is the way. Exclude those fields with code.
   constructor(private formBuilder: FormBuilder, private vmData: VmService) {
     this.data = vmData.get();
-    this.dataFields = Object.keys(this.data[0]);
+    this.dataFields = vmData.fields;
+    // A reactive form that that we can use to generate a group i=of form controls for each row.
     this.hideShowForm = this.formBuilder.group({
       columns: new FormGroup({}),
     });
@@ -46,12 +48,17 @@ export class HideShowColumnComponent {
     );
   }
 
-  setAnchor(event: Event) {
+  // Use the click target to set the anchor element (so that popover can calculate position
+  // when the anchor is set, show the column picker form
+  setAnchor(event: Event): void {
     this.columnAnchor = event.target;
     this.hiddenColumnPicker = !this.hiddenColumnPicker;
   }
 
-  showAllColumns() {
+  // Function that will show all columns
+  // This idea is extendable and configurable:
+  // Want to exclude some columns from being selected or unselected, this is the way
+  showAllColumns(): void {
     this.dataFields.forEach(column => this.hideShowForm.controls.columns.get(column)?.setValue(true));
   }
 }

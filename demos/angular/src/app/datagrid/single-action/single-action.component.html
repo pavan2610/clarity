@@ -8,22 +8,26 @@
 </section>
 
 <cds-grid aria-label="column visibility datagrid demo" style="--body-height: 360px;">
+  <!-- Place holder column for the row action button -->
   <cds-grid-column type="action" aria-label="selection column"></cds-grid-column>
+  <!-- iterate all column fields -->
   <cds-grid-column *ngFor="let column of dataFields" [id]="column">
     {{ column | titlecase }}
   </cds-grid-column>
-
+  <!-- Iterate rows of data -->
   <cds-grid-row *ngFor="let vm of data">
+    <!-- generate row action button specific for this row model -->
     <cds-grid-cell>
       <cds-action popup="row-actions" aria-label="host actions" (click)="showRowActions($event, vm)"></cds-action>
     </cds-grid-cell>
+    <!-- Generate cells with model data -->
     <cds-grid-cell *ngFor="let column of dataFields">
       {{ $any(vm)[column] }}
     </cds-grid-cell>
   </cds-grid-row>
   <cds-grid-footer></cds-grid-footer>
 </cds-grid>
-
+<!-- A drop down that holds the details for the single selected row to act on -->
 <cds-dropdown
   id="row-actions"
   [hidden]="hiddenRowAction"
@@ -37,22 +41,16 @@
 <h2>@clr/angular single action datagrid</h2>
 <p>This is a single action <strong>@clr/angular</strong> datagrid.</p>
 <clr-datagrid style="height: 360px;">
-  <clr-dg-column>ID</clr-dg-column>
-  <clr-dg-column>Status</clr-dg-column>
-  <clr-dg-column>Memory</clr-dg-column>
-  <clr-dg-column>Selected</clr-dg-column>
-  <clr-dg-column>About</clr-dg-column>
+  <clr-dg-column *ngFor="let column of dataFields">{{ column }}</clr-dg-column>
 
   <clr-dg-row *ngFor="let vm of data" [clrDgItem]="vm">
     <clr-dg-action-overflow>
       <button class="action-item" (click)="clrAction('Shutdown', vm)">Shutdown {{ vm.id }}</button>
       <button class="action-item" (click)="clrAction('Restart', vm)">Restart {{ vm.id }}</button>
     </clr-dg-action-overflow>
-    <clr-dg-cell>{{ vm.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.memory }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.selected }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.about }}</clr-dg-cell>
+    <clr-dg-cell *ngFor="let column of dataFields">
+      {{ $any(vm)[column] }}
+    </clr-dg-cell>
   </clr-dg-row>
   <clr-dg-footer>Footer</clr-dg-footer>
 </clr-datagrid>

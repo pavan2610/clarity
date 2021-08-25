@@ -3,6 +3,7 @@
 
 <div [formGroup]="multiActionForm">
   <cds-grid aria-label="column visibility datagrid demo" style="--body-height: 360px;">
+    <!-- set up our row controls -->
     <cds-grid-column type="action" resizable="hidden">
       <cds-checkbox>
         <input
@@ -13,6 +14,7 @@
         />
       </cds-checkbox>
     </cds-grid-column>
+    <!-- There is prolly [class]="more programmatic way to simplify this -->
     <cds-grid-column>
       Host
       <cds-action
@@ -21,27 +23,33 @@
         aria-label="available host options"
       ></cds-action>
     </cds-grid-column>
-    <cds-grid-column *ngFor="let column of dataFields" [id]="column">
-      {{ column | titlecase }}
-    </cds-grid-column>
+    <ng-container *ngFor="let column of dataFields">
+      <cds-grid-column *ngIf="column !== 'id'" [id]="column">
+        {{ column | titlecase }}
+      </cds-grid-column>
+    </ng-container>
 
     <cds-grid-row
       *ngFor="let vm of data; let i = index"
       formGroupName="rows"
       [selected]="multiActionForm.controls.rows.get(vm.id)?.value"
     >
+      <!-- cell for the row checkbox -->
       <cds-grid-cell type="action">
         <cds-checkbox>
           <input type="checkbox" [formControlName]="vm.id" aria-label="select host" />
         </cds-checkbox>
       </cds-grid-cell>
+      <!-- the cells for each column field -->
       <cds-grid-cell *ngFor="let column of dataFields">
         {{ $any(vm)[column] }}
       </cds-grid-cell>
     </cds-grid-row>
     <cds-grid-footer> There are {{ data.length }} virtual machines. </cds-grid-footer>
   </cds-grid>
+  <!-- [class]="container that can be conditionally added/removed from the DOM -->"
   <ng-container *ngIf="batchActionAnchor">
+    <!-- A drop down that can hold row action buttons -->
     <cds-dropdown
       id="row-actions"
       [hidden]="!batchActionAnchor"
@@ -64,18 +72,10 @@
       <button type="button" class="btn btn-sm btn-secondary" (click)="clrAction('Restart')">Restart selected</button>
     </div>
   </clr-dg-action-bar>
-  <clr-dg-column>ID</clr-dg-column>
-  <clr-dg-column>Status</clr-dg-column>
-  <clr-dg-column>Memory</clr-dg-column>
-  <clr-dg-column>Selected</clr-dg-column>
-  <clr-dg-column>About</clr-dg-column>
+  <clr-dg-column *ngFor="let column of dataFields">{{ column }}</clr-dg-column>
 
   <clr-dg-row *ngFor="let vm of data" [clrDgItem]="vm">
-    <clr-dg-cell>{{ vm.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.memory }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.selected }}</clr-dg-cell>
-    <clr-dg-cell>{{ vm.about }}</clr-dg-cell>
+    <clr-dg-cell *ngFor="let column of dataFields">{{ $any(vm)[column] }}</clr-dg-cell>
   </clr-dg-row>
   <clr-dg-footer>Datagrid footer</clr-dg-footer>
 </clr-datagrid>

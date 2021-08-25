@@ -9,19 +9,21 @@ import { VmService } from '../vm.service';
   styleUrls: ['./detail.component.scss'],
 })
 export class DetailComponent {
-  data: Observable<TestVM[]>;
+  data: TestVM[];
+  dataFields!: string[];
   currentVM!: TestVM | null;
   anchor: HTMLElement | null = null;
 
   constructor(private vmData: VmService) {
-    this.data = vmData.asyncGet(500);
+    this.data = vmData.get();
+    this.dataFields = vmData.fields;
   }
 
   getDetails(id: string): string {
     return `view host ${id} details`;
   }
 
-  showDetail(event: any, vm: TestVM) {
+  toggleDetail(event: any, vm: TestVM) {
     if (this.currentVM?.id !== vm.id) {
       this.currentVM = vm;
       this.anchor = event.target;
