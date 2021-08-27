@@ -14,6 +14,7 @@ export class SortingComponent implements OnInit {
   dataFields!: string[];
   sortedData: TestVM[] = [];
   sortType: 'none' | 'ascending' | 'descending' = 'none';
+  showDevNotes = false;
 
   constructor(private vmData: VmService) {
     this.data = vmData.get();

@@ -11,9 +11,10 @@ export class FilteringComponent implements OnInit {
   data: TestVM[];
   dataFields!: string[];
   anchor: EventTarget | null = null;
-  search: string = '';
+  filterString: string = '';
   hiddenFilter = true;
   filteredList: TestVM[] = [];
+  showDevNotes = false;
 
   constructor(private vmData: VmService) {
     this.data = vmData.get();
@@ -21,7 +22,7 @@ export class FilteringComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredList = filter([...this.data], 'id', this.search);
+    this.filteredList = filter([...this.data], 'id', this.filterString);
   }
 
   toggleFilter(event: Event) {
@@ -31,7 +32,7 @@ export class FilteringComponent implements OnInit {
 
   filterByID(event: Event) {
     const input: HTMLInputElement = event.target as HTMLInputElement;
-    this.search = input.value ? input.value : '';
-    this.filteredList = filter([...this.data], 'id', this.search);
+    this.filterString = input.value ? input.value : '';
+    this.filteredList = filter([...this.data], 'id', this.filterString);
   }
 }

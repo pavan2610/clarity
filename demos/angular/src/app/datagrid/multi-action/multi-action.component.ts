@@ -20,7 +20,7 @@ export class MultiActionComponent {
   data: TestVM[] = [];
   // Extracted 'fields' from a row of data -> These will become columns
   dataFields!: string[];
-
+  showDevNotes = false;
   multiActionForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private vmData: VmService) {

@@ -1,24 +1,29 @@
 <h2>@cds/core Grid with pinned column behaviors</h2>
-<section cds-layout="vertical gap:md m-b:md">
-  <p>Notes on implementing Clarity core single row action</p>
-  <ul>
-    <li>There is no equivalent for angular</li>
-    <li>There are multiple core implementation demos to demonstrate different behaviors</li>
-  </ul>
-</section>
-<h3>Fixed width</h3>
-<p>
-  This demo fixes all of the column widths to various sizes in px. The x-axis overflow and fixed column behavior is
-  observed when the browser is resized or the width of the grid is smaller than the summed width of its columns.
-</p>
+<cds-accordion cds-layout="m-y:md">
+  <cds-accordion-panel [expanded]="showDevNotes" (expandedChange)="showDevNotes = !showDevNotes">
+    <cds-accordion-header>Dev notes for pinned column grids</cds-accordion-header>
+    <cds-accordion-content>
+      <p cds-text="subsection">There is no equivalent in @clr/angular for pinned columns.</p>
+      <p>
+        With the new core architecture this is now possible. To implement a static grid with pinned columns just give
+        the column a fixed width and set the cds-grid-column attribute: position="fixed".
+      </p>
+      <p>
+        For dynamic pinning behavior that users can control you will need a boolean property to determine when a column
+        is pinned and a cds-action button in the cds-grid-column that needs the behavior. Finally, when the column is
+        pinned, set the cds-action status to active so that the UI reflects the pinned state.
+      </p>
+    </cds-accordion-content>
+  </cds-accordion-panel>
+</cds-accordion>
 
 <!-- Need a more generic way to iterate columns and utalize metadata (width) for the columns -->
 <cds-grid aria-label="column fixed datagrid demo" style="--body-height: 360px; width: 650px;">
   <cds-grid-column width="150px" position="fixed">Host</cds-grid-column>
   <cds-grid-column width="350px">Status</cds-grid-column>
   <cds-grid-column width="500px">CPU</cds-grid-column>
-  <cds-grid-column width="150px" position="fixed">Memory</cds-grid-column>
-  <cds-grid-column width="150px" position="fixed">Selected</cds-grid-column>
+  <cds-grid-column width="150px">Memory</cds-grid-column>
+  <cds-grid-column width="150px">Selected</cds-grid-column>
   <cds-grid-column width="150px" position="fixed">About</cds-grid-column>
   <cds-grid-row *ngFor="let vm of data">
     <cds-grid-cell *ngFor="let column of dataFields">

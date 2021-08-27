@@ -1,23 +1,19 @@
 <h3>@cds/core Grid with detail</h3>
-<section cds-layout="vertical gap:md">
-  <p>Notes on a Clarity core grid</p>
-  <ul>
-    <li>
-      Bind vm properties to for the correct aria states
-      <ul>
-        <li>Columns will set up: role, aria-colindex and aria-sort internally</li>
-      </ul>
-    </li>
-    <li>
-      The toggleDetail method:
-      <ul>
-        <li>is called with the click event and the vm object</li>
-        <li>will control the grid detail [anchor] and the currentVM</li>
-        <li>When there is a currentVM, use *ngIf on `cds-grid-detail` and add details to the DOM.</li>
-      </ul>
-    </li>
-  </ul>
-</section>
+<cds-accordion cds-layout="m-y:md">
+  <cds-accordion-panel [expanded]="showDevNotes" (expandedChange)="showDevNotes = !showDevNotes">
+    <cds-accordion-header>Dev notes for grids with detail</cds-accordion-header>
+    <cds-accordion-content>
+      <p>
+        Detail pane can be implemented by adding an action="button" to corresponding cds-grid-column and cds-grid-cell
+        pairs. In side the cell, for each row you must use te cds-action-expand button. Bind the aria-label to details
+        taht describe the row data. Listen to the click event and use that to toggle the visibility of the
+        cds-grid-detail element. There are many ways to achieve this. This example uses *ngIf. Note, the cds-grid-detail
+        element needs to bind to the [anchor] attribute. I passed it to the toggleDetail function so I could update the
+        property and also pass the row details for the selected row.
+      </p>
+    </cds-accordion-content>
+  </cds-accordion-panel>
+</cds-accordion>
 <cds-grid aria-label="row detail datagrid demo" style="--body-height: 360px;">
   <!-- TODO: investigate why I need to set width here -->
   <cds-grid-column width="36px" type="action" aria-label="row detail column"></cds-grid-column>
@@ -49,9 +45,6 @@
   </cds-grid-detail>
 </cds-grid>
 <h2>@clr/angular Datagrid with detail</h2>
-<section cds-layout="vertical gap:md">
-  <p>Notes on a Clarity Angular Datagrid</p>
-</section>
 <clr-datagrid style="width: 100%;">
   <clr-dg-column>ID</clr-dg-column>
   <clr-dg-column>Status</clr-dg-column>

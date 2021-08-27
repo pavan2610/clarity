@@ -13,6 +13,7 @@ export class DetailComponent {
   dataFields!: string[];
   currentVM!: TestVM | null;
   anchor: HTMLElement | null = null;
+  showDevNotes = false;
 
   constructor(private vmData: VmService) {
     this.data = vmData.get();

@@ -1,6 +1,29 @@
 <h2>@cds/core Hidable columns grid</h2>
-<p>This is a basic <strong>@cds/core</strong> grid.</p>
-
+<cds-accordion cds-layout="m-y:md">
+  <cds-accordion-panel [expanded]="showDevNotes" (expandedChange)="showDevNotes = !showDevNotes">
+    <cds-accordion-header>Dev notes for grids with hide-able columns</cds-accordion-header>
+    <cds-accordion-content>
+      <p>
+        To implement hide/show behavior an application will need two things:
+      </p>
+      <ol cds-list>
+        <li>A list of columns that can be toggled and an id or unique way to identify it</li>
+        <li>A form of controls for each column that can be toggled</li>
+      </ol>
+      <p>
+        There are many ways to do this. For the purpose of the demo I set up a 'service' that could extract the names of
+        columns from the data data. I then use an Angular reactive form to generate controls that associate the control
+        with a column. Once that is done, the template can implement a popover with the form instance and a checkbox
+        group element that uses *ngFor to generate checkboxes for each column that can be hidden or shown.
+      </p>
+      <p>
+        Also not that the action button in the cds-grid-footer passes the event to a method that uses the event target
+        to associate the clicked button with the form in the popover. Positioning calculations are handled by the
+        popover.
+      </p>
+    </cds-accordion-content>
+  </cds-accordion-panel>
+</cds-accordion>
 <cds-grid aria-label="column visibility datagrid demo" style="--body-height: 360px;">
   <ng-container *ngFor="let column of dataFields">
     <cds-grid-column *ngIf="isColumnVisible(column)" [id]="column">

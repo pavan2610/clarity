@@ -10,6 +10,7 @@ import { TestVM } from '@cds/core/demo';
 export class BasicComponent {
   data: TestVM[];
   dataFields!: string[];
+  showDevNotes = false;
 
   constructor(private vmData: VmService) {
     this.data = vmData.get();

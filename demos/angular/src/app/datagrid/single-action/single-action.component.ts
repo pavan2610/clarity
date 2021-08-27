@@ -21,12 +21,12 @@ export class SingleActionComponent {
   hiddenColumnPicker = true;
 
   selectedRow!: TestVM | null;
-
+  showDevNotes = false;
   hiddenRowAction = true;
 
   constructor(private formBuilder: FormBuilder, private vmData: VmService) {
     this.data = vmData.get();
-    this.dataFields = Object.keys(this.data[0]);
+    this.dataFields = vmData.fields;
   }
 
   shutdownVM(vm?: TestVM | null) {

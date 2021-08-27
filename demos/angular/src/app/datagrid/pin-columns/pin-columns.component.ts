@@ -12,6 +12,7 @@ export class PinColumnsComponent {
   pinLast = true;
   data: TestVM[] = [];
   dataFields!: string[];
+  showDevNotes = false;
   constructor(private vmData: VmService) {
     this.data = vmData.get();
     this.dataFields = vmData.fields;

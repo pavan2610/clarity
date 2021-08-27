@@ -1,12 +1,21 @@
 <h2>@cds/core Grid with pagination behavior</h2>
-<section cds-layout="vertical gap:md m-b:md">
-  <p>Notes on implementing Clarity core pagination behavior</p>
-  <ul>
-    <li></li>
-    <li></li>
-  </ul>
-</section>
-
+<cds-accordion cds-layout="m-y:md">
+  <cds-accordion-panel [expanded]="showDevNotes" (expandedChange)="showDevNotes = !showDevNotes">
+    <cds-accordion-header>Dev notes for pagination grids</cds-accordion-header>
+    <cds-accordion-content>
+      <p>
+        To paginate a grid use the Core pagination component to give UI that can set and update: currentPage, pageSize
+        and also navigate around the data set in various ways: first/last and previous/next. I'm using a standard
+        utility function that takes the full list of data, the pageSize and returns an array of pages that can be given
+        to the tempalte iteration to generate cds-grid-rows. There are other ways to handle this both client side as
+        well as hooking up a service to an API. The importing thig for devs is to implement proper UI and guards so that
+        users cannot get into an impossible state. E.g - on the first page but the First/previous buttons are enabled ot
+        when focus in in hte page number input, they cannot use the native controls to go higher than the highest
+        available page by setting an appropriate max on the input in the template.
+      </p>
+    </cds-accordion-content>
+  </cds-accordion-panel>
+</cds-accordion>
 <cds-grid aria-label="pagination datagrid demo" style="--body-height: 360px;">
   <cds-grid-column *ngFor="let column of dataFields" [id]="column">
     {{ column | titlecase }}

@@ -14,6 +14,7 @@ export class SingleSelectComponent {
   dataFields!: string[];
   clrSelectedVM!: TestVM;
   paginationForm!: FormGroup;
+  showDevNotes = true;
 
   constructor(private formBuilder: FormBuilder, private vmData: VmService) {
     this.data = vmData.get();

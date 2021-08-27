@@ -1,16 +1,22 @@
 <h2>@cds/core Grid with column sorting</h2>
-<section cds-layout="vertical gap:md">
-  <p>Notes on a Clarity core grid filtering</p>
-  <ul>
-    <li></li>
-  </ul>
-</section>
-
+<cds-accordion cds-layout="m-y:md">
+  <cds-accordion-panel [expanded]="showDevNotes" (expandedChange)="showDevNotes = !showDevNotes">
+    <cds-accordion-header>Dev notes for sortable grids</cds-accordion-header>
+    <cds-accordion-content>
+      <p>
+        Sorting can be added to a grid with two changes. First, add a cds-action-sort button to the column that needs to
+        be sorted. Then listen to the sortChange event on that button and implement the applications sorting algorithm,
+        so that is takes the original data and places it on a sorted property that can be used as the iterator in the
+        template for each of the rows.
+      </p>
+    </cds-accordion-content>
+  </cds-accordion-panel>
+</cds-accordion>
 <cds-grid aria-label="row sort datagrid demo" style="--body-height: 360px;">
   <cds-grid-column *ngFor="let column of dataFields" [id]="column">
     {{ column | titlecase }}
     <ng-container *ngIf="column === 'id'">
-      <cds-action-sort aria-label="sort hosts" [attr.sort]="sortType" (sortChange)="sortGrid($event)"></cds-action-sort>
+      <cds-action-sort aria-label="sort hosts" [sort]="sortType" (sortChange)="sortGrid($event)"></cds-action-sort>
     </ng-container>
   </cds-grid-column>
   <cds-grid-row *ngFor="let vm of sortedData">
@@ -22,13 +28,6 @@
 </cds-grid>
 
 <h2>@clr/angular Datagrid with built in column string filter</h2>
-<section cds-layout="vertical gap:md">
-  <p>Notes on a Clarity core grid filtering</p>
-  <ul>
-    <li>With the Angular datagrid, when a model property is bound to a column sorting and filtering is turned on</li>
-    <li>Sorting happens when user clicks the column text</li>
-  </ul>
-</section>
 <clr-datagrid style="height: 360px;">
   <clr-dg-column [clrDgField]="'id'">ID</clr-dg-column>
   <clr-dg-column>Status</clr-dg-column>

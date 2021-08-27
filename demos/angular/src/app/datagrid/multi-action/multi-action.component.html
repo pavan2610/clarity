@@ -1,6 +1,16 @@
 <h2>@cds/core multi-action grid</h2>
-<p>This is a multi-action <strong>@cds/core</strong> grid.</p>
-
+<cds-accordion cds-layout="m-y:md">
+  <cds-accordion-panel [expanded]="showDevNotes" (expandedChange)="showDevNotes = !showDevNotes">
+    <cds-accordion-header>Dev notes for multi action grids</cds-accordion-header>
+    <cds-accordion-content>
+      <p>
+        A multi action grid is a variant of the multi select grid. The only difference is that in this grid there is a
+        cds-action button in the Host column. This action button toggles a popover that contains buttons to call
+        functions that can act on the selected row objects. This is set up like other popovers.
+      </p>
+    </cds-accordion-content>
+  </cds-accordion-panel>
+</cds-accordion>
 <div [formGroup]="multiActionForm">
   <cds-grid aria-label="column visibility datagrid demo" style="--body-height: 360px;">
     <!-- set up our row controls -->

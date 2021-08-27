@@ -17,6 +17,7 @@ export class HideShowColumnComponent {
   dataFields!: string[];
   // a boolean flag to control column picker element visibility
   hiddenColumnPicker = true;
+  showDevNotes = false;
 
   getControlValue(column: string) {
     return this.hideShowForm.controls.columns.get(column)?.value;

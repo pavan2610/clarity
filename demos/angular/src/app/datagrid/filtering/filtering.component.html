@@ -1,16 +1,17 @@
 <h2>@cds/core Grid with column filter</h2>
-<section cds-layout="vertical gap:md">
-  <p>Notes on a Clarity core grid filtering</p>
-  <ul>
-    <li>Must keep track of the search string per column</li>
-    <li>Implement a toggleFilter fn that sets the anchor (for positioning) and hides/shows the filter UI.</li>
-    <li>Need to handle the first filtered list with an empty string (unless it is preset)</li>
-    <li>control the hidden attribute of the dropdown</li>
-    <li>set and update the dropdowns anchor</li>
-    <li>listen to the dropdowns close change event to nullify the current anchor and flip the hiddenFilter boolean</li>
-    <li>Note: demo uses presence of this.anchor to control rendering of the cds-dropdown element or not.</li>
-  </ul>
-</section>
+<cds-accordion cds-layout="m-y:md">
+  <cds-accordion-panel [expanded]="showDevNotes" (expandedChange)="showDevNotes = !showDevNotes">
+    <cds-accordion-header>Dev notes for grids with filtering</cds-accordion-header>
+    <cds-accordion-content>
+      <p>
+        Besides the data, applications must keep track of the anchor used to position the filter popover, the
+        filterString (or what ever filter object is used depending on the type of filter implemented), the state of the
+        filter popover (visible or hidden) and the filtered list of data objects for display. This filtered list should
+        derive from the full data set and be used to generate the cds-grid-row elements.
+      </p>
+    </cds-accordion-content>
+  </cds-accordion-panel>
+</cds-accordion>
 
 <cds-grid aria-label="column filter datagrid demo" style="--body-height: 360px;">
   <cds-grid-column *ngFor="let column of dataFields" [id]="column">
@@ -19,7 +20,7 @@
       <cds-action
         (click)="toggleFilter($event)"
         shape="filter"
-        [status]="this.search ? 'active' : ''"
+        [status]="this.filterString ? 'active' : ''"
         aria-label="search hosts"
       ></cds-action>
     </ng-container>
@@ -44,7 +45,7 @@
         aria-label="search hosts"
         placeholder="Search"
         value=""
-        [value]="this.search"
+        [value]="this.filterString"
         (input)="filterByID($event)"
         [attr.anchor]="anchor"
         *ngIf="anchor"
@@ -57,8 +58,8 @@
 <section cds-layout="vertical gap:md">
   <p>Notes on a Clarity core grid filtering</p>
   <ul>
-    <li>With the Angular datagrid, when a model property is bound to a column sorting and filtering is turned on</li>
-    <li>Filtering happens when user clicks the arrow up/down icon</li>
+    <li>With the Angular datagrid, when a model property is bound to a column sorting and filtering is turned on.</li>
+    <li>Filtering happens when user clicks the arrow up/down icon and enters text in the input control.</li>
   </ul>
 </section>
 <clr-datagrid style="height: 360px;">

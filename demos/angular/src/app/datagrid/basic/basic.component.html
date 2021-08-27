@@ -1,4 +1,16 @@
 <h2>Basic @cds/core Grid</h2>
+<cds-accordion cds-layout="m-y:md">
+  <cds-accordion-panel [expanded]="showDevNotes" (expandedChange)="showDevNotes = !showDevNotes">
+    <cds-accordion-header>Dev notes for grids with detail</cds-accordion-header>
+    <cds-accordion-content>
+      <p>
+        This is a basic @cds/core grid. It uses a simple dataset of TestVM data type. The service used mocks a simple
+        API and extracts the column information from the data in the set. This enables iterationfor both the columns,
+        the rows, and the cells.
+      </p>
+    </cds-accordion-content>
+  </cds-accordion-panel>
+</cds-accordion>
 <cds-grid aria-label="basic datagrid demo" style="--body-height: 350px;">
   <cds-grid-column *ngFor="let column of dataFields" [id]="column">
     {{ column | titlecase }}

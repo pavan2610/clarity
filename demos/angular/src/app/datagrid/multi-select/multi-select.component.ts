@@ -18,7 +18,7 @@ export class MultiSelectComponent {
   data: TestVM[] = [];
   // Extracted 'fields' from a row of data -> These will become columns
   dataFields!: string[];
-
+  showDevNotes = false;
   multiSelectForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private vmData: VmService) {
@@ -26,8 +26,6 @@ export class MultiSelectComponent {
     this.dataFields = Object.keys(this.data[0]);
     this.multiSelectForm = this.formBuilder.group({
       allRows: [false],
-      currentPage: [1],
-      pageSize: [10],
       rows: new FormGroup({}),
     });
     this.data.forEach(vm =>

@@ -13,6 +13,7 @@ export class PaginationComponent implements OnInit {
   paginatedList: TestVM[] = [];
   currentPage = 0;
   pageSize = 10;
+  showDevNotes = false;
 
   setPageSize(event: Event) {
     this.pageSize = parseInt((event.target as HTMLSelectElement).value);
