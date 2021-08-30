@@ -1,8 +1,13 @@
 import { ReactiveControllerHost } from 'lit';
 
-export class GridRowVisibilityController {
+/**
+ * List items default to `content-visibility: auto` for lazy initial render.
+ * On scroll set all row items to `content-visibility: visible` for eager render.
+ * This allows fast first render and smooth eager rendering anytime after for items within a bounded scroll box.
+ */
+export class ScrollableVisibilityController {
   constructor(private host: ReactiveControllerHost & HTMLElement) {
-    this.host.addController(this); // created on grid rather that row to only run once
+    this.host.addController(this);
   }
 
   async hostConnected() {

@@ -1,7 +1,6 @@
 import { html, LitElement } from 'lit';
-import { customElement } from '@cds/core/internal';
+import { customElement, ActiveInteractionController } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
-import { ActiveInteractionController } from './active-interaction.controller.js';
 
 @customElement('active-interaction-controller-test-element')
 class ActiveInteractionTestElement extends LitElement {

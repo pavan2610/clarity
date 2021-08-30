@@ -77,7 +77,7 @@ export function rangeSelectContextMenu() {
       super.connectedCallback();
       window.addEventListener('contextmenu', (e: any) => {
         const cell: CdsGridCell = e.path.find((e: any) => e.tagName === 'CDS-GRID-CELL');
-        if (this.activeCells.length && cell?.highlight && e.target === this) {
+        if (this.activeCells.length && cell.hasAttribute('highlight') && e.target === this) {
           e.preventDefault();
           this.anchor = cell;
         }

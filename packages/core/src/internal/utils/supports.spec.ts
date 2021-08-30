@@ -12,5 +12,6 @@ describe('browser support feature checks', () => {
     expect(supportValues).toContain('js');
     expect(supportValues).toContain('flex-gap');
     expect(supportValues).toContain('aria-reflect');
+    expect(supportValues).toContain('role-reflect');
   });
 });

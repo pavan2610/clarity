@@ -41,7 +41,7 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   nodeResolve: true,
   plugins: [
     ...baseConfig.plugins,
-    esbuildPlugin({ ts: true, json: true, target: 'auto' }),
+    esbuildPlugin({ ts: true, json: true, target: 'auto', sourceMap: true }),
     fromRollup(execute)({ commands: [`tsc --noEmit src/**/*.spec.ts`], hook: 'writeBundle' }),
   ],
   testRunnerHtml: (testRunnerImport, config) => `<html>

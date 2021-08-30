@@ -1,7 +1,6 @@
 import { html, LitElement } from 'lit';
-import { customElement } from '@cds/core/internal';
+import { customElement, AriaPopupTriggerController } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
-import { AriaPopupTriggerController } from './aria-popup-trigger.controller.js';
 
 @customElement('aria-popup-controller-test-element')
 class AriaPopupTriggerControllerTestElement extends LitElement {

@@ -3,7 +3,7 @@ import { ReactiveControllerHost } from 'lit';
 export class AriaPopupController {
   private observer: MutationObserver;
 
-  constructor(private host: ReactiveControllerHost & HTMLElement & { trigger?: HTMLElement }) {
+  constructor(private host: ReactiveControllerHost & HTMLElement & { trigger: HTMLElement }) {
     this.host.addController(this);
   }
 

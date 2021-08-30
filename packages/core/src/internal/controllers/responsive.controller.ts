@@ -1,32 +1,38 @@
 import { ReactiveControllerHost } from 'lit';
 
+interface ResponsiveConfig {
+  skipFirst?: boolean;
+  element?: HTMLElement;
+}
+
 export class ResponsiveController {
-  elementRect = {} as DOMRectReadOnly;
+  private observer: ResizeObserver;
+  private resizeElement: HTMLElement;
+  private skipFirst = false;
 
-  private host: ReactiveControllerHost;
-
-  private _observer: ResizeObserver;
-
-  constructor(host: ReactiveControllerHost) {
-    this.host = host;
+  constructor(private host: ReactiveControllerHost & HTMLElement, config: ResponsiveConfig = { skipFirst: false, element: null }) {
     host.addController(this);
+    this.skipFirst = config.skipFirst;
+    this.resizeElement = config.element ? config.element : this.host;
   }
 
-  hostConnected() {
-    this._observer = new ResizeObserver(entries => {
+  async hostConnected() {
+    await this.host.updateComplete;
+    this.observer = new ResizeObserver(entries => {
       window.requestAnimationFrame(() => {
-        this.elementRect = entries[0].contentRect;
-        ((this.host as unknown) as HTMLElement).dispatchEvent(
-          new CustomEvent('cdsResizeChange', { detail: this.elementRect })
-        );
-        this.host.requestUpdate();
+        if (this.skipFirst) {
+          this.skipFirst = false;
+        } else {
+          ((this.host as unknown) as HTMLElement).dispatchEvent(new CustomEvent('cdsResizeChange', { detail: entries[0].contentRect }));
+          this.host.requestUpdate();
+        }
       });
     });
 
-    this._observer.observe(this.host as any);
+    this.observer.observe(this.resizeElement);
   }
 
   hostDisconnected() {
-    this._observer.disconnect();
+    this.observer.disconnect();
   }
 }

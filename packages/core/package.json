@@ -2,7 +2,7 @@
   "name": "@cds/core",
   "version": "0.0.0",
   "scripts": {
-    "clean": "del ./dist",
+    "clean": "del ./dist/core",
     "start": "npm-run-all build -p build:watch storybook:start",
     "sandbox": "web-dev-server -c web-dev-server.sandbox.mjs",
     "build": "npm-run-all -s clean build:tokens build:lib build:update",
@@ -12,7 +12,8 @@
     "storybook:build": "build-storybook --config-dir .storybook --output-dir ../../dist/website/storybook/core",
     "lint:fix": "eslint --fix \"./**/*.ts\" && stylelint --fix \"./**/*.scss\"",
     "test:watch": "wtr --watch",
-    "test:unit": "wtr --coverage",
+    "test:unit": "del ./dist/coverage && wtr",
+    "test:unit:coverage": "del ./dist/coverage && wtr --coverage",
     "test:performance": "rollup --config ./rollup.performance.js",
     "test:performance:report": "npm-run-all 'test:performance --sourcemap'",
     "build:watch": "npm-run-all 'build:lib --watch'",

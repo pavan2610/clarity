@@ -6,11 +6,10 @@
 
 import { html, css, LitElement } from 'lit';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
-import { GridRowVisibilityController } from './grid-row-visibility.controller.js';
-import { customElement } from '@cds/core/internal';
+import { customElement, ScrollableVisibilityController } from '@cds/core/internal';
 
-@customElement('grid-row-visibility-test-element')
-class GridRowVisibilityTestElement extends LitElement {
+@customElement('scrollable-list-visibility-test-element')
+class ScrollableListVisibilityTestElement extends LitElement {
   gridBody: HTMLElement;
   static styles = [
     css`
@@ -19,16 +18,16 @@ class GridRowVisibilityTestElement extends LitElement {
       }
     `,
   ];
-  protected gridRowVisibilityController = new GridRowVisibilityController(this);
+  protected scrollableVisibilityController = new ScrollableVisibilityController(this);
 }
 
-describe('grid-row-visibility.controller', () => {
-  let component: GridRowVisibilityTestElement;
+describe('scrollable-list-visibility.controller', () => {
+  let component: ScrollableListVisibilityTestElement;
   let element: HTMLElement;
 
   beforeEach(async () => {
-    element = await createTestElement(html`<grid-row-visibility-test-element></grid-row-visibility-test-element>`);
-    component = element.querySelector<GridRowVisibilityTestElement>('grid-row-visibility-test-element');
+    element = await createTestElement(html`<scrollable-list-visibility-test-element></scrollable-list-visibility-test-element>`);
+    component = element.querySelector<ScrollableListVisibilityTestElement>('scrollable-list-visibility-test-element');
   });
 
   afterEach(() => {

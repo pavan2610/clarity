@@ -1,11 +1,10 @@
 import { html, LitElement } from 'lit';
-import { customElement } from '@cds/core/internal';
+import { customElement, AriaReflectionController } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
-import { AriaReflectionController } from './aria-reflection.controller.js';
 
 @customElement('aria-reflection-controller-test-element')
 class AriaReflectionControllerTestElement extends LitElement {
-  ariaReflectionController = new AriaReflectionController(this, false);
+  ariaReflectionController = new AriaReflectionController(this);
   render() {
     return html`...`;
   }

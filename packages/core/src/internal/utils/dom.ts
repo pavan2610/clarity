@@ -166,3 +166,7 @@ export function queryChildFromLightOrShadowDom(hostEl: Element, selector?: strin
 
   return hostEl.querySelector(selector) || hostEl?.shadowRoot?.querySelector(selector) || null;
 }
+
+export function createFragment(tagString: string) {
+  return document.createRange().createContextualFragment(tagString); // todo test
+}

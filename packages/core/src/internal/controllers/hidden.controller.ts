@@ -3,7 +3,7 @@ import { ReactiveControllerHost } from 'lit';
 export class HiddenController {
   private observer: MutationObserver;
 
-  constructor(private host: ReactiveControllerHost & HTMLElement & { trigger?: HTMLElement }) {
+  constructor(private host: ReactiveControllerHost & HTMLElement, private config = { bubbles: false}) {
     this.host.addController(this);
   }
 
@@ -25,6 +25,6 @@ export class HiddenController {
   }
 
   private emit(hidden: boolean) {
-    this.host.dispatchEvent(new CustomEvent('hiddenChange', { detail: hidden, bubbles: true }));
+    this.host.dispatchEvent(new CustomEvent('hiddenChange', { detail: hidden, bubbles: this.config.bubbles }));
   }
 }

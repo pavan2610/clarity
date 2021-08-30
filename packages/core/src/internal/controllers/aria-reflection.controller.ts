@@ -8,16 +8,17 @@ import { browserFeatures } from '../utils/supports.js';
  * https://developer.mozilla.org/en-US/docs/Web/API/Element/ariaLabel
  */
 export class AriaReflectionController {
-  constructor(
-    private host: ReactiveControllerHost & HTMLElement,
-    supportsReflection: boolean = browserFeatures.supports.ariaReflect
-  ) {
+  private static initialized = false;
+
+  constructor(private host: ReactiveControllerHost & HTMLElement) {
     this.host.addController(this as any);
 
-    // https://www.w3.org/TR/wai-aria-1.0/states_and_properties
-    if (!supportsReflection) {
-      reflect(host, 'role', 'role');
+    if (!browserFeatures.supports.roleReflect && !AriaReflectionController.initialized) {
+      reflect(Element.prototype, 'role', 'role');
+    }
 
+    // https://www.w3.org/TR/wai-aria-1.0/states_and_properties
+    if (!browserFeatures.supports.ariaReflect && !AriaReflectionController.initialized) {
       [
         'ActiveDescendant',
         'Atomic',
@@ -65,12 +66,14 @@ export class AriaReflectionController {
         'ValueMin',
         'ValueNow',
         'ValueText',
-      ].forEach(name => reflect(host, `aria-${name.toLowerCase()}`, `aria${name}`));
+      ].forEach(name => reflect(Element.prototype, `aria-${name.toLowerCase()}`, `aria${name}`));
+
+      AriaReflectionController.initialized = true;
     }
   }
 }
 
-export function reflect(element: HTMLElement, attributeName: string, propertyName: string) {
+function reflect(element: HTMLElement | Element, attributeName: string, propertyName: string) {
   Object.defineProperty(element, propertyName, {
     configurable: true,
     enumerable: true,

@@ -9,17 +9,26 @@ import {
   KeyNavigationGridController,
   AriaGridController,
   querySlotAll,
-  ResponsiveController,
   AriaReflectionController,
+  GridRangeSelectionController,
+  ScrollableVisibilityController
 } from '@cds/core/internal';
 import { CdsGridRow } from '../row/grid-row.element.js';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
 import { CdsGridColumn } from '../column/grid-column.element.js';
-import { GridRowVisibilityController } from '../row/grid-row-visibility.controller.js';
 import { GridLayoutController } from './grid-layout.controller.js';
-import { GridRangeSelectionController } from './grid-range-selection.controller.js';
 import styles from './grid.element.scss';
 
+/**
+ * Grid
+ *
+ * ```typescript
+ * import '@cds/core/grid/register.js';
+ * ```
+ * 
+ * @element cds-grid
+ * @event rangeSelectionChange
+ */
 export class CdsGrid extends LitElement {
   @property({ type: String }) columnLayout: 'fixed' | 'flex' = 'fixed';
 
@@ -43,23 +52,19 @@ export class CdsGrid extends LitElement {
 
   @querySlotAll('cds-grid-column') readonly columns: NodeListOf<CdsGridColumn>;
 
-  protected ariaGridController = new AriaGridController(this);
+  readonly grid = this;
 
-  protected responsiveController = new ResponsiveController(this);
+  protected ariaGridController = new AriaGridController(this);
 
   protected gridLayoutController = new GridLayoutController(this);
 
   protected ariaReflectionController = new AriaReflectionController(this);
 
-  protected gridRowVisibilityController = new GridRowVisibilityController(this);
+  protected keyNavigationGridController = new KeyNavigationGridController(this);
 
   protected gridRangeSelectionController = new GridRangeSelectionController(this);
 
-  protected keyNavigationGridController = new KeyNavigationGridController(this, {
-    keyGridRows: 'rows',
-    keyGridCells: 'cells',
-    keyGrid: 'rowGroup',
-  });
+  protected scrollableVisibilityController = new ScrollableVisibilityController(this);
 
   protected draggableColumnController = new DraggableListController(this, {
     layout: 'horizontal',

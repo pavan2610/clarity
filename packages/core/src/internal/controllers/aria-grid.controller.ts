@@ -1,19 +1,22 @@
 import { ReactiveControllerHost } from 'lit';
 import { isSafari } from '../utils/browser.js';
 
-export type GridA11y = ReactiveControllerHost &
-  HTMLElement & {
-    columnGroup: HTMLElement;
-    columnRow: HTMLElement;
-    columns: NodeListOf<HTMLElement>;
-    rowGroup: HTMLElement;
-    rows: NodeListOf<HTMLElement & { cells: NodeListOf<HTMLElement> }>;
-  };
+export interface AriaGrid {
+  grid: HTMLElement;
+  rows: NodeListOf<HTMLElement>;
+  rowGroup: HTMLElement;
+  cells: NodeListOf<HTMLElement>;
+  columns: NodeListOf<HTMLElement>;
+  columnRow: HTMLElement;
+  columnGroup: HTMLElement;
+}
 
 export class AriaGridController {
   private observers: MutationObserver[] = [];
 
-  constructor(private host: GridA11y) {
+  private grid: AriaGrid;
+
+  constructor(private host: ReactiveControllerHost & HTMLElement & AriaGrid) {
     host.addController(this);
   }
 
@@ -39,9 +42,21 @@ export class AriaGridController {
   }
 
   update() {
+    // create one copy per update to prevent multiple DOM queries from @query getters
+    this.grid = {
+      grid: this.host.grid ? this.host.grid : this.host,
+      rows: this.host.rows,
+      rowGroup: this.host.rowGroup,
+      cells: this.host.cells,
+      columns: this.host.columns,
+      columnRow: this.host.columnRow,
+      columnGroup: this.host.columnGroup
+    };
+
     this.initializeGrid();
     this.intializeColumns();
     this.initializeRows();
+    this.initializeCells();
   }
 
   private intializeColumnSort() {
@@ -54,17 +69,17 @@ export class AriaGridController {
   }
 
   private initializeGrid() {
-    this.host.role = 'grid';
-    this.host.rowGroup.role = 'rowgroup';
-    this.host.columnGroup.role = 'rowgroup';
-    this.host.columnRow.role = 'row';
-    this.host.columnRow.ariaRowIndex = '1';
-    this.host.ariaRowCount = `${this.host.rows?.length + 1}`;
-    this.host.ariaColCount = `${this.host.columns.length}`;
+    this.grid.grid.role = 'grid';
+    this.grid.grid.ariaRowCount = `${this.grid.rows?.length + 1}`;
+    this.grid.grid.ariaColCount = `${this.grid.columns.length}`;
+    this.grid.rowGroup.role = 'rowgroup';
+    this.grid.columnGroup.role = 'rowgroup';
+    this.grid.columnRow.role = 'row';
+    this.grid.columnRow.ariaRowIndex = '1';
   }
 
   private intializeColumns() {
-    this.host.columns.forEach((c, i) => {
+    this.grid.columns.forEach((c, i) => {
       c.role = 'columnheader';
       c.ariaColIndex = `${i + 1}`;
       c.ariaSort = 'none';
@@ -80,20 +95,19 @@ export class AriaGridController {
   }
 
   private initializeRows() {
-    this.host.rows?.forEach((r, i) => {
+    this.grid.rows?.forEach((r, i) => {
       r.role = 'row';
       r.ariaRowIndex = `${i + 2}`; // +2 for column header row offset
-      this.initializeCells(r.cells);
     });
   }
 
-  private initializeCells(cells: NodeListOf<HTMLElement>) {
-    cells?.forEach((c, i) => {
+  private initializeCells() {
+    const colsCount = this.grid.columns.length;
+    this.grid.cells?.forEach((c, i) => {
       if (!c.role) {
         c.role = 'gridcell';
       }
-
-      c.ariaColIndex = `${i + 1}`; // colindex starts at 1
+      c.ariaColIndex = `${i % colsCount + 1}`; // colindex starts at 1
     });
   }
 }

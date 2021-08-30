@@ -24,6 +24,7 @@ import {
   spanWrapper,
   isFocusable,
   queryChildFromLightOrShadowDom,
+  createFragment,
 } from './dom.js';
 
 /** @element test-dom-spec-element */
@@ -592,6 +593,24 @@ describe('Functional Helper: ', () => {
       expect(el).not.toBeNull();
       expect(el.id).toBe('found');
       removeTestElement(nonShadyHost);
+    });
+  });
+
+  describe('createFragment', () => {
+    let testElement: HTMLElement;
+
+    beforeEach(async () => {
+      testElement = await createTestElement(html``);
+    });
+
+    afterEach(() => {
+      removeTestElement(testElement);
+    });
+
+    it('converts a HTML string to a DocumentFragment type', () => {
+      const frag = createFragment(`<div id="fragment"></div>`);
+      testElement.appendChild(frag);
+      expect(testElement.querySelector('#fragment')).toBeTruthy();
     });
   });
 });

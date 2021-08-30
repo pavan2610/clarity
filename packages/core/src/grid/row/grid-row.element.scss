@@ -49,6 +49,8 @@
   min-height: var(--min-height);
 }
 
+:host(:host:focus-within),
+:host(:host:focus-within) ::slotted(cds-grid-cell),
 :host([selected]),
 [part='row']:hover,
 [part='row']:hover ::slotted(cds-grid-cell) {

@@ -13,55 +13,78 @@ import {
   AriaGridController,
   KeyNavigationGridController,
   KeyNavigationListController,
-  registerElementSafely,
   state,
   AriaPopupController,
   AriaPopupTriggerController,
   ResponsiveController,
+  GridRangeSelectionController,
+  customElement,
+  AriaReflectionController,
+  ClosableController,
+  FocusFirstController
 } from '@cds/core/internal';
 import '@cds/core/badge/register.js';
-import { swapItems } from '@cds/core/demo';
+import { getVMData, swapItems } from '@cds/core/demo';
+import { InlineFocusTrapController } from './inline-focus-trap.controller';
+import { HiddenController } from './hidden.controller';
+import { querySlotAll } from '../decorators/query-slot';
 
 export default {
   title: 'Internal Stories/Controllers',
 };
 
+const buttonGridStyles = css`
+  section {
+    display: grid;
+    gap: 4px;
+    grid-template-columns: repeat(10, 50px);
+  }
+
+  [selected] {
+    background: var(--cds-alias-status-success);
+    color: var(--cds-global-color-white);
+  }
+
+  .row {
+    display: contents;
+  }
+
+  .cell {
+    position: relative;
+  }
+
+  [highlight]::after {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: hsl(200deg 100% 50% / 20%);
+    content: '';
+    pointer-events: none;
+  }
+
+  section button {
+    width: 100%;
+    height: 30px;
+    min-width: 30px;
+    display: block;
+  }
+
+  button[tabindex='0']:focus {
+    outline: 5px auto Highlight;
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+`;
+
 export function keyNavigationListController() {
+  @customElement('demo-key-navigation-list') // @ts-ignore
   class DemoKeyNavigationList extends LitElement {
-    static get styles() {
-      return [
-        baseStyles,
-        css`
-          section {
-            display: flex;
-            gap: 4px;
-          }
-
-          [selected] {
-            background: var(--cds-alias-status-success);
-            color: var(--cds-global-color-white);
-          }
-
-          section button {
-            width: 50px;
-            height: 30px;
-            display: block;
-          }
-
-          button[tabindex='0']:focus {
-            outline: 5px auto Highlight;
-            outline: 5px auto -webkit-focus-ring-color;
-          }
-        `,
-      ];
-    }
-
     @state() private items = Array.from(Array(10).keys());
     @state() private selected = '0';
     @state() private active = '';
-
     @queryAll('section > div') keyListItems: NodeListOf<HTMLElement>;
+
     protected keyNavigationListController = new KeyNavigationListController(this);
+    static styles = [baseStyles, buttonGridStyles];
 
     render() {
       return html`
@@ -69,7 +92,7 @@ export function keyNavigationListController() {
           <div cds-layout="vertical gap:md">
             <p cds-text="body">Selected: ${this.selected}</p>
             <p cds-text="body">Active: ${this.active}</p>
-            <section @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
+            <section cds-layout="horizontal gap:sm" @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
               ${this.items.map(
                 i =>
                   html`<div>
@@ -92,42 +115,12 @@ export function keyNavigationListController() {
       this.keyNavigationListController.initializeKeyList();
     }
   }
-
-  registerElementSafely('demo-key-navigation-list', DemoKeyNavigationList);
   return html`<demo-key-navigation-list></demo-key-navigation-list>`;
 }
 
 export function keyNavigationListControllerVertical() {
+  @customElement('demo-key-navigation-list-vertical') // @ts-ignore
   class DemoKeyNavigationListVertical extends LitElement {
-    static get styles() {
-      return [
-        baseStyles,
-        css`
-          section {
-            display: flex;
-            gap: 4px;
-            flex-flow: column;
-          }
-
-          [selected] {
-            background: var(--cds-alias-status-success);
-            color: var(--cds-global-color-white);
-          }
-
-          section button {
-            width: 50px;
-            height: 30px;
-            display: block;
-          }
-
-          button[tabindex='0']:focus {
-            outline: 5px auto Highlight;
-            outline: 5px auto -webkit-focus-ring-color;
-          }
-        `,
-      ];
-    }
-
     @state() private items = Array.from(Array(10).keys());
     @state() private selected = '0';
     @state() private active = '';
@@ -138,13 +131,15 @@ export function keyNavigationListControllerVertical() {
       layout: 'vertical',
     });
 
+    static styles = [baseStyles, buttonGridStyles];
+
     render() {
       return html`
         <div cds-layout="vertical gap:md">
           <div cds-layout="vertical gap:md">
             <p cds-text="body">Selected: ${this.selected}</p>
             <p cds-text="body">Active: ${this.active}</p>
-            <section @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
+            <section cds-layout="vertical gap:sm" @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
               ${this.items.map(
                 i =>
                   html`<div>
@@ -167,45 +162,16 @@ export function keyNavigationListControllerVertical() {
       this.keyNavigationListController.initializeKeyList();
     }
   }
-
-  registerElementSafely('demo-key-navigation-list-vertical', DemoKeyNavigationListVertical);
   return html`<demo-key-navigation-list-vertical></demo-key-navigation-list-vertical>`;
 }
 
 export function keyNavigationListControllerLoop() {
+  @customElement('demo-key-navigation-list-loop') // @ts-ignore
   class DemoKeyNavigationListLoop extends LitElement {
-    static get styles() {
-      return [
-        baseStyles,
-        css`
-          section {
-            display: flex;
-            gap: 4px;
-            flex-flow: column;
-          }
-
-          [selected] {
-            background: var(--cds-alias-status-success);
-            color: var(--cds-global-color-white);
-          }
-
-          section button {
-            width: 50px;
-            height: 30px;
-            display: block;
-          }
-
-          button[tabindex='0']:focus {
-            outline: 5px auto Highlight;
-            outline: 5px auto -webkit-focus-ring-color;
-          }
-        `,
-      ];
-    }
-
     @state() private items = Array.from(Array(5).keys());
     @state() private selected = '0';
     @state() private active = '';
+    static styles = [baseStyles, buttonGridStyles];
 
     @queryAll('section > div') verticalKeyListItems: NodeListOf<HTMLElement>;
     protected keyNavigationListController = new KeyNavigationListController(this, {
@@ -220,7 +186,7 @@ export function keyNavigationListControllerLoop() {
           <div cds-layout="vertical gap:md">
             <p cds-text="body">Selected: ${this.selected}</p>
             <p cds-text="body">Active: ${this.active}</p>
-            <section @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
+            <section cds-layout="vertical gap:sm" @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
               ${this.items.map(
                 i =>
                   html`<div>
@@ -243,55 +209,18 @@ export function keyNavigationListControllerLoop() {
       this.keyNavigationListController.initializeKeyList();
     }
   }
-
-  registerElementSafely('demo-key-navigation-list-loop', DemoKeyNavigationListLoop);
   return html`<demo-key-navigation-list-loop></demo-key-navigation-list-loop>`;
 }
 
 export function keyNavigationGridController() {
+  @customElement('demo-key-navigation-grid') // @ts-ignore
   class DemoKeyNavigationGridController extends LitElement {
     protected gridKeyNavigationController = new KeyNavigationGridController(this);
+    static styles = [buttonGridStyles];
 
-    static get styles() {
-      return [
-        baseStyles,
-        css`
-          section {
-            display: grid;
-            gap: 2px;
-            grid-template-columns: repeat(10, 50px);
-          }
-
-          [selected] {
-            background: var(--cds-alias-status-success);
-            color: var(--cds-global-color-white);
-          }
-
-          .row {
-            display: contents;
-          }
-
-          .cell {
-            padding: 2px;
-          }
-
-          section button {
-            width: 100%;
-            height: 30px;
-            display: block;
-          }
-
-          button[tabindex='0']:focus {
-            outline: 5px auto Highlight;
-            outline: 5px auto -webkit-focus-ring-color;
-          }
-        `,
-      ];
-    }
-
-    @query('section') keyGrid: HTMLElement;
-    @queryAll('section .row') keyGridRows: NodeListOf<HTMLElement>;
-    @queryAll('section .cell') keyGridCells: NodeListOf<HTMLElement>;
+    @query('section') rowGroup: HTMLElement;
+    @queryAll('section .row') rows: NodeListOf<HTMLElement>;
+    @queryAll('section .cell') cells: NodeListOf<HTMLElement>;
 
     @state() private items = Array.from(Array(10).keys()).map(() => Array.from(Array(10).keys()));
     @state() private selected = '0,0';
@@ -322,12 +251,11 @@ export function keyNavigationGridController() {
       `;
     }
   }
-
-  registerElementSafely('demo-key-navigation-grid', DemoKeyNavigationGridController);
   return html`<demo-key-navigation-grid></demo-key-navigation-grid>`;
 }
 
 export function draggableListController() {
+  @customElement('demo-draggable-list-controller') // @ts-ignore
   class DemoDraggableListController extends LitElement {
     static get styles() {
       return [
@@ -383,124 +311,7 @@ export function draggableListController() {
     }
   }
 
-  registerElementSafely('demo-draggable-list-controller', DemoDraggableListController);
   return html`<demo-draggable-list-controller></demo-draggable-list-controller>`;
-}
-
-export function ariaGridController() {
-  class DemoAriaGridController extends LitElement {
-    @query('section') grid: HTMLElement;
-    @query('section > div:first-child') columnRow: HTMLElement;
-    @queryAll('section > div:first-child > div') columns: NodeListOf<HTMLElement>;
-    @queryAll('section > div:not(:first-child)') rows: NodeListOf<HTMLElement & { cells: NodeListOf<HTMLElement> }>;
-
-    private ariaGridController = new AriaGridController(this as any); // todo
-
-    static styles = [
-      css`
-        [role='grid'] {
-          width: 500px;
-          border: 1px solid #ccc;
-        }
-
-        [role='row'] {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr 1fr;
-        }
-
-        [role='grid'] [aria-rowindex]:nth-child(odd) {
-          filter: brightness(97%);
-        }
-
-        [role='grid'] [aria-rowindex]:hover {
-          filter: brightness(94%);
-        }
-
-        [aria-colcount='5'] [role='row'] {
-          grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        }
-
-        [role='gridcell'],
-        [role='rowheader'],
-        [role='columnheader'] {
-          padding: 12px 18px;
-        }
-
-        [role='columnheader']:last-child,
-        [role='gridcell']:last-child,
-        [role='row']:last-child {
-          border-right: none;
-        }
-
-        [role='columnheader'] {
-          border-bottom: 1px solid #ccc;
-        }
-
-        [role='grid'] {
-          background: #eee;
-          overflow: hidden;
-        }
-
-        [role='gridcell'] {
-          background: #fff;
-        }
-
-        [aria-rowspan],
-        [role='rowheader'],
-        [role='columnheader'] {
-          background: none;
-          font-weight: 500;
-        }
-      `,
-    ];
-
-    render() {
-      return html`
-        <section>
-          <div>
-            <div>Host</div>
-            <div>Status</div>
-            <div>CPU</div>
-            <div>Memory</div>
-          </div>
-          <div>
-            <div>vm-host-001</div>
-            <div>online</div>
-            <div>5%</div>
-            <div>10%</div>
-          </div>
-          <div>
-            <div>vm-host-003</div>
-            <div>online</div>
-            <div>10%</div>
-            <div>30%</div>
-          </div>
-          <div>
-            <div>vm-host-002</div>
-            <div>online</div>
-            <div>20%</div>
-            <div>35%</div>
-          </div>
-          <div>
-            <div>vm-host-011</div>
-            <div>offline</div>
-            <div>90%</div>
-            <div>80%</div>
-          </div>
-        </section>
-      `;
-    }
-
-    async connectedCallback() {
-      super.connectedCallback();
-      await this.updateComplete;
-      this.rows.forEach(r => (r.cells = r.querySelectorAll('div')));
-      this.ariaGridController.update();
-    }
-  }
-
-  registerElementSafely('grid-a11y-test-element', DemoAriaGridController);
-  return html`<grid-a11y-test-element></grid-a11y-test-element>`;
 }
 
 export function ariaPopupController() {
@@ -515,6 +326,8 @@ export function ariaPopupController() {
       display: none !important;
     }
   `;
+
+  @customElement('demo-popup') // @ts-ignore
   class DemoAriaPopup extends LitElement {
     ariaPopupController = new AriaPopupController(this);
     static styles = [styles];
@@ -528,6 +341,7 @@ export function ariaPopupController() {
     }
   }
 
+  @customElement('demo-trigger') // @ts-ignore
   class DemoAriaPopupTrigger extends LitElement {
     ariaPopupTriggerController = new AriaPopupTriggerController(this);
     static styles = [styles];
@@ -537,6 +351,7 @@ export function ariaPopupController() {
     }
   }
 
+  @customElement('demo-popup-controller') // @ts-ignore
   class DemoPopupController extends LitElement {
     @state() show = false;
 
@@ -551,14 +366,11 @@ export function ariaPopupController() {
       `;
     }
   }
-
-  registerElementSafely('demo-popup-controller', DemoPopupController);
-  registerElementSafely('demo-popup', DemoAriaPopup);
-  registerElementSafely('demo-trigger', DemoAriaPopupTrigger);
   return html`<demo-popup-controller></demo-popup-controller>`;
 }
 
 export function responsiveController() {
+  @customElement('demo-responsive-controller') // @ts-ignore
   class DemoResponsiveController extends LitElement {
     protected responsiveController = new ResponsiveController(this);
     @state() rect = {};
@@ -587,7 +399,267 @@ export function responsiveController() {
       this.addEventListener('cdsResizeChange', (e: any) => (this.rect = e.detail));
     }
   }
-
-  registerElementSafely('demo-responsive-controller', DemoResponsiveController);
   return html`<demo-responsive-controller></demo-responsive-controller>`;
+}
+
+export function ariaGridController() {
+  @customElement('grid-a11y-test-element') // @ts-ignore
+  class DemoAriaGridController extends LitElement {
+    @query('.grid', true) grid: HTMLElement;
+    @query('.rowgroup', true) rowGroup: HTMLElement;
+    @query('.columnrow', true) columnRow: HTMLElement;
+    @query('.columngroup', true) columnGroup: HTMLElement;
+    @queryAll('.row') rows: NodeListOf<HTMLElement>;
+    @queryAll('.cell') cells: NodeListOf<HTMLElement>;
+    @queryAll('.column') columns: NodeListOf<HTMLElement>;
+
+    protected ariaGridController = new AriaGridController(this);
+    protected gridKeyNavigationController = new KeyNavigationGridController(this);
+    protected gridRangeSelectionController = new GridRangeSelectionController(this);
+
+    render() {
+      return html`
+        <div class="grid">
+          <div class="columngroup">
+            <div class="columnrow">
+              <div class="column">Host</div>
+              <div class="column">Status</div>
+              <div class="column">CPU</div>
+              <div class="column">Memory</div>
+            </div>
+          </div>
+          <div class="rowgroup">
+            ${getVMData().slice(0, 10).map(entry => html`
+            <div class="row">
+              <div class="cell">${entry.id}</div>
+              <div class="cell">${entry.status}</div>
+              <div class="cell">${entry.cpu}</div>
+              <div class="cell">${entry.memory}</div>
+            </div>`)}
+          </div>
+        </div>
+      `;
+    }
+
+    static styles = [
+      baseStyles,
+      css`
+        :host {
+          width: 600px;
+          border: 1px solid #ccc;
+          background: #eee;
+          overflow: hidden;
+          display: block;
+        }
+
+        [role='row'] {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        [aria-rowindex]:nth-child(odd) {
+          filter: brightness(97%);
+        }
+
+        [aria-rowindex]:hover {
+          filter: brightness(94%);
+        }
+
+        [aria-colcount='5'] [role='row'] {
+          grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        }
+
+        [role='gridcell'],
+        [role='rowheader'],
+        [role='columnheader'] {
+          padding: 12px 18px;
+        }
+
+        [role='columnheader']:last-child,
+        [role='gridcell']:last-child,
+        [role='row']:last-child {
+          border-right: none;
+        }
+
+        [role='columnheader'] {
+          border-bottom: 1px solid #ccc;
+        }
+
+        [role='gridcell'] {
+          background: #fff;
+          outline-offset: -2px;
+          position: relative;
+          user-select: none;
+        }
+
+        [role='gridcell'][highlight]::after {
+          display: block;
+          position: absolute;
+          inset: 0;
+          background: hsl(200deg 100% 50% / 20%);
+          content: '';
+          pointer-events: none;
+        }
+
+        [aria-rowspan],
+        [role='rowheader'],
+        [role='columnheader'] {
+          background: none;
+          font-weight: 500;
+        }
+      `,
+    ];
+  }
+  return html`<grid-a11y-test-element></grid-a11y-test-element>`;
+}
+
+export function gridRangeSelection() {
+  @customElement('grid-range-selection-test-element') // @ts-ignore
+  class DemoGridRangeSelectionController extends LitElement {
+    @query('section') grid: HTMLElement;
+    @query('section') rowGroup: HTMLElement;
+    @queryAll('section .row') rows: NodeListOf<HTMLElement>;
+    @queryAll('section .cell') cells: NodeListOf<HTMLElement>;
+
+    protected gridRangeSelectionController = new GridRangeSelectionController(this);
+    protected gridKeyNavigationController = new KeyNavigationGridController(this);
+    protected ariaReflectionController = new AriaReflectionController(this);
+    static styles = [baseStyles, buttonGridStyles];
+
+    @state() private items = Array.from(Array(10).keys()).map(() => Array.from(Array(10).keys()));
+    @state() private selected = '0,0';
+    @state() private focused = '';
+
+    render() {
+      return html`
+        <div cds-layout="vertical gap:md">
+          <p cds-text="body">Selected: ${this.selected}</p>
+          <p cds-text="body">Focused: ${this.focused}</p>
+          <p cds-text="body">Selected Range: ...</p>
+          <section @cdsKeyChange=${(e: any) => (this.focused = e.detail.activeItem.textContent)} @rangeSelectionChange=${(e: any) => this.selected = e.detail}>
+            ${this.items.map((r, ri) => html`
+              <div class="row" aria-rowindex=${ri + 1}>
+                ${r.map((c, ci) => html`
+                <div class="cell" aria-colindex=${ci + 1}>
+                  <button ?selected=${this.selected === `${ri}-${c}`} @click=${(e: any) => (this.selected = e.target.innerText)}>
+                    ${ri}-${c}
+                  </button>
+                </div>`)}
+              </div>`)}
+          </section>
+        </div>
+      `;
+    }
+  }
+  return html`<grid-range-selection-test-element></grid-range-selection-test-element>`;
+}
+
+export function inlineFocusTrap() {
+  @customElement('inline-focus-trap-demo') // @ts-ignore
+  class DemoInlineFocusTrap extends LitElement {
+    protected inlineFocusTrapController = new InlineFocusTrapController(this);
+
+    static styles = [css`
+      :host {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 200px;
+      }
+    `]
+
+    render() {
+      return html`
+        <slot name="slot-two"></slot>
+        <button>shadow dom one</button>
+        <slot></slot>
+        <span>shadow dom content</span>
+        <button>shadow dom two</button>
+      `;
+    }
+  }
+
+  return html`
+  <inline-focus-trap-demo>
+    <button>light dom one</button>
+    <p>content</p>
+    <button cds-focus-first>light dom two</button>
+    <section><button>light dom three</button></section>
+    <button slot="slot-two">light dom four</button>
+  </inline-focus-trap-demo>
+  `;
+}
+
+export function nestedInlineFocusTrap() {
+  @customElement('inline-trap-demo') // @ts-ignore
+  class InlineTrapDemo extends LitElement {
+    @querySlotAll(':scope > *') keyListItems: NodeListOf<HTMLElement>;
+    protected inlineFocusTrapController = new InlineFocusTrapController(this);
+    protected focusFirstController = new FocusFirstController(this);
+    protected hiddenController = new HiddenController(this);
+    protected closableController = new ClosableController(this);
+
+    static styles = [css`
+      .private-host {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 200px;
+        border: 2px solid #ccc;
+        background: #fff;
+        padding: 12px;
+      }
+
+      :host([hidden]) {
+        display: none;
+      }
+
+      [cds-focus-trap-boundary] {
+        height: 2px;
+        width: 100%;
+        background: red;
+      }
+    `]
+
+    render() {
+      return html`
+        <div class="private-host">
+          <slot></slot>
+          <slot name="two"></slot>
+        </div>
+      `;
+    }
+  }
+
+  @customElement('interactive-nested-inline-focus-trap-demo') // @ts-ignore
+  class DemoInteractiveNestedInlineFocusTrap extends LitElement {
+    @state() show = false;
+    @state() showTwo = false;
+
+    render() {
+      return html`
+        <inline-trap-demo id="1">
+          <button cds-focus-first>one</button>
+          <button>two</button>
+          ${this.show ? html`
+          <inline-trap-demo id="2" @closeChange=${() => this.show = false}>
+            <button>four</button>
+            <button cds-focus-first>five</button>
+            <inline-trap-demo id="3" slot="two" ?hidden=${!this.showTwo} @closeChange=${() => this.showTwo = false}>
+              <button>six</button>
+              <button cds-focus-first>seven</button>
+              <button>eight</button>
+              <button @click=${() => this.showTwo = false}>close</button>
+            </inline-trap-demo>
+            <button @click=${() => this.show = false}>close</button>
+            <button @click=${() => this.showTwo = true}>show</button>
+          </inline-trap-demo>` : ''}
+          <button>three</button>
+          <button @click=${() => this.show = true}>show</button>
+        </inline-trap-demo>
+        `;
+    }
+  }
+
+  return html`<interactive-nested-inline-focus-trap-demo></interactive-nested-inline-focus-trap-demo>`;
 }

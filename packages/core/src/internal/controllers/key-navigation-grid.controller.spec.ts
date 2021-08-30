@@ -7,15 +7,14 @@
 import { html, LitElement } from 'lit';
 import { query } from 'lit/decorators/query.js';
 import { queryAll } from 'lit/decorators/query-all.js';
-import { customElement } from '@cds/core/internal';
+import { customElement, KeyNavigationGridController } from '@cds/core/internal';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
-import { KeyNavigationGridController } from './key-navigation-grid.controller.js';
 
 @customElement('grid-key-navigation-controller-test-element')
 class GridKeyNavigationControllerTestElement extends LitElement {
-  @query('section') keyGrid: HTMLElement;
-  @queryAll('section > div') keyGridRows: NodeListOf<HTMLElement>;
-  @queryAll('section > div > *') keyGridCells: NodeListOf<HTMLElement>;
+  @query('section') rowGroup: HTMLElement;
+  @queryAll('section > div') rows: NodeListOf<HTMLElement>;
+  @queryAll('section > div > *') cells: NodeListOf<HTMLElement>;
 
   keyNavigationGridController = new KeyNavigationGridController(this);
 
@@ -76,158 +75,139 @@ describe('grid-column-size.controller', () => {
   });
 
   it('should set tabindex -1 on grid cells and 0 for the first cell', async () => {
-    // await componentIsStable(component);
-    // component.keyNavigationGridController.initialize();
-
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('0');
-    expect(component.keyGridCells[8].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[8].getAttribute('tabindex')).toBe('-1');
   });
 
   it('should set activate a cell on left click', async () => {
-    // await componentIsStable(component);
-    // component.keyNavigationGridController.initialize();
-
     await componentIsStable(component);
-    component.keyGridCells[2].dispatchEvent(new MouseEvent('mousedown', { bubbles: true, buttons: 1 }));
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[1].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[2].getAttribute('tabindex')).toBe('0');
+    component.cells[2].dispatchEvent(new MouseEvent('mousedown', { bubbles: true, buttons: 1 }));
+    expect(component.cells[0].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[1].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[2].getAttribute('tabindex')).toBe('0');
   });
 
   it('should support arrow key navigation', async () => {
-    // await componentIsStable(component);
-    // component.keyNavigationGridController.initialize();
-
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
     await componentIsStable(component);
 
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[1].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[2].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[1].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[2].getAttribute('tabindex')).toBe('0');
 
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
     await componentIsStable(component);
 
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('0');
-    expect(component.keyGridCells[1].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[2].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[1].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[2].getAttribute('tabindex')).toBe('-1');
 
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowDown' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowDown' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowDown' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowDown' }));
     await componentIsStable(component);
 
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[3].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[6].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[3].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[6].getAttribute('tabindex')).toBe('0');
 
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowUp' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowUp' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowUp' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowUp' }));
     await componentIsStable(component);
 
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('0');
-    expect(component.keyGridCells[3].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[6].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[3].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[6].getAttribute('tabindex')).toBe('-1');
   });
 
   it('should support key navigation shortcuts from wcag spec', async () => {
     // https://www.w3.org/TR/wai-aria-practices/examples/grid/dataGrids.html#kbd_label
-    // await componentIsStable(component);
-    // component.keyNavigationGridController.initialize();
-
     // last in row
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'End' }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[1].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[2].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[1].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[2].getAttribute('tabindex')).toBe('0');
 
     // first in row
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home' }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('0');
-    expect(component.keyGridCells[1].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[2].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[1].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[2].getAttribute('tabindex')).toBe('-1');
 
     // last cell in grid
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End', ctrlKey: true, metaKey: true }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'End', ctrlKey: true, metaKey: true }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[17].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[17].getAttribute('tabindex')).toBe('0');
 
     // first cell in grid
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home', ctrlKey: true, metaKey: true }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home', ctrlKey: true, metaKey: true }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('0');
-    expect(component.keyGridCells[17].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[17].getAttribute('tabindex')).toBe('-1');
 
     // page down (every 5th cell)
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[12].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[12].getAttribute('tabindex')).toBe('0');
 
     // page up (every 5th cell)
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('0');
-    expect(component.keyGridCells[12].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[12].getAttribute('tabindex')).toBe('-1');
   });
 
   it('should not page beyond index when using page up or page down', async () => {
-    // await componentIsStable(component);
-    // component.keyNavigationGridController.initialize();
-
     // limit reached should focus first available cell
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('0');
-    expect(component.keyGridCells[12].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[15].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[12].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[15].getAttribute('tabindex')).toBe('-1');
 
     // limit reached should focus last available cell
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[12].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[15].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[12].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[15].getAttribute('tabindex')).toBe('0');
   });
 
   it('should invert directions when in RTL mode', async () => {
     await componentIsStable(component);
     component.dir = 'rtl';
-    // component.keyNavigationGridController.initialize();
 
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[1].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[2].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[1].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[2].getAttribute('tabindex')).toBe('0');
 
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
     await componentIsStable(component);
-    expect(component.keyGridCells[0].getAttribute('tabindex')).toBe('0');
-    expect(component.keyGridCells[1].getAttribute('tabindex')).toBe('-1');
-    expect(component.keyGridCells[2].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[0].getAttribute('tabindex')).toBe('0');
+    expect(component.cells[1].getAttribute('tabindex')).toBe('-1');
+    expect(component.cells[2].getAttribute('tabindex')).toBe('-1');
   });
 
   it('should focus first focusable item if more than one focusable item exists within cell', async () => {
-    // await componentIsStable(component);
-    // component.keyNavigationGridController.initialize();
-
     await componentIsStable(component);
-    component.keyGrid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End', ctrlKey: true, metaKey: true }));
+    component.rowGroup.dispatchEvent(new KeyboardEvent('keydown', { code: 'End', ctrlKey: true, metaKey: true }));
     await componentIsStable(component);
-    expect(component.keyGridCells[17].getAttribute('tabindex')).toBe('0');
-    expect(component.shadowRoot.activeElement).toEqual(component.keyGridCells[17].querySelectorAll('button')[0]);
-    expect(component.shadowRoot.activeElement).not.toEqual(component.keyGridCells[17].querySelectorAll('button')[1]);
+    expect(component.cells[17].getAttribute('tabindex')).toBe('0');
+    expect(component.shadowRoot.activeElement).toEqual(component.cells[17].querySelectorAll('button')[0]);
+    expect(component.shadowRoot.activeElement).not.toEqual(component.cells[17].querySelectorAll('button')[1]);
   });
 });

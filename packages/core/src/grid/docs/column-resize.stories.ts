@@ -9,7 +9,7 @@ export default {
 export function columnResize() {
   return html`
   <cds-grid aria-label="column resize datagrid demo" height="360">
-    <cds-grid-column resizable>Host</cds-grid-column>
+    <cds-grid-column resizable width="200">Host</cds-grid-column>
     <cds-grid-column resizable>Status</cds-grid-column>
     <cds-grid-column resizable>CPU</cds-grid-column>
     <cds-grid-column>Memory</cds-grid-column>

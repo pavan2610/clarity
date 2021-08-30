@@ -7,10 +7,10 @@
 import { html, LitElement } from 'lit';
 import { customElement, state } from '@cds/core/internal';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
-import { ColumnSizeType, GridColumnGroupSize, GridLayoutController } from './grid-layout.controller.js';
+import { Column, GridLayoutController } from './grid-layout.controller.js';
 
 const columns = [document.createElement('div'), document.createElement('div'), document.createElement('div')].map(
-  (c: ColumnSizeType, i) => {
+  (c: Column, i) => {
     c.width = `${(i + 1) * 100}px`;
     c.ariaColIndex = `${i + 1}`;
     return c;
@@ -18,8 +18,8 @@ const columns = [document.createElement('div'), document.createElement('div'), d
 );
 
 @customElement('grid-layout-test-element') // @ts-ignore
-class GridLayoutTestElement extends LitElement implements GridColumnGroupSize {
-  @state() columns = columns;
+class GridLayoutTestElement extends LitElement {
+  @state() columns = columns as unknown as NodeListOf<Column>;
   @state() columnLayout: 'fixed' | 'flex' = 'fixed';
   gridLayoutController = new GridLayoutController(this);
 }

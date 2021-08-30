@@ -2,6 +2,15 @@ import { LitElement, html } from 'lit';
 import { baseStyles, state } from '@cds/core/internal';
 import styles from './grid-placeholder.element.scss';
 
+/**
+ * Grid Placeholder
+ *
+ * ```typescript
+ * import '@cds/core/grid/register.js';
+ * ```
+ * 
+ * @element cds-grid-placeholder
+ */
 export class CdsGridPlaceholder extends LitElement {
   @state({ type: String, reflect: true, attribute: 'slot' }) slot = 'placeholder';
 

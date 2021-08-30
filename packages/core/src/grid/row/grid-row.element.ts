@@ -1,17 +1,24 @@
 import { LitElement, html } from 'lit';
-import { AriaReflectionController, baseStyles, property, querySlotAll } from '@cds/core/internal';
+import { baseStyles, property, querySlotAll } from '@cds/core/internal';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
 import { GridRowPositionController } from './grid-row-position.controller.js';
 import styles from './grid-row.element.scss';
 
+/**
+ * Grid Row
+ *
+ * ```typescript
+ * import '@cds/core/grid/register.js';
+ * ```
+ * 
+ * @element cds-grid-row
+ */
 export class CdsGridRow extends LitElement {
   @property({ type: Boolean }) selected: boolean;
 
   @property({ type: String }) position: 'fixed' | 'sticky' | '';
 
   @querySlotAll('cds-grid-cell') cells: NodeListOf<CdsGridCell>;
-
-  protected ariaReflectionController = new AriaReflectionController(this);
 
   protected gridRowPositionController = new GridRowPositionController(this);
 

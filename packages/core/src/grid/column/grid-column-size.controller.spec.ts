@@ -4,14 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { html, LitElement } from 'lit';
-import { query } from 'lit/decorators/query.js';
-import { customElement } from '@cds/core/internal';
-// import { CdsActionResize } from '@cds/core/actions';
+import { html } from 'lit';
 import { createTestElement, removeTestElement, componentIsStable } from '@cds/core/test';
-// import { GridColumnSizeController } from './grid-column-size.controller.js';
-import '@cds/core/grid/register.js';
 import { CdsGrid, CdsGridColumn, CdsGridCell } from '@cds/core/grid';
+import '@cds/core/grid/register.js';
 
 describe('grid-column-size.controller', () => {
   let element: HTMLElement;
@@ -47,6 +43,7 @@ describe('grid-column-size.controller', () => {
 
   it('should lock width to 36px and 0 padding when column is of type action', async () => {
     await componentIsStable(columns[0]);
+    expect(columns[0].getBoundingClientRect().width).toBe(36);
     expect(grid.style.getPropertyValue('--ch1')).toBe('36px');
     expect(getComputedStyle(columns[0]).getPropertyValue('--padding-block').trim()).toBe('0');
 
@@ -55,22 +52,78 @@ describe('grid-column-size.controller', () => {
   });
 
   it('should set CSS Custom Property for column custom width values', async () => {
-    columns[0].width = '200px';
-    await componentIsStable(columns[0]);
-    expect(grid.style.getPropertyValue('--ch1')).toBe('200px');
+    columns[1].width = '200px';
+    await componentIsStable(columns[1]);
+    expect(grid.style.getPropertyValue('--ch2')).toBe('200px');
+    expect(columns[1].getBoundingClientRect().width).toBe(200);
   });
 
   it('should allow numeric width', async () => {
     columns[2].width = '200';
     await componentIsStable(columns[2]);
     expect(grid.style.getPropertyValue('--ch3')).toBe('200px');
+    expect(columns[2].getBoundingClientRect().width).toBe(200);
+  });
+
+  it('should allow percentage widths', async () => {
+    columns[1].width = '20%';
+    await componentIsStable(columns[2]);
+    expect(grid.style.getPropertyValue('--ch1')).toBe('36px');
+    expect(grid.style.getPropertyValue('--ch2')).toBe('20%');
+    expect(grid.style.getPropertyValue('--ch3')).toBe('');
+    expect(columns[0].getBoundingClientRect().width).toBe(36);
+    expect(Math.floor(columns[1].getBoundingClientRect().width)).toBe(99);
+    expect(Math.floor(columns[2].getBoundingClientRect().width)).toBe(362);
   });
 
   it('should resize a column when resizeChange occurs', async () => {
     await componentIsStable(grid);
     await componentIsStable(columns[1]);
+    expect(columns[0].getBoundingClientRect().width).toBe(36);
+    expect(columns[1].getBoundingClientRect().width).toBe(231);
+    expect(columns[2].getBoundingClientRect().width).toBe(231);
+
     columns[1].shadowRoot.dispatchEvent(new CustomEvent('resizeChange', { detail: -10, bubbles: true }));
     await componentIsStable(columns[0]);
-    expect(grid.style.getPropertyValue('--ch2')).toBe('488px');
+
+    expect(columns[0].getBoundingClientRect().width).toBe(36);
+    expect(columns[1].getBoundingClientRect().width).toBe(221);
+    expect(columns[2].getBoundingClientRect().width).toBe(241);
+
+    columns[1].shadowRoot.dispatchEvent(new CustomEvent('resizeChange', { detail: 20, bubbles: true }));
+    await componentIsStable(columns[0]);
+
+    expect(columns[0].getBoundingClientRect().width).toBe(36);
+    expect(columns[1].getBoundingClientRect().width).toBe(241);
+    expect(columns[2].getBoundingClientRect().width).toBe(231);
+  });
+
+  it('should resize fixed width columns', async () => {
+    columns[1].width = '200';
+    await componentIsStable(grid);
+    await componentIsStable(columns[1]);
+    expect(columns[0].getBoundingClientRect().width).toBe(36);
+    expect(columns[1].getBoundingClientRect().width).toBe(200);
+    expect(columns[2].getBoundingClientRect().width).toBe(262);
+
+    columns[1].shadowRoot.dispatchEvent(new CustomEvent('resizeChange', { detail: 10, bubbles: true }));
+    await componentIsStable(columns[1]);
+
+    expect(columns[0].getBoundingClientRect().width).toBe(36);
+    expect(columns[1].getBoundingClientRect().width).toBe(210);
+    expect(columns[2].getBoundingClientRect().width).toBe(262);
+  });
+
+  it('should use provided minimum width to limit resize', async () => {
+    columns[1].width = '200';
+    await componentIsStable(columns[1]);
+
+    columns[1].shadowRoot.dispatchEvent(new CustomEvent('resizeChange', { detail: -100, bubbles: true }));
+    await componentIsStable(columns[1]);
+
+    expect(grid.style.getPropertyValue('--ch2')).toBe('200px');
+    expect(columns[0].getBoundingClientRect().width).toBe(36);
+    expect(columns[1].getBoundingClientRect().width).toBe(200);
+    expect(columns[2].getBoundingClientRect().width).toBe(262);
   });
 });

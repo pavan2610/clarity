@@ -64,7 +64,8 @@ slot {
 :host([tabindex='0']:focus),
 :host([tabindex='0']:focus) [focusable],
 :host([_focused]) [focusable],
-:host([_focused]) .input {
+:host([_focused]) .input,
+[tabindex='0'][focusable]:focus {
   outline: Highlight solid $cds-global-space-2;
   outline-offset: var(--outline-offset);
 }
@@ -73,7 +74,8 @@ slot {
   :host([tabindex='0']:focus),
   :host([tabindex='0']:focus) [focusable],
   :host([_focused]) [focusable],
-  :host([_focused]) .input {
+  :host([_focused]) .input,
+  [tabindex='0'][focusable]:focus {
     outline-color: -webkit-focus-ring-color;
   }
 }

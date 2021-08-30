@@ -14,10 +14,8 @@ import { CdsGrid } from '../grid/grid.element.js';
 describe('grid-column-position.controller', () => {
   let grid: CdsGrid;
   let firstColumn: CdsGridColumn;
-  let secondColumn: CdsGridColumn;
   let lastColumn: CdsGridColumn;
   let firstCell: CdsGridCell;
-  let lastCell: CdsGridCell;
   let element: HTMLElement;
 
   beforeEach(async () => {
@@ -38,10 +36,8 @@ describe('grid-column-position.controller', () => {
 
     grid = element.querySelector<CdsGrid>('cds-grid');
     firstColumn = element.querySelector<CdsGridColumn>('#first-grid-column');
-    secondColumn = element.querySelector<CdsGridColumn>('#second-grid-column');
     lastColumn = element.querySelector<CdsGridColumn>('#last-grid-column');
     firstCell = element.querySelector<CdsGridCell>('#first-grid-cell');
-    lastCell = element.querySelector<CdsGridCell>('#last-grid-cell');
   });
 
   afterEach(() => {

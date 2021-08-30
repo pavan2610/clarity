@@ -16,6 +16,7 @@ class BrowserFeatures {
     js: true,
     flexGap: supportsFlexGap(),
     ariaReflect: supportsAriaReflect(),
+    roleReflect: supportsRoleReflect()
   };
 
   constructor() {
@@ -56,5 +57,9 @@ function supportsFlexGap(): boolean {
  * https://developer.mozilla.org/en-US/docs/Web/API/Element/ariaLabel
  */
 function supportsAriaReflect() {
-  return !Object.getPrototypeOf(document).hasOwnProperty('ariaLabel');
+  return Element.prototype.hasOwnProperty('ariaLabel');
+}
+
+function supportsRoleReflect() {
+  return Element.prototype.hasOwnProperty('role');
 }

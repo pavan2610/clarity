@@ -1,8 +1,7 @@
 import { html, LitElement } from 'lit';
 import { queryAll } from 'lit/decorators/query-all.js';
-import { customElement } from '@cds/core/internal';
+import { customElement, KeyNavigationListController } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
-import { KeyNavigationListController } from './key-navigation-list.controller.js';
 
 @customElement('key-navigation-list-controller-test-element')
 class KeyNavigationListControllerTestElement extends LitElement {

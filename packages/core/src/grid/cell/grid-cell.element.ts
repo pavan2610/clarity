@@ -1,10 +1,17 @@
 import { LitElement, html } from 'lit';
-import { baseStyles, AriaReflectionController } from '@cds/core/internal';
+import { baseStyles } from '@cds/core/internal';
 import styles from './grid-cell.element.scss';
 
+/**
+ * Grid Cell
+ *
+ * ```typescript
+ * import '@cds/core/grid/register.js';
+ * ```
+ * 
+ * @element cds-grid-cell
+ */
 export class CdsGridCell extends LitElement {
-  protected ariaReflectionController = new AriaReflectionController(this);
-
   static styles = [baseStyles, styles];
 
   render() {

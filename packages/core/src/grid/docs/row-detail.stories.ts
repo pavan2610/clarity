@@ -33,11 +33,13 @@ export function rowDetail() {
             <cds-grid-cell>${entry.memory}%</cds-grid-cell>
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
-          <cds-grid-detail mobile id="row-detail" ?hidden=${!this.currentVM} .anchor=${this.anchor} @closeChange=${() => (this.currentVM = null) as any}>
+          <cds-grid-detail id="row-detail" ?hidden=${!this.currentVM} .anchor=${this.anchor} @closeChange=${() => (this.currentVM = null) as any}>
+            <cds-button>light dom one</cds-button>
             <h2 cds-text="section">${this.currentVM?.id}</h2>
             <p cds-text="body">Status: ${this.currentVM?.status}</p>
             <p cds-text="body">CPU: ${this.currentVM?.cpu}%</p>
             <p cds-text="body">Memory: ${this.currentVM?.memory}%</p>
+            <cds-button cds-focus-first>light dom two</cds-button>
           </cds-grid-detail>
         </cds-grid>`;
     }
@@ -90,14 +92,18 @@ export function staticRowDetail() {
         <cds-grid-cell>30%</cds-grid-cell>
       </cds-grid-row>
       <cds-grid-footer></cds-grid-footer>
-      <cds-grid-detail mobile id="row-detail" anchor="expand-vm-host-003">
+      <cds-grid-detail id="row-detail" anchor="expand-vm-host-003">
         <div cds-layout="vertical gap:lg">
+          <button>test</button>  
           <h2 cds-text="section">vm-host-001</h2>
           <p cds-text="body">Status: online</p>
           <p cds-text="body">CPU: 5%</p>
           <p cds-text="body">Memory: 10%</p>
+          <button cds-focus-first>test</button>
         </div>
       </cds-grid-detail>
     </cds-grid>
+
+    <button>test</button>
   `;
 }
