@@ -1,5 +1,8 @@
 import { ReactiveControllerHost } from 'lit';
 
+/**
+ * Provide a cooresponding `hiddenChange` event for components implementing hidden
+ */
 export class HiddenController {
   private observer: MutationObserver;
 

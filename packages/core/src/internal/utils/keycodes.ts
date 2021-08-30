@@ -136,21 +136,3 @@ function wereNonModifierComboKeysPressed(keyCombo: string, evt: KeyboardEvent): 
 
   return keyArray.reduce((acc: boolean, currentKey: string) => acc && keyWasEvented(evt, currentKey), true);
 }
-
-export function getTabableItems(el: HTMLElement) {
-  const tabableSelector = [
-    'a[href]',
-    'area[href]',
-    'input:not([disabled]):not([readonly])',
-    'button:not([disabled])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    'iframe',
-    'object',
-    'embed',
-    '*[tabindex]',
-    '*[contenteditable=true]',
-    '[role=button]:not([disabled])',
-  ].join(',');
-  return Array.from(el.querySelectorAll(tabableSelector)) as HTMLElement[];
-}

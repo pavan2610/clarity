@@ -7,6 +7,12 @@ interface ClosableConfig {
   closable?: () => boolean;
 }
 
+/**
+ * Given a closable component provides the following
+ * - close on escape
+ * - focus to trigger
+ * - close method for component specific events
+ */
 export class ClosableController {
   private config: ClosableConfig;
   private priorActiveElement: HTMLElement;

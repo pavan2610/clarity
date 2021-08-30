@@ -1,6 +1,9 @@
 import { ReactiveControllerHost } from 'lit';
-import { getFlattenedFocusableItems } from '@cds/core/internal';
+import { getFlattenedFocusableItems } from '../utils/traversal.js';
 
+/**
+ * Provides a focus first behavior to any component via the cds-focus-first attribute
+ */
 export class FocusFirstController {
   constructor(private host: ReactiveControllerHost & HTMLElement) {
     this.host.addController(this);

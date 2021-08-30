@@ -14,6 +14,9 @@ export interface DraggableListControllerConfig {
   manageFocus?: boolean;
 }
 
+/**
+ * Provides support for HTML5 native drag and drop to a component
+ */
 export class DraggableListController {
   private get items() {
     return Array.from(this.hostRoot.querySelectorAll<DraggableItem>(`${this.config.item}[draggable=true]`));

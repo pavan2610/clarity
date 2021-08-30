@@ -10,6 +10,17 @@ import styles from './grid-cell.element.scss';
  * ```
  * 
  * @element cds-grid-cell
+ * @csspart cell
+ * @cssprop --border-right
+ * @cssprop --border-left
+ * @cssprop --min-height
+ * @cssprop --min-width
+ * @cssprop --font-size
+ * @cssprop --justify-content
+ * @cssprop --padding-block
+ * @cssprop --padding-inline-start
+ * @cssprop --padding-inline-end
+ * @cssprop --color
  */
 export class CdsGridCell extends LitElement {
   static styles = [baseStyles, styles];

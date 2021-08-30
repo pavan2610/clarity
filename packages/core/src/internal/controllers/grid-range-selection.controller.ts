@@ -7,6 +7,9 @@ type GridRange = {
   rangeSelection?: boolean;
 }
 
+/**
+ * Given a 2d array grid structure provide a highlight/range selection of given cells
+ */
 export class GridRangeSelectionController {
   private selectionActive = false;
   private firstCell: HTMLElement;

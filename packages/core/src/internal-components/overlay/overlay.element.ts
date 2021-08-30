@@ -5,7 +5,6 @@
  */
 
 import {
-  AriaReflectionController,
   Animatable,
   animate,
   baseStyles,
@@ -101,8 +100,6 @@ export class CdsInternalOverlay extends CdsBaseFocusTrap implements Animatable {
   role = 'dialog';
 
   protected ariaPopupController = new AriaPopupController(this);
-
-  protected ariaReflectionController = new AriaReflectionController(this);
 
   get trigger() {
     return this.focusTrap.previousFocus;

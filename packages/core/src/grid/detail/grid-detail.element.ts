@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { AriaModalController, AriaPopupController, AriaReflectionController, baseStyles, ClosableController, InlineFocusTrapController, HiddenController, i18n, I18nService, property, ResponsiveController, state } from '@cds/core/internal';
+import { AriaModalController, AriaPopupController, baseStyles, ClosableController, InlineFocusTrapController, HiddenController, i18n, I18nService, property, ResponsiveController, state, FocusFirstController } from '@cds/core/internal';
 import styles from './grid-detail.element.scss';
 
 /**
@@ -11,6 +11,14 @@ import styles from './grid-detail.element.scss';
  * 
  * @element cds-grid-detail
  * @event closeChange
+ * @csspart private-host
+ * @csspart detail
+ * @csspart caret
+ * @csspart close
+ * @cssprop --width
+ * @cssprop --inset-inline-start
+ * @cssprop --inset-inline-end
+ * @cssprop --backdrop-background
  */
 export class CdsGridDetail extends LitElement {
   @property({ type: String }) anchor: HTMLElement | string;
@@ -25,13 +33,13 @@ export class CdsGridDetail extends LitElement {
 
   protected ariaPopupController = new AriaPopupController(this);
 
-  protected ariaReflectionController = new AriaReflectionController(this);
-
   protected hiddenController = new HiddenController(this);
   
   protected closableController = new ClosableController(this);
 
   protected inlineFocusTrapController= new InlineFocusTrapController(this);
+
+  protected focusFirstController = new FocusFirstController(this);
 
   protected responsiveController = new ResponsiveController(this, { element: this.parentElement });
 
@@ -45,24 +53,28 @@ export class CdsGridDetail extends LitElement {
 
   render() {
     return html`
-    <div class="private-host">
-      <div class="detail">
+    <div part="private-host">
+      <div part="detail">
         <slot></slot>
         <cds-action
           @click=${() => this.closableController.close()}
           shape="times"
           aria-label=${this.i18n.closeDetails}
+          part="close"
           cds-focus-first
         ></cds-action>
       </div>
-      <div class="caret"></div>
+      <div part="caret"></div>
     </div>`;
   }
 
   constructor() {
     super();
     this.addEventListener('cdsResizeChange', (e: any) => (this.overlay = e.detail.width > 500 ? '' : 'full'));
-    this.addEventListener('hiddenChange', (e: any) => this.toggleScrollLock(e.detail));
+    this.addEventListener('hiddenChange', (e: any) => {
+      this.toggleScrollLock(e.detail);
+      this.toggleAnchorHover();
+    });
   }
 
   async updated(props: Map<string, any>) {
@@ -71,6 +83,19 @@ export class CdsGridDetail extends LitElement {
 
     if (props.has('anchor') && this.anchor) {
       this.setAnchorPointer(props.get('anchor'));
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.trigger?.closest('cds-grid-row')?.removeAttribute('_detail-row');
+  }
+
+  private toggleAnchorHover() {
+    if (this.hidden){
+      this.trigger?.closest('cds-grid-row')?.removeAttribute('_detail-row');
+    } else {
+      this.trigger?.closest('cds-grid-row')?.setAttribute('_detail-row', '');
     }
   }
 
@@ -88,8 +113,8 @@ export class CdsGridDetail extends LitElement {
       previousAnchor?.closest('cds-grid-row')?.removeAttribute('_detail-row');
     }
 
+    this.toggleAnchorHover();
     const top = this.trigger?.getBoundingClientRect()?.top - this?.getBoundingClientRect().top - 8;
-    this.trigger?.closest('cds-grid-row')?.setAttribute('_detail-row', '');
     this.style.setProperty('--caret-top', `${top}px`);
   }
 

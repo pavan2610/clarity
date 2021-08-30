@@ -1,6 +1,7 @@
 import { ReactiveControllerHost } from 'lit';
 import { onChildListMutation, onFirstInteraction } from '../utils/events.js';
-import { getTabableItems } from '../utils/keycodes.js';
+import { getFlattenedFocusableItems } from '../utils/traversal.js';
+import { isElementTextInputType } from '../utils/dom.js';
 
 export interface KeyNavigationGridConfig {
   rowGroup: HTMLElement;
@@ -8,6 +9,9 @@ export interface KeyNavigationGridConfig {
   cells: NodeListOf<HTMLElement>;
 }
 
+/**
+ * Given a 2d array grid structure provide keyboard navigation following aria grid spec
+ */
 export class KeyNavigationGridController {
   private observers: MutationObserver[] = [];
 
@@ -47,13 +51,8 @@ export class KeyNavigationGridController {
     }
   }
 
-  private elementInputType(_el: HTMLElement) {
-    // return /^(?:input|select|textarea)$/i.test(el.nodeName);
-    return false;
-  }
-
   private focusCell(e: KeyboardEvent) {
-    if (this.validKeyCode(e) && !this.elementInputType(e.target as HTMLElement)) {
+    if (this.validKeyCode(e) && !isElementTextInputType(e.target as any)) {
       const { x, y } = this.getNextItemCoordinate(e);
       const activeItem = this.host.rows[y].children[x] as HTMLElement;
       this.setActiveCell(e, activeItem);
@@ -83,7 +82,7 @@ export class KeyNavigationGridController {
 
     activeCell.setAttribute('tabindex', '0');
 
-    const items = getTabableItems(activeCell);
+    const items = getFlattenedFocusableItems(activeCell);
     const item = items[0] ?? activeCell;
     item.focus();
 

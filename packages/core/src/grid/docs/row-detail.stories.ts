@@ -34,12 +34,10 @@ export function rowDetail() {
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
           <cds-grid-detail id="row-detail" ?hidden=${!this.currentVM} .anchor=${this.anchor} @closeChange=${() => (this.currentVM = null) as any}>
-            <cds-button>light dom one</cds-button>
             <h2 cds-text="section">${this.currentVM?.id}</h2>
             <p cds-text="body">Status: ${this.currentVM?.status}</p>
             <p cds-text="body">CPU: ${this.currentVM?.cpu}%</p>
             <p cds-text="body">Memory: ${this.currentVM?.memory}%</p>
-            <cds-button cds-focus-first>light dom two</cds-button>
           </cds-grid-detail>
         </cds-grid>`;
     }

@@ -6,6 +6,7 @@
 
 /** @internal private module to Clarity Core */
 
+import './polyfills/register.js';
 import styles from './base/base.element.scss';
 
 export const baseStyles = styles;
@@ -19,7 +20,6 @@ export * from './controllers/aria-grid.controller.js';
 export * from './controllers/aria-modal.controller.js';
 export * from './controllers/aria-popup.controller.js';
 export * from './controllers/aria-popup-trigger.controller.js';
-export * from './controllers/aria-reflection.controller.js';
 export * from './controllers/closable.controller.js';
 export * from './controllers/draggable-list.controller.js';
 export * from './controllers/focus-first.controller.js';

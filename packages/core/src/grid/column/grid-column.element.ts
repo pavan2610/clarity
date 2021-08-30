@@ -19,6 +19,13 @@ import styles from './grid-column.element.scss';
  * ```
  * 
  * @element cds-grid-column
+ * @csspart column
+ * @cssprop --min-height
+ * @cssprop --min-width
+ * @cssprop --justify-content
+ * @cssprop --padding-block
+ * @cssprop --padding-inline-start
+ * @cssprop --padding-inline-end
  */
 export class CdsGridColumn extends LitElement {
   @i18n() i18n = I18nService.keys.grid;

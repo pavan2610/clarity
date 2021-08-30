@@ -18,13 +18,13 @@
   inset-inline-end: var(--inset-inline-end);
 }
 
-.private-host {
+[part='private-host'] {
   position: relative;
   height: 100%;
   outline: 0;
 }
 
-.detail {
+[part='detail'] {
   background: $cds-alias-object-container-background;
   z-index: 998;
   border: 0;
@@ -45,13 +45,13 @@
   inset: 0 !important;
 }
 
-cds-action {
+[part='close'] {
   position: absolute;
   top: $cds-global-space-6;
   inset-inline-end: $cds-global-space-6;
 }
 
-.caret {
+[part='caret'] {
   background: $cds-alias-object-container-background;
   width: $cds-global-space-4;
   height: calc(var(--row-height) - #{$cds-global-space-2});

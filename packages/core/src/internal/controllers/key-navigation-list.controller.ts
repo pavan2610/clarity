@@ -1,5 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
-import { getTabableItems } from '../utils/keycodes.js';
+import { getFlattenedFocusableItems } from '../utils/traversal.js';
 
 export interface KeyNavigationListConfig {
   shadowRoot?: boolean;
@@ -10,6 +10,10 @@ export interface KeyNavigationListConfig {
   loop?: boolean;
 }
 
+/**
+ * Provides key list naviation behavior
+ * https://webaim.org/techniques/keyboard/
+ */
 export class KeyNavigationListController {
   private get listItems() {
     return (this.host as any)[this.config.keyListItems] as NodeListOf<HTMLElement>;
@@ -91,7 +95,7 @@ export class KeyNavigationListController {
         activeItem.setAttribute('tabindex', '0');
       }
 
-      const items = getTabableItems(activeItem);
+      const items = getFlattenedFocusableItems(activeItem);
       const item = items[0] ?? activeItem;
       item.focus();
       e.preventDefault();

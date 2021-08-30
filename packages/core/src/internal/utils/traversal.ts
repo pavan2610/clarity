@@ -25,7 +25,7 @@ export function getFlattenedFocusableItems(element: Node, depth = 10) {
 
 export function getFlattenedDOMTree(node: any, depth = 10): any {
   return Array.from(getChildren(node)).reduce((prev: any[], next: any) => {
-    return [...prev, next, ...Array.from(getChildren(next)).map((i: any) => ([i, getFlattenedDOMTree(i)]))];
+    return [...prev, [next, [...Array.from(getChildren(next)).map((i: any) => ([i, getFlattenedDOMTree(i, depth)]))]]];
   }, []).flat(depth);
 }
 
@@ -40,23 +40,4 @@ export function getChildren(node: any) {
   } else {
     return node.children;
   }
-}
-
-declare global {
-  interface Array<T> {
-      at(o: number): T;
-  }
-}
-
-function at(this: { value: (n: any) => any; writable: true; enumerable: false; configurable: true; }, n: any) {
-  let that: any = this; // @ts-ignore
-	n = Math.trunc(n) || 0;
-	if (n < 0) n += (that as any).length;
-	if (n < 0 || n >= that.length) return undefined;
-	return that[n];
-}
-
-const TypedArray = Reflect.getPrototypeOf(Int8Array);
-for (const C of [Array, String, TypedArray]) {
-  Object.defineProperty((C as any).prototype, "at", { value: at, writable: true, enumerable: false, configurable: true });
 }

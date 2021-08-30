@@ -10,6 +10,8 @@ import styles from './grid-footer.element.scss';
  * ```
  * 
  * @element cds-grid-footer
+ * @csspart footer
+ * @cssprop --min-height
  */
 export class CdsGridFooter extends LitElement {
   @state({ type: String, reflect: true, attribute: 'slot' }) slot = 'footer';
@@ -18,7 +20,7 @@ export class CdsGridFooter extends LitElement {
 
   render() {
     return html`
-      <div class="private-host">
+      <div part="footer">
         <slot></slot>
       </div>
     `;

@@ -9,7 +9,6 @@ import {
   KeyNavigationGridController,
   AriaGridController,
   querySlotAll,
-  AriaReflectionController,
   GridRangeSelectionController,
   ScrollableVisibilityController
 } from '@cds/core/internal';
@@ -28,6 +27,16 @@ import styles from './grid.element.scss';
  * 
  * @element cds-grid
  * @event rangeSelectionChange
+ * @cssprop --background
+ * @cssprop --body-height
+ * @cssprop --scrollbar-background
+ * @cssprop --scrollbar-thumb-background
+ * @cssprop --column-height
+ * @cssprop --row-height
+ * @cssprop --scroll-padding-top
+ * @cssprop --row-content-visibility
+ * @cssprop --column-text-align
+ * @cssprop --cell-text-algin
  */
 export class CdsGrid extends LitElement {
   @property({ type: String }) columnLayout: 'fixed' | 'flex' = 'fixed';
@@ -57,8 +66,6 @@ export class CdsGrid extends LitElement {
   protected ariaGridController = new AriaGridController(this);
 
   protected gridLayoutController = new GridLayoutController(this);
-
-  protected ariaReflectionController = new AriaReflectionController(this);
 
   protected keyNavigationGridController = new KeyNavigationGridController(this);
 

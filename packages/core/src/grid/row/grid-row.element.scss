@@ -49,12 +49,15 @@
   min-height: var(--min-height);
 }
 
-:host(:host:focus-within),
-:host(:host:focus-within) ::slotted(cds-grid-cell),
-:host([selected]),
+// :host(:host:focus-within),
+// :host(:host:focus-within) ::slotted(cds-grid-cell),
 [part='row']:hover,
 [part='row']:hover ::slotted(cds-grid-cell) {
   --background: #{$cds-alias-object-interaction-background-hover};
+}
+
+:host([selected]) {
+  --background: #{$cds-alias-object-interaction-background-selected};
 }
 
 // disable hover when row detail is active

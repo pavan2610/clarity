@@ -12,7 +12,8 @@
   --font-size: #{$cds-global-typography-font-size-4};
   --justify-content: var(--cell-justify-content, start);
   --padding-block: #{$cds-global-space-3};
-  --padding-inline: #{$cds-global-space-6};
+  --padding-inline-start: #{$cds-global-space-6};
+  --padding-inline-end: #{$cds-global-space-6};
   --color: #{$cds-global-typography-color-500};
   display: block;
   outline: 0 !important;
@@ -28,8 +29,10 @@
   border-right: var(--border-right);
   min-width: var(--min-width);
   font-size: var(--font-size);
+  /* safari fallback for padding-inline */
+  padding-inline-start: var(--padding-inline-start);
+  padding-inline-end: var(--padding-inline-end);
   padding-block: var(--padding-block);
-  padding-inline: var(--padding-inline);
   color: var(--color);
   text-align: left;
   display: flex;
@@ -37,13 +40,15 @@
   line-height: 1em;
   align-items: center;
   width: 100%;
+  height: 100%;
   position: relative;
   --cell-height: var(--min-height); // alias for slotted elements
 }
 
 :host([type='action']) {
   --padding-block: 0;
-  --padding-inline: 0;
+  --padding-inline-start: 0;
+  --padding-inline-end: 0;
 }
 
 :host([type='action']) [part='cell'] {

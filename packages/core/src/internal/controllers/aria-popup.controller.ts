@@ -1,5 +1,8 @@
 import { ReactiveControllerHost } from 'lit';
 
+/**
+ * Provides all nessesary aria-* attributes to create a vaild aria popup
+ */
 export class AriaPopupController {
   private observer: MutationObserver;
 

@@ -12,6 +12,11 @@ import styles from './grid-row.element.scss';
  * ```
  * 
  * @element cds-grid-row
+ * @csspart row
+ * @cssprop --border-top
+ * @cssprop --border-bottom
+ * @cssprop --background
+ * @cssprop --min-height
  */
 export class CdsGridRow extends LitElement {
   @property({ type: Boolean }) selected: boolean;

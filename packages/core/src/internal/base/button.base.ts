@@ -13,7 +13,6 @@ import { onAnyKey } from '../utils/keycodes.js';
 import { stopEvent } from './../utils/events.js';
 import { AriaPopupTriggerController } from '../controllers/aria-popup-trigger.controller.js';
 import { ActiveInteractionController } from '../controllers/active-interaction.controller.js';
-import { AriaReflectionController } from '../controllers/aria-reflection.controller.js';
 
 // @dynamic
 export class CdsBaseButton extends LitElement {
@@ -40,8 +39,6 @@ export class CdsBaseButton extends LitElement {
   @querySlot('cds-badge') protected badge: HTMLElement;
 
   protected ariaPopupAnchorController = new AriaPopupTriggerController(this);
-
-  protected ariaReflectionController = new AriaReflectionController(this);
 
   protected activeInteractionController = new ActiveInteractionController(this);
 

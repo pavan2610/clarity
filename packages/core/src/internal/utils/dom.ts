@@ -170,3 +170,7 @@ export function queryChildFromLightOrShadowDom(hostEl: Element, selector?: strin
 export function createFragment(tagString: string) {
   return document.createRange().createContextualFragment(tagString); // todo test
 }
+
+export function isElementTextInputType(e: HTMLInputElement) {
+  return /^(?:input|select|textarea)$/i.test(e.nodeName) && e.type !== 'radio' && e.type !== 'checkbox';
+}

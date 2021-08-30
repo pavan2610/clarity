@@ -19,7 +19,6 @@ import {
   ResponsiveController,
   GridRangeSelectionController,
   customElement,
-  AriaReflectionController,
   ClosableController,
   FocusFirstController
 } from '@cds/core/internal';
@@ -523,7 +522,6 @@ export function gridRangeSelection() {
 
     protected gridRangeSelectionController = new GridRangeSelectionController(this);
     protected gridKeyNavigationController = new KeyNavigationGridController(this);
-    protected ariaReflectionController = new AriaReflectionController(this);
     static styles = [baseStyles, buttonGridStyles];
 
     @state() private items = Array.from(Array(10).keys()).map(() => Array.from(Array(10).keys()));

@@ -1,5 +1,6 @@
-import { createFragment, getFlattenedFocusableItems } from '@cds/core/internal';
 import { ReactiveControllerHost } from 'lit';
+import { createFragment } from '../utils/dom.js';
+import { getFlattenedFocusableItems } from '../utils/traversal.js';
 
 /**
  * Focus Trap that given a DOM element creates a flattened tree traversal

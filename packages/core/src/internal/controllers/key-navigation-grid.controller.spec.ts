@@ -56,7 +56,7 @@ class GridKeyNavigationControllerTestElement extends LitElement {
   }
 }
 
-describe('grid-column-size.controller', () => {
+describe('grid-key-navigation.controller', () => {
   let component: GridKeyNavigationControllerTestElement;
   let element: HTMLElement;
 
@@ -210,4 +210,9 @@ describe('grid-column-size.controller', () => {
     expect(component.shadowRoot.activeElement).toEqual(component.cells[17].querySelectorAll('button')[0]);
     expect(component.shadowRoot.activeElement).not.toEqual(component.cells[17].querySelectorAll('button')[1]);
   });
+
+  // it('should not move focus if current focus in cell is contained within a text input type', async () => { // todo
+  //   await componentIsStable(component);
+  //   component.cells[17]
+  // });
 });

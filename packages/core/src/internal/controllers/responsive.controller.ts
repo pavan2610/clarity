@@ -5,6 +5,9 @@ interface ResponsiveConfig {
   element?: HTMLElement;
 }
 
+/**
+ * Provides a `cdsResizeChange` event when component dimensions are resized
+ */
 export class ResponsiveController {
   private observer: ResizeObserver;
   private resizeElement: HTMLElement;

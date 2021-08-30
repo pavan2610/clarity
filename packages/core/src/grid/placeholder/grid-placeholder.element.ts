@@ -10,6 +10,7 @@ import styles from './grid-placeholder.element.scss';
  * ```
  * 
  * @element cds-grid-placeholder
+ * @csspart placeholder
  */
 export class CdsGridPlaceholder extends LitElement {
   @state({ type: String, reflect: true, attribute: 'slot' }) slot = 'placeholder';

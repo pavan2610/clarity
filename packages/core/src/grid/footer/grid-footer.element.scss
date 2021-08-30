@@ -8,7 +8,7 @@
   --min-height: var(--column-height, #{$cds-alias-object-interaction-touch-target});
 }
 
-.private-host {
+[part='footer'] {
   min-height: var(--min-height);
   display: flex;
   align-items: center;

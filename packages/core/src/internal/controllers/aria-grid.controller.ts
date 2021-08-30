@@ -11,6 +11,10 @@ export interface AriaGrid {
   columnGroup: HTMLElement;
 }
 
+/**
+ * Provides all nessesary aria-* attributes to create a vaild aria grid
+ * https://www.w3.org/TR/wai-aria-practices/examples/grid/dataGrids.html
+ */
 export class AriaGridController {
   private observers: MutationObserver[] = [];
 

@@ -84,6 +84,9 @@ const config = {
       { input: './icon/shapes/*', output: './icon/shapes/*' },
       { input: './icon/icon.service.js', output: './icon/icon.service.js' },
     ],
+    explicitSideEffects: [
+      './src/internal/polyfills/register.js'
+    ]
   },
 };
 
