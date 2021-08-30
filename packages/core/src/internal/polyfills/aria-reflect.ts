@@ -13,7 +13,7 @@
 
 declare global {
   interface HTMLElement {
-    role: string;
+    role: string | null;
     ariaActiveDescendant: string | null;
     ariaColCount: string | null;
     ariaColIndex: string | null;
