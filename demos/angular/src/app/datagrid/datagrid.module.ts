@@ -19,6 +19,7 @@ import { DetailComponent } from './detail/detail.component';
 
 import { CdsModule } from '@cds/angular';
 import { VmService } from './vm.service';
+import { FullAsyncComponent } from './full-async/full-async.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { VmService } from './vm.service';
     PaginationComponent,
     PinColumnsComponent,
     DetailComponent,
+    FullAsyncComponent,
   ],
   imports: [CommonModule, DatagridRoutingModule, ClarityModule, CdsModule, FormsModule, ReactiveFormsModule],
   providers: [VmService],

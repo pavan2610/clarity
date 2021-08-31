@@ -32,7 +32,7 @@
   </ng-container>
 
   <cds-grid-row *ngFor="let vm of data">
-    <cds-grid-cell *ngFor="let column of dataFields" [attr.hidden]="!isColumnVisible(column)">
+    <cds-grid-cell *ngFor="let column of dataFields" [hidden]="!isColumnVisible(column)">
       {{ $any(vm)[column] }}
     </cds-grid-cell>
   </cds-grid-row>

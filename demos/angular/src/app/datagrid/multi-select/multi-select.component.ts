@@ -31,9 +31,9 @@ export class MultiSelectComponent {
     this.data.forEach(vm =>
       (this.multiSelectForm.controls.rows as FormGroup).addControl(vm.id, new FormControl(false))
     );
-    this.multiSelectForm.controls.allRows.valueChanges.subscribe(value =>
-      this.data.forEach(i => this.multiSelectForm.controls.rows.get(i.id)?.setValue(value))
-    );
+    this.multiSelectForm.controls.allRows.valueChanges.subscribe(value => {
+      this.data.forEach(i => this.multiSelectForm.controls.rows.get(i.id)?.setValue(value));
+    });
   }
 
   get selectedCount() {

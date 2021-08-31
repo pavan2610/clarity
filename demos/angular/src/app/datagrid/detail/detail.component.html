@@ -15,9 +15,8 @@
   </cds-accordion-panel>
 </cds-accordion>
 <cds-grid aria-label="row detail datagrid demo" style="--body-height: 360px;">
-  <!-- TODO: investigate why I need to set width here -->
-  <cds-grid-column width="36px" type="action" aria-label="row detail column"></cds-grid-column>
-  <cds-grid-column *ngFor="let column of dataFields" [id]="column">
+  <cds-grid-column type="action" aria-label="row detail column"></cds-grid-column>
+  <cds-grid-column *ngFor="let column of dataFields">
     {{ column | titlecase }}
   </cds-grid-column>
   <cds-grid-row *ngFor="let vm of data">

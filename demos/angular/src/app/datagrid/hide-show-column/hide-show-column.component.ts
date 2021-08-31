@@ -19,9 +19,9 @@ export class HideShowColumnComponent {
   hiddenColumnPicker = true;
   showDevNotes = false;
 
-  getControlValue(column: string) {
-    return this.hideShowForm.controls.columns.get(column)?.value;
-  }
+  // getControlValue(column: string) {
+  //   return this.hideShowForm.controls.columns.get(column)?.value;
+  // }
 
   isColumnVisible(columnType: string): boolean {
     return this.hideShowForm.controls.columns.get(columnType)?.value;
