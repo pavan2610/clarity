@@ -27,7 +27,7 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
       '**/test/**',
       '**/dist/core/**/index.js',
       '**/dist/core/**/register.js',
-      '**/dist/core/internal/polyfills/*.js',
+      '**/dist/core/polyfills/*.js',
       '**/dist/core/grid/dropdown.element.js', // temporary
     ],
     report: true,

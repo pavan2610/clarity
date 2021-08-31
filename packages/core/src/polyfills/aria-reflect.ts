@@ -34,16 +34,17 @@ declare global {
   }
 }
 
-let registered = false;
+let roleRegistered = false;
+let ariaRegistered = false;
 
-if (!registered && !Element.prototype.hasOwnProperty('role')) {
+if (!roleRegistered && !Element.prototype.hasOwnProperty('role')) {
   reflect(Element.prototype, 'role', 'role');
-  registered = true;
+  roleRegistered = true;
 }
 
 // https://www.w3.org/TR/wai-aria-1.0/states_and_properties
-if (!registered && !Element.prototype.hasOwnProperty('ariaLabel')) {
-  registered = true;
+if (!ariaRegistered && !Element.prototype.hasOwnProperty('ariaLabel')) {
+  ariaRegistered = true;
   [
     'ActiveDescendant',
     'Atomic',

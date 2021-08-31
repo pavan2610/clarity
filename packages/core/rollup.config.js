@@ -29,7 +29,7 @@ const config = {
   baseDir: './src',
   outDir: './dist/core',
   entryPoints: {
-    modules: ['./src', './src/internal', './src/demo', './src/test'],
+    modules: ['./src', './src/internal', './src/polyfills', './src/demo', './src/test'],
     components: [
       './src/actions',
       './src/accordion',
@@ -83,9 +83,12 @@ const config = {
     explicitExports: [
       { input: './icon/shapes/*', output: './icon/shapes/*' },
       { input: './icon/icon.service.js', output: './icon/icon.service.js' },
+      { input: './polyfills/index.js', output: './polyfills/index.js' },
     ],
     explicitSideEffects: [
-      './src/internal/polyfills/register.js'
+      './polyfills/index.js',
+      './polyfills/at.js',
+      './polyfills/aria-reflect.js'
     ]
   },
 };

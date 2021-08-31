@@ -158,6 +158,7 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
             '@cds/core/pagination/register.js': '/dist/core/pagination/register.js',
             '@cds/core/password': '/dist/core/password/index.js',
             '@cds/core/password/register.js': '/dist/core/password/register.js',
+            '@cds/core/polyfills': '/dist/core/polyfills/index.js',
             '@cds/core/progress-circle': '/dist/core/progress-circle/index.js',
             '@cds/core/progress-circle/register.js': '/dist/core/progress-circle/register.js',
             '@cds/core/radio': '/dist/core/radio/index.js',

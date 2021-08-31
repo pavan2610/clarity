@@ -6,7 +6,7 @@
 
 declare global {
   interface Array<T> {
-      at(o: number): T;
+    at(o: number): T;
   }
 }
 
