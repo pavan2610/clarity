@@ -40,7 +40,7 @@ export function rowDraggable() {
 
     private sortList(e: any) {
       if (e.detail.type === 'drop') {
-        this.data = [...swapItems(e.detail.target, e.detail.from, this.data)] as TestVM[];
+        this.data = [...swapItems<TestVM>(e.detail.target, e.detail.from, this.data)];
         this.ariaLiveMessage = `host ${e.detail.from.id} dropped at row ${this.data.findIndex(i => i.id === e.detail.target.id) + 1}`;
       } else if (e.detail.type === 'dragstart') {
         this.ariaLiveMessage = `host ${e.detail.from.id} grabbed`;

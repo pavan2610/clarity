@@ -25,7 +25,7 @@ export function rowAction() {
           ${this.data.map(entry => html`
           <cds-grid-row>
             <cds-grid-cell>
-              <cds-action popup="row-actions" aria-label="host actions" @click=${(e: any) => this.select(e, entry)}></cds-action>
+              <cds-action popup="row-actions" aria-label="${entry.id} actions" @click=${(e: any) => this.select(e, entry)}></cds-action>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
             <cds-grid-cell>${entry.status}</cds-grid-cell>

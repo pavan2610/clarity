@@ -188,7 +188,7 @@ export function paginate<T>(arr: T[], size: number) {
  * @demo
  * This is a demo function used to standardize demos across framework examples. Do not use in production.
  */
-export function swapItems<T>(target: T & { id: any }, src: T & { id: any }, list: { id: any }[]) {
+export function swapItems<T>(target: T & { id: any }, src: T & { id: any }, list: ({ id: any } & T)[]) {
   const data = [...list];
   const srcIndex = data.findIndex(i => i.id === src.id);
   const targetIndex = data.findIndex(i => i.id === target.id);

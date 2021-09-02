@@ -1,12 +1,5 @@
 import { LitElement, html } from 'lit';
-import {
-  baseStyles,
-  i18n,
-  I18nService,
-  property,
-  state,
-  HiddenController,
-} from '@cds/core/internal';
+import { baseStyles, i18n, I18nService, property, state } from '@cds/core/internal';
 import { GridColumnSizeController } from './grid-column-size.controller.js';
 import { GridColumnPositionController } from './grid-column-position.controller.js';
 import styles from './grid-column.element.scss';
@@ -17,7 +10,7 @@ import styles from './grid-column.element.scss';
  * ```typescript
  * import '@cds/core/grid/register.js';
  * ```
- * 
+ *
  * @element cds-grid-column
  * @csspart column
  * @cssprop --min-height
@@ -39,8 +32,6 @@ export class CdsGridColumn extends LitElement {
   @property({ type: String }) position: '' | 'sticky' | 'fixed' = '';
 
   @state({ type: String, attribute: 'slot', reflect: true }) slot = 'columns';
-
-  protected hiddenController = new HiddenController(this, { bubbles: true });
 
   protected gridColumnSizeController = new GridColumnSizeController(this);
 

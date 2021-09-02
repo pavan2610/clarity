@@ -1,4 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
+import { listenForAttributeChange } from '../utils/events.js';
 
 /**
  * Provides all nessesary aria-* attributes to create a vaild aria popup
@@ -13,16 +14,7 @@ export class AriaPopupController {
   async hostConnected() {
     await this.host.updateComplete;
     this.expand(!this.host.hasAttribute('hidden'));
-
-    this.observer = new MutationObserver(mutations => {
-      for (const mutation of mutations) {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'hidden') {
-          this.expand(!this.host.hasAttribute('hidden'));
-        }
-      }
-    });
-
-    this.observer.observe(this.host, { attributes: true });
+    this.observer = listenForAttributeChange(this.host, 'hidden', () => this.expand(!this.host.hasAttribute('hidden')));
   }
 
   hostDisconnected() {

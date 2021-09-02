@@ -1,5 +1,6 @@
 import { ReactiveControllerHost } from 'lit';
-import { isSafari } from '../utils/browser.js';
+import { isSafari, isWindows } from '../utils/browser.js';
+import { onChildListMutation } from '../utils/events.js';
 
 export interface AriaGrid {
   grid: HTMLElement;
@@ -12,7 +13,7 @@ export interface AriaGrid {
 }
 
 /**
- * Provides all nessesary aria-* attributes to create a vaild aria grid
+ * Provides all nessesary role/aria-* attributes to create a vaild aria grid
  * https://www.w3.org/TR/wai-aria-practices/examples/grid/dataGrids.html
  */
 export class AriaGridController {
@@ -28,17 +29,11 @@ export class AriaGridController {
     await this.host.updateComplete;
     this.intializeColumnSort();
     this.update();
-
-    const observer = new MutationObserver(mutations => {
-      for (const mutation of mutations) {
-        if (mutation.type === 'childList') {
-          this.host.updateComplete.then(() => this.update());
-        }
-      }
-    });
-
-    this.observers.push(observer);
-    observer.observe(this.host, { childList: true });
+    this.observers.push(
+      onChildListMutation(this.host, () => {
+        this.host.updateComplete.then(() => this.update());
+      })
+    );
   }
 
   hostDisconnected() {
@@ -54,7 +49,7 @@ export class AriaGridController {
       cells: this.host.cells,
       columns: this.host.columns,
       columnRow: this.host.columnRow,
-      columnGroup: this.host.columnGroup
+      columnGroup: this.host.columnGroup,
     };
 
     this.initializeGrid();
@@ -87,14 +82,7 @@ export class AriaGridController {
       c.role = 'columnheader';
       c.ariaColIndex = `${i + 1}`;
       c.ariaSort = 'none';
-
-      if (isSafari()) {
-        // Only visible columnheader text should be read to SRs but Safari violates this and
-        // reads the aria-label of buttons when navigating between cells.
-        // Combining scope + aria-label tricks Safari + VO into the correct behavior
-        c.setAttribute('scope', 'col');
-        c.ariaLabel = c.textContent;
-      }
+      this.patchInvalidScreenReaderBehavior(c);
     });
   }
 
@@ -105,13 +93,36 @@ export class AriaGridController {
     });
   }
 
+  /**
+   * If cell has focusable items NVDA will go into forms mode (expected behavior)
+   * Use table navigation ctrl+alt+arrow to move in and out of cells
+   * https://github.com/nvaccess/nvda/issues/7718
+   */
   private initializeCells() {
     const colsCount = this.grid.columns.length;
     this.grid.cells?.forEach((c, i) => {
       if (!c.role) {
         c.role = 'gridcell';
       }
-      c.ariaColIndex = `${i % colsCount + 1}`; // colindex starts at 1
+      c.ariaColIndex = `${(i % colsCount) + 1}`; // colindex starts at 1
     });
+  }
+
+  /**
+   * Only visible columnheader text should be read to SRs but Safari/VO and NVDA violates the spec
+   * and deep merges any labeled content within the header even if hidden or interactive.
+   * This will apply a patch to force Safari and NVDA to read only the provided aria-label
+   *
+   * https://github.com/nvaccess/nvda/pull/12763
+   * https://github.com/nvaccess/nvda/issues/12392
+   * https://github.com/nvaccess/nvda/issues/10096
+   * https://github.com/nvaccess/nvda/issues/6826
+   * https://github.com/nvaccess/nvda/issues/11181
+   */
+  private patchInvalidScreenReaderBehavior(c: HTMLElement) {
+    if (isSafari() || isWindows()) {
+      c.setAttribute('scope', 'col');
+      c.ariaLabel = c.ariaLabel ? c.ariaLabel : c.textContent.trim();
+    }
   }
 }

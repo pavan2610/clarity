@@ -1,5 +1,18 @@
 import { html, LitElement } from 'lit';
-import { AriaModalController, AriaPopupController, baseStyles, ClosableController, InlineFocusTrapController, HiddenController, i18n, I18nService, property, ResponsiveController, state, FocusFirstController } from '@cds/core/internal';
+import {
+  AriaModalController,
+  AriaPopupController,
+  baseStyles,
+  ClosableController,
+  InlineFocusTrapController,
+  i18n,
+  I18nService,
+  property,
+  ResponsiveController,
+  state,
+  FocusFirstController,
+  listenForAttributeChange,
+} from '@cds/core/internal';
 import styles from './grid-detail.element.scss';
 
 /**
@@ -8,7 +21,7 @@ import styles from './grid-detail.element.scss';
  * ```typescript
  * import '@cds/core/grid/register.js';
  * ```
- * 
+ *
  * @element cds-grid-detail
  * @event closeChange
  * @csspart private-host
@@ -33,15 +46,15 @@ export class CdsGridDetail extends LitElement {
 
   protected ariaPopupController = new AriaPopupController(this);
 
-  protected hiddenController = new HiddenController(this);
-  
   protected closableController = new ClosableController(this);
 
-  protected inlineFocusTrapController= new InlineFocusTrapController(this);
+  protected inlineFocusTrapController = new InlineFocusTrapController(this);
 
   protected focusFirstController = new FocusFirstController(this);
 
   protected responsiveController = new ResponsiveController(this, { element: this.parentElement });
+
+  private observer: MutationObserver;
 
   get trigger(): HTMLElement {
     return typeof this.anchor === 'string'
@@ -52,8 +65,7 @@ export class CdsGridDetail extends LitElement {
   static styles = [baseStyles, styles];
 
   render() {
-    return html`
-    <div part="private-host">
+    return html` <div part="private-host">
       <div part="detail">
         <slot></slot>
         <cds-action
@@ -71,8 +83,8 @@ export class CdsGridDetail extends LitElement {
   constructor() {
     super();
     this.addEventListener('cdsResizeChange', (e: any) => (this.overlay = e.detail.width > 500 ? '' : 'full'));
-    this.addEventListener('hiddenChange', (e: any) => {
-      this.toggleScrollLock(e.detail);
+    this.observer = listenForAttributeChange(this, 'hidden', (hidden: string) => {
+      this.toggleScrollLock(!!hidden);
       this.toggleAnchorHover();
     });
   }
@@ -88,11 +100,12 @@ export class CdsGridDetail extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    this.observer.disconnect();
     this.trigger?.closest('cds-grid-row')?.removeAttribute('_detail-row');
   }
 
   private toggleAnchorHover() {
-    if (this.hidden){
+    if (this.hidden) {
       this.trigger?.closest('cds-grid-row')?.removeAttribute('_detail-row');
     } else {
       this.trigger?.closest('cds-grid-row')?.setAttribute('_detail-row', '');
@@ -119,7 +132,9 @@ export class CdsGridDetail extends LitElement {
   }
 
   private setDetailWidthAlignment() {
-    const rowheader = Array.from(this.trigger?.closest('cds-grid-row')?.cells ?? []).find((c: any) => c.role === 'rowheader') as HTMLElement;
+    const rowheader = Array.from(this.trigger?.closest('cds-grid-row')?.cells ?? []).find(
+      (c: any) => c.role === 'rowheader'
+    ) as HTMLElement;
     if (rowheader) {
       const cellRect = rowheader.getBoundingClientRect();
       const gridRect = this.parentElement.getBoundingClientRect();

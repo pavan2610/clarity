@@ -20,12 +20,11 @@ import {
   GridRangeSelectionController,
   customElement,
   ClosableController,
-  FocusFirstController
+  FocusFirstController,
 } from '@cds/core/internal';
 import '@cds/core/badge/register.js';
 import { getVMData, swapItems } from '@cds/core/demo';
 import { InlineFocusTrapController } from './inline-focus-trap.controller';
-import { HiddenController } from './hidden.controller';
 import { querySlotAll } from '../decorators/query-slot';
 
 export default {
@@ -91,7 +90,10 @@ export function keyNavigationListController() {
           <div cds-layout="vertical gap:md">
             <p cds-text="body">Selected: ${this.selected}</p>
             <p cds-text="body">Active: ${this.active}</p>
-            <section cds-layout="horizontal gap:sm" @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
+            <section
+              cds-layout="horizontal gap:sm"
+              @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}
+            >
               ${this.items.map(
                 i =>
                   html`<div>
@@ -138,7 +140,10 @@ export function keyNavigationListControllerVertical() {
           <div cds-layout="vertical gap:md">
             <p cds-text="body">Selected: ${this.selected}</p>
             <p cds-text="body">Active: ${this.active}</p>
-            <section cds-layout="vertical gap:sm" @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
+            <section
+              cds-layout="vertical gap:sm"
+              @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}
+            >
               ${this.items.map(
                 i =>
                   html`<div>
@@ -185,7 +190,10 @@ export function keyNavigationListControllerLoop() {
           <div cds-layout="vertical gap:md">
             <p cds-text="body">Selected: ${this.selected}</p>
             <p cds-text="body">Active: ${this.active}</p>
-            <section cds-layout="vertical gap:sm" @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}>
+            <section
+              cds-layout="vertical gap:sm"
+              @cdsKeyChange=${(e: any) => (this.active = e.detail.activeItem.textContent)}
+            >
               ${this.items.map(
                 i =>
                   html`<div>
@@ -428,13 +436,16 @@ export function ariaGridController() {
             </div>
           </div>
           <div class="rowgroup">
-            ${getVMData().slice(0, 10).map(entry => html`
-            <div class="row">
-              <div class="cell">${entry.id}</div>
-              <div class="cell">${entry.status}</div>
-              <div class="cell">${entry.cpu}</div>
-              <div class="cell">${entry.memory}</div>
-            </div>`)}
+            ${getVMData()
+              .slice(0, 10)
+              .map(
+                entry => html` <div class="row">
+                  <div class="cell">${entry.id}</div>
+                  <div class="cell">${entry.status}</div>
+                  <div class="cell">${entry.cpu}</div>
+                  <div class="cell">${entry.memory}</div>
+                </div>`
+              )}
           </div>
         </div>
       `;
@@ -534,16 +545,24 @@ export function gridRangeSelection() {
           <p cds-text="body">Selected: ${this.selected}</p>
           <p cds-text="body">Focused: ${this.focused}</p>
           <p cds-text="body">Selected Range: ...</p>
-          <section @cdsKeyChange=${(e: any) => (this.focused = e.detail.activeItem.textContent)} @rangeSelectionChange=${(e: any) => this.selected = e.detail}>
-            ${this.items.map((r, ri) => html`
-              <div class="row" aria-rowindex=${ri + 1}>
-                ${r.map((c, ci) => html`
-                <div class="cell" aria-colindex=${ci + 1}>
-                  <button ?selected=${this.selected === `${ri}-${c}`} @click=${(e: any) => (this.selected = e.target.innerText)}>
-                    ${ri}-${c}
-                  </button>
-                </div>`)}
-              </div>`)}
+          <section
+            @cdsKeyChange=${(e: any) => (this.focused = e.detail.activeItem.textContent)}
+            @rangeSelectionChange=${(e: any) => (this.selected = e.detail)}
+          >
+            ${this.items.map(
+              (r, ri) => html` <div class="row" aria-rowindex=${ri + 1}>
+                ${r.map(
+                  (c, ci) => html` <div class="cell" aria-colindex=${ci + 1}>
+                    <button
+                      ?selected=${this.selected === `${ri}-${c}`}
+                      @click=${(e: any) => (this.selected = e.target.innerText)}
+                    >
+                      ${ri}-${c}
+                    </button>
+                  </div>`
+                )}
+              </div>`
+            )}
           </section>
         </div>
       `;
@@ -557,14 +576,16 @@ export function inlineFocusTrap() {
   class DemoInlineFocusTrap extends LitElement {
     protected inlineFocusTrapController = new InlineFocusTrapController(this);
 
-    static styles = [css`
-      :host {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        max-width: 200px;
-      }
-    `]
+    static styles = [
+      css`
+        :host {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          max-width: 200px;
+        }
+      `,
+    ];
 
     render() {
       return html`
@@ -578,13 +599,15 @@ export function inlineFocusTrap() {
   }
 
   return html`
-  <inline-focus-trap-demo>
-    <button>light dom one</button>
-    <p>content</p>
-    <button cds-focus-first>light dom two</button>
-    <section><button>light dom three</button></section>
-    <button slot="slot-two">light dom four</button>
-  </inline-focus-trap-demo>
+    <button>first</button>
+    <inline-focus-trap-demo>
+      <button>light dom one</button>
+      <p>content</p>
+      <button cds-focus-first>light dom two</button>
+      <section><button>light dom three</button></section>
+      <button slot="slot-two">light dom four</button>
+    </inline-focus-trap-demo>
+    <button>last</button>
   `;
 }
 
@@ -594,30 +617,31 @@ export function nestedInlineFocusTrap() {
     @querySlotAll(':scope > *') keyListItems: NodeListOf<HTMLElement>;
     protected inlineFocusTrapController = new InlineFocusTrapController(this);
     protected focusFirstController = new FocusFirstController(this);
-    protected hiddenController = new HiddenController(this);
     protected closableController = new ClosableController(this);
 
-    static styles = [css`
-      .private-host {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        max-width: 200px;
-        border: 2px solid #ccc;
-        background: #fff;
-        padding: 12px;
-      }
+    static styles = [
+      css`
+        .private-host {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          max-width: 200px;
+          border: 2px solid #ccc;
+          background: #fff;
+          padding: 12px;
+        }
 
-      :host([hidden]) {
-        display: none;
-      }
+        :host([hidden]) {
+          display: none;
+        }
 
-      [cds-focus-trap-boundary] {
-        height: 2px;
-        width: 100%;
-        background: red;
-      }
-    `]
+        [cds-focus-trap-boundary] {
+          height: 2px;
+          width: 100%;
+          background: red;
+        }
+      `,
+    ];
 
     render() {
       return html`
@@ -639,23 +663,29 @@ export function nestedInlineFocusTrap() {
         <inline-trap-demo id="1">
           <button cds-focus-first>one</button>
           <button>two</button>
-          ${this.show ? html`
-          <inline-trap-demo id="2" @closeChange=${() => this.show = false}>
-            <button>four</button>
-            <button cds-focus-first>five</button>
-            <inline-trap-demo id="3" slot="two" ?hidden=${!this.showTwo} @closeChange=${() => this.showTwo = false}>
-              <button>six</button>
-              <button cds-focus-first>seven</button>
-              <button>eight</button>
-              <button @click=${() => this.showTwo = false}>close</button>
-            </inline-trap-demo>
-            <button @click=${() => this.show = false}>close</button>
-            <button @click=${() => this.showTwo = true}>show</button>
-          </inline-trap-demo>` : ''}
+          ${this.show
+            ? html` <inline-trap-demo id="2" @closeChange=${() => (this.show = false)}>
+                <button>four</button>
+                <button cds-focus-first>five</button>
+                <inline-trap-demo
+                  id="3"
+                  slot="two"
+                  ?hidden=${!this.showTwo}
+                  @closeChange=${() => (this.showTwo = false)}
+                >
+                  <button>six</button>
+                  <button cds-focus-first>seven</button>
+                  <button>eight</button>
+                  <button @click=${() => (this.showTwo = false)}>close</button>
+                </inline-trap-demo>
+                <button @click=${() => (this.show = false)}>close</button>
+                <button @click=${() => (this.showTwo = true)}>show</button>
+              </inline-trap-demo>`
+            : ''}
           <button>three</button>
-          <button @click=${() => this.show = true}>show</button>
+          <button @click=${() => (this.show = true)}>show</button>
         </inline-trap-demo>
-        `;
+      `;
     }
   }
 

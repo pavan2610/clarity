@@ -1,5 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
-import { isNumericString, onChildListMutation } from '@cds/core/internal';
+import { isNumericString, listenForAttributeListChange, onChildListMutation } from '@cds/core/internal';
 
 export type Column = HTMLElement & {
   width?: string;
@@ -11,7 +11,7 @@ type Grid = HTMLElement & {
   columns: NodeListOf<Column>;
   columnLayout: 'fixed' | 'flex';
   height?: string;
-}
+};
 
 export class GridLayoutController {
   private observers: MutationObserver[] = [];
@@ -47,7 +47,7 @@ export class GridLayoutController {
       })
     );
 
-    this.host.addEventListener('hiddenChange', () => this.updateLayout());
+    this.observers.push(listenForAttributeListChange(this.host, ['hidden'], () => this.updateLayout()));
   }
 
   hostUpdated() {
@@ -73,17 +73,20 @@ export class GridLayoutController {
     if (this.host.columnLayout === 'fixed') {
       this.visibleColumns
         .filter(c => c.width)
-        .forEach(c => this.host.style.setProperty(`--ch${c.ariaColIndex}`, isNumericString(c.width) ? `${c.width}px` : c.width));
+        .forEach(c =>
+          this.host.style.setProperty(`--ch${c.ariaColIndex}`, isNumericString(c.width) ? `${c.width}px` : c.width)
+        );
 
       this.visibleColumns
         .filter(c => !c.width && parseInt(c.ariaColIndex) !== this.columns.length)
         .forEach(c => this.host.style.setProperty(`--ch${c.ariaColIndex}`, `${parseInt(getComputedStyle(c).width)}px`));
 
+      const lastColWidth = isNumericString(this.lastVisibleColumn.width)
+        ? `${this.lastVisibleColumn.width}px`
+        : this.lastVisibleColumn.width;
       this.host.style.setProperty(
         `--ch${this.lastVisibleColumn.ariaColIndex}`,
-        `minmax(${
-          this.lastVisibleColumn.width ?? `${parseInt(getComputedStyle(this.lastVisibleColumn).width)}px`
-        }, 100%)`
+        `minmax(${lastColWidth ?? `${parseInt(getComputedStyle(this.lastVisibleColumn).width)}px`}, 100%)`
       );
     }
   }
@@ -97,7 +100,10 @@ export class GridLayoutController {
   private createColumnGrids() {
     const colWidths = this.columns
       .filter(c => !c.hidden)
-      .reduce((p, c) => `${p} ${`var(--ch${c.ariaColIndex}, ${c.width ? c.width : '1fr'})`}`, '');
+      .reduce((p, c) => {
+        const width = isNumericString(c.width) ? `${c.width}px` : c.width;
+        return `${p} ${`var(--ch${c.ariaColIndex}, ${width ? width : '1fr'})`}`;
+      }, '');
 
     this.host.style.setProperty('--ch-grid', colWidths);
   }
@@ -106,7 +112,8 @@ export class GridLayoutController {
     this.visibleColumns.forEach((c, i) => {
       c.removeAttribute('draggable-hidden');
 
-      if (c.type === 'action' && this.visibleColumns[i + 1].type === 'action') {
+      if (c.type === 'action' && this.visibleColumns[i + 1]?.type === 'action') {
+        // todo: unit test not only to remove but safely check when only one column was available
         c.setAttribute('draggable-hidden', '');
       }
     });

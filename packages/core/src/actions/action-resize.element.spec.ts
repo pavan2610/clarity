@@ -28,7 +28,6 @@ describe('cds-action-resize', () => {
 
   it('should set appropriate aria-label', async () => {
     await componentIsStable(component);
-    console.log(component.ariaLabel);
     expect(component.getAttribute('aria-label')).toBe('Resize');
   });
 

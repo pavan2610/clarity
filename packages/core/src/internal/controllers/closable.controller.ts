@@ -1,5 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
-import { onAnyKey } from '../utils/keycodes.js';
+import { listenForAttributeChange } from '../utils/events.js';
 
 interface ClosableConfig {
   escape?: boolean;
@@ -16,6 +16,7 @@ interface ClosableConfig {
 export class ClosableController {
   private config: ClosableConfig;
   private priorActiveElement: HTMLElement;
+  private observer: MutationObserver;
 
   constructor(private host: ReactiveControllerHost & HTMLElement, config?: ClosableConfig) {
     this.config = { escape: true, lastFocus: true, closable: () => true, ...config };
@@ -25,11 +26,12 @@ export class ClosableController {
   hostConnected() {
     this.togglePriorActiveElement();
     this.host.addEventListener('keyup', (e: KeyboardEvent) => this.keyEvent(e));
-    this.host.addEventListener('hiddenChange', () => this.togglePriorActiveElement());
+    this.observer = listenForAttributeChange(this.host, 'hidden', () => this.togglePriorActiveElement());
   }
 
   hostDisconnected() {
     this.priorActiveElement?.focus();
+    this.observer.disconnect();
   }
 
   close(detail?: any) {
@@ -51,12 +53,10 @@ export class ClosableController {
   }
 
   private keyEvent(e: KeyboardEvent) {
-    if (this.config.escape) {
-      onAnyKey(['escape'], e, () => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.close('escape-keypress');
-      });
+    if (this.config.escape && e.code === 'Escape') {
+      e.preventDefault();
+      e.stopPropagation();
+      this.close('escape-keypress');
     }
   }
 }

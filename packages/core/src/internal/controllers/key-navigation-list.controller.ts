@@ -1,4 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
+import { getNextKeyListItem, validKeyNavigationCode } from '../utils/keycodes.js';
 import { getFlattenedFocusableItems } from '../utils/traversal.js';
 
 export interface KeyNavigationListConfig {
@@ -8,6 +9,7 @@ export interface KeyNavigationListConfig {
   manageFocus?: boolean;
   manageTabindex?: boolean;
   loop?: boolean;
+  dir?: string;
 }
 
 /**
@@ -31,6 +33,7 @@ export class KeyNavigationListController {
       manageFocus: true,
       manageTabindex: true,
       loop: false,
+      dir: this.host.getAttribute('rtl'),
       ...config,
     };
     host.addController(this);
@@ -40,24 +43,21 @@ export class KeyNavigationListController {
     await this.host.updateComplete;
 
     this.hostRoot.addEventListener('click', (e: any) => {
-      const activeCell = Array.from(this.listItems).find(
-        c => c === e.target.closest(this.listItems[0].tagName.toLocaleLowerCase()) ?? c === e.target
-      );
-      if (activeCell) {
-        this.setActiveCell(e, activeCell);
+      const activeItem = this.getActiveItem(e);
+      if (activeItem) {
+        this.setActiveCell(e, activeItem);
       }
     });
 
     this.hostRoot.addEventListener('keydown', (e: any) => {
-      if (this.validKeyCode(e)) {
-        const currentItem = Array.from(this.listItems).find(
-          c => c === e.target.closest(this.listItems[0].tagName.toLocaleLowerCase()) ?? c === e.target
-        );
-        if (currentItem) {
-          const { index, previous } = this.getNextItemCoordinate(e.code, currentItem);
-          const activeItem = this.listItems[index] as HTMLElement;
-          const previousItem = this.listItems[previous] as HTMLElement;
-          this.setActiveCell(e, activeItem, previousItem);
+      if (validKeyNavigationCode(e)) {
+        const activeItem = this.getActiveItem(e);
+        if (activeItem) {
+          const { next, previous } = getNextKeyListItem(activeItem, Array.from(this.listItems), {
+            ...this.config,
+            code: e.code,
+          });
+          this.setActiveCell(e, this.listItems[next], this.listItems[previous]);
         }
       }
     });
@@ -71,16 +71,9 @@ export class KeyNavigationListController {
     }
   }
 
-  private validKeyCode(e: KeyboardEvent) {
-    return (
-      e.code === 'ArrowUp' ||
-      e.code === 'ArrowDown' ||
-      e.code === 'ArrowLeft' ||
-      e.code === 'ArrowRight' ||
-      e.code === 'End' ||
-      e.code === 'Home' ||
-      e.code === 'PageUp' ||
-      e.code === 'PageDown'
+  private getActiveItem(e: Event) {
+    return Array.from(this.listItems).find(
+      c => c === (e.target as HTMLElement).closest(this.listItems[0].tagName.toLocaleLowerCase()) ?? c === e.target
     );
   }
 
@@ -113,38 +106,5 @@ export class KeyNavigationListController {
         },
       })
     );
-  }
-
-  private getNextItemCoordinate(code: string, currentItem: HTMLElement) {
-    let i = Array.from(this.listItems).indexOf(currentItem);
-    const previous = i;
-    const dir = this.host.dir;
-    const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
-    const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
-    const numOfItems = Array.from(this.listItems).length - 1;
-
-    if (this.config.layout !== 'horizontal' && code === 'ArrowUp' && i !== 0) {
-      i = i - 1;
-    } else if (this.config.layout !== 'horizontal' && code === 'ArrowUp' && i === 0 && this.config.loop) {
-      i = numOfItems;
-    } else if (this.config.layout !== 'horizontal' && code === 'ArrowDown' && i < numOfItems) {
-      i = i + 1;
-    } else if (this.config.layout !== 'horizontal' && code === 'ArrowDown' && i === numOfItems && this.config.loop) {
-      i = 0;
-    } else if (this.config.layout !== 'vertical' && code === inlineStart && i !== 0) {
-      i = i - 1;
-    } else if (this.config.layout !== 'vertical' && code === inlineEnd && i < numOfItems) {
-      i = i + 1;
-    } else if (code === 'End') {
-      i = numOfItems;
-    } else if (code === 'Home') {
-      i = 0;
-    } else if (code === 'PageUp') {
-      i = i - 4 > 0 ? i - 4 : 0;
-    } else if (code === 'PageDown') {
-      i = i + 4 < numOfItems ? i + 4 : numOfItems;
-    }
-
-    return { index: i, previous };
   }
 }

@@ -4,8 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { listenForAttributeChange } from './dom.js';
-
 export function stopEvent(event: Event) {
   event.preventDefault();
   event.stopPropagation();
@@ -67,5 +65,36 @@ export function onChildListMutation(element: HTMLElement, fn: (mutation?: Mutati
     }
   });
   observer.observe(element, { childList: true });
+  return observer;
+}
+
+export function listenForAttributeChange(
+  element: HTMLElement,
+  attrName: string,
+  fn: (attrValue: string | null) => void
+) {
+  const observer = new MutationObserver(mutations => {
+    if (mutations.find(m => m.attributeName === attrName)) {
+      fn(element.getAttribute(attrName));
+    }
+  });
+
+  observer.observe(element, { attributes: true });
+  return observer;
+}
+
+export function listenForAttributeListChange(
+  element: HTMLElement,
+  attrNames: string[],
+  fn: (attrValue: string | null) => void
+) {
+  const observer = new MutationObserver(mutations => {
+    const mutation = mutations.find(m => attrNames.find(i => m.attributeName === i));
+    if (mutation) {
+      fn(element.getAttribute(mutation.attributeName));
+    }
+  });
+
+  observer.observe(element, { attributes: true, attributeFilter: attrNames, subtree: true });
   return observer;
 }

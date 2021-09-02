@@ -273,12 +273,10 @@ export function all() {
 export function basic() {
   return html`
     <cds-grid aria-label="basic datagrid demo" height="360">
-      <!-- <cds-grid-column-group> -->
-        <cds-grid-column>Host</cds-grid-column>
-        <cds-grid-column>Status</cds-grid-column>
-        <cds-grid-column>CPU</cds-grid-column>
-        <cds-grid-column>Memory</cds-grid-column>
-      <!-- </cds-grid-column-group> -->
+      <cds-grid-column>Host</cds-grid-column>
+      <cds-grid-column>Status</cds-grid-column>
+      <cds-grid-column>CPU</cds-grid-column>
+      <cds-grid-column>Memory</cds-grid-column>
       <cds-grid-row>
         <cds-grid-cell>vm-host-001</cds-grid-cell>
         <cds-grid-cell>online</cds-grid-cell>

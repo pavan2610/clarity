@@ -1,10 +1,13 @@
 import { ReactiveControllerHost } from 'lit';
+import { listenForAttributeChange } from '../utils/events.js';
 import { getFlattenedFocusableItems } from '../utils/traversal.js';
 
 /**
  * Provides a focus first behavior to any component via the cds-focus-first attribute
  */
 export class FocusFirstController {
+  private observer: MutationObserver;
+
   constructor(private host: ReactiveControllerHost & HTMLElement) {
     this.host.addController(this);
   }
@@ -19,8 +22,12 @@ export class FocusFirstController {
 
   async hostConnected() {
     await this.host.updateComplete;
-    this.host.addEventListener('hiddenChange', () => this.cdsFocusFirst());
+    this.observer = listenForAttributeChange(this.host, 'hidden', () => this.cdsFocusFirst());
     this.cdsFocusFirst();
+  }
+
+  hostDisconnected() {
+    this.observer.disconnect();
   }
 
   private cdsFocusFirst() {

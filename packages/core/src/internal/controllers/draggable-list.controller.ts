@@ -1,4 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
+import { onChildListMutation } from '../utils/events.js';
 import { createId } from '../utils/identity.js';
 import { KeyNavigationListController } from './key-navigation-list.controller.js';
 
@@ -46,16 +47,7 @@ export class DraggableListController {
     this.addDragEventListeners();
     this.addKeyboardEventListeners();
     this.initializeKeyListController();
-
-    this.observer = new MutationObserver(mutations => {
-      for (const mutation of mutations) {
-        if (mutation.type === 'childList') {
-          this.addDragEventListeners();
-        }
-      }
-    });
-
-    this.observer.observe(this.host, { childList: true });
+    this.observer = onChildListMutation(this.host, () => this.addDragEventListeners());
   }
 
   hostDisconnected() {
@@ -130,6 +122,7 @@ function handleDrop(e: any) {
   from.removeAttribute('cds-draggable');
   target.removeAttribute('cds-draggable');
 
+  // todo: provide a RefID sorted list as part of event
   e.currentTarget.dispatchEvent(
     new CustomEvent('cdsDraggableChange', { detail: { from, target, type: 'drop' }, bubbles: true })
   );

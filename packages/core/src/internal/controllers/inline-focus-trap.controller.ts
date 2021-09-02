@@ -7,13 +7,15 @@ import { getFlattenedFocusableItems } from '../utils/traversal.js';
  * between both Shadow DOM and Light DOM
  */
 export class InlineFocusTrapController {
-  constructor(private host: ReactiveControllerHost & HTMLElement) {
+  constructor(private host: ReactiveControllerHost & HTMLElement, private config = { start: 'start', end: 'end' }) {
     this.host.addController(this);
   }
 
   private get focusableItems() {
-    return getFlattenedFocusableItems(this.root)
-      .filter(e => !e.hasAttribute('cds-focus-boundary') && ((this.root.contains(e) || e.closest('[cds-focus-trap]') === this.host)))
+    return getFlattenedFocusableItems(this.root).filter(
+      e =>
+        !e.hasAttribute('cds-focus-boundary') && (this.root.contains(e) || e.closest('[cds-focus-trap]') === this.host)
+    );
   }
 
   private get root() {
@@ -22,10 +24,13 @@ export class InlineFocusTrapController {
 
   async hostConnected() {
     await this.host.updateComplete;
-    const trap = '<div cds-focus-boundary tabindex="0" style="display:none;position:absolute"></div>';
-    this.root.appendChild(createFragment('<style>:host(:host:focus-within) [cds-focus-boundary] {display: block !important}</style>'));
-    this.root.prepend(createFragment(trap));
-    this.root.appendChild(createFragment(trap));
+    const style =
+      '<style>:host(:host:focus-within) [cds-focus-boundary],:host(:focus-within) [cds-focus-boundary] {display: block !important}</style>';
+    const trap = (v: string) =>
+      `<div cds-focus-boundary tabindex="0" style="display:none;position:absolute;width:1px;height:1px;clip:rect(0,0,0,0)">${v}</div>`;
+    this.root.appendChild(createFragment(style));
+    this.root.prepend(createFragment(trap(this.config.start)));
+    this.root.appendChild(createFragment(trap(this.config.end)));
     this.host.setAttribute('cds-focus-trap', '');
 
     const [start, end] = Array.from(this.root.querySelectorAll('[cds-focus-boundary]'));

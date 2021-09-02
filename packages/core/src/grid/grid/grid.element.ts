@@ -10,7 +10,8 @@ import {
   AriaGridController,
   querySlotAll,
   GridRangeSelectionController,
-  ScrollableVisibilityController
+  ScrollableVisibilityController,
+  PerformanceController,
 } from '@cds/core/internal';
 import { CdsGridRow } from '../row/grid-row.element.js';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
@@ -24,7 +25,7 @@ import styles from './grid.element.scss';
  * ```typescript
  * import '@cds/core/grid/register.js';
  * ```
- * 
+ *
  * @element cds-grid
  * @event rangeSelectionChange
  * @cssprop --background
@@ -62,6 +63,8 @@ export class CdsGrid extends LitElement {
   @querySlotAll('cds-grid-column') readonly columns: NodeListOf<CdsGridColumn>;
 
   readonly grid = this;
+
+  protected performanceController = new PerformanceController(this);
 
   protected ariaGridController = new AriaGridController(this);
 

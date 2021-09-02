@@ -42,7 +42,7 @@
     },
     {
       "path": "./dist/bundle.js",
-      "maxSize": "15 kB",
+      "maxSize": "16 kB",
       "compression": "brotli"
     }
   ]

@@ -12,3 +12,8 @@
 export function isSafari() {
   return (navigator.vendor.match(/apple/i) || '').length > 0;
 }
+
+/** Used to detect Win for NVDA for a11y behavior corrections */
+export function isWindows() {
+  return (navigator.platform.match(/Win/i) || '').length > 0;
+}

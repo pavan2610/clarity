@@ -9,6 +9,8 @@ import { EventEmitter, i18n, I18nService, property, event } from '@cds/core/inte
 import { CdsAction } from './action.element.js';
 import styles from './action-sort.element.scss';
 
+export type ActionSort = 'none' | 'ascending' | 'descending';
+
 /**
  * Action Button
  *
@@ -23,11 +25,11 @@ import styles from './action-sort.element.scss';
  * @element cds-action-sort
  */
 export class CdsActionSort extends CdsAction {
-  @property({ type: String, reflect: true }) sort: 'none' | 'ascending' | 'descending' = 'none';
+  @property({ type: String, reflect: true }) sort: ActionSort = 'none';
 
   @i18n() i18n = I18nService.keys.actions;
 
-  @event() sortChange: EventEmitter<'none' | 'ascending' | 'descending'>;
+  @event() sortChange: EventEmitter<ActionSort>;
 
   static get styles() {
     return [super.styles, styles];
@@ -47,7 +49,10 @@ export class CdsActionSort extends CdsAction {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', () => this.sortClick());
-    this.ariaLabel = this.i18n.sort;
+
+    if (!!this.ariaLabel) {
+      this.ariaLabel = this.i18n.sort;
+    }
   }
 
   private sortClick() {
