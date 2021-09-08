@@ -1,6 +1,6 @@
-import { html, LitElement, PropertyValues } from 'lit';
-import { customElement, state } from '@cds/core/internal';
-import { getVMData, TestVM } from '@cds/core/demo';
+import { html, LitElement } from 'lit';
+import { baseStyles, customElement, state } from '@cds/core/internal';
+import { DemoService } from '@cds/core/demo';
 
 export default {
   title: 'Stories/Grid',
@@ -8,51 +8,36 @@ export default {
 };
 
 export function columnMultiFilter() {
-  @customElement('demo-grid-column-multi-filter') // @ts-ignore
+  @customElement('demo-grid-column-multi-filter')
   class DemoColumnMultiFilter extends LitElement {
-    @state() private data = getVMData();
-    @state() private filteredList: TestVM[] = [];
+    @state() private grid = DemoService.data.grid;
     @state() private search = '';
+
+    static styles = [baseStyles];
+
+    private get filteredRows() {
+      return [...this.grid.rows].filter(row => row.cells
+        .reduce((p, n) => `${p} ${n.value}`, '')
+        .toLocaleLowerCase()
+        .includes(this.search.trim().toLocaleLowerCase()));
+    }
 
     render() {
       return html`
         <section cds-layout="vertical gap:md">
           <cds-search control-width="shrink">
-            <label>Search VMs</label>
+            <label>Search</label>
             <input type="search" placeholder="search" @input=${(e: any) => (this.search = e.target.value)} />
           </cds-search>
           <cds-grid aria-label="column multi filter datagrid demo" height="360">
-            <cds-grid-column>Host</cds-grid-column>
-            <cds-grid-column>Status</cds-grid-column>
-            <cds-grid-column>CPU</cds-grid-column>
-            <cds-grid-column>Memory</cds-grid-column>
-            ${this.filteredList.map(entry => html`
+            ${this.grid.columns.map(column => html`<cds-grid-column>${column.label}</cds-grid-column>`)}
+            ${this.filteredRows.map(row => html`
             <cds-grid-row>
-              <cds-grid-cell>${entry.id}</cds-grid-cell>
-              <cds-grid-cell>${entry.status}</cds-grid-cell>
-              <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-              <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+              ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
             </cds-grid-row>`)}
             <cds-grid-footer></cds-grid-footer>
           </cds-grid>
         </section>`;
-    }
-
-    updated(props: PropertyValues) {
-      super.updated(props);
-      if (props.has('search') && props.get('search') !== this.search) {
-        this.filteredList = [...this.data].filter(i =>
-          Object.keys(i)
-            .map(k => (i as any)[k])
-            .reduce((p, n) => `${p} ${n}`)
-            .toLocaleLowerCase()
-            .includes(this.search.trim().toLocaleLowerCase())
-        );
-      }
-    }
-
-    protected createRenderRoot() {
-      return this;
     }
   }
   return html`<demo-grid-column-multi-filter></demo-grid-column-multi-filter>`;

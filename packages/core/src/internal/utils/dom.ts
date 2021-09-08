@@ -5,8 +5,7 @@
  */
 import includes from 'ramda/es/includes.js';
 import without from 'ramda/es/without.js';
-
-import { isStringAndNotNilOrEmpty } from './identity.js';
+import { isNumericString, isStringAndNotNilOrEmpty } from './identity.js';
 
 /**
  * We are not going to be opinionated about the use of the disabled attribute here.
@@ -158,4 +157,15 @@ export function createFragment(tagString: string) {
 
 export function isElementTextInputType(e: HTMLInputElement) {
   return /^(?:input|select|textarea)$/i.test(e.nodeName) && e.type !== 'radio' && e.type !== 'checkbox';
+}
+
+export function getInputType(value: string) {
+  // todo test
+  if (isNumericString(value)) {
+    return 'number';
+  } else if (value.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
+    return 'date';
+  } else {
+    return 'text';
+  }
 }

@@ -57,7 +57,11 @@ export class KeyNavigationListController {
             ...this.config,
             code: e.code,
           });
-          this.setActiveCell(e, this.listItems[next], this.listItems[previous]);
+
+          if (next !== previous) {
+            // todo: test for only emiting when position has changed
+            this.setActiveCell(e, this.listItems[next], this.listItems[previous]);
+          }
         }
       }
     });

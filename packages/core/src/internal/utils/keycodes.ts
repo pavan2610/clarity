@@ -138,16 +138,16 @@ function wereNonModifierComboKeysPressed(keyCombo: string, evt: KeyboardEvent): 
 }
 
 export function validKeyNavigationCode(e: KeyboardEvent) {
-  // todo: cory test
   return (
-    e.code === 'ArrowUp' ||
-    e.code === 'ArrowDown' ||
-    e.code === 'ArrowLeft' ||
-    e.code === 'ArrowRight' ||
-    e.code === 'End' ||
-    e.code === 'Home' ||
-    e.code === 'PageUp' ||
-    e.code === 'PageDown'
+    e.code === KeyNavigationCode.ArrowUp ||
+    e.code === KeyNavigationCode.ArrowDown ||
+    e.code === KeyNavigationCode.ArrowLeft ||
+    e.code === KeyNavigationCode.ArrowRight ||
+    e.code === KeyNavigationCode.End ||
+    e.code === KeyNavigationCode.Home ||
+    e.code === KeyNavigationCode.PageUp ||
+    e.code === KeyNavigationCode.PageDown ||
+    e.code === KeyNavigationCode.Enter
   );
 }
 
@@ -160,6 +160,7 @@ export enum KeyNavigationCode {
   Home = 'Home',
   PageUp = 'PageUp',
   PageDown = 'PageDown',
+  Enter = 'Enter',
 }
 
 export interface KeyListConfig {

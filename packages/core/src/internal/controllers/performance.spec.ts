@@ -9,7 +9,7 @@ import { customElement, property, PerformanceController } from '@cds/core/intern
 import { createTestElement, removeTestElement, componentIsStable, onceEvent } from '@cds/core/test';
 import '@cds/core/grid/register.js';
 
-@customElement('performance-controller-test-element') // @ts-ignore
+@customElement('performance-controller-test-element')
 class PerformanceControllerTestElement extends LitElement {
   @property({ type: Array }) items = Array.from(Array(10).keys());
   performanceController = new PerformanceController(this);

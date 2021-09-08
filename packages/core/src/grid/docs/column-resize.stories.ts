@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { getVMData } from '@cds/core/demo';
+import { DemoService } from '@cds/core/demo';
 
 export default {
   title: 'Stories/Grid',
@@ -7,36 +7,27 @@ export default {
 };
 
 export function columnResize() {
+  const grid = DemoService.data.grid;
   return html`
   <cds-grid aria-label="column resize datagrid demo" height="360">
-    <cds-grid-column resizable width="200">Host</cds-grid-column>
-    <cds-grid-column resizable>Status</cds-grid-column>
-    <cds-grid-column resizable>CPU</cds-grid-column>
-    <cds-grid-column>Memory</cds-grid-column>
-    ${getVMData().map(entry => html`
+    ${grid.columns.map((column, i) => html`<cds-grid-column resizable .width=${i === 0 ? '200' : null}>${column.label}</cds-grid-column>`)}
+    ${grid.rows.map(row => html`
     <cds-grid-row>
-      <cds-grid-cell>${entry.id}</cds-grid-cell>
-      <cds-grid-cell>${entry.status}</cds-grid-cell>
-      <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-      <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+      ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
     </cds-grid-row>`)}
+    <cds-grid-footer></cds-grid-footer>
   </cds-grid>`;
 }
 
 export function columnFlexWidth() {
+  const grid = DemoService.data.grid;
   return html`
   <cds-grid aria-label="column flex width datagrid demo" column-layout="flex" height="360">
-    <cds-grid-column resizable>Host</cds-grid-column>
-    <cds-grid-column resizable>Status</cds-grid-column>
-    <cds-grid-column resizable>CPU</cds-grid-column>
-    <cds-grid-column resizable>Memory</cds-grid-column>
-    ${getVMData().map(entry => html`
+    ${grid.columns.map(column => html`<cds-grid-column resizable>${column.label}</cds-grid-column>`)}
+    ${grid.rows.map(row => html`
     <cds-grid-row>
-      <cds-grid-cell>${entry.id}</cds-grid-cell>
-      <cds-grid-cell>${entry.status}</cds-grid-cell>
-      <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-      <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+      ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
     </cds-grid-row>`)}
+    <cds-grid-footer></cds-grid-footer>
   </cds-grid>`;
 }
-

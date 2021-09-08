@@ -11,7 +11,7 @@ export class CdsDropdown extends CdsInternalOverlay {
 
   @property({ type: String }) position: 'top' | 'bottom' | 'right' = 'bottom';
 
-  @property({ type: String, reflect: true }) anchor: HTMLElement | string;
+  @property({ type: String, reflect: true }) anchor: HTMLElement | string | null;
 
   @query('.content', true) content: HTMLElement;
 

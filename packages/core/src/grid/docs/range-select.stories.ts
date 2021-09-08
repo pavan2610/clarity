@@ -9,7 +9,7 @@ export default {
 };
 
 export function rangeSelect() {
-  @customElement('demo-grid-selectable-cells') // @ts-ignore
+  @customElement('demo-grid-selectable-cells')
   class DemoSelectableCells extends LitElement {
     @state() private data = getVMData();
     @state() private activeCells: CdsGridCell[] = [];
@@ -45,12 +45,12 @@ export function rangeSelect() {
 }
 
 export function rangeSelectContextMenu() {
-  @customElement('demo-range-select-context-menu') // @ts-ignore
+  @customElement('demo-range-select-context-menu')
   class DemoRangeSelectContextMenu extends LitElement {
     @state() private rows = getVMData();
     @state() private columns = [{ label: 'Host', key: 'id' }, { label: 'Status', key: 'status' }, { label: 'CPU', key: 'cpu' }, { label: 'Memory', key: 'memory' }];
     @state() private activeCells: CdsGridCell[] = [];
-    @state() private anchor?: HTMLElement = null;
+    @state() private anchor: HTMLElement = null;
     @state() private csv: string;
 
     render() {

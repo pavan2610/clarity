@@ -8,7 +8,7 @@ export default {
 };
 
 export function columnVisibility() {
-  @customElement('demo-grid-column-visibility') // @ts-ignore
+  @customElement('demo-grid-column-visibility')
   class DemoColumnVisibility extends LitElement {
     @state() private data = getVMData();
     @state() private selectedColumns = 7;

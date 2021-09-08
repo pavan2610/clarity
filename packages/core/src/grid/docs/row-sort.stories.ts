@@ -9,7 +9,7 @@ export default {
 };
 
 export function rowSort() {
-  @customElement('demo-grid-row-sort') // @ts-ignore
+  @customElement('demo-grid-row-sort')
   class DemoRowSort extends LitElement {
     @state() private sortType: ActionSort = 'none';
 

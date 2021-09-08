@@ -6,7 +6,7 @@
 
 import { html, LitElement } from 'lit';
 import { customElement, property, state } from '@cds/core/internal';
-import { getVMData } from '@cds/core/demo';
+import { DemoService, getVMData } from '@cds/core/demo';
 import '@cds/core/pagination/register.js';
 import '@cds/core/datalist/register.js';
 import '@cds/core/checkbox/register.js';
@@ -271,93 +271,16 @@ export function all() {
 }
 
 export function basic() {
+  const grid = DemoService.data.grid;
   return html`
-    <cds-grid aria-label="basic datagrid demo" height="360">
-      <cds-grid-column>Host</cds-grid-column>
-      <cds-grid-column>Status</cds-grid-column>
-      <cds-grid-column>CPU</cds-grid-column>
-      <cds-grid-column>Memory</cds-grid-column>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-001</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>5%</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-003</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>10%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-002</cds-grid-cell>
-        <cds-grid-cell>online</cds-grid-cell>
-        <cds-grid-cell>20%</cds-grid-cell>
-        <cds-grid-cell>30%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-011</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-004</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-        <cds-grid-cell>80%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-008</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-006</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-005</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-007</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-010</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>50%</cds-grid-cell>
-        <cds-grid-cell>60%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-009</cds-grid-cell>
-        <cds-grid-cell>disruption</cds-grid-cell>
-        <cds-grid-cell>65%</cds-grid-cell>
-        <cds-grid-cell>90%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-012</cds-grid-cell>
-        <cds-grid-cell>offline</cds-grid-cell>
-        <cds-grid-cell>85%</cds-grid-cell>
-        <cds-grid-cell>70%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-row>
-        <cds-grid-cell>vm-host-013</cds-grid-cell>
-        <cds-grid-cell>deactivated</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-        <cds-grid-cell>0%</cds-grid-cell>
-      </cds-grid-row>
-      <cds-grid-footer></cds-grid-footer>
-    </cds-grid>
-  `;
+  <cds-grid aria-label="basic datagrid demo" height="360">
+    ${grid.columns.map(column => html`<cds-grid-column>${column.label}</cds-grid-column>`)}
+    ${grid.rows.map(row => html`
+    <cds-grid-row>
+      ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
+    </cds-grid-row>`)}
+    <cds-grid-footer></cds-grid-footer>
+  </cds-grid>`;
 }
 
 export function keyboard() {
@@ -493,8 +416,8 @@ export function dynamicGrid() {
   /**
    * Demo of a grid that can dynamically be created via a configuration object rather than declarative template
    */
-  @customElement('grid-dynamic') // @ts-ignore
-  class GridDynamic extends LitElement {
+  @customElement('grid-dynamic')
+  class GridDynamicDemo extends LitElement {
     private _model: DynamicGrid;
 
     @property({ type: Object, reflect: false })
@@ -557,7 +480,7 @@ export function dynamicGrid() {
     }
   }
 
-  @customElement('demo-grid-dynamic') // @ts-ignore
+  @customElement('demo-grid-dynamic')
   class DemoGridDynamic extends LitElement {
     @state() private data: DynamicGrid = {
       gridLabel: 'dynamic datagrid demo',

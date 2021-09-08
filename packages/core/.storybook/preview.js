@@ -170,13 +170,22 @@ export const globalTypes = {
     name: 'Themes',
     description: 'Available built in Clarity themes',
     defaultValue: '',
-    // defaultValue: window.matchMedia('(prefers-color-scheme: dark)').matches
-    //   ? 'dark'
-    //   : window.localStorage.getItem('cds-color-theme'),
     toolbar: {
       items: [
         { value: '', title: 'Light Theme' },
         { value: 'dark', title: 'Dark Theme' },
+      ],
+    },
+  },
+  dataTheme: {
+    name: 'Data',
+    description: 'Available demo datasets',
+    defaultValue: '',
+    toolbar: {
+      items: [
+        { value: 'infrastructure', title: 'Infrastructure' },
+        { value: 'food', title: 'Food' },
+        { value: 'system', title: 'System' },
       ],
     },
   },
@@ -209,20 +218,23 @@ const themeDecorator = (story, { globals }) => {
   document.body.setAttribute('cds-theme', `${themes}`);
   window.parent.document.body.setAttribute('cds-theme', `${themes}`);
   document.documentElement.style.setProperty('--cds-global-base', globals.baseFont);
-
   window.localStorage.setItem('cds-theme', themes);
+  return story();
+};
 
-  // window.addEventListener('storage', () => {
-  //   const updatedTheme = window.localStorage.getItem('cds-theme');
-  //   if (updatedTheme) {
-  //     window.document.body.setAttribute('cds-theme', `${updatedTheme}`);
-  //   }
-  // });
+let once = false;
+const dataThemeDecorator = (story, { globals }) => {
+  once = true;
+  localStorage.setItem('cds-data-theme', globals.dataTheme);
+
+  if (!once) {
+    window.reload();
+  }
 
   return story();
 };
 
-export const decorators = [themeDecorator];
+export const decorators = [themeDecorator, dataThemeDecorator];
 
 // We have this here since storybook does not have a easy way to set the <html> element in demos
 // The token system generates a base 16px set of variables for apps that may not be able to easily set the base font to 125%

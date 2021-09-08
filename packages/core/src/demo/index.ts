@@ -8,6 +8,8 @@
  * Interal demo data and utilities used for example apps and documentation
  */
 
+export * from './demo.service.js';
+
 export enum ColumnTypes {
   Host = 1,
   Status = 2,

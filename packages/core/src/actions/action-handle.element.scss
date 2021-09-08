@@ -10,6 +10,10 @@
   --cursor: move !important;
 }
 
+:host([aria-pressed='true']) {
+  --color: var(--cds-alias-object-interaction-background-highlight);
+}
+
 cds-icon[shape='drag-handle'] {
   --icon-width: #{$cds-global-space-10};
   --icon-height: #{$cds-global-space-10};

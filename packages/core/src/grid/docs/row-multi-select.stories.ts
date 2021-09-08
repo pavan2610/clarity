@@ -12,7 +12,7 @@ export function rowMultiSelect() {
   selectableData[1].selected = true;
   selectableData[3].selected = true;
 
-  @customElement('demo-grid-row-multi-select') // @ts-ignore
+  @customElement('demo-grid-row-multi-select')
   class DemoRowMultiSelect extends LitElement {
     @state() private data = selectableData;
 

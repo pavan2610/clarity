@@ -74,7 +74,7 @@ const buttonGridStyles = css`
 `;
 
 export function keyNavigationListController() {
-  @customElement('demo-key-navigation-list') // @ts-ignore
+  @customElement('demo-key-navigation-list')
   class DemoKeyNavigationList extends LitElement {
     @state() private items = Array.from(Array(10).keys());
     @state() private selected = '0';
@@ -120,7 +120,7 @@ export function keyNavigationListController() {
 }
 
 export function keyNavigationListControllerVertical() {
-  @customElement('demo-key-navigation-list-vertical') // @ts-ignore
+  @customElement('demo-key-navigation-list-vertical')
   class DemoKeyNavigationListVertical extends LitElement {
     @state() private items = Array.from(Array(10).keys());
     @state() private selected = '0';
@@ -170,7 +170,7 @@ export function keyNavigationListControllerVertical() {
 }
 
 export function keyNavigationListControllerLoop() {
-  @customElement('demo-key-navigation-list-loop') // @ts-ignore
+  @customElement('demo-key-navigation-list-loop')
   class DemoKeyNavigationListLoop extends LitElement {
     @state() private items = Array.from(Array(5).keys());
     @state() private selected = '0';
@@ -220,7 +220,7 @@ export function keyNavigationListControllerLoop() {
 }
 
 export function keyNavigationGridController() {
-  @customElement('demo-key-navigation-grid') // @ts-ignore
+  @customElement('demo-key-navigation-grid')
   class DemoKeyNavigationGridController extends LitElement {
     protected gridKeyNavigationController = new KeyNavigationGridController(this);
     static styles = [buttonGridStyles];
@@ -262,7 +262,7 @@ export function keyNavigationGridController() {
 }
 
 export function draggableListController() {
-  @customElement('demo-draggable-list-controller') // @ts-ignore
+  @customElement('demo-draggable-list-controller')
   class DemoDraggableListController extends LitElement {
     static get styles() {
       return [
@@ -311,7 +311,7 @@ export function draggableListController() {
     }
 
     private sortList(e: any) {
-      if (e.detail.type === 'drop') {
+      if (e.detail.type === 'reordered') {
         this.items = swapItems(e.detail.target, e.detail.from, this.items);
         e.preventDefault();
       }
@@ -334,7 +334,7 @@ export function ariaPopupController() {
     }
   `;
 
-  @customElement('demo-popup') // @ts-ignore
+  @customElement('demo-popup')
   class DemoAriaPopup extends LitElement {
     ariaPopupController = new AriaPopupController(this);
     static styles = [styles];
@@ -348,7 +348,7 @@ export function ariaPopupController() {
     }
   }
 
-  @customElement('demo-trigger') // @ts-ignore
+  @customElement('demo-trigger')
   class DemoAriaPopupTrigger extends LitElement {
     ariaPopupTriggerController = new AriaPopupTriggerController(this);
     static styles = [styles];
@@ -358,7 +358,7 @@ export function ariaPopupController() {
     }
   }
 
-  @customElement('demo-popup-controller') // @ts-ignore
+  @customElement('demo-popup-controller')
   class DemoPopupController extends LitElement {
     @state() show = false;
 
@@ -377,7 +377,7 @@ export function ariaPopupController() {
 }
 
 export function responsiveController() {
-  @customElement('demo-responsive-controller') // @ts-ignore
+  @customElement('demo-responsive-controller')
   class DemoResponsiveController extends LitElement {
     protected responsiveController = new ResponsiveController(this);
     @state() rect = {};
@@ -410,7 +410,7 @@ export function responsiveController() {
 }
 
 export function ariaGridController() {
-  @customElement('grid-a11y-test-element') // @ts-ignore
+  @customElement('grid-a11y-test-element')
   class DemoAriaGridController extends LitElement {
     @query('.grid', true) grid: HTMLElement;
     @query('.rowgroup', true) rowGroup: HTMLElement;
@@ -524,7 +524,7 @@ export function ariaGridController() {
 }
 
 export function gridRangeSelection() {
-  @customElement('grid-range-selection-test-element') // @ts-ignore
+  @customElement('grid-range-selection-test-element')
   class DemoGridRangeSelectionController extends LitElement {
     @query('section') grid: HTMLElement;
     @query('section') rowGroup: HTMLElement;
@@ -572,7 +572,7 @@ export function gridRangeSelection() {
 }
 
 export function inlineFocusTrap() {
-  @customElement('inline-focus-trap-demo') // @ts-ignore
+  @customElement('inline-focus-trap-demo')
   class DemoInlineFocusTrap extends LitElement {
     protected inlineFocusTrapController = new InlineFocusTrapController(this);
 
@@ -612,7 +612,7 @@ export function inlineFocusTrap() {
 }
 
 export function nestedInlineFocusTrap() {
-  @customElement('inline-trap-demo') // @ts-ignore
+  @customElement('inline-trap-demo')
   class InlineTrapDemo extends LitElement {
     @querySlotAll(':scope > *') keyListItems: NodeListOf<HTMLElement>;
     protected inlineFocusTrapController = new InlineFocusTrapController(this);
@@ -653,13 +653,14 @@ export function nestedInlineFocusTrap() {
     }
   }
 
-  @customElement('interactive-nested-inline-focus-trap-demo') // @ts-ignore
+  @customElement('interactive-nested-inline-focus-trap-demo')
   class DemoInteractiveNestedInlineFocusTrap extends LitElement {
     @state() show = false;
     @state() showTwo = false;
 
     render() {
       return html`
+        <button>root start</button>
         <inline-trap-demo id="1">
           <button cds-focus-first>one</button>
           <button>two</button>
@@ -685,6 +686,7 @@ export function nestedInlineFocusTrap() {
           <button>three</button>
           <button @click=${() => (this.show = true)}>show</button>
         </inline-trap-demo>
+        <button>root end</button>
       `;
     }
   }

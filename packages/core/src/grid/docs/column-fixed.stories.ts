@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, state } from '@cds/core/internal';
-import { getVMData } from '@cds/core/demo';
+import { DemoService } from '@cds/core/demo';
 
 export default {
   title: 'Stories/Grid',
@@ -8,47 +8,52 @@ export default {
 };
 
 export function columnFixed() {
+  const grid = DemoService.data.grid;
+  const columnWidths = {
+    0: '150',
+    1: '350',
+    2: '500',
+    3: '500',
+    4: '150'
+  }
+
   return html`
   <cds-grid aria-label="column fixed datagrid demo" height="360">
-    <cds-grid-column width="150" position="fixed">Host</cds-grid-column>
-    <cds-grid-column width="350">Status</cds-grid-column>
-    <cds-grid-column width="500">CPU</cds-grid-column>
-    <cds-grid-column width="150" position="fixed">Memory</cds-grid-column>
-    ${getVMData().map(entry => html`
+    ${grid.columns.map((column, i) => html`
+    <cds-grid-column resizable .position=${i === 0 || i === 4 ? 'fixed' : ''} .width=${(columnWidths as any)[i]}>
+      ${column.label}
+    </cds-grid-column>`)}
+    ${grid.rows.map(row => html`
     <cds-grid-row>
-      <cds-grid-cell>${entry.id}</cds-grid-cell>
-      <cds-grid-cell>${entry.status}</cds-grid-cell>
-      <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-      <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+      ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
     </cds-grid-row>`)}
     <cds-grid-footer></cds-grid-footer>
   </cds-grid>`;
 }
 
 export function columnFixedDynamic() {
-  @customElement('demo-column-fixed-dynamic') // @ts-ignore
+  @customElement('demo-column-fixed-dynamic')
   class DemoColumnFixedDyanmic extends LitElement {
-    @state() private data = getVMData();
     @state() private pinFirst = true;
     @state() private pinLast = true;
+    @state() private grid = DemoService.data.grid;
+    @state() private columns = this.grid.columns.slice(1, this.grid.columns.length - 1);
+    @state() private lastColumn = this.grid.columns[this.grid.columns.length - 1];
+    @state() private firstColumn = this.grid.columns[0];
 
     render() {
       return html`
         <cds-grid aria-label="columns fixed dynamic datagrid demo" height="360">
-          <cds-grid-column width="200" resizable .position=${this.pinFirst ? 'fixed' : ''}>
-            Host <cds-action @click=${() => (this.pinFirst = !this.pinFirst)} .status=${this.pinFirst ? 'active' : ''} shape="pin" aria-label="pin host column"></cds-action>
+          <cds-grid-column resizable .position=${this.pinFirst ? 'fixed' : ''} width="150">
+            ${this.firstColumn.label} <cds-action @click=${() => (this.pinFirst = !this.pinFirst)} .pressed=${this.pinFirst} shape="pin" aria-label="pin ${this.firstColumn.label} column"></cds-action>
           </cds-grid-column>
-          <cds-grid-column width="400" resizable>Status</cds-grid-column>
-          <cds-grid-column width="1000" resizable>CPU</cds-grid-column>
-          <cds-grid-column width="200" resizable .position=${this.pinLast ? 'fixed' : ''}>
-            Memory <cds-action @click=${() => (this.pinLast = !this.pinLast)} .status=${this.pinLast ? 'active' : ''} shape="pin" aria-label="pin memory column"></cds-action>
+          ${this.columns.map(column => html`<cds-grid-column resizable width="300">${column.label}</cds-grid-column>`)}
+          <cds-grid-column width="150" resizable .position=${this.pinLast ? 'fixed' : ''}>
+            ${this.lastColumn.label} <cds-action @click=${() => (this.pinLast = !this.pinLast)} .pressed=${this.pinLast} shape="pin" aria-label="pin ${this.lastColumn.label} column"></cds-action>
           </cds-grid-column>
-          ${this.data.map(entry => html`
+          ${this.grid.rows.map(row => html`
           <cds-grid-row>
-            <cds-grid-cell>${entry.id}</cds-grid-cell>
-            <cds-grid-cell>${entry.status}</cds-grid-cell>
-            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+            ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
           </cds-grid-row>`)}
           <cds-grid-footer></cds-grid-footer>
         </cds-grid>`;
@@ -58,18 +63,14 @@ export function columnFixedDynamic() {
 }
 
 export function columnMultiFixed() {
+  const grid = DemoService.data.grid;
   return html`
   <cds-grid aria-label="column multi fixed datagrid demo" height="360">
-    <cds-grid-column width="150" position="fixed">Host</cds-grid-column>
-    <cds-grid-column width="150" position="fixed">Status</cds-grid-column>
-    <cds-grid-column width="500">CPU</cds-grid-column>
-    <cds-grid-column width="500">Memory</cds-grid-column>
-    ${getVMData().map(entry => html`
+    ${grid.columns.map((column, i) => html`
+    <cds-grid-column resizable .position=${i < 2 ? 'fixed' : ''} .width=${i < 2 ? '150' : '300'}>${column.label}</cds-grid-column>`)}
+    ${grid.rows.map(row => html`
     <cds-grid-row>
-      <cds-grid-cell>${entry.id}</cds-grid-cell>
-      <cds-grid-cell>${entry.status}</cds-grid-cell>
-      <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-      <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+      ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
     </cds-grid-row>`)}
     <cds-grid-footer></cds-grid-footer>
   </cds-grid>`;

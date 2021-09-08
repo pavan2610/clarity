@@ -8,7 +8,7 @@ export default {
 };
 
 export function rowDraggable() {
-  @customElement('demo-grid-row-draggable') // @ts-ignore
+  @customElement('demo-grid-row-draggable')
   class DemoRowDraggable extends LitElement {
     @state() private data = getVMData();
     @state() private ariaLiveMessage = '';
@@ -39,11 +39,11 @@ export function rowDraggable() {
     }
 
     private sortList(e: any) {
-      if (e.detail.type === 'drop') {
+      if (e.detail.type === 'reordered') {
         this.data = [...swapItems<TestVM>(e.detail.target, e.detail.from, this.data)];
-        this.ariaLiveMessage = `host ${e.detail.from.id} dropped at row ${this.data.findIndex(i => i.id === e.detail.target.id) + 1}`;
-      } else if (e.detail.type === 'dragstart') {
-        this.ariaLiveMessage = `host ${e.detail.from.id} grabbed`;
+        this.ariaLiveMessage = `host ${e.detail.from.id} moved to row ${this.data.findIndex(i => i.id === e.detail.target.id)}`;
+      } else {
+        this.ariaLiveMessage = `host ${e.detail.from.id} ${e.detail.type}`;
       }
     }
   }

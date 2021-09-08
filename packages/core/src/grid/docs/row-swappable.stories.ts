@@ -8,7 +8,7 @@ export default {
 };
 
 export function rowSwappable() {
-  @customElement('demo-grid-row-swappable') // @ts-ignore
+  @customElement('demo-grid-row-swappable')
   class DemoRowSwappable extends LitElement {
     @state() private listOne = getVMData().slice(0, 3);
     @state() private listTwo = getVMData().slice(4, 7);
@@ -19,13 +19,17 @@ export function rowSwappable() {
     render() {
       return html`
         <cds-grid aria-label="production VMs" @cdsDraggableChange=${this.sortOne} height="360">
-          <cds-grid-column type="action" aria-label="draggable action column"></cds-grid-column>
+          <cds-grid-column type="action" aria-label="draggable handle"></cds-grid-column>
+          <cds-grid-column type="action" aria-label="draggable action"></cds-grid-column>
           <cds-grid-column>Production Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           ${this.listOne.map(entry => html`
           <cds-grid-row id=${entry.id} draggable="true">
             <cds-grid-cell>
-              <cds-action-handle aria-label="sort ${entry.id} row" @click=${(e: any) => this.selectEntry(entry, e.target)}></cds-action-handle>
+              <cds-action-handle aria-label="sort ${entry.id}"></cds-action-handle>
+            </cds-grid-cell>
+            <cds-grid-cell>
+              <cds-action popup="migrate-dropdown" aria-label="${entry.id} actions" @click=${(e: any) => this.selectEntry(entry, e.target)}></cds-action>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
             <cds-grid-cell>${entry.status}</cds-grid-cell>
@@ -39,13 +43,17 @@ export function rowSwappable() {
         <div aria-live="assertive" role="log" aria-atomic="true">${this.ariaLiveMessage}</div>
 
         <cds-grid aria-label="staging VMs" @cdsDraggableChange=${this.sortTwo} height="360">
-          <cds-grid-column type="action" aria-label="draggable action column"></cds-grid-column>
+          <cds-grid-column type="action" aria-label="draggable handle"></cds-grid-column>
+          <cds-grid-column type="action" aria-label="draggable action"></cds-grid-column>
           <cds-grid-column>Staging Host</cds-grid-column>
           <cds-grid-column>Status</cds-grid-column>
           ${this.listTwo.map(entry => html`
           <cds-grid-row id=${entry.id} draggable="true">
             <cds-grid-cell>
-              <cds-action-handle popup="migrate-dropdown" aria-label="sort ${entry.id} row" @click=${(e: any) => this.selectEntry(entry, e.target)}></cds-action-handle>
+              <cds-action-handle aria-label="sort ${entry.id}"></cds-action-handle>
+            </cds-grid-cell>
+            <cds-grid-cell>
+              <cds-action popup="migrate-dropdown" aria-label="${entry.id} actions" @click=${(e: any) => this.selectEntry(entry, e.target)}></cds-action>
             </cds-grid-cell>
             <cds-grid-cell>${entry.id}</cds-grid-cell>
             <cds-grid-cell>${entry.status}</cds-grid-cell>
@@ -55,7 +63,8 @@ export function rowSwappable() {
         </cds-grid>
         <cds-dropdown id="migrate-dropdown" ?hidden=${!this.selectedEntryId} .anchor=${this.dropdownAnchor} @closeChange=${() => (this.dropdownAnchor = null) as any}>
           <cds-button @click=${this.appendToOtherGrid} action="flat" size="sm">Move to <span>${this.listOne.find(i => i.id === this.selectedEntryId) ? 'Staging' : 'Production'}</span></cds-button>
-        </cds-dropdown>`;
+        </cds-dropdown>
+      `;
     }
 
     private selectEntry(entry: TestVM, anchor: HTMLElement) {
@@ -82,7 +91,7 @@ export function rowSwappable() {
 
     private sortOne(e: any) {
       this.setAriaLiveMessage(e);
-      if (e.detail.type === 'drop') {
+      if (e.detail.type === 'reordered') {
         if (this.listOne.find(i => i.id === e.detail.from.id)) {
           this.listOne = swapItems(e.detail.target, e.detail.from, this.listOne) as TestVM[];
         } else {
@@ -95,7 +104,7 @@ export function rowSwappable() {
 
     private sortTwo(e: any) {
       this.setAriaLiveMessage(e);
-      if (e.detail.type === 'drop') {
+      if (e.detail.type === 'reordered') {
         if (this.listTwo.find(i => i.id === e.detail.from.id)) {
           this.listTwo = swapItems(e.detail.target, e.detail.from, this.listTwo) as TestVM[];
         } else {
@@ -107,12 +116,12 @@ export function rowSwappable() {
     }
 
     private setAriaLiveMessage(e: any) {
-      if (e.detail.type === 'drop') {
+      if (e.detail.type === 'reordered') {
         const listOneIndex = this.listOne.findIndex(i => i.id === e.detail.target.id);
         const listTwoIndex = this.listTwo.findIndex(i => i.id === e.detail.target.id);
-        this.ariaLiveMessage = `host ${e.detail.from.id} dropped at row ${(listOneIndex !== -1 ? listOneIndex : listTwoIndex) + 1} ${listOneIndex !== -1 ? 'production' : 'staging'}`;
-      } else if (e.detail.type === 'dragstart') {
-        this.ariaLiveMessage = `host ${e.detail.from.id} grabbed`;
+        this.ariaLiveMessage = `host ${e.detail.from.id} moved to row ${(listOneIndex !== -1 ? listOneIndex : listTwoIndex) + 1} ${listOneIndex !== -1 ? 'production' : 'staging'}`;
+      } else {
+        this.ariaLiveMessage = `host ${e.detail.from.id} ${e.detail.type}`;
       }
     }
   }

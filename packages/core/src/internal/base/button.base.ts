@@ -13,6 +13,7 @@ import { onAnyKey } from '../utils/keycodes.js';
 import { stopEvent } from './../utils/events.js';
 import { AriaPopupTriggerController } from '../controllers/aria-popup-trigger.controller.js';
 import { ActiveInteractionController } from '../controllers/active-interaction.controller.js';
+// import { AriaPressedController } from '../controllers/aria-pressed.controller.js';
 
 // @dynamic
 export class CdsBaseButton extends LitElement {
@@ -26,6 +27,8 @@ export class CdsBaseButton extends LitElement {
 
   @property({ type: Boolean }) disabled = false;
 
+  @property({ type: Boolean }) pressed: boolean = null; // todo: test pressed logic
+
   @state({ type: Number, attribute: 'tabindex', reflect: true }) protected tabIndexAttr: number | null; // don't override native prop as it stops native focus behavior
 
   @state({ type: Boolean, reflect: true }) protected focused = false;
@@ -37,6 +40,8 @@ export class CdsBaseButton extends LitElement {
   @querySlot('cds-icon') protected icon: HTMLElement;
 
   @querySlot('cds-badge') protected badge: HTMLElement;
+
+  // protected ariaPressedController = new AriaPressedController(this);
 
   protected ariaPopupAnchorController = new AriaPopupTriggerController(this);
 
@@ -57,6 +62,10 @@ export class CdsBaseButton extends LitElement {
 
     if (props.has('readonly')) {
       this.setupNativeButtonBehavior();
+    }
+
+    if (props.has('pressed')) {
+      this.ariaPressed = this.pressed ? 'true' : 'false'; // todo test pressed
     }
   }
 

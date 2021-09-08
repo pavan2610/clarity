@@ -25,7 +25,7 @@ export class KeyNavigationGridController {
 
     onFirstInteraction(this.host).then(() => {
       this.initializeTabIndex();
-      this.host.rowGroup.addEventListener('mousedown', (e: MouseEvent) => this.activateCell(e));
+      this.host.rowGroup.addEventListener('mousedown', (e: MouseEvent) => this.clickCell(e));
       this.host.rowGroup.addEventListener('keydown', (e: KeyboardEvent) => this.focusCell(e));
     });
 
@@ -41,9 +41,9 @@ export class KeyNavigationGridController {
     this.host.cells[0]?.setAttribute('tabindex', '0');
   }
 
-  private activateCell(e: any) {
+  private clickCell(e: any) {
     // preserve right click for context menus & keyboard mouse control https://apple.stackexchange.com/questions/32715/how-do-i-open-the-context-menu-from-a-mac-keyboard
-    if (e.buttons === 1 && !e.ctrlKey) {
+    if (e.buttons === 1 && !e.ctrlKey && this.host.cells[0]) {
       const tagName = this.host.cells[0].tagName.toLocaleLowerCase();
       const activeCell = Array.from(this.host.cells).find(c => c === e.target.closest(tagName) ?? c === e.target);
       if (activeCell) {
@@ -53,7 +53,8 @@ export class KeyNavigationGridController {
   }
 
   private focusCell(e: KeyboardEvent) {
-    if (validKeyNavigationCode(e) && !isElementTextInputType(e.target as any)) {
+    if (validKeyNavigationCode(e) && ((e.target as any).readOnly || !isElementTextInputType(e.target as any))) {
+      // todo: test for readonly
       const { x, y } = getNextKeyGridItem(Array.from(this.host.cells), Array.from(this.host.rows), {
         code: e.code,
         ctrlKey: e.ctrlKey,

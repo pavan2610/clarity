@@ -25,6 +25,7 @@ export class AriaPopupController {
   private expand(expand: boolean) {
     if (this.host.trigger?.hasAttribute('popup')) {
       this.host.trigger.setAttribute('aria-expanded', expand ? 'true' : 'false');
+      this.host.trigger.setAttribute('aria-pressed', expand ? 'true' : 'false');
     }
   }
 }

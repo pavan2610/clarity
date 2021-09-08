@@ -15,6 +15,22 @@ export interface DraggableListControllerConfig {
   manageFocus?: boolean;
 }
 
+export enum CdsDraggableChangeType {
+  Grabbed = 'grabbed',
+  Dropped = 'dropped',
+  Reordered = 'reordered',
+}
+
+function dispatchDraggableChange(
+  host: HTMLElement,
+  from: HTMLElement,
+  target: HTMLElement,
+  type: CdsDraggableChangeType
+) {
+  console.log(type);
+  host.dispatchEvent(new CustomEvent('cdsDraggableChange', { detail: { from, target, type }, bubbles: true }));
+}
+
 /**
  * Provides support for HTML5 native drag and drop to a component
  */
@@ -64,13 +80,37 @@ export class DraggableListController {
   }
 
   private addKeyboardEventListeners() {
+    this.hostRoot.addEventListener('click', (e: any) => {
+      const handle = Array.from(e.path).find(
+        (e: any) => e.getAttribute && e.getAttribute('cds-draggable') === 'handle'
+      ) as HTMLElement;
+      const from = e.path[0].closest('[draggable]');
+      if (handle && from) {
+        if (handle.ariaPressed === 'true') {
+          from.setAttribute('cds-draggable', 'active');
+          dispatchDraggableChange(e.currentTarget, from, null, CdsDraggableChangeType.Grabbed);
+        } else if (handle.ariaPressed === 'false') {
+          from.removeAttribute('cds-draggable');
+          dispatchDraggableChange(e.currentTarget, from, null, CdsDraggableChangeType.Dropped);
+        }
+      }
+    });
+
     this.hostRoot.addEventListener('cdsKeyChange', (e: any) => {
-      if (e.detail.keyListItems === this.id && e.detail.metaKey) {
+      if (
+        e.detail.keyListItems === this.id &&
+        e.detail.previousItem?.closest('[draggable]').getAttribute('cds-draggable') === 'active'
+      ) {
         const from = e.detail.previousItem?.closest('[draggable]');
         const target = e.detail.activeItem.closest('[draggable]');
-        e.detail.activeItem.dispatchEvent(
-          new CustomEvent('cdsDraggableChange', { detail: { from, target, type: 'drop' }, bubbles: true })
-        );
+
+        if (e.detail.activeItem.getAttribute('cds-draggable') === 'handle' && from !== target) {
+          e.detail.previousItem.ariaPressed = 'false';
+          e.detail.activeItem.ariaPressed = 'true';
+          from.removeAttribute('cds-draggable');
+          target.setAttribute('cds-draggable', 'active');
+          dispatchDraggableChange(e.detail.activeItem, from, target, CdsDraggableChangeType.Reordered);
+        }
       }
     });
   }
@@ -93,12 +133,7 @@ function handleDragStart(e: any) {
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setDragImage(e.currentTarget, 0, 0);
   e.currentTarget.setAttribute('cds-draggable', 'active');
-  e.currentTarget.dispatchEvent(
-    new CustomEvent('cdsDraggableChange', {
-      detail: { from: e.currentTarget, target: null, type: 'dragstart' },
-      bubbles: true,
-    })
-  );
+  dispatchDraggableChange(e.currentTarget, e.currentTarget, null, CdsDraggableChangeType.Grabbed);
 }
 
 function handleDragOver(e: any) {
@@ -121,11 +156,7 @@ function handleDrop(e: any) {
   const target = items.find(i => i === e.currentTarget);
   from.removeAttribute('cds-draggable');
   target.removeAttribute('cds-draggable');
-
-  // todo: provide a RefID sorted list as part of event
-  e.currentTarget.dispatchEvent(
-    new CustomEvent('cdsDraggableChange', { detail: { from, target, type: 'drop' }, bubbles: true })
-  );
+  dispatchDraggableChange(e.currentTarget, from, target, CdsDraggableChangeType.Reordered);
   return false;
 }
 

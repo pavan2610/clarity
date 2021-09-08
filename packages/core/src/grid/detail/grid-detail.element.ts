@@ -34,7 +34,7 @@ import styles from './grid-detail.element.scss';
  * @cssprop --backdrop-background
  */
 export class CdsGridDetail extends LitElement {
-  @property({ type: String }) anchor: HTMLElement | string;
+  @property({ type: String }) anchor: HTMLElement | string | null;
 
   @i18n() i18n = I18nService.keys.grid;
 

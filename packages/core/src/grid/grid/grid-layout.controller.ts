@@ -1,5 +1,11 @@
 import { ReactiveControllerHost } from 'lit';
-import { isNumericString, listenForAttributeListChange, onChildListMutation } from '@cds/core/internal';
+import {
+  isNumericString,
+  listenForAttributeListChange,
+  LogService,
+  notProductionEnvironment,
+  onChildListMutation,
+} from '@cds/core/internal';
 
 export type Column = HTMLElement & {
   width?: string;
@@ -18,7 +24,7 @@ export class GridLayoutController {
 
   private _columns: NodeListOf<Column>;
   private get columns() {
-    return Array.from(this._columns);
+    return Array.from(this._columns ?? []);
   }
 
   private get visibleColumns() {
@@ -93,6 +99,7 @@ export class GridLayoutController {
 
   private updateLayout() {
     this._columns = this.host.columns; // create copy per update to prevent multiple DOM queries from @query getters
+    this.validateColumnLayout();
     this.createColumnGrids();
     this.setColumnDividers();
   }
@@ -113,10 +120,21 @@ export class GridLayoutController {
       c.removeAttribute('draggable-hidden');
 
       if (c.type === 'action' && this.visibleColumns[i + 1]?.type === 'action') {
-        // todo: unit test not only to remove but safely check when only one column was available
         c.setAttribute('draggable-hidden', '');
       }
     });
-    this.lastVisibleColumn.setAttribute('draggable-hidden', '');
+    this.lastVisibleColumn?.setAttribute('draggable-hidden', '');
+  }
+
+  private validateColumnLayout() {
+    // todo: test
+    if (notProductionEnvironment()) {
+      const visibleCells = Array.from((this.host as any).rows[0]?.cells ?? []).filter((c: any) => !c.hidden);
+      if (this.visibleColumns.length !== visibleCells?.length && visibleCells?.length !== 0) {
+        LogService.error(
+          `Error: column mismatch, ${this.visibleColumns.length} visible column headers with ${visibleCells.length} visible cells`
+        );
+      }
+    }
   }
 }

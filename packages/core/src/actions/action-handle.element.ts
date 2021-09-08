@@ -30,5 +30,12 @@ export class CdsActionHandle extends CdsAction {
     super.connectedCallback();
     this.shape = 'drag-handle';
     this.setAttribute('cds-draggable', 'handle');
+
+    this.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.code === 'Space' || (e.code === 'Enter' && !this.disabled && !this.readonly)) {
+        // todo: test for disabled states
+        this.ariaPressed = this.ariaPressed === 'true' ? 'false' : 'true';
+      }
+    });
   }
 }

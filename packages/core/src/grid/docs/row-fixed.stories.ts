@@ -1,24 +1,20 @@
 import { html } from 'lit';
-import { getVMData } from '@cds/core/demo';
+import { DemoService } from '@cds/core/demo';
 
 export default {
   title: 'Stories/Grid',
   component: 'cds-grid',
 };
 
+
 export function rowFixed() {
+  const grid = DemoService.data.grid;
   return html`
   <cds-grid aria-label="row fixed datagrid demo" height="360">
-    <cds-grid-column>Host</cds-grid-column>
-    <cds-grid-column>Status</cds-grid-column>
-    <cds-grid-column>CPU</cds-grid-column>
-    <cds-grid-column>Memory</cds-grid-column>
-    ${getVMData().map((entry, i) => html`
-    <cds-grid-row position=${i === 0 ? 'fixed' : null}>
-      <cds-grid-cell>${entry.id}</cds-grid-cell>
-      <cds-grid-cell>${entry.status}</cds-grid-cell>
-      <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-      <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+    ${grid.columns.map(column => html`<cds-grid-column>${column.label}</cds-grid-column>`)}
+    ${grid.rows.map((row, i) => html`
+    <cds-grid-row .position=${i === 0 ? 'fixed' : ''}>
+      ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
     </cds-grid-row>`)}
     <cds-grid-footer></cds-grid-footer>
   </cds-grid>`;

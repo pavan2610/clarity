@@ -8,7 +8,7 @@ export default {
 };
 
 export function pagination() {
-  @customElement('demo-grid-pagination') // @ts-ignore
+  @customElement('demo-grid-pagination')
   class DemoPagination extends LitElement {
     @state() private data = getVMData();
     @state() private filteredList: TestVM[] = [];
@@ -50,6 +50,7 @@ export function pagination() {
               <cds-pagination-button aria-label="go to next" ?disabled=${this.currentPage === this.pageCount - 1} action="next" @click=${this.nextPage}></cds-pagination-button>
               <cds-pagination-button aria-label="go to last" ?disabled=${this.currentPage === this.pageCount - 1} action="last" @click=${this.lastPage}></cds-pagination-button>
             </cds-pagination>
+            <!-- <cds-grid-pagination .page="0" .pageSize="10" .pageCount="3" @pageChange=""></cds-grid-pagination> -->
           </cds-grid-footer>
         </cds-grid>`;
     }

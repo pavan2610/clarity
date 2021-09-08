@@ -23,9 +23,9 @@ import styles from './action.element.scss';
  * @slot - For projecting text content or cds-icon
  */
 export class CdsAction extends CdsBaseButton {
-  @property({ type: String }) shape = 'ellipsis-vertical';
-
   @property({ type: String }) status?: 'active' | '';
+
+  @property({ type: String }) shape = 'ellipsis-vertical';
 
   @state({ type: Boolean, reflect: true, attribute: 'cds-action' }) protected cdsAction = true;
 
@@ -43,7 +43,13 @@ export class CdsAction extends CdsBaseButton {
   render() {
     return html`
       <div class="private-host">
-        <slot><cds-icon .shape=${this.shape} ?solid=${this.status === 'active'} .innerOffset=${1}></cds-icon></slot>
+        <slot
+          ><cds-icon
+            .shape=${this.shape}
+            ?solid=${this.pressed || this.status === 'active'}
+            .innerOffset=${1}
+          ></cds-icon
+        ></slot>
       </div>
     `;
   }

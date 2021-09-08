@@ -8,7 +8,6 @@ import { GlobalStateService } from './global.service.js';
 
 export interface I18nStrings {
   [key: string]: { [key: string]: string | undefined };
-
   actions: {
     sort: string;
     expand: string;
@@ -48,6 +47,7 @@ export interface I18nStrings {
   grid: {
     resizeColumn: string;
     closeDetails: string;
+    noData: string;
   };
 }
 
@@ -97,6 +97,7 @@ export const componentStringsDefault = {
   grid: {
     resizeColumn: 'Resize Column',
     closeDetails: 'Close Details',
+    noData: 'No Available Data',
   },
 };
 

@@ -31,19 +31,20 @@ declare global {
     ariaSort: 'ascending' | 'descending' | 'none' | null;
     ariaModal: 'true' | 'false' | null;
     ariaMultiSelectable: 'true' | 'false' | null;
+    ariaPressed: 'true' | 'false' | 'mixed' | null;
   }
 }
 
 let roleRegistered = false;
 let ariaRegistered = false;
 
-if (!roleRegistered && !Element.prototype.hasOwnProperty('role')) {
+if (!roleRegistered && !Element.prototype.hasOwnProperty('role')) { // eslint-disable-line
   reflect(Element.prototype, 'role', 'role');
   roleRegistered = true;
 }
 
 // https://www.w3.org/TR/wai-aria-1.0/states_and_properties
-if (!ariaRegistered && !Element.prototype.hasOwnProperty('ariaLabel')) {
+if (!ariaRegistered && !Element.prototype.hasOwnProperty('ariaLabel')) { // eslint-disable-line
   ariaRegistered = true;
   [
     'ActiveDescendant',

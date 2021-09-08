@@ -10,7 +10,7 @@ export default {
 };
 
 export function rowMultiSort() {
-  @customElement('demo-grid-row-multi-sort') // @ts-ignore
+  @customElement('demo-grid-row-multi-sort')
   class DemoRowMultiSort extends LitElement {
     @state() private idSort: ActionSort = 'none';
     @state() private statusSort: ActionSort = 'none';

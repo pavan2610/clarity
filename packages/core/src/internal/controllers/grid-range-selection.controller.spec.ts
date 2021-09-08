@@ -1,13 +1,11 @@
 import { html } from 'lit';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
-import { CdsGrid, CdsGridCell, CdsGridRow } from '@cds/core/grid';
+import { CdsGrid } from '@cds/core/grid';
 import '@cds/core/grid/register.js';
 
 describe('grid-range-select.controller', () => {
   let element: HTMLElement;
   let grid: HTMLElement;
-  let rows: NodeListOf<HTMLElement>;
-  let cells: NodeListOf<HTMLElement>;
 
   beforeEach(async () => {
     element = await createTestElement(html`
@@ -28,8 +26,6 @@ describe('grid-range-select.controller', () => {
       </cds-grid>
     `);
     grid = element.querySelector<CdsGrid>('cds-grid');
-    rows = element.querySelectorAll<CdsGridRow>('cds-grid-row');
-    cells = element.querySelectorAll<CdsGridCell>('cds-grid-cell');
   });
 
   afterEach(() => {

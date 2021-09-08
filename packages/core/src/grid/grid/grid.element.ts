@@ -12,6 +12,8 @@ import {
   GridRangeSelectionController,
   ScrollableVisibilityController,
   PerformanceController,
+  i18n,
+  I18nService,
 } from '@cds/core/internal';
 import { CdsGridRow } from '../row/grid-row.element.js';
 import { CdsGridCell } from '../cell/grid-cell.element.js';
@@ -40,6 +42,8 @@ import styles from './grid.element.scss';
  * @cssprop --cell-text-algin
  */
 export class CdsGrid extends LitElement {
+  @i18n() i18n = I18nService.keys.grid;
+
   @property({ type: String }) columnLayout: 'fixed' | 'flex' = 'fixed';
 
   @property({ type: String }) height: string;
@@ -97,7 +101,11 @@ export class CdsGrid extends LitElement {
         <div class="scroll-container">
           <div class="column-group">
             <div class="column-row">
-              <slot name="columns"></slot>
+              <slot name="columns">
+                <cds-grid-column draggable-hidden>
+                  <span cds-layout="display:screen-reader-only">${this.i18n.noData}</span>
+                </cds-grid-column>
+              </slot>
             </div>
           </div>
           <div class="row-group">

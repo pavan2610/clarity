@@ -23,7 +23,7 @@ import styles from './grid-column.element.scss';
 export class CdsGridColumn extends LitElement {
   @i18n() i18n = I18nService.keys.grid;
 
-  @property({ type: String }) width?: string;
+  @property({ type: String }) width?: string | null;
 
   @property({ type: String }) type: '' | 'action';
 

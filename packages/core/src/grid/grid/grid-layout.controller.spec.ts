@@ -10,7 +10,7 @@ import { createTestElement, removeTestElement, componentIsStable } from '@cds/co
 import { CdsGrid } from '@cds/core/grid';
 import '@cds/core/grid/register.js';
 
-@customElement('grid-layout-test-element') // @ts-ignore
+@customElement('grid-layout-test-element')
 class GridLayoutTestElement extends LitElement {
   @property({ type: String }) columnLayout: 'fixed' | 'flex' = 'fixed';
   @property({ type: Boolean }) showAll = true;

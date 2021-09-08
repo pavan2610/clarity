@@ -37,7 +37,7 @@ export function kitchenSink() {
     detailAnchor: null
   };
 
-  @customElement('demo-grid-kitchen-sink') // @ts-ignore
+  @customElement('demo-grid-kitchen-sink')
   class DemoKitchenSink extends LitElement {
     @state() private state: GridState = initialState;
 
@@ -59,7 +59,7 @@ export function kitchenSink() {
           </cds-grid-column>
           ${this.columnVisible(ColumnTypes.Status) ? html`
           <cds-grid-column resizable width="180">
-            Status <cds-action-sort .sort=${this.state.sortType} @sortChange=${(e: any) => this.setSortType(e.detail)}></cds-action-sort>
+            Status <cds-action-sort aria-label="sort status" .sort=${this.state.sortType} @sortChange=${(e: any) => this.setSortType(e.detail)}></cds-action-sort>
           </cds-grid-column>`: ''}
           ${this.columnVisible(ColumnTypes.CPU) ? html`<cds-grid-column resizable>CPU</cds-grid-column>`: ''}
           ${this.columnVisible(ColumnTypes.Memory) ? html`<cds-grid-column resizable>Memory</cds-grid-column>` : ''}

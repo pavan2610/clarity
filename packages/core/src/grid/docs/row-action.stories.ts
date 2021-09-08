@@ -8,7 +8,7 @@ export default {
 };
 
 export function rowAction() {
-  @customElement('demo-grid-row-action') // @ts-ignore
+  @customElement('demo-grid-row-action')
   class DemoRowAction extends LitElement {
     @state() private data = getVMData();
     @state() private selectedEntry: any = null;

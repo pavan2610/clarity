@@ -17,11 +17,16 @@ let registered = false;
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at
  */
 export function at(this: { value: (n: any) => any; writable: true; enumerable: false; configurable: true; }, n: any) {
-  let that: any = this; // @ts-ignore
 	n = Math.trunc(n) || 0;
-	if (n < 0) n += (that as any).length;
-	if (n < 0 || n >= that.length) return undefined;
-	return that[n];
+	if (n < 0) {
+    n += (this as any).length;
+  }
+
+	if (n < 0 || n >=  (this as any).length) {
+    return undefined
+  }
+
+	return (this as any)[n];
 }
 
 if (!registered) {

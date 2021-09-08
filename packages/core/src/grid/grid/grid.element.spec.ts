@@ -47,7 +47,7 @@ describe('cds-grid', () => {
   });
 });
 
-@customElement('grid-performance-test-element') // @ts-ignore
+@customElement('grid-performance-test-element')
 class GridLayoutTestElement extends LitElement {
   @property({ type: Boolean }) show = false;
   @property({ type: Array }) items = Array.from(Array(1000).keys());

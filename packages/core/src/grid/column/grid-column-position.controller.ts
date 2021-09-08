@@ -45,18 +45,27 @@ export class GridColumnPositionController {
       ${side === 'left' ? `left: ${left};` : ''}
       ${side === 'right' ? `right: ${right};` : ''}
       ${this.host.position === 'sticky' ? `left: 0px;` : ''}
+    }
+
+    [__id='${this.hostGrid._id}'] cds-grid-cell[aria-colindex="${this.host.ariaColIndex}"] {
+      z-index: 98;
     }`;
   }
 
   private borderStyle(side: 'left' | 'right') {
-    return this.host.position !== ''
-      ? `
+    const lastofLeft = side === 'left' && (this.host.nextElementSibling as any).position !== this.host.position;
+    const lastofRight = side === 'right' && (this.host.previousElementSibling as any).position !== this.host.position;
+
+    if (this.host.position !== '' && (lastofLeft || lastofRight)) {
+      // todo: test last of position
+      return `
       [__id='${this.hostGrid._id}'] cds-grid-cell[aria-colindex="${this.host.ariaColIndex}"] {
         --border-${
           side === 'left' ? 'right' : 'left'
         }: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
-        z-index: 98;
-      }`
-      : '';
+      }`;
+    } else {
+      return '';
+    }
   }
 }

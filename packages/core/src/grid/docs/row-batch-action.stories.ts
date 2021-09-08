@@ -8,7 +8,7 @@ export default {
 };
 
 export function rowBatchAction() {
-  @customElement('demo-grid-row-batch-action') // @ts-ignore
+  @customElement('demo-grid-row-batch-action')
   class DemoRowBatchAction extends LitElement {
     @state() private data = getVMData();
     @state() private batchActionAnchor: HTMLElement;

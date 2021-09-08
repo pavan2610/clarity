@@ -8,7 +8,7 @@ import { html, LitElement } from 'lit';
 import { createTestElement, removeTestElement } from '@cds/core/test';
 import { customElement, getChildren, getFlattenedDOMTree, getFlattenedFocusableItems } from '@cds/core/internal';
 
-@customElement('traversal-test-element') // @ts-ignore
+@customElement('traversal-test-element')
 class TestComponent extends LitElement {
   render() {
     return html`
@@ -83,7 +83,6 @@ describe('getFlattenedDOMTree', () => {
 
 describe('getFlattenedFocusableItems', () => {
   let testElement: HTMLElement;
-  let component: HTMLElement;
 
   beforeEach(async () => {
     testElement = await createTestElement(html`
@@ -93,8 +92,6 @@ describe('getFlattenedFocusableItems', () => {
         <button slot="slot-two">light dom one</button>
       </traversal-test-element>
     `);
-
-    component = testElement.querySelector('traversal-test-element');
   });
 
   afterEach(() => {

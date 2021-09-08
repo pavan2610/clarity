@@ -8,7 +8,7 @@ export default {
 };
 
 export function rowDetail() {
-  @customElement('demo-grid-row-detail') // @ts-ignore
+  @customElement('demo-grid-row-detail')
   class DemoRowDetail extends LitElement {
     @state() private data = getVMData();
     @state() private currentVM: TestVM;

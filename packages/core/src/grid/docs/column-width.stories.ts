@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { getVMData } from '@cds/core/demo';
+import { DemoService } from '@cds/core/demo';
 
 export default {
   title: 'Stories/Grid',
@@ -7,56 +7,43 @@ export default {
 };
 
 export function columnFixedWidth() {
+  const grid = DemoService.data.grid;
   return html`
   <cds-grid aria-label="column fixed width datagrid demo" height="360">
-    <cds-grid-column width="150">Host</cds-grid-column>
-    <cds-grid-column width="150">Status</cds-grid-column>
-    <cds-grid-column>CPU</cds-grid-column>
-    <cds-grid-column>Memory</cds-grid-column>
-    ${getVMData().map(entry => html`
+    ${grid.columns.map((column, i) => html`<cds-grid-column .width=${i < 2 ? '150' : null}>${column.label}</cds-grid-column>`)}
+    ${grid.rows.map(row => html`
     <cds-grid-row>
-      <cds-grid-cell>${entry.id}</cds-grid-cell>
-      <cds-grid-cell>${entry.status}</cds-grid-cell>
-      <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-      <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+      ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
     </cds-grid-row>`)}
+    <cds-grid-footer></cds-grid-footer>
   </cds-grid>`;
 }
 
 export function columnPercentageWidth() {
+  const grid = DemoService.data.grid;
   return html`
-  <cds-grid aria-label="column fixed width datagrid demo" height="360">
-    <cds-grid-column width="15%">Host</cds-grid-column>
-    <cds-grid-column width="15%">Status</cds-grid-column>
-    <cds-grid-column width="55%">CPU</cds-grid-column>
-    <cds-grid-column>Memory</cds-grid-column>
-    ${getVMData().map(entry => html`
+  <cds-grid aria-label="column fixed width percentage datagrid demo" height="360">
+    ${grid.columns.map((column, i) => html`<cds-grid-column .width=${i < 2 ? '15%' : null}>${column.label}</cds-grid-column>`)}
+    ${grid.rows.map(row => html`
     <cds-grid-row>
-      <cds-grid-cell>${entry.id}</cds-grid-cell>
-      <cds-grid-cell>${entry.status}</cds-grid-cell>
-      <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-      <cds-grid-cell>${entry.memory}%</cds-grid-cell>
+      ${row.cells.map(cell => html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
     </cds-grid-row>`)}
+    <cds-grid-footer></cds-grid-footer>
   </cds-grid>`;
 }
 
 export function columnOverflow() {
-  const data = getVMData();
-  data[0].cpu = 25.00000001;
-  data[0].memory = 50.00000001;
-
+  const grid = DemoService.data.grid;
   return html`
   <cds-grid aria-label="column overflow datagrid demo" height="360">
-    <cds-grid-column>Host</cds-grid-column>
-    <cds-grid-column>Status</cds-grid-column>
-    <cds-grid-column width="100">CPU</cds-grid-column>
-    <cds-grid-column width="100">Memory</cds-grid-column>
-    ${data.map(entry => html`
+    ${grid.columns.map((column, i) => html`<cds-grid-column .width=${i > 2 ? '100' : null}>${column.label}</cds-grid-column>`)}
+    ${grid.rows.map(row => html`
     <cds-grid-row>
-      <cds-grid-cell>${entry.id}</cds-grid-cell>
-      <cds-grid-cell>${entry.status}</cds-grid-cell>
-      <cds-grid-cell><p cds-text="truncate">${entry.cpu}%</p></cds-grid-cell>
-      <cds-grid-cell><p cds-text="truncate">${entry.memory}%</p></cds-grid-cell>
+      ${row.cells.map((cell, i) => html`
+        <cds-grid-cell>
+        ${i > 2 ? html`<p cds-text="truncate">${cell.value}.000000%</p>` : cell.value}
+      </cds-grid-cell>`)}
     </cds-grid-row>`)}
+    <cds-grid-footer></cds-grid-footer>
   </cds-grid>`;
 }

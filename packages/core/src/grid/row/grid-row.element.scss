@@ -56,7 +56,8 @@
   --background: #{$cds-alias-object-interaction-background-hover};
 }
 
-:host([selected]) {
+:host([selected]),
+:host([cds-draggable='active']) {
   --background: #{$cds-alias-object-interaction-background-selected};
 }
 

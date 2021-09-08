@@ -50,7 +50,7 @@ export class CdsActionSort extends CdsAction {
     super.connectedCallback();
     this.addEventListener('click', () => this.sortClick());
 
-    if (!!this.ariaLabel) {
+    if (this.ariaLabel) {
       this.ariaLabel = this.i18n.sort;
     }
   }

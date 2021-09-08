@@ -11,7 +11,7 @@ export function rowSingleSelect() {
   const selectableData = getVMData();
   selectableData[1].selected = true;
 
-  @customElement('demo-grid-row-single-select') // @ts-ignore
+  @customElement('demo-grid-row-single-select')
   class DemoRowSingleSelect extends LitElement {
     @state() private data = selectableData;
 

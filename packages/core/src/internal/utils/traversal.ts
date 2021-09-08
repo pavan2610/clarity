@@ -8,7 +8,7 @@ export function getFlattenedFocusableItems(element: Node, depth = 10) {
   const focusableSelector = [
     'a[href]',
     'area[href]',
-    'input:not([disabled]):not([readonly])',
+    'input:not([disabled])',
     'button:not([disabled])',
     'select:not([disabled])',
     'textarea:not([disabled])',
@@ -24,9 +24,11 @@ export function getFlattenedFocusableItems(element: Node, depth = 10) {
 }
 
 export function getFlattenedDOMTree(node: any, depth = 10): any {
-  return Array.from(getChildren(node)).reduce((prev: any[], next: any) => {
-    return [...prev, [next, [...Array.from(getChildren(next)).map((i: any) => ([i, getFlattenedDOMTree(i, depth)]))]]];
-  }, []).flat(depth);
+  return Array.from(getChildren(node))
+    .reduce((prev: any[], next: any) => {
+      return [...prev, [next, [...Array.from(getChildren(next)).map((i: any) => [i, getFlattenedDOMTree(i, depth)])]]];
+    }, [])
+    .flat(depth);
 }
 
 export function getChildren(node: any) {
@@ -36,7 +38,7 @@ export function getChildren(node: any) {
     return node.shadowRoot.children;
   } else if (node.assignedElements) {
     const slotted = node.assignedElements(); // slotted elements
-    return slotted.length ? slotted : node.children // else fallback
+    return slotted.length ? slotted : node.children; // else fallback
   } else {
     return node.children;
   }

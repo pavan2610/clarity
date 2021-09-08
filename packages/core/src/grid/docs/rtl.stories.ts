@@ -8,7 +8,7 @@ export default {
 };
 
 export function rtl() {
-  @customElement('demo-grid-rtl') // @ts-ignore
+  @customElement('demo-grid-rtl')
   class DemoRtl extends LitElement {
     @state() private data = getVMData();
     @state() private currentVM: TestVM;

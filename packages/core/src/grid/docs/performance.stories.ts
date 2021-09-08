@@ -8,7 +8,7 @@ export default {
 };
 
 export function performance() {
-  @customElement('demo-grid-performance') // @ts-ignore
+  @customElement('demo-grid-performance')
   class DemoPerformance extends LitElement {
     @state() private showParseAndRender = false;
     @state() private hide = false;
@@ -42,9 +42,9 @@ export function performance() {
           <button @click=${this.toggleVisibility}>css visibility</button>
 
           <br /><br />
-          <!-- <p cds-text="body">
+          <p cds-text="body">
             Render Time: ${this.timing ? html`~${this.timing.entry.duration.toFixed(2)}ms ${this.timing.score}` : ''}
-          </p> -->
+          </p>
 
           <div style="width: 800px; height: 398px;">
             ${this.showParseAndRender ? html`
@@ -87,7 +87,7 @@ export function performance() {
     private setRows(numberOfRows: number) {
       this.showParseAndRender = false;
       this.numberOfRows = numberOfRows;
-      // this.timing = null;
+      this.timing = null;
       const data: any[] = [];
 
       for (let i = 0; i < (this.numberOfRows / 20); i++) {

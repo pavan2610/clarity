@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { customElement, ResponsiveController } from '@cds/core/internal';
 import { createTestElement, onceEvent, removeTestElement } from '@cds/core/test';
 
-@customElement('responsive-controller-test-element') // @ts-ignore
+@customElement('responsive-controller-test-element')
 class ResponsiveControllerTestElement extends LitElement {
   responsiveController = new ResponsiveController(this);
 
