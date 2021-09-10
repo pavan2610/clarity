@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { VmService } from '../vm.service';
-import { TestVM } from '@cds/core/demo';
+import { Component } from '@angular/core';
+import { VmSyncService } from '../utils/providers/vm-sync.service';
 
 @Component({
   selector: 'app-basic',
@@ -8,12 +7,6 @@ import { TestVM } from '@cds/core/demo';
   styleUrls: ['./basic.component.scss'],
 })
 export class BasicComponent {
-  data: TestVM[];
-  dataFields!: string[];
   showDevNotes = false;
-
-  constructor(private vmData: VmService) {
-    this.data = vmData.get();
-    this.dataFields = vmData.fields;
-  }
+  constructor(public vmData: VmSyncService) {}
 }

@@ -1,30 +1,29 @@
 import { Component } from '@angular/core';
 import { TestVM } from '@cds/core/demo';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { VmService } from '../vm.service';
+import { VmSyncService } from '../utils/providers/vm-sync.service';
+import { SingleActionGridComponent } from '../utils/vm-data.interface';
 
 @Component({
   selector: 'app-multi-action',
   templateUrl: './single-action.component.html',
   styleUrls: ['./single-action.component.scss'],
 })
-export class SingleActionComponent {
+export class SingleActionComponent implements SingleActionGridComponent<TestVM> {
   // Form group for the generated form controls
   // hideShowForm!: FormGroup;
   // reference to the click event target for positioning the popover ui w/ hide/show checkboxes
-  actionPopoverAnchor: EventTarget | null = null;
+  singleActionAnchor: EventTarget | null = null;
   // A list of test VM's to display in a grid
   data: TestVM[] = [];
   // Extracted 'fields' from a row of data -> These will become columns
   dataFields!: string[];
   // a boolean flag to control column picker element visibility
-  hiddenColumnPicker = true;
 
-  selectedRow!: TestVM | null;
+  actionRow!: TestVM | null;
   showDevNotes = false;
   hiddenRowAction = true;
 
-  constructor(private formBuilder: FormBuilder, private vmData: VmService) {
+  constructor(private vmData: VmSyncService) {
     this.data = vmData.get();
     this.dataFields = vmData.fields;
   }
@@ -32,23 +31,23 @@ export class SingleActionComponent {
   shutdownVM(vm?: TestVM | null) {
     alert(`Shutdown: ${vm?.id}`);
     this.closeRowActionPopover();
-    this.selectedRow = null;
+    this.actionRow = null;
   }
 
   restartVM(vm: TestVM | null) {
     alert(`Restarted: ${vm?.id}`);
     this.closeRowActionPopover();
-    this.selectedRow = null;
+    this.actionRow = null;
   }
 
-  showRowActions(event: Event, vm: TestVM) {
-    this.selectedRow = vm;
-    this.actionPopoverAnchor = event.target;
+  displayRowActions(event: Event, vm: TestVM): void {
+    this.actionRow = vm;
+    this.singleActionAnchor = event.target;
     this.hiddenRowAction = false;
   }
 
   closeRowActionPopover() {
-    this.selectedRow = null;
+    this.actionRow = null;
     this.hiddenRowAction = true;
   }
 

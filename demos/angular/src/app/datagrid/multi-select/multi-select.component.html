@@ -22,8 +22,8 @@
 </cds-accordion>
 <div>
   <h4>Selected CDS VMs</h4>
-  <section cds-layout="horizontal gap:md" *ngIf="selectedCdsVMs.length > 0">
-    <div *ngFor="let vm of selectedCdsVMs">{{ vm?.id }}</div>
+  <section cds-layout="horizontal gap:md" *ngIf="selectedItems.length > 0">
+    <div *ngFor="let vm of selectedItems">{{ vm?.id }}</div>
   </section>
 </div>
 <div [formGroup]="multiSelectForm">

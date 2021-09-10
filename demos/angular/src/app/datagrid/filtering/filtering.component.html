@@ -18,14 +18,14 @@
     {{ column | titlecase }}
     <ng-container *ngIf="column === 'id'">
       <cds-action
-        (click)="toggleFilter($event)"
+        (click)="toggleFilter($event, column)"
         shape="filter"
         [status]="this.filterString ? 'active' : ''"
         aria-label="search hosts"
       ></cds-action>
     </ng-container>
   </cds-grid-column>
-  <cds-grid-row *ngFor="let vm of filteredList">
+  <cds-grid-row *ngFor="let vm of data">
     <cds-grid-cell *ngFor="let column of dataFields">
       {{ $any(vm)[column] }}
     </cds-grid-cell>
@@ -33,11 +33,11 @@
   <cds-grid-footer>Grid Footer</cds-grid-footer>
 </cds-grid>
 
-<ng-container *ngIf="anchor">
+<ng-container *ngIf="filterAnchor">
   <cds-dropdown
     [hidden]="hiddenFilter"
-    [anchor]="this.anchor"
-    (closeChange)="anchor = null; hiddenFilter = !hiddenFilter"
+    [anchor]="this.filterAnchor"
+    (closeChange)="filterAnchor = null; hiddenFilter = !hiddenFilter"
   >
     <cds-input>
       <input
@@ -46,9 +46,9 @@
         placeholder="Search"
         value=""
         [value]="this.filterString"
-        (input)="filterByID($event)"
-        [attr.anchor]="anchor"
-        *ngIf="anchor"
+        (input)="filterData($event)"
+        [attr.anchor]="filterAnchor"
+        *ngIf="filterAnchor"
       />
     </cds-input>
   </cds-dropdown>

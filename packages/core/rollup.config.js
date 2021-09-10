@@ -85,11 +85,7 @@ const config = {
       { input: './icon/icon.service.js', output: './icon/icon.service.js' },
       { input: './polyfills/index.js', output: './polyfills/index.js' },
     ],
-    explicitSideEffects: [
-      './polyfills/index.js',
-      './polyfills/at.js',
-      './polyfills/aria-reflect.js'
-    ]
+    explicitSideEffects: ['./polyfills/index.js', './polyfills/at.js', './polyfills/aria-reflect.js'],
   },
 };
 

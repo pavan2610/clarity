@@ -16,10 +16,14 @@
   <cds-grid-column *ngFor="let column of dataFields" [id]="column">
     {{ column | titlecase }}
     <ng-container *ngIf="column === 'id'">
-      <cds-action-sort aria-label="sort hosts" [sort]="sortType" (sortChange)="sortGrid($event)"></cds-action-sort>
+      <cds-action-sort
+        aria-label="sort hosts"
+        [sort]="vmData.sortType"
+        (sortChange)="sortGrid($event)"
+      ></cds-action-sort>
     </ng-container>
   </cds-grid-column>
-  <cds-grid-row *ngFor="let vm of sortedData">
+  <cds-grid-row *ngFor="let vm of data">
     <cds-grid-cell *ngFor="let column of dataFields">
       {{ $any(vm)[column] }}
     </cds-grid-cell>

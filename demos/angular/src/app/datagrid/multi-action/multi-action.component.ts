@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { TestVM } from '@cds/core/demo';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { VmService } from '../vm.service';
+import { MultiSelectGridComponent } from '../utils/vm-data.interface';
 
 @Component({
   selector: 'app-multi-action',
   templateUrl: './multi-action.component.html',
   styleUrls: ['./multi-action.component.scss'],
 })
-export class MultiActionComponent {
+export class MultiActionComponent implements MultiSelectGridComponent<TestVM> {
   batchActionAnchor: EventTarget | null = null;
   clrNgSelected: TestVM[] = [];
   cdsSelected: Set<string> = new Set();
@@ -21,13 +22,13 @@ export class MultiActionComponent {
   // Extracted 'fields' from a row of data -> These will become columns
   dataFields!: string[];
   showDevNotes = false;
-  multiActionForm!: FormGroup;
+  multiSelectForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private vmData: VmService) {
     this.data = vmData.get();
     this.dataFields = vmData.fields;
     // Reactive form for the Rows
-    this.multiActionForm = this.formBuilder.group({
+    this.multiSelectForm = this.formBuilder.group({
       allRows: [false],
       currentPage: [1],
       pageSize: [10],
@@ -35,32 +36,32 @@ export class MultiActionComponent {
     });
     // Generate a control for each row with the vm id
     this.data.forEach(vm =>
-      (this.multiActionForm.controls.rows as FormGroup).addControl(vm.id, new FormControl(false))
+      (this.multiSelectForm.controls.rows as FormGroup).addControl(vm.id, new FormControl(false))
     );
     // Listen for changes to the controls and set the value on the correct form control
-    this.multiActionForm.controls.allRows.valueChanges.subscribe(value =>
-      this.data.forEach(i => this.multiActionForm.controls.rows.get(i.id)?.setValue(value))
+    this.multiSelectForm.controls.allRows.valueChanges.subscribe(value =>
+      this.data.forEach(i => this.multiSelectForm.controls.rows.get(i.id)?.setValue(value))
     );
   }
 
   get selectedCount() {
-    return this.data.map(i => this.multiActionForm.controls.rows.get(i.id)?.value).filter((i: any) => i).length;
+    return this.data.map(i => this.multiSelectForm.controls.rows.get(i.id)?.value).filter((i: any) => i).length;
   }
 
-  get selectedCdsVMs() {
+  get selectedItems(): TestVM[] {
     return this.data
       .map(vm => {
-        if (this.multiActionForm.controls.rows.get(vm.id)?.value) {
+        if (this.multiSelectForm.controls.rows.get(vm.id)?.value) {
           return vm;
         } else {
           return;
         }
       })
-      .filter(vm => vm !== undefined);
+      .filter(vm => vm !== undefined) as TestVM[];
   }
 
   batchAction(action: string) {
-    alert(`${action}: ${this.selectedCdsVMs.map(vm => vm?.id)}`);
+    alert(`${action}: ${this.selectedItems.map(vm => vm?.id)}`);
     this.batchActionAnchor = null;
   }
 

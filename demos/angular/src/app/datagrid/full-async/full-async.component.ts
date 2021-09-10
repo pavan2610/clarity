@@ -3,6 +3,9 @@ import { filter, sortStrings, TestVM } from '@cds/core/demo';
 import { StringSortType, VmService } from '../vm.service';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Sort } from '@clr/angular/data/datagrid/providers/sort';
+
+// export class MyGridService extends BasidCdsGrid, Pagingation, Sort,  Filter {}
 
 @Component({
   selector: 'app-full-async',
@@ -143,7 +146,7 @@ export class FullAsyncComponent {
   statusSortType: StringSortType = StringSortType.NONE;
 
   /**
-   * feat: hide-shor-column
+   * feat: hide-show-column
    * a function that filters the column form controls. If all controls are selected it returns true.
    */
   get allColumnsVisible(): boolean {

@@ -25,7 +25,7 @@
   <cds-grid-row *ngFor="let vm of data">
     <!-- generate row action button specific for this row model -->
     <cds-grid-cell>
-      <cds-action popup="row-actions" aria-label="host actions" (click)="showRowActions($event, vm)"></cds-action>
+      <cds-action popup="row-actions" aria-label="host actions" (click)="displayRowActions($event, vm)"></cds-action>
     </cds-grid-cell>
     <!-- Generate cells with model data -->
     <cds-grid-cell *ngFor="let column of dataFields">
@@ -38,11 +38,11 @@
 <cds-dropdown
   id="row-actions"
   [hidden]="hiddenRowAction"
-  [anchor]="actionPopoverAnchor"
+  [anchor]="singleActionAnchor"
   (closeChange)="closeRowActionPopover()"
 >
-  <cds-button action="flat" size="sm" (click)="shutdownVM(selectedRow)">Shutdown {{ selectedRow?.id }}</cds-button>
-  <cds-button action="flat" size="sm" (click)="restartVM(selectedRow)">Restart {{ selectedRow?.id }}</cds-button>
+  <cds-button action="flat" size="sm" (click)="shutdownVM(actionRow)">Shutdown {{ actionRow?.id }}</cds-button>
+  <cds-button action="flat" size="sm" (click)="restartVM(actionRow)">Restart {{ actionRow?.id }}</cds-button>
 </cds-dropdown>
 
 <h2>@clr/angular single action datagrid</h2>

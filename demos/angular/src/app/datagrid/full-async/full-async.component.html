@@ -51,7 +51,7 @@
     <ng-container *ngFor="let column of dataFields; first as isFirst">
       <cds-grid-column
         resizable
-        *ngIf="isColumnVisible(column)"
+        [hidden]="!isColumnVisible(column)"
         [id]="column"
         [position]="isFirst && pinFirstColumn ? 'fixed' : ''"
         [width]="isFirst ? '150px' : '225px'"
@@ -123,6 +123,7 @@
           ></cds-action-expand>
         </cds-grid-cell>
         <cds-grid-cell *ngFor="let column of dataFields" [hidden]="!isColumnVisible(column)">
+          <ng-content *ngIf="!isColumnVisible(column)"></ng-content>
           {{ $any(vm)[column] }}
         </cds-grid-cell>
       </cds-grid-row>

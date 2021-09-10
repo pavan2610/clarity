@@ -18,7 +18,6 @@ import { MultiSelectComponent } from './multi-select/multi-select.component';
 import { DetailComponent } from './detail/detail.component';
 
 import { CdsModule } from '@cds/angular';
-import { VmService } from './vm.service';
 import { FullAsyncComponent } from './full-async/full-async.component';
 
 @NgModule({
@@ -38,6 +37,5 @@ import { FullAsyncComponent } from './full-async/full-async.component';
     FullAsyncComponent,
   ],
   imports: [CommonModule, DatagridRoutingModule, ClarityModule, CdsModule, FormsModule, ReactiveFormsModule],
-  providers: [VmService],
 })
 export class DatagridModule {}

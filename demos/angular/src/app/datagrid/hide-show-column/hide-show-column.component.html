@@ -24,12 +24,11 @@
     </cds-accordion-content>
   </cds-accordion-panel>
 </cds-accordion>
+
 <cds-grid aria-label="column visibility datagrid demo" style="--body-height: 360px;">
-  <ng-container *ngFor="let column of dataFields">
-    <cds-grid-column *ngIf="isColumnVisible(column)" [id]="column">
-      {{ column | titlecase }}
-    </cds-grid-column>
-  </ng-container>
+  <cds-grid-column *ngFor="let column of dataFields" [hidden]="!isColumnVisible(column)" [id]="column">
+    {{ column | titlecase }}
+  </cds-grid-column>
 
   <cds-grid-row *ngFor="let vm of data">
     <cds-grid-cell *ngFor="let column of dataFields" [hidden]="!isColumnVisible(column)">

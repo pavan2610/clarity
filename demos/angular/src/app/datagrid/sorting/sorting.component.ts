@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { sortStrings, TestVM } from '@cds/core/demo';
-import { VmService } from '../vm.service';
+import { StringSortType, VmService } from '../vm.service';
+import { SortedGridService } from '../utils/vm-data.interface';
+import { VmSyncService } from '../utils/providers/vm-sync.service';
 
 @Component({
   selector: 'app-sorting',
@@ -12,22 +14,23 @@ export class SortingComponent implements OnInit {
   data: TestVM[] = [];
   // Extracted 'fields' from a row of data -> These will become columns
   dataFields!: string[];
-  sortedData: TestVM[] = [];
-  sortType: 'none' | 'ascending' | 'descending' = 'none';
+  // sortedData: TestVM[] = [];
+  // sortType: 'none' | 'ascending' | 'descending' = 'none';
+  sortType: StringSortType = StringSortType.NONE;
   showDevNotes = false;
 
-  constructor(private vmData: VmService) {
+  constructor(public vmData: VmSyncService) {
     this.data = vmData.get();
     this.dataFields = vmData.fields;
   }
 
   ngOnInit() {
-    this.sortedData = sortStrings([...this.data], 'id', this.sortType);
+    this.data = this.vmData.sortedData();
   }
 
   sortGrid(event: Event) {
     const sortEvent = event as CustomEvent;
-    this.sortType = sortEvent.detail;
-    this.sortedData = sortStrings([...this.data], 'id', this.sortType);
+    this.vmData.sortType = sortEvent.detail;
+    this.data = this.vmData.sortedData();
   }
 }

@@ -1,38 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { filter, TestVM } from '@cds/core/demo';
-import { VmService } from '../vm.service';
+import { FilteredGridComponent } from '../utils/vm-data.interface';
+import { VmSyncService } from '../utils/providers/vm-sync.service';
 
 @Component({
   selector: 'app-filtering',
   templateUrl: './filtering.component.html',
   styleUrls: ['./filtering.component.scss'],
 })
-export class FilteringComponent implements OnInit {
-  data: TestVM[];
+export class FilteringComponent implements FilteredGridComponent<TestVM> {
+  data!: TestVM[];
   dataFields!: string[];
-  anchor: EventTarget | null = null;
+  filterAnchor: EventTarget | null = null;
+  filterColumn: string = 'id'; // default to id, multiple column filters could work here with template adjustments.
   filterString: string = '';
   hiddenFilter = true;
-  filteredList: TestVM[] = [];
   showDevNotes = false;
 
-  constructor(private vmData: VmService) {
-    this.data = vmData.get();
+  constructor(private vmData: VmSyncService) {
+    this.data = this.vmData.filteredData(this.filterColumn, this.filterString);
     this.dataFields = vmData.fields;
   }
 
-  ngOnInit() {
-    this.filteredList = filter([...this.data], 'id', this.filterString);
-  }
-
-  toggleFilter(event: Event) {
-    this.anchor = event.target;
+  toggleFilter(event: Event, column: string) {
+    this.filterColumn = column;
+    this.filterAnchor = event.target;
     this.hiddenFilter = !this.hiddenFilter;
   }
 
-  filterByID(event: Event) {
+  filterData(event: Event) {
     const input: HTMLInputElement = event.target as HTMLInputElement;
     this.filterString = input.value ? input.value : '';
-    this.filteredList = filter([...this.data], 'id', this.filterString);
+    this.data = this.vmData.filteredData(this.filterColumn, this.filterString);
   }
 }

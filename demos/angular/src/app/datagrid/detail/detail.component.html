@@ -34,7 +34,12 @@
     </cds-grid-cell>
   </cds-grid-row>
   <cds-grid-footer></cds-grid-footer>
-  <cds-grid-detail aria-labelledby="heading" [anchor]="this.anchor" *ngIf="currentVM" (closeChange)="currentVM = null">
+  <cds-grid-detail
+    aria-labelledby="heading"
+    [anchor]="this.detailAnchor"
+    *ngIf="currentVM"
+    (closeChange)="currentVM = null"
+  >
     <section cds-layout="vertical align:center gap:lg">
       <h2 id="heading" cds-text="section" cds-layout="align:left">{{ this.currentVM?.id }}</h2>
       <p cds-text="body">Status: {{ this.currentVM?.status }}</p>

@@ -20,7 +20,7 @@
   <cds-grid-column *ngFor="let column of dataFields" [id]="column">
     {{ column | titlecase }}
   </cds-grid-column>
-  <cds-grid-row *ngFor="let vm of paginatedList">
+  <cds-grid-row *ngFor="let vm of data">
     <cds-grid-cell *ngFor="let column of dataFields">
       {{ $any(vm)[column] }}
     </cds-grid-cell>
@@ -36,14 +36,14 @@
         </select>
       </cds-select>
       <cds-pagination-button
-        [attr.disabled]="currentPage === 0 ? true : null"
+        [attr.disabled]="vmData.currentPage === 0 ? true : null"
         aria-label="go to first"
         action="first"
         (click)="firstPage()"
       ></cds-pagination-button>
       <cds-pagination-button
         aria-label="go to previous"
-        [attr.disabled]="currentPage === 0 ? true : null"
+        [attr.disabled]="vmData.currentPage === 0 ? true : null"
         action="prev"
         (click)="prevPage()"
       ></cds-pagination-button>
@@ -53,21 +53,21 @@
           size="1"
           aria-label="current page"
           (input)="setPage($event)"
-          [valueAsNumber]="currentPage + 1"
+          [valueAsNumber]="vmData.currentPage + 1"
           min="1"
-          [max]="pageCount"
+          [max]="vmData.pageCount"
         />
-        <cds-control-message>/ {{ pageCount }}</cds-control-message>
+        <cds-control-message>/ {{ vmData.pageCount }}</cds-control-message>
       </cds-input>
       <cds-pagination-button
         aria-label="go to next"
-        [attr.disabled]="currentPage === pageCount - 1 ? true : null"
+        [attr.disabled]="vmData.currentPage === vmData.pageCount - 1 ? true : null"
         action="next"
         (click)="nextPage()"
       ></cds-pagination-button>
       <cds-pagination-button
         aria-label="go to last"
-        [attr.disabled]="currentPage === pageCount - 1 ? true : null"
+        [attr.disabled]="vmData.currentPage === vmData.pageCount - 1 ? true : null"
         action="last"
         (click)="lastPage()"
       ></cds-pagination-button>
