@@ -27,11 +27,6 @@ describe('cds-grid-placeholder', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should assign to the placeholder slot', async () => {
-    await componentIsStable(component);
-    expect(component.getAttribute('slot')).toBe('placeholder');
-  });
-
   it('should enable style access via css part "placeholder"', async () => {
     await componentIsStable(component);
     expect(component.shadowRoot.querySelector('[part=placeholder]')).toBeTruthy();

@@ -45,10 +45,11 @@ export function performance() {
           <p cds-text="body">
             Render Time: ${this.timing ? html`~${this.timing.entry.duration.toFixed(2)}ms ${this.timing.score}` : ''}
           </p>
+          <br />
 
           <div style="width: 800px; height: 398px;">
             ${this.showParseAndRender ? html`
-            <cds-grid aria-label="performance datagrid demo" ?hidden=${this.hide} height="360" style="width: 800px; height: 398px;">
+            <cds-grid cds-performance @cdsPerformanceChange=${(e: any) => this.timing = e.detail} aria-label="performance datagrid demo" ?hidden=${this.hide} height="360" style="width: 800px; height: 398px;">
               <cds-grid-column>Host</cds-grid-column>
               <cds-grid-column>Status</cds-grid-column>
               <cds-grid-column>CPU</cds-grid-column>

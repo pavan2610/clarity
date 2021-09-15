@@ -10,7 +10,7 @@ export default {
 export function asyncData() {
   @customElement('demo-grid-async-data')
   class DemoGridAsyncData extends LitElement {
-    @state() private grid: DemoGrid = { columns: [], rows: [] };
+    @state() private grid: DemoGrid = { label: '', rowActions: [], columns: [], rows: [] } as unknown as DemoGrid;
 
     render() {
       return html`
@@ -37,6 +37,7 @@ export function asyncData() {
     }
 
     private async load() {
+      this.grid = { label: '', rowActions: [], columns: [], rows: [] } as unknown as DemoGrid;
       this.grid = (await DemoService.asyncData).grid;
     }
   }

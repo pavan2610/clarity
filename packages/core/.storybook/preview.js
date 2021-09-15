@@ -222,16 +222,10 @@ const themeDecorator = (story, { globals }) => {
   return story();
 };
 
-let once = false;
 const dataThemeDecorator = (story, { globals }) => {
-  once = true;
   localStorage.setItem('cds-data-theme', globals.dataTheme);
-
-  if (!once) {
-    window.reload();
-  }
-
-  return story();
+  const fn = (...args) => story(args);
+  return fn();
 };
 
 export const decorators = [themeDecorator, dataThemeDecorator];

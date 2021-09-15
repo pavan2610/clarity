@@ -19,6 +19,7 @@ import { filterIcon } from '@cds/core/icon/shapes/filter.js';
 import { viewColumnsIcon } from '@cds/core/icon/shapes/view-columns.js';
 import { timesIcon } from '@cds/core/icon/shapes/times.js';
 import { pinIcon } from '@cds/core/icon/shapes/pin.js';
+import { unpinIcon } from '@cds/core/icon/shapes/unpin.js';
 import { minusIcon } from '@cds/core/icon/shapes/minus.js';
 
 import { CdsGrid } from './grid/grid.element.js';
@@ -38,6 +39,7 @@ ClarityIcons.addIcons(
   viewColumnsIcon,
   timesIcon,
   pinIcon,
+  unpinIcon,
   minusIcon
 );
 

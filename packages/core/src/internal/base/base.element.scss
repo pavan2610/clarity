@@ -57,17 +57,14 @@ slot {
 }
 
 // normalize focus styles
-:host {
-  --outline-offset: #{$cds-global-space-1};
-}
-
+// https://coryrylan.com/blog/dont-override-css-outline-focus-styles
 :host([tabindex='0']:focus),
 :host([tabindex='0']:focus) [focusable],
 :host([_focused]) [focusable],
 :host([_focused]) .input,
 [tabindex='0'][focusable]:focus {
-  outline: Highlight solid $cds-global-space-2;
-  outline-offset: var(--outline-offset);
+  outline: #{$cds-alias-object-interaction-outline};
+  outline-offset: #{$cds-alias-object-interaction-outline-offset};
 }
 
 @media (-webkit-min-device-pixel-ratio: 0) {

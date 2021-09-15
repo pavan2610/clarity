@@ -21,7 +21,7 @@ export * from './controllers/aria-popup.controller.js';
 export * from './controllers/aria-popup-trigger.controller.js';
 export * from './controllers/closable.controller.js';
 export * from './controllers/draggable-list.controller.js';
-export * from './controllers/focus-first.controller.js';
+export * from './controllers/first-focus.controller.js';
 export * from './controllers/inline-focus-trap.controller.js';
 export * from './controllers/grid-range-selection.controller.js';
 export * from './controllers/key-navigation-grid.controller.js';

@@ -45,11 +45,11 @@ export function columnFixedDynamic() {
       return html`
         <cds-grid aria-label="columns fixed dynamic datagrid demo" height="360">
           <cds-grid-column resizable .position=${this.pinFirst ? 'fixed' : ''} width="150">
-            ${this.firstColumn.label} <cds-action @click=${() => (this.pinFirst = !this.pinFirst)} .pressed=${this.pinFirst} shape="pin" aria-label="pin ${this.firstColumn.label} column"></cds-action>
+            ${this.firstColumn.label} <cds-action @click=${() => (this.pinFirst = !this.pinFirst)} .pressed=${this.pinFirst} shape=${this.pinFirst ? 'pin' : 'unpin'} aria-label="pin ${this.firstColumn.label} column"></cds-action>
           </cds-grid-column>
           ${this.columns.map(column => html`<cds-grid-column resizable width="300">${column.label}</cds-grid-column>`)}
           <cds-grid-column width="150" resizable .position=${this.pinLast ? 'fixed' : ''}>
-            ${this.lastColumn.label} <cds-action @click=${() => (this.pinLast = !this.pinLast)} .pressed=${this.pinLast} shape="pin" aria-label="pin ${this.lastColumn.label} column"></cds-action>
+            ${this.lastColumn.label} <cds-action @click=${() => (this.pinLast = !this.pinLast)} .pressed=${this.pinLast} shape=${this.pinFirst ? 'pin' : 'unpin'} aria-label="pin ${this.lastColumn.label} column"></cds-action>
           </cds-grid-column>
           ${this.grid.rows.map(row => html`
           <cds-grid-row>

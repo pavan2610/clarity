@@ -119,6 +119,7 @@ import { treeViewIcon, treeViewIconName } from '../shapes/tree-view.js';
 import { treeIcon, treeIconName } from '../shapes/tree.js';
 import { twoWayArrowsIcon, twoWayArrowsIconName } from '../shapes/two-way-arrows.js';
 import { undoIcon, undoIconName } from '../shapes/undo.js';
+import { unpinIcon, unpinIconName } from '../shapes/unpin.js';
 import { unlockIcon, unlockIconName } from '../shapes/unlock.js';
 import { uploadIcon, uploadIconName } from '../shapes/upload.js';
 import { usersIcon, usersIconName } from '../shapes/users.js';
@@ -248,6 +249,7 @@ export const essentialCollectionIcons: IconShapeTuple[] = [
   treeViewIcon,
   twoWayArrowsIcon,
   undoIcon,
+  unpinIcon,
   unlockIcon,
   uploadIcon,
   usersIcon,
@@ -414,6 +416,7 @@ declare module '@cds/core/internal' {
     [treeViewIconName]: string;
     [twoWayArrowsIconName]: string;
     [undoIconName]: string;
+    [unpinIconName]: string;
     [unlockIconName]: string;
     [uploadIconName]: string;
     [usersIconName]: string;

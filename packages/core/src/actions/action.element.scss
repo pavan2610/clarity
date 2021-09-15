@@ -14,7 +14,8 @@
   --font-size: #{$cds-global-typography-font-size-3};
   --background: transparent;
   --padding: 0;
-  --outline-offset: calc(#{$cds-global-space-1} * -1);
+  --outline: #{$cds-alias-object-interaction-outline};
+  --outline-offset: calc(#{$cds-alias-object-interaction-outline-offset} * -1);
   pointer-events: none;
   display: inline-block;
   outline: 0 !important;
@@ -91,7 +92,7 @@ cds-icon,
 }
 
 :host(:focus) .private-host::after {
-  outline: Highlight solid var(--cds-global-space-2);
+  outline: var(--outline);
   outline-offset: var(--outline-offset);
 }
 

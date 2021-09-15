@@ -113,7 +113,11 @@
 }
 
 ::slotted(cds-grid-row:not([cds-draggable='target']):first-of-type) {
-  --border-top: $cds-alias-object-border-width-100 solid transparent;
+  --box-shadow: #{$cds-alias-object-border-width-100} solid transparent;
+}
+
+::slotted(cds-grid-row:last-of-type) {
+  --box-shadow: var(--border-bottom) !important;
 }
 
 ::-webkit-scrollbar {

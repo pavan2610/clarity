@@ -92,12 +92,10 @@ export function staticRowDetail() {
       <cds-grid-footer></cds-grid-footer>
       <cds-grid-detail id="row-detail" anchor="expand-vm-host-003">
         <div cds-layout="vertical gap:lg">
-          <button>test</button>  
           <h2 cds-text="section">vm-host-001</h2>
           <p cds-text="body">Status: online</p>
           <p cds-text="body">CPU: 5%</p>
           <p cds-text="body">Memory: 10%</p>
-          <button cds-focus-first>test</button>
         </div>
       </cds-grid-detail>
     </cds-grid>

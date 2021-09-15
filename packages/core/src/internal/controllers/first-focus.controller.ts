@@ -3,9 +3,9 @@ import { listenForAttributeChange } from '../utils/events.js';
 import { getFlattenedFocusableItems } from '../utils/traversal.js';
 
 /**
- * Provides a focus first behavior to any component via the cds-focus-first attribute
+ * Provides a focus first behavior to any component via the cds-first-focus attribute
  */
-export class FocusFirstController {
+export class FirstFocusController {
   private observer: MutationObserver;
 
   constructor(private host: ReactiveControllerHost & HTMLElement) {
@@ -32,7 +32,7 @@ export class FocusFirstController {
 
   private cdsFocusFirst() {
     if (!this.host.hidden) {
-      this.focusableItems.find((e: HTMLElement) => e.hasAttribute('cds-focus-first')).focus();
+      this.focusableItems.find((e: HTMLElement) => e.hasAttribute('cds-first-focus')).focus();
     }
   }
 }

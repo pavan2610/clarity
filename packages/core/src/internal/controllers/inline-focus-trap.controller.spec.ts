@@ -1,11 +1,11 @@
 import { html, LitElement } from 'lit';
-import { customElement, FocusFirstController, InlineFocusTrapController } from '@cds/core/internal';
+import { customElement, FirstFocusController, InlineFocusTrapController } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
 
 @customElement('inline-focus-trap-controller-test-element')
 class InlineFocusTrapControllerTestElement extends LitElement {
   inlineFocusTrapController = new InlineFocusTrapController(this);
-  focusFirstController = new FocusFirstController(this);
+  firstFocusController = new FirstFocusController(this);
   render() {
     return html`
       <button>shadow dom one</button>
@@ -29,7 +29,7 @@ describe('inline-focus-trap.controller', () => {
         <button slot="slot-two">light dom four</button>
         <button>light dom one</button>
         <p>content</p>
-        <button cds-focus-first>light dom two</button>
+        <button cds-first-focus>light dom two</button>
         <button>light dom three</button>
       </inline-focus-trap-controller-test-element>`
     );
@@ -49,7 +49,7 @@ describe('inline-focus-trap.controller', () => {
   //     <button>shadow dom one</button>
   //     <button>light dom one</button>
   //     <p>content</p>
-  //     <button cds-focus-first>light dom two</button>
+  //     <button cds-first-focus>light dom two</button>
   //     <button>light dom three</button>
   //     <button slot="slot-two">light dom four</button>
   //     <button>shadow dom two</button>
@@ -58,7 +58,7 @@ describe('inline-focus-trap.controller', () => {
   //   <button>shadow dom two</button>
   // </inline-focus-trap-controller-test-element>
 
-  it('should focus any element with cds-focus-first', async () => {
+  it('should focus any element with cds-first-focus', async () => {
     await componentIsStable(component);
     expect(root.activeElement.innerText).toBe('light dom two');
   });

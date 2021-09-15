@@ -13,8 +13,12 @@ export class PerformanceController {
 
   constructor(private host: ReactiveControllerHost & HTMLElement) {
     this.host.addController(this);
-    this.id = this.host.getAttribute('cds-performance');
-    this.renderStart();
+
+    const id = this.host.getAttribute('cds-performance');
+    if (id !== null) {
+      this.id = id.length ? id : this.host.tagName.toLowerCase();
+      this.renderStart();
+    }
   }
 
   hostConnected() {

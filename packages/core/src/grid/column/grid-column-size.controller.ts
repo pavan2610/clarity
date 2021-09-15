@@ -1,5 +1,5 @@
 import { ReactiveControllerHost } from 'lit';
-import { isNumericString, onFirstInteraction } from '@cds/core/internal';
+import { isNumericString, listenForAttributeListChange, onFirstInteraction } from '@cds/core/internal';
 
 export type GridColumnSize = ReactiveControllerHost &
   HTMLElement & {
@@ -8,7 +8,7 @@ export type GridColumnSize = ReactiveControllerHost &
   };
 
 export class GridColumnSizeController {
-  private observers: ResizeObserver[] = [];
+  private observers: (ResizeObserver | MutationObserver)[] = [];
 
   private get hostGrid() {
     return this.host.parentElement as HTMLElement & { rows: NodeListOf<any> };
@@ -20,10 +20,10 @@ export class GridColumnSizeController {
 
   async hostConnected() {
     this.setActionWidth();
+    this.observers.push(listenForAttributeListChange(this.host, ['type'], () => this.setActionWidth()));
     await this.host.updateComplete;
     await onFirstInteraction(this.hostGrid);
 
-    this.hostGrid.shadowRoot?.addEventListener('slotchange', () => this.setActionWidth());
     this.host.shadowRoot?.addEventListener('resizeChange', (e: any) => {
       this.host.dispatchEvent(new CustomEvent('resizeChange', { detail: e.detail, bubbles: true }));
       this.updateResizedColumnWidth(e.detail);

@@ -163,6 +163,7 @@ export { treeIcon, treeIconName } from './shapes/tree.js';
 export { treeViewIcon, treeViewIconName } from './shapes/tree-view.js';
 export { twoWayArrowsIcon, twoWayArrowsIconName } from './shapes/two-way-arrows.js';
 export { undoIcon, undoIconName } from './shapes/undo.js';
+export { unpinIcon, unpinIconName } from './shapes/unpin.js';
 export { unlockIcon, unlockIconName } from './shapes/unlock.js';
 export { uploadIcon, uploadIconName } from './shapes/upload.js';
 export { usersIcon, usersIconName } from './shapes/users.js';

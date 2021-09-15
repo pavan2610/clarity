@@ -99,7 +99,9 @@ export function csv() {
           <cds-grid-row>
             ${cells.map(c => html`
             <cds-grid-cell>
-              <input readonly type=${getInputType(c)} .value=${c} aria-label=${c} @keydown=${this.keydown} @blur=${this.blurInput} @dblclick=${this.toggleInput} />
+              <cds-input>
+                <input readonly type=${getInputType(c)} .value=${c} aria-label=${c} @keydown=${this.keydown} @blur=${this.blurInput} @dblclick=${this.toggleInput} />
+              </cds-input>
             </cds-grid-cell>`)}
           </cds-grid-row>`)}
 

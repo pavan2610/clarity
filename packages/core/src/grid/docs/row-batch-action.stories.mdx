@@ -18,16 +18,17 @@ attribute/property on the `cds-grid-row`.
 <Story id="stories-grid--row-batch-action" />
 
 ```html
-<cds-grid>
+<div cds-layout="horizontal gap:sm align:vertical-center m-b:sm">
+  <p id="vm-host-grid" cds-text="message">VM Hosts</p>
+  <cds-divider orientation="vertical" cds-layout="m-x:md"></cds-divider>
+  <cds-button action="outline" size="sm">Restart</cds-button>
+  <cds-button action="outline" size="sm">Shutdown</cds-button>
+</div>
+<cds-grid aria-labelledby="vm-host-grid">
   <cds-grid-column type="action">
     <cds-checkbox>
       <input type="checkbox" aria-label="select all hosts" />
     </cds-checkbox>
-    <cds-action id="batch-action" aria-label="host options"></cds-action>
-    <cds-dropdown anchor="#batch-action (element ref)">
-      <cds-button action="flat" block size="sm">Restart Selected</cds-button>
-      <cds-button action="flat" block size="sm">Shutdown Selected</cds-button>
-    </cds-dropdown>
   </cds-grid-column>
   <cds-grid-column>Host</cds-grid-column>
   <cds-grid-column>Status</cds-grid-column>

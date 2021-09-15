@@ -109,8 +109,9 @@ export class CdsGrid extends LitElement {
             </div>
           </div>
           <div class="row-group">
-            <slot></slot>
-            <slot name="placeholder"></slot>
+            <slot>
+              <cds-grid-placeholder></cds-grid-placeholder>
+            </slot>
           </div>
         </div>
         <div class="footer">

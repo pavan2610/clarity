@@ -10,7 +10,7 @@ import {
   property,
   ResponsiveController,
   state,
-  FocusFirstController,
+  FirstFocusController,
   listenForAttributeChange,
 } from '@cds/core/internal';
 import styles from './grid-detail.element.scss';
@@ -50,7 +50,7 @@ export class CdsGridDetail extends LitElement {
 
   protected inlineFocusTrapController = new InlineFocusTrapController(this);
 
-  protected focusFirstController = new FocusFirstController(this);
+  protected firstFocusController = new FirstFocusController(this);
 
   protected responsiveController = new ResponsiveController(this, { element: this.parentElement });
 
@@ -73,7 +73,7 @@ export class CdsGridDetail extends LitElement {
           shape="times"
           aria-label=${this.i18n.closeDetails}
           part="close"
-          cds-focus-first
+          cds-first-focus
         ></cds-action>
       </div>
       <div part="caret"></div>

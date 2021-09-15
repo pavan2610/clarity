@@ -1,6 +1,8 @@
-import { html, LitElement } from 'lit';
-import { customElement, state } from '@cds/core/internal';
-import { getVMData } from '@cds/core/demo';
+import { css, html, LitElement } from 'lit';
+import { baseStyles, customElement, state } from '@cds/core/internal';
+import { DemoGrid, DemoService } from '@cds/core/demo';
+import '@cds/core/grid/register.js';
+import '@cds/core/divider/register.js';
 
 export default {
   title: 'Stories/Grid',
@@ -10,61 +12,58 @@ export default {
 export function rowBatchAction() {
   @customElement('demo-grid-row-batch-action')
   class DemoRowBatchAction extends LitElement {
-    @state() private data = getVMData();
-    @state() private batchActionAnchor: HTMLElement;
+    @state() private grid: DemoGrid = DemoService.data.grid;
+    @state() private rows = this.grid.rows;
+
+    static styles = [baseStyles, css`:host { contain: none }`];
 
     get selected() {
-      return this.data.filter(i => i.selected).length;
+      return this.rows.filter(i => i.selected).length;
     }
 
     render() {
       return html`
-        <cds-grid aria-label="row batch action datagrid demo" height="360">
-          <cds-grid-column type="action">
-            <cds-checkbox>
-              <input type="checkbox" .checked=${this.selected === this.data.length} .indeterminate=${(this.selected > 0) && (this.selected < this.data.length)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
-            </cds-checkbox>
-          </cds-grid-column>
-          <cds-grid-column>
-            Host <cds-action popup="row-actions" @click=${(e: any) => this.batchActionAnchor = e.target} aria-label="available host options"></cds-action>
-          </cds-grid-column>
-          <cds-grid-column>Status</cds-grid-column>
-          <cds-grid-column>CPU</cds-grid-column>
-          <cds-grid-column>Memory</cds-grid-column>
-          ${this.data.map(entry => html`
-          <cds-grid-row .selected=${entry.selected}>
-            <cds-grid-cell>
+        <section cds-layout="vertical gap:sm">
+          <div cds-layout="horizontal gap:sm align:vertical-center">
+            <p id="batch-action-demo-grid" cds-text="message">${this.grid.label} &nbsp;</p>
+            <cds-divider orientation="vertical"></cds-divider>&nbsp;
+            ${this.grid.rowActions.map(action => html`<cds-button action="outline" size="sm" @click=${() => this.action(action.value)}>${action.label}</cds-button>`)}
+          </div>
+          <cds-grid aria-labelledby="batch-action-demo-grid" height="360">
+            <cds-grid-column type="action" aria-label="selection column">
               <cds-checkbox>
-                <input type="checkbox" .checked=${entry.selected} value=${entry.id} @click=${(e: any) => this.select(entry, e.target.checked)} aria-label="select host ${entry.id}" />
+                <input type="checkbox" .checked=${this.selected === this.rows.length} .indeterminate=${(this.selected > 0) && (this.selected < this.rows.length)} @change=${(e: any) => this.selectAll(e)} aria-label="select all hosts" />
               </cds-checkbox>
-            </cds-grid-cell>
-            <cds-grid-cell>${entry.id}</cds-grid-cell>
-            <cds-grid-cell>${entry.status}</cds-grid-cell>
-            <cds-grid-cell>${entry.cpu}%</cds-grid-cell>
-            <cds-grid-cell>${entry.memory}%</cds-grid-cell>
-          </cds-grid-row>`)}
-          <cds-grid-footer></cds-grid-footer>
-        </cds-grid>
-        <cds-dropdown id="row-actions" ?hidden=${!this.batchActionAnchor} .anchor=${this.batchActionAnchor} @closeChange=${() => (this.batchActionAnchor = null as any)} position="bottom">
-          <cds-button action="flat" size="sm" @click=${() => this.action('Restart')}>Restart Selected</cds-button>
-          <cds-button action="flat" size="sm" @click=${() => this.action('Shutdown')}>Shutdown Selected</cds-button>
-        </cds-dropdown>`;
+            </cds-grid-column>
+            ${this.grid.columns.map(column => html`<cds-grid-column>${column.label}</cds-grid-column>`)}
+            ${this.rows.map(row => html`
+            <cds-grid-row .selected=${row.selected}>
+              <cds-grid-cell>
+                <cds-checkbox>
+                  <input type="checkbox" .checked=${row.selected} value=${row.id} @click=${(e: any) => this.select(row, e.target.checked)} aria-label="select ${row.id}" />
+                </cds-checkbox>
+              </cds-grid-cell>
+              ${row.cells.map(cell=> html`<cds-grid-cell>${cell.label}</cds-grid-cell>`)}
+            </cds-grid-row>`)}
+            <cds-grid-footer></cds-grid-footer>
+          </cds-grid>
+        </section>`;
     }
 
     private select(entry: any, checked: boolean) {
-      this.data.find(i => i.id === entry.id).selected = checked;
-      this.data = [...this.data];
+      this.rows.find(i => i.id === entry.id).selected = checked;
+      this.rows = [...this.rows];
     }
 
     private selectAll(e: any) {
-      this.data.forEach(i => (i.selected = e.target.checked));
-      this.data = [...this.data];
+      this.rows.forEach(i => (i.selected = e.target.checked));
+      this.rows = [...this.rows];
     }
 
     private action(name: string) {
-      alert(`${name}: ${this.data.filter(i => i.selected).map(i => i.id).reduce((p, n) => `${p} ${n}`, '')}`);
-      this.batchActionAnchor = null;
-      this.data.forEach(i => (i.selected = false));
+      alert(`${name}: ${this.rows.filter(i => i.selected).map(i => i.id).join(', ')}`);
+      this.rows.forEach(i => (i.selected = false));
+      this.rows = [...this.rows];
     }
   }
   return html`<demo-grid-row-batch-action></demo-grid-row-batch-action>`;

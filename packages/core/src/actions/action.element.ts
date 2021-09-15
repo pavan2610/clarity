@@ -21,6 +21,17 @@ import styles from './action.element.scss';
  * @internal
  * @element cds-action
  * @slot - For projecting text content or cds-icon
+ * @cssprop --icon-width
+ * @cssprop --icon-height
+ * @cssprop --width
+ * @cssprop --height
+ * @cssprop --cursor
+ * @cssprop --color
+ * @cssprop --font-size
+ * @cssprop --background
+ * @cssprop --padding
+ * @cssprop --outline
+ * @cssprop --outline-offset
  */
 export class CdsAction extends CdsBaseButton {
   @property({ type: String }) status?: 'active' | '';

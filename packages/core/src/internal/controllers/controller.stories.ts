@@ -20,10 +20,10 @@ import {
   GridRangeSelectionController,
   customElement,
   ClosableController,
-  FocusFirstController,
+  FirstFocusController,
 } from '@cds/core/internal';
 import '@cds/core/badge/register.js';
-import { getVMData, swapItems } from '@cds/core/demo';
+import { DemoService, swapItems } from '@cds/core/demo';
 import { InlineFocusTrapController } from './inline-focus-trap.controller';
 import { querySlotAll } from '../decorators/query-slot';
 
@@ -429,23 +429,15 @@ export function ariaGridController() {
         <div class="grid">
           <div class="columngroup">
             <div class="columnrow">
-              <div class="column">Host</div>
-              <div class="column">Status</div>
-              <div class="column">CPU</div>
-              <div class="column">Memory</div>
+              ${DemoService.data.grid.columns.map(column => html`<div class="column">${column.label}</div>`)}
             </div>
           </div>
           <div class="rowgroup">
-            ${getVMData()
-              .slice(0, 10)
-              .map(
-                entry => html` <div class="row">
-                  <div class="cell">${entry.id}</div>
-                  <div class="cell">${entry.status}</div>
-                  <div class="cell">${entry.cpu}</div>
-                  <div class="cell">${entry.memory}</div>
-                </div>`
-              )}
+            ${DemoService.data.grid.rows.slice(0, 10).map(
+              row => html` <div class="row">
+                ${row.cells.map(cell => html`<div class="cell">${cell.value}</div>`)}
+              </div>`
+            )}
           </div>
         </div>
       `;
@@ -455,7 +447,7 @@ export function ariaGridController() {
       baseStyles,
       css`
         :host {
-          width: 600px;
+          width: 800px;
           border: 1px solid #ccc;
           background: #eee;
           overflow: hidden;
@@ -603,7 +595,7 @@ export function inlineFocusTrap() {
     <inline-focus-trap-demo>
       <button>light dom one</button>
       <p>content</p>
-      <button cds-focus-first>light dom two</button>
+      <button cds-first-focus>light dom two</button>
       <section><button>light dom three</button></section>
       <button slot="slot-two">light dom four</button>
     </inline-focus-trap-demo>
@@ -616,7 +608,7 @@ export function nestedInlineFocusTrap() {
   class InlineTrapDemo extends LitElement {
     @querySlotAll(':scope > *') keyListItems: NodeListOf<HTMLElement>;
     protected inlineFocusTrapController = new InlineFocusTrapController(this);
-    protected focusFirstController = new FocusFirstController(this);
+    protected firstFocusController = new FirstFocusController(this);
     protected closableController = new ClosableController(this);
 
     static styles = [
@@ -662,12 +654,12 @@ export function nestedInlineFocusTrap() {
       return html`
         <button>root start</button>
         <inline-trap-demo id="1">
-          <button cds-focus-first>one</button>
+          <button cds-first-focus>one</button>
           <button>two</button>
           ${this.show
             ? html` <inline-trap-demo id="2" @closeChange=${() => (this.show = false)}>
                 <button>four</button>
-                <button cds-focus-first>five</button>
+                <button cds-first-focus>five</button>
                 <inline-trap-demo
                   id="3"
                   slot="two"
@@ -675,7 +667,7 @@ export function nestedInlineFocusTrap() {
                   @closeChange=${() => (this.showTwo = false)}
                 >
                   <button>six</button>
-                  <button cds-focus-first>seven</button>
+                  <button cds-first-focus>seven</button>
                   <button>eight</button>
                   <button @click=${() => (this.showTwo = false)}>close</button>
                 </inline-trap-demo>

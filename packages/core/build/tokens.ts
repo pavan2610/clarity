@@ -471,6 +471,8 @@ const aliases = {
       300: token('hsla(0, 0%, 0%, 0.6)'),
     },
     interaction: {
+      outline: token('Highlight solid 2px'),
+      outlineOffset: token('1px'),
       touchTarget: token(36),
       borderColor: token(color.construction[500]),
       background: {

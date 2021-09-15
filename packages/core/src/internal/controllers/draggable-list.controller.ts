@@ -81,10 +81,10 @@ export class DraggableListController {
 
   private addKeyboardEventListeners() {
     this.hostRoot.addEventListener('click', (e: any) => {
-      const handle = Array.from(e.path).find(
+      const handle = Array.from(e.composedPath()).find(
         (e: any) => e.getAttribute && e.getAttribute('cds-draggable') === 'handle'
       ) as HTMLElement;
-      const from = e.path[0].closest('[draggable]');
+      const from = e.composedPath()[0].closest('[draggable]');
       if (handle && from) {
         if (handle.ariaPressed === 'true') {
           from.setAttribute('cds-draggable', 'active');

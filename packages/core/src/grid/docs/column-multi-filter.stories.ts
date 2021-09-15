@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { baseStyles, customElement, state } from '@cds/core/internal';
 import { DemoService } from '@cds/core/demo';
 
@@ -13,7 +13,7 @@ export function columnMultiFilter() {
     @state() private grid = DemoService.data.grid;
     @state() private search = '';
 
-    static styles = [baseStyles];
+    static styles = [baseStyles, css`:host { contain: none }`];
 
     private get filteredRows() {
       return [...this.grid.rows].filter(row => row.cells
