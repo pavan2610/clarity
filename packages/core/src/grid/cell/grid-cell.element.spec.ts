@@ -14,7 +14,7 @@ describe('cds-grid-cell', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    element = await createTestElement(html`<cds-grid-cell></cds-grid-cell></div>`);
+    element = await createTestElement(html`<cds-grid-cell></cds-grid-cell>`);
     component = element.querySelector<CdsGridCell>('cds-grid-cell');
   });
 

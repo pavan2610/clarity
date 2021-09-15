@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { baseStyles, property } from '@cds/core/internal';
+import { baseStyles } from '@cds/core/internal';
 import styles from './grid-cell.element.scss';
 
 /**
@@ -23,8 +23,6 @@ import styles from './grid-cell.element.scss';
  * @cssprop --color
  */
 export class CdsGridCell extends LitElement {
-  @property({ type: String }) type: 'action' | '' | null; // todo update to column style inheritance
-
   static styles = [baseStyles, styles];
 
   render() {
