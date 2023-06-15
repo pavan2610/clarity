@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: clarity
+  annotations:
+    github.com/project-slug: pavan2610/clarity
+spec:
+  type: other
+  lifecycle: unknown
+  owner: guests
